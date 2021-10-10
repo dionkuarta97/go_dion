@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "go_online_mobile_UI",
+    "slug": "go_online_mobile_UI",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "go_online_mobile_UI"
+}
