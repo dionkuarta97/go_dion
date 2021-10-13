@@ -13,8 +13,10 @@ import {MaterialIcons} from "@expo/vector-icons";
 import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
 import {getHomeMenu} from "../../../Redux/Home/homeActions";
 import {FlatList} from "react-native-gesture-handler";
+import {useNavigation} from "@react-navigation/core";
 
 const HomeMenu = () => {
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const homeMenuState = useSelector((state) => state.homeReducer.homeMenu);
 
@@ -22,9 +24,23 @@ const HomeMenu = () => {
         dispatch(getHomeMenu());
     }, []);
 
+    const onPressItem = (idx) => {
+        switch (idx) {
+            case 0:
+                navigation.navigate("ProductScreen");
+                break;
+
+            default:
+                break;
+        }
+    };
+
     const menuComponent = (item) => {
         return (
-            <TouchableOpacity style={{marginHorizontal: 15}}>
+            <TouchableOpacity
+                style={{marginHorizontal: 15}}
+                onPress={() => onPressItem(item.idx)}
+            >
                 <View
                     style={{
                         justifyContent: "center",

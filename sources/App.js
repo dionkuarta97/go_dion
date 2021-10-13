@@ -8,10 +8,14 @@ import {persistor, store} from "./Redux/store";
 import ForgotPasswordScreen from "./Screens/Auth/forgotPasswordScreen";
 import LoginScreen from "./Screens/Auth/loginScreen";
 import RegisterScreen from "./Screens/Auth/registerScreen";
+import FilterResultScreen from "./Screens/Filter/filterResultScreen";
+import FilterScreen from "./Screens/Filter/filterScreen";
 
 import LoadingScreen from "./Screens/Global/loadingScreen";
 import MainScreen from "./Screens/Global/mainScreen";
+import ProductCategoryScreen from "./Screens/Products/productCategoryScreen";
 import ProductDetailScreen from "./Screens/Products/productDetailScreen";
+import ProductScreen from "./Screens/Products/productScreen";
 
 const Stack = createStackNavigator();
 
@@ -47,8 +51,25 @@ export default App = () => {
                             component={MainScreen}
                         />
                         <Stack.Screen
+                            name="ProductScreen"
+                            component={ProductScreen}
+                        />
+                        <Stack.Screen
+                            name="ProductCategoryScreen"
+                            component={ProductCategoryScreen}
+                        />
+                        <Stack.Screen
                             name="ProductDetailScreen"
                             component={ProductDetailScreen}
+                        />
+
+                        <Stack.Screen
+                            name="FilterScreen"
+                            component={FilterScreen}
+                        />
+                        <Stack.Screen
+                            name="FilterResultScreen"
+                            component={FilterResultScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

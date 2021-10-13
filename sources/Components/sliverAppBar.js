@@ -186,9 +186,7 @@ const SliverAppBar = (props) => {
             </Animated.View>
 
             <Animated.View style={styles.bar}>
-                <TouchableOpacity onPress={leftItemPress}>
-                    <View style={styles.left}>{leftItem}</View>
-                </TouchableOpacity>
+                <View style={styles.left}>{leftItem}</View>
                 <View style={styles.right}>{rightItem}</View>
             </Animated.View>
         </View>
