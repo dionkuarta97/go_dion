@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
     SafeAreaView,
+    StatusBar,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -11,6 +12,7 @@ import {LpColorsUtils, LpSizesUtils} from "../../Theme/utils/learnProUtils";
 import HomeScreen from "../Home/homeScreen";
 import {LpFontStyles} from "../../Theme/styles/learnProStyles";
 import CartScreen from "../Cart/cartScreen";
+import PurchaseScreen from "../Purchase/purchaseScreen";
 
 const bottomNavMenu = [
     {title: "Home", icon: "home"},
@@ -63,7 +65,7 @@ export default MainScreen = (props) => {
             {currentIndex == 0 ? (
                 <HomeScreen />
             ) : currentIndex == 1 ? (
-                <CartScreen />
+                <PurchaseScreen />
             ) : (
                 <HomeScreen />
             )}
@@ -83,6 +85,7 @@ export default MainScreen = (props) => {
                     })
                 )}
             </View>
+            <StatusBar backgroundColor={LpColorsUtils.primaryColor} />
         </View>
     );
 };

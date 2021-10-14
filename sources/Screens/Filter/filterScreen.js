@@ -15,7 +15,7 @@ const FilterScreen = () => {
 
     return (
         <SafeAreaView style={{flex: 1}}>
-            <DefaultAppBar title="Cari Produk" />
+            <DefaultAppBar backEnabled={true} title="Cari Produk" />
             <ScrollView
                 style={{
                     paddingHorizontal: LpSizesUtils.fixPadding,

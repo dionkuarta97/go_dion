@@ -27,6 +27,7 @@ const ProductCategoryScreen = () => {
         <SafeAreaView style={{flex: 1}}>
             <DefaultAppBar
                 title="Produk Category"
+                backEnabled={true}
                 rightItem={
                     <View style={{flexDirection: "row"}}>
                         <ActionButtonFilter />

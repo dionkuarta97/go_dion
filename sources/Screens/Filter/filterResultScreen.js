@@ -22,7 +22,7 @@ const FilterResultScreen = () => {
     const navigation = useNavigation();
     return (
         <SafeAreaView style={{flex: 1}}>
-            <DefaultAppBar title="Hasil Pencarian" />
+            <DefaultAppBar backEnabled={true} title="Hasil Pencarian" />
             <View
                 style={{
                     paddingHorizontal: LpSizesUtils.fixPadding,

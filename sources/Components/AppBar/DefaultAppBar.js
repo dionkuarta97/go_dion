@@ -9,6 +9,7 @@ import {useNavigation} from "@react-navigation/core";
 const propTypes = {
     title: PropTypes.string,
     rightItem: PropTypes.node,
+    backEnabled: PropTypes.bool,
 };
 
 const DefaultAppBar = (props) => {
@@ -16,12 +17,14 @@ const DefaultAppBar = (props) => {
     return (
         <View style={styles.appBar}>
             <View style={{flex: 1, flexDirection: "row"}}>
-                <MaterialIcons
-                    name="arrow-back-ios"
-                    size={24}
-                    color="black"
-                    onPress={() => navigation.goBack()}
-                />
+                {props.backEnabled && (
+                    <MaterialIcons
+                        name="arrow-back-ios"
+                        size={24}
+                        color="black"
+                        onPress={() => navigation.goBack()}
+                    />
+                )}
                 <Text
                     style={{
                         ...LpFontStyles.black19Bold,

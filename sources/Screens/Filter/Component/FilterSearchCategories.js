@@ -6,6 +6,7 @@ import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButto
 import {LpColorsUtils, LpSizesUtils} from "../../../Theme/utils/learnProUtils";
 import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
 import SingleBadgeSelection from "../../../Components/SingleBadgeSelection";
+import DefaultCard from "../../../Components/Card/DefaultCard";
 
 const listCategories = [
     {id: 1, title: "Pelajaran", type: "pelajaran", url: "urlFilterPelajaran"},
@@ -17,7 +18,7 @@ const FilterSearchCategories = () => {
     const navigation = useNavigation();
 
     return (
-        <View style={styles.card}>
+        <DefaultCard>
             <Text style={{...LpFontStyles.black17Regular}}>
                 Atau pilih dari kriteria dibawah ini.
             </Text>
@@ -42,7 +43,7 @@ const FilterSearchCategories = () => {
                     onPress={() => navigation.navigate("FilterResultScreen")}
                 />
             </View>
-        </View>
+        </DefaultCard>
     );
 };
 
