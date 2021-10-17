@@ -1,12 +1,14 @@
 import {StyleSheet} from "react-native";
-import {LpColorsUtils, LpSizesUtils} from "../utils/learnProUtils";
+import Colors from "../Colors";
+import Fonts from "../Fonts";
+import Sizes from "../Sizes";
 
 const CompStyles = StyleSheet.create({
     defaultCard: {
-        marginVertical: LpSizesUtils.fixPadding,
-        backgroundColor: LpColorsUtils.whiteColor,
-        borderRadius: LpSizesUtils.fixPadding,
-        padding: LpSizesUtils.fixPadding,
+        marginVertical: Sizes.fixPadding,
+        backgroundColor: Colors.whiteColor,
+        borderRadius: Sizes.fixPadding,
+        padding: Sizes.fixPadding,
         elevation: 2,
     },
 });

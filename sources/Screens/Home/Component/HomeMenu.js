@@ -8,12 +8,13 @@ import {
     VirtualizedList,
 } from "react-native";
 import {useDispatch, useSelector} from "react-redux";
-import {LpColorsUtils, LpSizesUtils} from "../../../Theme/utils/learnProUtils";
 import {MaterialIcons} from "@expo/vector-icons";
-import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
 import {getHomeMenu} from "../../../Redux/Home/homeActions";
 import {FlatList} from "react-native-gesture-handler";
 import {useNavigation} from "@react-navigation/core";
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 
 const HomeMenu = () => {
     const navigation = useNavigation();
@@ -53,14 +54,14 @@ const HomeMenu = () => {
                             style={{
                                 width: 65,
                                 height: 65,
-                                tintColor: LpColorsUtils.orangeColor,
+                                tintColor: Colors.orangeColor,
                             }}
                         />
                     </View>
                     <Text
                         style={{
-                            ...LpFontStyles.black15Bold,
-                            marginTop: LpSizesUtils.fixPadding,
+                            ...Fonts.black15Bold,
+                            marginTop: Sizes.fixPadding,
                         }}
                     >
                         {item.title}
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
         height: 120,
         width: 120,
         elevation: 1,
-        backgroundColor: LpColorsUtils.whiteColor,
+        backgroundColor: Colors.whiteColor,
         borderRadius: 60,
         justifyContent: "center",
         alignItems: "center",

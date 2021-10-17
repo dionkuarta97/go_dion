@@ -5,10 +5,12 @@ import {SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../Components/CustomTextInput/DefaultTextInput";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
-import {LpColorsUtils, LpSizesUtils} from "../../Theme/utils/learnProUtils";
 import FilterSearchText from "./Component/FilterSearchText";
 import FilterSearchCategories from "./Component/FilterSearchCategories";
+
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
 
 const FilterScreen = () => {
     const navigation = useNavigation();
@@ -18,8 +20,8 @@ const FilterScreen = () => {
             <DefaultAppBar backEnabled={true} title="Cari Produk" />
             <ScrollView
                 style={{
-                    paddingHorizontal: LpSizesUtils.fixPadding,
-                    paddingVertical: LpSizesUtils.fixPadding * 2,
+                    paddingHorizontal: Sizes.fixPadding,
+                    paddingVertical: Sizes.fixPadding * 2,
                 }}
             >
                 <FilterSearchText />
@@ -33,10 +35,10 @@ export default FilterScreen;
 
 const styles = StyleSheet.create({
     card: {
-        marginVertical: LpSizesUtils.fixPadding,
-        backgroundColor: LpColorsUtils.whiteColor,
-        borderRadius: LpSizesUtils.fixPadding,
-        padding: LpSizesUtils.fixPadding,
+        marginVertical: Sizes.fixPadding,
+        backgroundColor: Colors.whiteColor,
+        borderRadius: Sizes.fixPadding,
+        padding: Sizes.fixPadding,
         elevation: 2,
     },
 });

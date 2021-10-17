@@ -3,32 +3,34 @@ import {SafeAreaView, Text, View} from "react-native";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultCard from "../../Components/Card/DefaultCard";
 import Divider from "../../Components/Divider";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
-import {LpColorsUtils, LpSizesUtils} from "../../Theme/utils/learnProUtils";
+
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
 
 const PurchaseScreen = () => {
     return (
         <SafeAreaView style={{flex: 1}}>
             <DefaultAppBar backEnabled={false} title="Pembelian" />
-            <View style={{flex: 1, padding: LpSizesUtils.fixPadding * 2}}>
+            <View style={{flex: 1, padding: Sizes.fixPadding * 2}}>
                 <DefaultCard>
                     <View style={{flexDirection: "row", alignItems: "center"}}>
                         <Text
                             style={{
                                 flex: 1,
-                                ...LpFontStyles.black17Bold,
-                                color: LpColorsUtils.orangeColor,
+                                ...Fonts.black17Bold,
+                                color: Colors.orangeColor,
                             }}
                         >
                             GO-0123231123
                         </Text>
                         <Text
                             style={{
-                                paddingHorizontal: LpSizesUtils.fixPadding * 2,
-                                paddingVertical: LpSizesUtils.fixPadding / 2,
-                                backgroundColor: LpColorsUtils.primaryColor,
+                                paddingHorizontal: Sizes.fixPadding * 2,
+                                paddingVertical: Sizes.fixPadding / 2,
+                                backgroundColor: Colors.primaryColor,
                                 color: "white",
-                                borderRadius: LpSizesUtils.fixPadding,
+                                borderRadius: Sizes.fixPadding,
                                 letterSpacing: 1.2,
                             }}
                         >
@@ -44,19 +46,19 @@ const PurchaseScreen = () => {
                         <Text
                             style={{
                                 flex: 1,
-                                ...LpFontStyles.black17Bold,
-                                color: LpColorsUtils.orangeColor,
+                                ...Fonts.black17Bold,
+                                color: Colors.orangeColor,
                             }}
                         >
                             GO-0123231123
                         </Text>
                         <Text
                             style={{
-                                paddingHorizontal: LpSizesUtils.fixPadding * 2,
-                                paddingVertical: LpSizesUtils.fixPadding / 2,
+                                paddingHorizontal: Sizes.fixPadding * 2,
+                                paddingVertical: Sizes.fixPadding / 2,
                                 backgroundColor: "#28a745",
                                 color: "white",
-                                borderRadius: LpSizesUtils.fixPadding,
+                                borderRadius: Sizes.fixPadding,
                                 letterSpacing: 1.2,
                             }}
                         >
@@ -72,19 +74,19 @@ const PurchaseScreen = () => {
                         <Text
                             style={{
                                 flex: 1,
-                                ...LpFontStyles.black17Bold,
-                                color: LpColorsUtils.orangeColor,
+                                ...Fonts.black17Bold,
+                                color: Colors.orangeColor,
                             }}
                         >
                             GO-0123231123
                         </Text>
                         <Text
                             style={{
-                                paddingHorizontal: LpSizesUtils.fixPadding * 2,
-                                paddingVertical: LpSizesUtils.fixPadding / 2,
+                                paddingHorizontal: Sizes.fixPadding * 2,
+                                paddingVertical: Sizes.fixPadding / 2,
                                 backgroundColor: "#dc3545",
                                 color: "white",
-                                borderRadius: LpSizesUtils.fixPadding,
+                                borderRadius: Sizes.fixPadding,
                                 letterSpacing: 1.2,
                             }}
                         >

@@ -2,8 +2,10 @@ import {useNavigation} from "@react-navigation/core";
 import React from "react";
 import {FlatList, Text, TouchableOpacity, View} from "react-native";
 import ProductCard from "../../../Components/ProductCard";
-import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
-import {LpSizesUtils} from "../../../Theme/utils/learnProUtils";
+
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 
 const products = [
     {id: 1, title: "a"},
@@ -19,20 +21,18 @@ const ProductContent = () => {
         return (
             <View
                 style={{
-                    marginHorizontal: LpSizesUtils.fixPadding,
+                    marginHorizontal: Sizes.fixPadding,
                     flexDirection: "row",
                     alignItems: "center",
                 }}
             >
-                <Text style={{...LpFontStyles.black20Bold, flex: 1}}>
-                    {title}
-                </Text>
+                <Text style={{...Fonts.black20Bold, flex: 1}}>{title}</Text>
 
                 <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() => navigation.navigate("ProductCategoryScreen")}
                 >
-                    <Text style={{...LpFontStyles.orangeColor14Bold}}>
+                    <Text style={{...Fonts.orangeColor14Bold}}>
                         Lihat Semua
                     </Text>
                 </TouchableOpacity>
@@ -41,7 +41,7 @@ const ProductContent = () => {
     };
 
     return (
-        <View style={{paddingVertical: LpSizesUtils.fixPadding}}>
+        <View style={{paddingVertical: Sizes.fixPadding}}>
             <View>
                 {sectionHeader("Paket Belajar")}
                 <FlatList
@@ -51,9 +51,9 @@ const ProductContent = () => {
                     renderItem={(item) => <ProductCard />}
                     data={products}
                     contentContainerStyle={{
-                        paddingHorizontal: LpSizesUtils.fixPadding,
-                        paddingTop: LpSizesUtils.fixPadding * 2.0,
-                        paddingBottom: LpSizesUtils.fixPadding * 4.0,
+                        paddingHorizontal: Sizes.fixPadding,
+                        paddingTop: Sizes.fixPadding * 2.0,
+                        paddingBottom: Sizes.fixPadding * 4.0,
                     }}
                 />
             </View>
@@ -67,9 +67,9 @@ const ProductContent = () => {
                     renderItem={(item) => <ProductCard />}
                     data={products}
                     contentContainerStyle={{
-                        paddingHorizontal: LpSizesUtils.fixPadding,
-                        paddingTop: LpSizesUtils.fixPadding * 2.0,
-                        paddingBottom: LpSizesUtils.fixPadding * 4.0,
+                        paddingHorizontal: Sizes.fixPadding,
+                        paddingTop: Sizes.fixPadding * 2.0,
+                        paddingBottom: Sizes.fixPadding * 4.0,
                     }}
                 />
             </View>

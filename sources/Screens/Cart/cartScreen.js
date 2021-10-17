@@ -12,9 +12,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {MaterialIcons} from "@expo/vector-icons";
 import SliverAppBar from "../../Components/sliverAppBar";
 import {getSliderImages} from "../../Redux/Home/homeActions";
-import {LpColorsUtils} from "../../Theme/utils/learnProUtils";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
 import HomeContent from "../Home/Component/HomeContent";
+
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
 
 const CartScreen = (props) => {
     return (
@@ -39,16 +41,16 @@ const CartScreen = (props) => {
                             alignItems: "center",
                         }}
                     >
-                        <Text style={LpFontStyles.black25Bold}>Cart</Text>
+                        <Text style={Fonts.black25Bold}>Cart</Text>
                     </View>
                 }
-                toolbarColor={LpColorsUtils.primaryColor}
+                toolbarColor={Colors.primaryColor}
                 toolBarMinHeight={40}
                 toolbarMaxHeight={230}
                 src={require("../../../assets/Images/appbar_bg.png")}
             >
                 <HomeContent />
-                <StatusBar backgroundColor={LpColorsUtils.primaryColor} />
+                <StatusBar backgroundColor={Colors.primaryColor} />
             </SliverAppBar>
         </SafeAreaView>
     );

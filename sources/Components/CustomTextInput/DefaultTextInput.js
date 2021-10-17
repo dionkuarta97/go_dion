@@ -1,8 +1,10 @@
 import React, {useState} from "react";
 import {TextInput, View} from "react-native";
 import PropTypes from "prop-types";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
-import {LpColorsUtils} from "../../Theme/utils/learnProUtils";
+
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
 
 const DefaultTextInput = (props) => {
     const [focused, setFocused] = useState(false);
@@ -11,9 +13,7 @@ const DefaultTextInput = (props) => {
             style={{
                 flexDirection: "row",
                 marginVertical: 15,
-                borderBottomColor: focused
-                    ? LpColorsUtils.primaryColor
-                    : "#898989",
+                borderBottomColor: focused ? Colors.primaryColor : "#898989",
                 borderBottomWidth: 1,
             }}
         >
@@ -21,8 +21,8 @@ const DefaultTextInput = (props) => {
                 autoCapitalize="none"
                 placeholder={props.placeholder}
                 style={{
-                    ...LpFontStyles.black17Regular,
-                    paddingVertical: 5,
+                    ...Fonts.black17Regular,
+                    paddingVertical: Sizes.fixPadding / 2,
                 }}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}

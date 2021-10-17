@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {StyleSheet, Text, TouchableOpacity} from "react-native";
-import {LpColorsUtils, LpSizesUtils} from "../../Theme/utils/learnProUtils";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
 
 const DefaultPrimaryButton = ({text, onPress}) => {
     return (
@@ -11,7 +12,7 @@ const DefaultPrimaryButton = ({text, onPress}) => {
             onPress={onPress}
             style={styles.button}
         >
-            <Text style={{...LpFontStyles.black19Bold}}>{text}</Text>
+            <Text style={{...Fonts.black19Bold}}>{text}</Text>
         </TouchableOpacity>
     );
 };
@@ -25,11 +26,11 @@ DefaultPrimaryButton.propTypes = {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: LpColorsUtils.primaryColor,
-        paddingVertical: LpSizesUtils.fixPadding + 5.0,
+        backgroundColor: Colors.primaryColor,
+        paddingVertical: Sizes.fixPadding + 5.0,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: LpSizesUtils.fixPadding - 5.0,
-        marginVertical: LpSizesUtils.fixPadding + 5.0,
+        borderRadius: Sizes.fixPadding - 5.0,
+        marginVertical: Sizes.fixPadding + 5.0,
     },
 });

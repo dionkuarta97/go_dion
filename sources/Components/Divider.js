@@ -1,6 +1,6 @@
 import React from "react";
 import {View} from "react-native";
-import {LpSizesUtils} from "../Theme/utils/learnProUtils";
+import Sizes from "../Theme/Sizes";
 
 const Divider = () => {
     return (
@@ -9,7 +9,7 @@ const Divider = () => {
                 width: "100%",
                 height: 1,
                 backgroundColor: "black",
-                marginVertical: LpSizesUtils.fixPadding,
+                marginVertical: Sizes.fixPadding,
                 opacity: 0.1,
             }}
         />

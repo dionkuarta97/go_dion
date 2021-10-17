@@ -5,8 +5,9 @@ import {LogBox, Text, TouchableOpacity, View} from "react-native";
 import {FlatList} from "react-native-gesture-handler";
 import Carousel from "react-native-snap-carousel";
 import ProductCard from "../../../Components/ProductCard";
-import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
-import {LpColorsUtils, LpSizesUtils} from "../../../Theme/utils/learnProUtils";
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 import HomeCarousel from "./HomeCarousel";
 import HomeMenu from "./HomeMenu";
 
@@ -28,17 +29,15 @@ const HomeContent = () => {
         return (
             <View
                 style={{
-                    marginHorizontal: LpSizesUtils.fixPadding,
+                    marginHorizontal: Sizes.fixPadding,
                     flexDirection: "row",
                     alignItems: "center",
                 }}
             >
-                <Text style={{...LpFontStyles.black20Bold, flex: 1}}>
-                    {title}
-                </Text>
+                <Text style={{...Fonts.black20Bold, flex: 1}}>{title}</Text>
 
                 <TouchableOpacity activeOpacity={0.8}>
-                    <Text style={{...LpFontStyles.orangeColor14Bold}}>
+                    <Text style={{...Fonts.orangeColor14Bold}}>
                         Lihat Semua
                     </Text>
                 </TouchableOpacity>
@@ -53,7 +52,7 @@ const HomeContent = () => {
 
             <View>
                 {sectionHeader("Materi Baru")}
-                <View style={{marginHorizontal: LpSizesUtils.fixPadding}}>
+                <View style={{marginHorizontal: Sizes.fixPadding}}>
                     <FlatList
                         keyExtractor={(item) => `${item.id}`}
                         horizontal={true}
@@ -61,9 +60,9 @@ const HomeContent = () => {
                         renderItem={(item) => <ProductCard />}
                         data={products}
                         contentContainerStyle={{
-                            paddingHorizontal: LpSizesUtils.fixPadding,
-                            paddingTop: LpSizesUtils.fixPadding * 2.0,
-                            paddingBottom: LpSizesUtils.fixPadding * 4.0,
+                            paddingHorizontal: Sizes.fixPadding,
+                            paddingTop: Sizes.fixPadding * 2.0,
+                            paddingBottom: Sizes.fixPadding * 4.0,
                         }}
                     />
                 </View>
@@ -71,7 +70,7 @@ const HomeContent = () => {
 
             <View>
                 {sectionHeader("Materi Populer")}
-                <View style={{marginHorizontal: LpSizesUtils.fixPadding}}>
+                <View style={{marginHorizontal: Sizes.fixPadding}}>
                     <FlatList
                         keyExtractor={(item) => `${item.id}`}
                         horizontal={true}
@@ -79,9 +78,9 @@ const HomeContent = () => {
                         renderItem={(item) => <ProductCard />}
                         data={products}
                         contentContainerStyle={{
-                            paddingHorizontal: LpSizesUtils.fixPadding,
-                            paddingTop: LpSizesUtils.fixPadding * 2.0,
-                            paddingBottom: LpSizesUtils.fixPadding * 4.0,
+                            paddingHorizontal: Sizes.fixPadding,
+                            paddingTop: Sizes.fixPadding * 2.0,
+                            paddingBottom: Sizes.fixPadding * 4.0,
                         }}
                     />
                 </View>

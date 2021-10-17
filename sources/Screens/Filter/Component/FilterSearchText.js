@@ -4,14 +4,16 @@ import {StyleSheet, Text, View} from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultCard from "../../../Components/Card/DefaultCard";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
-import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
-import {LpColorsUtils, LpSizesUtils} from "../../../Theme/utils/learnProUtils";
+
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 
 const FilterSearchText = () => {
     const navigation = useNavigation();
     return (
         <DefaultCard>
-            <Text style={{...LpFontStyles.black17Regular}}>
+            <Text style={{...Fonts.black17Regular}}>
                 Ketikkan pelajaran atau bab yang kamu inginkan dibawah ini.
             </Text>
 

@@ -3,8 +3,11 @@ import {SafeAreaView, StatusBar, Text, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 
 import SliverAppBar from "../../Components/sliverAppBar";
-import {LpColorsUtils, LpSizesUtils} from "../../Theme/utils/learnProUtils";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
+
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
+
 import ActionButtonCart from "../../Components/ActionButton/ActionButtonCart";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import {FlatGrid} from "react-native-super-grid";
@@ -48,12 +51,12 @@ const ProductCategoryScreen = () => {
                 style={{
                     height: 50,
                     flexDirection: "row",
-                    backgroundColor: LpColorsUtils.primaryColor,
+                    backgroundColor: Colors.primaryColor,
                     alignItems: "center",
-                    paddingHorizontal: LpSizesUtils.fixPadding,
+                    paddingHorizontal: Sizes.fixPadding,
                 }}
             >
-                <Text style={{...LpFontStyles.black15Regular, flex: 1}}>
+                <Text style={{...Fonts.black15Regular, flex: 1}}>
                     Anda membeli product{" "}
                 </Text>
                 <MaterialIcons

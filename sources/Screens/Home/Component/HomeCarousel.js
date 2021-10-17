@@ -1,7 +1,10 @@
 import React from "react";
 import {Dimensions, ImageBackground, Text, View} from "react-native";
 import Carousel from "react-native-snap-carousel";
-import {LpSizesUtils} from "../../../Theme/utils/learnProUtils";
+
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 
 const width = Dimensions.get("window").width;
 
@@ -28,12 +31,12 @@ const HomeCarousel = () => {
                 alignItems: "center",
                 justifyContent: "center",
             }}
-            borderRadius={LpSizesUtils.fixPadding - 5.0}
+            borderRadius={Sizes.fixPadding - 5.0}
         ></ImageBackground>
     );
 
     return (
-        <View style={{paddingVertical: LpSizesUtils.fixPadding * 3}}>
+        <View style={{paddingVertical: Sizes.fixPadding * 3}}>
             <Carousel
                 ref={(ref) => (this.carousel = ref)}
                 layout={"default"}

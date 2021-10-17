@@ -5,8 +5,9 @@ import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButto
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import {Fontisto} from "@expo/vector-icons";
 
-import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
-import {LpColorsUtils, LpSizesUtils} from "../../../Theme/utils/learnProUtils";
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 
 const ForgotPasswordContent = () => {
     const navigation = useNavigation();
@@ -15,14 +16,14 @@ const ForgotPasswordContent = () => {
     return (
         <View
             style={{
-                paddingVertical: LpSizesUtils.fixPadding * 7.0,
-                paddingHorizontal: LpSizesUtils.fixPadding * 2.0,
+                paddingVertical: Sizes.fixPadding * 7.0,
+                paddingHorizontal: Sizes.fixPadding * 2.0,
             }}
         >
             {!kirim ? (
                 <View>
-                    <View style={{marginBottom: LpSizesUtils.fixPadding}}>
-                        <Text style={{...LpFontStyles.black17Regular}}>
+                    <View style={{marginBottom: Sizes.fixPadding}}>
+                        <Text style={{...Fonts.black17Regular}}>
                             Masukkan email yang kamu daftarkan. Kami akan
                             mengirimkan link untuk informasi password
                         </Text>
@@ -40,17 +41,17 @@ const ForgotPasswordContent = () => {
                         <Fontisto
                             name="paper-plane"
                             size={100}
-                            color={LpColorsUtils.primaryColor}
+                            color={Colors.primaryColor}
                         />
                         <View
                             style={{marginVertical: 50, alignItems: "center"}}
                         >
-                            <Text style={{...LpFontStyles.black17Regular}}>
+                            <Text style={{...Fonts.black17Regular}}>
                                 Kami mengirimkan link ke email kamu
                             </Text>
                             <Text
                                 style={{
-                                    ...LpFontStyles.black17Bold,
+                                    ...Fonts.black17Bold,
                                     marginTop: 20,
                                 }}
                             >

@@ -3,10 +3,12 @@ import {useNavigation} from "@react-navigation/core";
 import {StyleSheet, Text, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
-import {LpColorsUtils, LpSizesUtils} from "../../../Theme/utils/learnProUtils";
-import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
 import SingleBadgeSelection from "../../../Components/SingleBadgeSelection";
 import DefaultCard from "../../../Components/Card/DefaultCard";
+
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 
 const listCategories = [
     {id: 1, title: "Pelajaran", type: "pelajaran", url: "urlFilterPelajaran"},
@@ -19,7 +21,7 @@ const FilterSearchCategories = () => {
 
     return (
         <DefaultCard>
-            <Text style={{...LpFontStyles.black17Regular}}>
+            <Text style={{...Fonts.black17Regular}}>
                 Atau pilih dari kriteria dibawah ini.
             </Text>
 
@@ -51,10 +53,10 @@ export default FilterSearchCategories;
 
 const styles = StyleSheet.create({
     card: {
-        marginVertical: LpSizesUtils.fixPadding,
-        backgroundColor: LpColorsUtils.whiteColor,
-        borderRadius: LpSizesUtils.fixPadding,
-        padding: LpSizesUtils.fixPadding,
+        marginVertical: Sizes.fixPadding,
+        backgroundColor: Colors.whiteColor,
+        borderRadius: Sizes.fixPadding,
+        padding: Sizes.fixPadding,
         elevation: 2,
     },
 });

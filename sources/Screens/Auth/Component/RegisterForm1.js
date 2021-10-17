@@ -2,12 +2,15 @@ import React from "react";
 import {Text, View} from "react-native";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
-import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
+
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 
 const RegisterForm1 = () => {
     return (
         <View>
-            <Text style={{...LpFontStyles.black20Bold}}>Account Form</Text>
+            <Text style={{...Fonts.black20Bold}}>Account Form</Text>
 
             <DefaultTextInput
                 placeholder="Email"

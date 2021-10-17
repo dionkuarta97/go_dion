@@ -4,10 +4,12 @@ import {TouchableOpacity} from "react-native-gesture-handler";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
-import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
-import {LpSizesUtils} from "../../../Theme/utils/learnProUtils";
 import RegisterForm1 from "./RegisterForm1";
 import RegisterForm2 from "./RegisterForm2";
+
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 
 const RegisterContent = () => {
     const [selectedForm, setSelectedForm] = useState(0);
@@ -17,8 +19,8 @@ const RegisterContent = () => {
     return (
         <View
             style={{
-                paddingVertical: LpSizesUtils.fixPadding * 7.0,
-                paddingHorizontal: LpSizesUtils.fixPadding * 2.0,
+                paddingVertical: Sizes.fixPadding * 7.0,
+                paddingHorizontal: Sizes.fixPadding * 2.0,
             }}
         >
             {FormList[selectedForm]}

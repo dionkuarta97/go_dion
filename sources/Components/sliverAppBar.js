@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     Dimensions,
 } from "react-native";
-import {LpColorsUtils} from "../Theme/utils/learnProUtils";
+import Colors from "../Theme/Colors";
 
 const propTypes = {
     children: PropTypes.node.isRequired,
@@ -37,7 +37,7 @@ const defaultProps = {
     rightItemPress: null,
     element: null,
     titleColor: "#fff",
-    toolbarColor: LpColorsUtils.primaryColor,
+    toolbarColor: Colors.primaryColor,
     toolbarMaxHeight: 300,
     toolbarMinHeight: 55,
     borderBottomRadius: 0,

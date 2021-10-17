@@ -1,9 +1,11 @@
 import React, {useState} from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
-import {LpColorsUtils, LpSizesUtils} from "../Theme/utils/learnProUtils";
-import {LpFontStyles} from "../Theme/styles/learnProStyles";
 import PropTypes from "prop-types";
+
+import Fonts from "../Theme/Fonts";
+import Sizes from "../Theme/Sizes";
+import Colors from "../Theme/Colors";
 
 const proptype = {
     icon: PropTypes.string,
@@ -27,10 +29,10 @@ const SingleBadgeSelection = (props) => {
                         ...styles.badge,
                         backgroundColor:
                             selectedIndex == idx
-                                ? LpColorsUtils.orangeColor
-                                : LpColorsUtils.whiteColor,
+                                ? Colors.orangeColor
+                                : Colors.whiteColor,
                         borderWidth: selectedIndex == idx ? 0 : 1,
-                        borderColor: LpColorsUtils.blackColor,
+                        borderColor: Colors.blackColor,
                     }}
                 >
                     {title}
@@ -39,18 +41,18 @@ const SingleBadgeSelection = (props) => {
         );
     };
     return (
-        <View style={{marginTop: LpSizesUtils.fixPadding * 2}}>
+        <View style={{marginTop: Sizes.fixPadding * 2}}>
             <View
                 style={{
                     flexDirection: "row",
-                    marginBottom: LpSizesUtils.fixPadding,
+                    marginBottom: Sizes.fixPadding,
                 }}
             >
                 {props.icon != null && (
                     <MaterialIcons name={props.icon} size={25} color="black" />
                 )}
-                <View style={{width: LpSizesUtils.fixPadding}} />
-                <Text style={LpFontStyles.black17Bold}>{props.title}</Text>
+                <View style={{width: Sizes.fixPadding}} />
+                <Text style={Fonts.black17Bold}>{props.title}</Text>
             </View>
             <View style={{flexDirection: "row", flexWrap: "wrap"}}>
                 {badgeComponent(0, "Semua Pelajaran")}
@@ -66,9 +68,9 @@ SingleBadgeSelection.propTypes = proptype;
 
 const styles = StyleSheet.create({
     badge: {
-        paddingVertical: LpSizesUtils.fixPadding / 2,
-        paddingHorizontal: LpSizesUtils.fixPadding * 2,
+        paddingVertical: Sizes.fixPadding / 2,
+        paddingHorizontal: Sizes.fixPadding * 2,
         borderRadius: 50,
-        marginRight: LpSizesUtils.fixPadding,
+        marginRight: Sizes.fixPadding,
     },
 });

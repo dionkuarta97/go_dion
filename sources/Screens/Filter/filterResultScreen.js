@@ -6,8 +6,10 @@ import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../Components/CustomTextInput/DefaultTextInput";
 import ProductCard from "../../Components/ProductCard";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
-import {LpColorsUtils, LpSizesUtils} from "../../Theme/utils/learnProUtils";
+
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
 
 const products = [
     {id: 1, title: "a"},
@@ -25,18 +27,16 @@ const FilterResultScreen = () => {
             <DefaultAppBar backEnabled={true} title="Hasil Pencarian" />
             <View
                 style={{
-                    paddingHorizontal: LpSizesUtils.fixPadding,
-                    paddingVertical: LpSizesUtils.fixPadding * 2,
+                    paddingHorizontal: Sizes.fixPadding,
+                    paddingVertical: Sizes.fixPadding * 2,
                 }}
             >
                 <View style={styles.card}>
-                    <Text
-                        style={{...LpFontStyles.black15Regular, color: "grey"}}
-                    >
+                    <Text style={{...Fonts.black15Regular, color: "grey"}}>
                         Pencarian:
                     </Text>
 
-                    <Text style={{...LpFontStyles.black17Regular}}>
+                    <Text style={{...Fonts.black17Regular}}>
                         Buku bab mantap
                     </Text>
                 </View>
@@ -57,10 +57,10 @@ export default FilterResultScreen;
 
 const styles = StyleSheet.create({
     card: {
-        marginVertical: LpSizesUtils.fixPadding,
-        backgroundColor: LpColorsUtils.whiteColor,
-        borderRadius: LpSizesUtils.fixPadding,
-        padding: LpSizesUtils.fixPadding,
+        marginVertical: Sizes.fixPadding,
+        backgroundColor: Colors.whiteColor,
+        borderRadius: Sizes.fixPadding,
+        padding: Sizes.fixPadding,
         elevation: 2,
     },
 });

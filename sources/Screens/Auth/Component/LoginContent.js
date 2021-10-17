@@ -4,8 +4,10 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
-import {LpFontStyles, LpCompStyles} from "../../../Theme/styles/learnProStyles";
-import {LpColorsUtils, LpSizesUtils} from "../../../Theme/utils/learnProUtils";
+
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 
 const LoginContent = () => {
     const navigation = useNavigation();
@@ -20,10 +22,10 @@ const LoginContent = () => {
             >
                 <Text
                     style={{
-                        ...LpFontStyles.gray18Bold,
+                        ...Fonts.gray18Bold,
                         textAlign: "center",
-                        marginTop: LpSizesUtils.fixPadding - 5.0,
-                        marginBottom: LpSizesUtils.fixPadding,
+                        marginTop: Sizes.fixPadding - 5.0,
+                        marginBottom: Sizes.fixPadding,
                     }}
                 >
                     Sign Up
@@ -39,7 +41,7 @@ const LoginContent = () => {
             >
                 <Text
                     style={{
-                        ...LpFontStyles.gray18Bold,
+                        ...Fonts.gray18Bold,
                         textAlign: "center",
                     }}
                 >
@@ -52,8 +54,8 @@ const LoginContent = () => {
     return (
         <View
             style={{
-                paddingVertical: LpSizesUtils.fixPadding * 7.0,
-                paddingHorizontal: LpSizesUtils.fixPadding * 2.0,
+                paddingVertical: Sizes.fixPadding * 7.0,
+                paddingHorizontal: Sizes.fixPadding * 2.0,
             }}
         >
             <DefaultTextInput

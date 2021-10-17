@@ -12,10 +12,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {MaterialIcons} from "@expo/vector-icons";
 import SliverAppBar from "../../Components/sliverAppBar";
 import {getSliderImages} from "../../Redux/Home/homeActions";
-import {LpColorsUtils} from "../../Theme/utils/learnProUtils";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
 import HomeContent from "./Component/HomeContent";
 import {useNavigation} from "@react-navigation/core";
+
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
 
 const HomeScreen = (props) => {
     const navigation = useNavigation();
@@ -33,8 +35,8 @@ const HomeScreen = (props) => {
                                     paddingHorizontal: 15,
                                     paddingVertical: 5,
                                     borderRadius: 50,
-                                    backgroundColor: LpColorsUtils.blackColor,
-                                    color: LpColorsUtils.primaryColor,
+                                    backgroundColor: Colors.blackColor,
+                                    color: Colors.primaryColor,
                                     fontWeight: "bold",
                                     letterSpacing: 1.2,
                                 }}
@@ -64,7 +66,7 @@ const HomeScreen = (props) => {
                     >
                         <View style={{flex: 1}}>
                             <Text>Hello,</Text>
-                            <Text style={LpFontStyles.black25Bold}>Guest</Text>
+                            <Text style={Fonts.black25Bold}>Guest</Text>
                         </View>
                         <TouchableOpacity
                             activeOpacity={0.9}
@@ -84,13 +86,13 @@ const HomeScreen = (props) => {
                         </TouchableOpacity>
                     </View>
                 }
-                toolbarColor={LpColorsUtils.primaryColor}
+                toolbarColor={Colors.primaryColor}
                 toolBarMinHeight={40}
                 toolbarMaxHeight={230}
                 src={require("../../../assets/Images/appbar_bg.png")}
             >
                 <HomeContent />
-                <StatusBar backgroundColor={LpColorsUtils.primaryColor} />
+                <StatusBar backgroundColor={Colors.primaryColor} />
             </SliverAppBar>
         </SafeAreaView>
     );

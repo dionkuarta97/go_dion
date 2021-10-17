@@ -8,9 +8,12 @@ import {
     View,
 } from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
-import {LpColorsUtils, LpSizesUtils} from "../../Theme/utils/learnProUtils";
+
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
+
 import HomeScreen from "../Home/homeScreen";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
 import CartScreen from "../Cart/cartScreen";
 import PurchaseScreen from "../Purchase/purchaseScreen";
 
@@ -40,15 +43,15 @@ export default MainScreen = (props) => {
                             justifyContent: "center",
                             backgroundColor: "#FFEACC",
                             width: 140.0,
-                            paddingVertical: LpSizesUtils.fixPadding,
-                            borderRadius: LpSizesUtils.fixPadding * 4.0,
+                            paddingVertical: Sizes.fixPadding,
+                            borderRadius: Sizes.fixPadding * 4.0,
                         }}
                     >
                         {icon}
                         <Text
                             style={{
-                                ...LpFontStyles.orangeColor14Bold,
-                                marginLeft: LpSizesUtils.fixPadding * 2.0,
+                                ...Fonts.orangeColor14Bold,
+                                marginLeft: Sizes.fixPadding * 2.0,
                             }}
                         >
                             {title}
@@ -78,14 +81,14 @@ export default MainScreen = (props) => {
                             <MaterialIcons
                                 name={val.icon}
                                 size={27}
-                                color={LpColorsUtils.orangeColor}
+                                color={Colors.orangeColor}
                             />
                         ),
                         title: val.title,
                     })
                 )}
             </View>
-            <StatusBar backgroundColor={LpColorsUtils.primaryColor} />
+            <StatusBar backgroundColor={Colors.primaryColor} />
         </View>
     );
 };
@@ -101,7 +104,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingHorizontal: LpSizesUtils.fixPadding * 2.0,
+        paddingHorizontal: Sizes.fixPadding * 2.0,
         elevation: 1.0,
         borderTopColor: "gray",
         borderTopWidth: 0.2,

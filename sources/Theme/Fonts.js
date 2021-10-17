@@ -1,6 +1,6 @@
 import {StyleSheet} from "react-native";
 
-export const LpFontStyles = StyleSheet.create({
+const Fonts = StyleSheet.create({
     orangeColor14Bold: {
         color: "#FF9800",
         fontSize: 14.0,
@@ -223,6 +223,4 @@ export const LpFontStyles = StyleSheet.create({
     },
 });
 
-const learnProStyles = {LpFontStyles};
-
-export default learnProStyles;
+export default Fonts;

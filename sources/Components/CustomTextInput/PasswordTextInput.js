@@ -2,8 +2,10 @@ import React, {useState} from "react";
 import {TextInput, View} from "react-native";
 import PropTypes from "prop-types";
 import {Entypo} from "@expo/vector-icons";
-import {LpColorsUtils, LpSizesUtils} from "../../Theme/utils/learnProUtils";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
+
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
 
 const PasswordTextInput = (props) => {
     const [focused, setFocused] = useState(false);
@@ -14,9 +16,7 @@ const PasswordTextInput = (props) => {
                 flexDirection: "row",
                 marginVertical: 15,
                 alignItems: "center",
-                borderBottomColor: focused
-                    ? LpColorsUtils.primaryColor
-                    : "#898989",
+                borderBottomColor: focused ? Colors.primaryColor : "#898989",
                 borderBottomWidth: 1,
             }}
         >
@@ -25,15 +25,15 @@ const PasswordTextInput = (props) => {
                 placeholder={props.placeholder}
                 secureTextEntry={passwordVisible}
                 style={{
-                    ...LpFontStyles.black17Regular,
-                    paddingVertical: 5,
+                    ...Fonts.black17Regular,
+                    paddingVertical: Sizes.fixPadding / 2,
                     flex: 1,
                 }}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
                 onChangeText={props.onChangeText}
             />
-            <View style={{paddingHorizontal: LpSizesUtils.fixPadding}}>
+            <View style={{paddingHorizontal: Sizes.fixPadding}}>
                 <Entypo
                     name={passwordVisible ? "eye" : "eye-with-line"}
                     size={24}

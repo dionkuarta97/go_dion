@@ -1,8 +1,10 @@
 import {useNavigation} from "@react-navigation/core";
 import React from "react";
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {LpFontStyles} from "../Theme/styles/learnProStyles";
-import {LpColorsUtils, LpSizesUtils} from "../Theme/utils/learnProUtils";
+
+import Fonts from "../Theme/Fonts";
+import Sizes from "../Theme/Sizes";
+import Colors from "../Theme/Colors";
 
 const ProductCard = () => {
     const navigation = useNavigation();
@@ -19,13 +21,13 @@ const ProductCard = () => {
                 style={styles.image}
             />
             <View style={styles.infoContainer}>
-                <Text style={{...LpFontStyles.gray15Regular}}>
+                <Text style={{...Fonts.gray15Regular}}>
                     Paket belajar tryout ujian mantap
                 </Text>
                 <Text
                     style={{
-                        ...LpFontStyles.black17Bold,
-                        marginVertical: LpSizesUtils.fixPadding - 5.0,
+                        ...Fonts.black17Bold,
+                        marginVertical: Sizes.fixPadding - 5.0,
                     }}
                 >
                     Paket Belajar
@@ -34,12 +36,12 @@ const ProductCard = () => {
                     style={{
                         flexDirection: "row",
                         alignItems: "center",
-                        marginTop: LpSizesUtils.fixPadding - 5.0,
+                        marginTop: Sizes.fixPadding - 5.0,
                     }}
                 >
                     <Text
                         style={{
-                            color: LpColorsUtils.orangeColor,
+                            color: Colors.orangeColor,
                             textDecorationLine: "line-through",
                         }}
                     >
@@ -48,8 +50,8 @@ const ProductCard = () => {
                 </View>
                 <Text
                     style={{
-                        ...LpFontStyles.black19Bold,
-                        marginTop: LpSizesUtils.fixPadding,
+                        ...Fonts.black19Bold,
+                        marginTop: Sizes.fixPadding,
                     }}
                 >
                     Rp. 45.000
@@ -65,20 +67,20 @@ const styles = StyleSheet.create({
     card: {
         elevation: 1.0,
         width: 220.0,
-        borderRadius: LpSizesUtils.fixPadding * 2.0,
-        backgroundColor: LpColorsUtils.whiteColor,
+        borderRadius: Sizes.fixPadding * 2.0,
+        backgroundColor: Colors.whiteColor,
         overflow: "hidden",
-        marginRight: LpSizesUtils.fixPadding * 2.0,
+        marginRight: Sizes.fixPadding * 2.0,
     },
     image: {
         width: 220.0,
         height: 150.0,
-        borderTopRightRadius: LpSizesUtils.fixPadding * 2.0,
-        borderTopLeftRadius: LpSizesUtils.fixPadding * 2.0,
+        borderTopRightRadius: Sizes.fixPadding * 2.0,
+        borderTopLeftRadius: Sizes.fixPadding * 2.0,
     },
     infoContainer: {
-        paddingHorizontal: LpSizesUtils.fixPadding,
-        paddingTop: LpSizesUtils.fixPadding,
-        paddingBottom: LpSizesUtils.fixPadding * 2.0,
+        paddingHorizontal: Sizes.fixPadding,
+        paddingTop: Sizes.fixPadding,
+        paddingBottom: Sizes.fixPadding * 2.0,
     },
 });

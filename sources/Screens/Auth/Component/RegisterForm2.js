@@ -2,12 +2,15 @@ import React from "react";
 import {Text, View} from "react-native";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
-import {LpFontStyles} from "../../../Theme/styles/learnProStyles";
+
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+import Colors from "../../../Theme/Colors";
 
 const RegisterForm2 = () => {
     return (
         <View>
-            <Text style={{...LpFontStyles.black20Bold}}>Wali Info Form</Text>
+            <Text style={{...Fonts.black20Bold}}>Wali Info Form</Text>
 
             <DefaultTextInput
                 placeholder="Wali Name"

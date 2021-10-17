@@ -1,7 +1,7 @@
 import React from "react";
 import {Text, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
-import {LpColorsUtils} from "../../Theme/utils/learnProUtils";
+import Colors from "../../Theme/Colors";
 
 const ActionButtonCart = () => {
     return (
@@ -19,7 +19,7 @@ const ActionButtonCart = () => {
                     position: "absolute",
                     width: 18,
                     height: 18,
-                    backgroundColor: LpColorsUtils.orangeColor,
+                    backgroundColor: Colors.orangeColor,
                     right: -9,
                     top: -9,
                     borderRadius: 9,

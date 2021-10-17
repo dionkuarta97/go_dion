@@ -13,8 +13,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {MaterialIcons} from "@expo/vector-icons";
 import SliverAppBar from "../../Components/sliverAppBar";
 import {getSliderImages} from "../../Redux/Home/homeActions";
-import {LpColorsUtils, LpSizesUtils} from "../../Theme/utils/learnProUtils";
-import {LpFontStyles} from "../../Theme/styles/learnProStyles";
+
+import Fonts from "../../Theme/Fonts";
+import Sizes from "../../Theme/Sizes";
+import Colors from "../../Theme/Colors";
+
 import {useNavigation} from "@react-navigation/core";
 import ProductDetailContent from "./Component/ProductDetailContent";
 
@@ -26,13 +29,13 @@ const ProductDetailScreen = (props) => {
     const productInfo = () => {
         return (
             <View>
-                <Text style={{...LpFontStyles.primaryColor16Regular}}>
+                <Text style={{...Fonts.primaryColor16Regular}}>
                     Paket Belajar
                 </Text>
                 <Text
                     style={{
-                        ...LpFontStyles.primaryColor28Bold,
-                        marginVertical: LpSizesUtils.fixPadding,
+                        ...Fonts.primaryColor28Bold,
+                        marginVertical: Sizes.fixPadding,
                     }}
                 >
                     Paket Belajar bersama sama
@@ -45,19 +48,17 @@ const ProductDetailScreen = (props) => {
                     }}
                 >
                     <View style={{flexDirection: "row", alignItems: "center"}}>
-                        <Text style={{...LpFontStyles.primaryColor16Regular}}>
-                            5
-                        </Text>
+                        <Text style={{...Fonts.primaryColor16Regular}}>5</Text>
                         <MaterialIcons
                             name="star"
                             size={17}
-                            color={LpColorsUtils.primaryColor}
+                            color={Colors.primaryColor}
                         />
-                        <Text style={{...LpFontStyles.primaryColor16Regular}}>
+                        <Text style={{...Fonts.primaryColor16Regular}}>
                             (7 Reviews)
                         </Text>
                     </View>
-                    <Text style={{...LpFontStyles.primaryColor25Bold}}>
+                    <Text style={{...Fonts.primaryColor25Bold}}>
                         Rp. 45.000
                     </Text>
                 </View>
@@ -71,12 +72,10 @@ const ProductDetailScreen = (props) => {
                     }
                     style={{
                         ...styles.button,
-                        backgroundColor: LpColorsUtils.primaryColor,
+                        backgroundColor: Colors.primaryColor,
                     }}
                 >
-                    <Text style={{...LpFontStyles.black17Bold}}>
-                        Take the Course
-                    </Text>
+                    <Text style={{...Fonts.black17Bold}}>Take the Course</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={0.9}
@@ -85,13 +84,11 @@ const ProductDetailScreen = (props) => {
                     }
                     style={{
                         ...styles.button,
-                        backgroundColor: LpColorsUtils.whiteColor,
-                        marginBottom: LpSizesUtils.fixPadding,
+                        backgroundColor: Colors.whiteColor,
+                        marginBottom: Sizes.fixPadding,
                     }}
                 >
-                    <Text style={{...LpFontStyles.black17Bold}}>
-                        Watch Trailer
-                    </Text>
+                    <Text style={{...Fonts.black17Bold}}>Watch Trailer</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -104,7 +101,7 @@ const ProductDetailScreen = (props) => {
                     <MaterialIcons
                         name="arrow-back-ios"
                         size={24}
-                        color={LpColorsUtils.primaryColor}
+                        color={Colors.primaryColor}
                         onPress={() => navigation.goBack()}
                     />
                 }
@@ -121,12 +118,12 @@ const ProductDetailScreen = (props) => {
                         <MaterialIcons
                             name={true ? "done" : "add"}
                             size={24}
-                            color={LpColorsUtils.primaryColor}
+                            color={Colors.primaryColor}
                         />
                         <Text
                             style={{
-                                ...LpFontStyles.primaryColor16Regular,
-                                marginLeft: LpSizesUtils.fixPadding - 5.0,
+                                ...Fonts.primaryColor16Regular,
+                                marginLeft: Sizes.fixPadding - 5.0,
                             }}
                         >
                             {true ? "Added to Wishlist" : "Add to Wishlist"}
@@ -135,14 +132,14 @@ const ProductDetailScreen = (props) => {
                 }
                 element={productInfo()}
                 borderBottomRadius={20}
-                toolbarColor={LpColorsUtils.whiteColor}
+                toolbarColor={Colors.whiteColor}
                 toolBarMinHeight={40}
                 toolbarMaxHeight={370}
                 isImageBlur={true}
                 src={require("../../../assets/Images/new_course/new_course_4.png")}
             >
                 <ProductDetailContent />
-                <StatusBar backgroundColor={LpColorsUtils.blackColor} />
+                <StatusBar backgroundColor={Colors.blackColor} />
             </SliverAppBar>
         </SafeAreaView>
     );
@@ -152,11 +149,11 @@ export default ProductDetailScreen;
 
 const styles = StyleSheet.create({
     button: {
-        paddingVertical: LpSizesUtils.fixPadding + 2.0,
+        paddingVertical: Sizes.fixPadding + 2.0,
         alignItems: "center",
         justifyContent: "center",
         width: width - 40,
-        borderRadius: LpSizesUtils.fixPadding - 5.0,
-        marginTop: LpSizesUtils.fixPadding + 3.0,
+        borderRadius: Sizes.fixPadding - 5.0,
+        marginTop: Sizes.fixPadding + 3.0,
     },
 });
