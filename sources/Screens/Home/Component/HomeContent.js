@@ -52,38 +52,35 @@ const HomeContent = () => {
 
             <View>
                 {sectionHeader("Materi Baru")}
-                <View style={{marginHorizontal: Sizes.fixPadding}}>
-                    <FlatList
-                        keyExtractor={(item) => `${item.id}`}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={(item) => <ProductCard />}
-                        data={products}
-                        contentContainerStyle={{
-                            paddingHorizontal: Sizes.fixPadding,
-                            paddingTop: Sizes.fixPadding * 2.0,
-                            paddingBottom: Sizes.fixPadding * 4.0,
-                        }}
-                    />
-                </View>
+
+                <FlatList
+                    keyExtractor={(item) => `${item.id}`}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={(item) => <ProductCard />}
+                    data={products}
+                    contentContainerStyle={{
+                        paddingHorizontal: Sizes.fixPadding,
+                        paddingTop: Sizes.fixPadding * 2.0,
+                        paddingBottom: Sizes.fixPadding * 4.0,
+                    }}
+                />
             </View>
 
             <View>
                 {sectionHeader("Materi Populer")}
-                <View style={{marginHorizontal: Sizes.fixPadding}}>
-                    <FlatList
-                        keyExtractor={(item) => `${item.id}`}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={(item) => <ProductCard />}
-                        data={products}
-                        contentContainerStyle={{
-                            paddingHorizontal: Sizes.fixPadding,
-                            paddingTop: Sizes.fixPadding * 2.0,
-                            paddingBottom: Sizes.fixPadding * 4.0,
-                        }}
-                    />
-                </View>
+                <FlatList
+                    keyExtractor={(item) => `${item.id}`}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={(item) => <ProductCard />}
+                    data={products}
+                    contentContainerStyle={{
+                        paddingHorizontal: Sizes.fixPadding,
+                        paddingTop: Sizes.fixPadding * 2.0,
+                        paddingBottom: Sizes.fixPadding * 4.0,
+                    }}
+                />
             </View>
 
             <View style={{height: 50}}></View>

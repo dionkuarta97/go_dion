@@ -8,14 +8,18 @@ import {persistor, store} from "./Redux/store";
 import ForgotPasswordScreen from "./Screens/Auth/forgotPasswordScreen";
 import LoginScreen from "./Screens/Auth/loginScreen";
 import RegisterScreen from "./Screens/Auth/registerScreen";
+import CartScreen from "./Screens/Cart/cartScreen";
 import FilterResultScreen from "./Screens/Filter/filterResultScreen";
 import FilterScreen from "./Screens/Filter/filterScreen";
 
 import LoadingScreen from "./Screens/Global/loadingScreen";
 import MainScreen from "./Screens/Global/mainScreen";
+import PaymentScreen from "./Screens/Payment/paymentScreen";
 import ProductCategoryScreen from "./Screens/Products/productCategoryScreen";
 import ProductDetailScreen from "./Screens/Products/productDetailScreen";
 import ProductScreen from "./Screens/Products/productScreen";
+import CheckoutScreen from "./Screens/Payment/checkoutScreen";
+import PaymentMethodScreen from "./Screens/Payment/paymentMethodScreen";
 
 const Stack = createStackNavigator();
 
@@ -62,7 +66,6 @@ export default App = () => {
                             name="ProductDetailScreen"
                             component={ProductDetailScreen}
                         />
-
                         <Stack.Screen
                             name="FilterScreen"
                             component={FilterScreen}
@@ -70,6 +73,22 @@ export default App = () => {
                         <Stack.Screen
                             name="FilterResultScreen"
                             component={FilterResultScreen}
+                        />
+                        <Stack.Screen
+                            name="CartScreen"
+                            component={CartScreen}
+                        />
+                        <Stack.Screen
+                            name="PaymentScreen"
+                            component={PaymentScreen}
+                        />
+                        <Stack.Screen
+                            name="PaymentMethodScreen"
+                            component={PaymentMethodScreen}
+                        />
+                        <Stack.Screen
+                            name="CheckoutScreen"
+                            component={CheckoutScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

@@ -56,7 +56,7 @@ const PurchaseScreen = () => {
                             style={{
                                 paddingHorizontal: Sizes.fixPadding * 2,
                                 paddingVertical: Sizes.fixPadding / 2,
-                                backgroundColor: "#28a745",
+                                backgroundColor: Colors.neutralGreenColor,
                                 color: "white",
                                 borderRadius: Sizes.fixPadding,
                                 letterSpacing: 1.2,
@@ -84,7 +84,7 @@ const PurchaseScreen = () => {
                             style={{
                                 paddingHorizontal: Sizes.fixPadding * 2,
                                 paddingVertical: Sizes.fixPadding / 2,
-                                backgroundColor: "#dc3545",
+                                backgroundColor: Colors.neutralRedColor,
                                 color: "white",
                                 borderRadius: Sizes.fixPadding,
                                 letterSpacing: 1.2,

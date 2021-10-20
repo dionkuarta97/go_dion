@@ -6,7 +6,16 @@ const Fonts = StyleSheet.create({
         fontSize: 14.0,
         fontFamily: "SignikaNegative_Bold",
     },
-
+    orangeColor16Bold: {
+        color: "#FF9800",
+        fontSize: 16.0,
+        fontFamily: "SignikaNegative_Bold",
+    },
+    orangeColor17Bold: {
+        color: "#FF9800",
+        fontSize: 17.0,
+        fontFamily: "SignikaNegative_Bold",
+    },
     blackRegular: {
         color: "black",
         fontFamily: "SignikaNegative_Regular",

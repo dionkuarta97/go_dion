@@ -2,8 +2,10 @@ import React from "react";
 import {Text, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 import Colors from "../../Theme/Colors";
+import {useNavigation} from "@react-navigation/core";
 
 const ActionButtonCart = () => {
+    const navigation = useNavigation();
     return (
         <View>
             <View style={{position: "relative"}}>
@@ -11,7 +13,7 @@ const ActionButtonCart = () => {
                     name="shopping-cart"
                     size={25}
                     color="black"
-                    onPress={() => console.log("Pencet Filter")}
+                    onPress={() => navigation.navigate("CartScreen")}
                 />
             </View>
             <View
