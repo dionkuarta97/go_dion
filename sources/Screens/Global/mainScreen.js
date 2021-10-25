@@ -16,6 +16,7 @@ import Colors from "../../Theme/Colors";
 import HomeScreen from "../Home/homeScreen";
 import CartScreen from "../Cart/cartScreen";
 import PurchaseScreen from "../Purchase/purchaseScreen";
+import LainnyaScreen from "../Lainnya/lainnyaScreen";
 
 const bottomNavMenu = [
     {title: "Home", icon: "home"},
@@ -69,6 +70,8 @@ export default MainScreen = (props) => {
                 <HomeScreen />
             ) : currentIndex == 1 ? (
                 <PurchaseScreen />
+            ) : currentIndex == 4 ? (
+                <LainnyaScreen />
             ) : (
                 <HomeScreen />
             )}

@@ -20,6 +20,9 @@ import ProductDetailScreen from "./Screens/Products/productDetailScreen";
 import ProductScreen from "./Screens/Products/productScreen";
 import CheckoutScreen from "./Screens/Payment/checkoutScreen";
 import PaymentMethodScreen from "./Screens/Payment/paymentMethodScreen";
+import LainnyaScreen from "./Screens/Lainnya/lainnyaScreen";
+import ProfileScreen from "./Screens/Profile/profileScreen";
+import ProfileEditScreen from "./Screens/Profile/profileEditScreen";
 
 const Stack = createStackNavigator();
 
@@ -89,6 +92,18 @@ export default App = () => {
                         <Stack.Screen
                             name="CheckoutScreen"
                             component={CheckoutScreen}
+                        />
+                        <Stack.Screen
+                            name="LainnyaScreen"
+                            component={LainnyaScreen}
+                        />
+                        <Stack.Screen
+                            name="ProfileScreen"
+                            component={ProfileScreen}
+                        />
+                        <Stack.Screen
+                            name="ProfileEditScreen"
+                            component={ProfileEditScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
