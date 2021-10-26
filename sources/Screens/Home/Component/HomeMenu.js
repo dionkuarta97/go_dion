@@ -30,7 +30,8 @@ const HomeMenu = () => {
             case 0:
                 navigation.navigate("ProductScreen");
                 break;
-
+            case 1:
+                navigation.navigate("GoBelajarScreen");
             default:
                 break;
         }

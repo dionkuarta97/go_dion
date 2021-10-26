@@ -23,6 +23,7 @@ import PaymentMethodScreen from "./Screens/Payment/paymentMethodScreen";
 import LainnyaScreen from "./Screens/Lainnya/lainnyaScreen";
 import ProfileScreen from "./Screens/Profile/profileScreen";
 import ProfileEditScreen from "./Screens/Profile/profileEditScreen";
+import GoBelajarScreen from "./Screens/GoBelajar/gobelajarScreen";
 
 const Stack = createStackNavigator();
 
@@ -104,6 +105,10 @@ export default App = () => {
                         <Stack.Screen
                             name="ProfileEditScreen"
                             component={ProfileEditScreen}
+                        />
+                        <Stack.Screen
+                            name="GoBelajarScreen"
+                            component={GoBelajarScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
