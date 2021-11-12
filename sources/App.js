@@ -1,10 +1,10 @@
-import {NavigationContainer} from "@react-navigation/native";
-import {createStackNavigator} from "@react-navigation/stack";
-import React, {useState} from "react";
-import {Provider} from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import React, { useState } from "react";
+import { Provider } from "react-redux";
 
-import {PersistGate} from "redux-persist/integration/react";
-import {persistor, store} from "./Redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor, store } from "./Redux/store";
 import ForgotPasswordScreen from "./Screens/Auth/forgotPasswordScreen";
 import LoginScreen from "./Screens/Auth/loginScreen";
 import RegisterScreen from "./Screens/Auth/registerScreen";
@@ -24,6 +24,7 @@ import LainnyaScreen from "./Screens/Lainnya/lainnyaScreen";
 import ProfileScreen from "./Screens/Profile/profileScreen";
 import ProfileEditScreen from "./Screens/Profile/profileEditScreen";
 import GoBelajarScreen from "./Screens/GoBelajar/gobelajarScreen";
+import SubMateriScreen from "./Screens/GoBelajar/subMateriScreen";
 
 const Stack = createStackNavigator();
 
@@ -109,6 +110,10 @@ export default App = () => {
                         <Stack.Screen
                             name="GoBelajarScreen"
                             component={GoBelajarScreen}
+                        />
+                        <Stack.Screen
+                            name="SubMateriScreen"
+                            component={SubMateriScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
