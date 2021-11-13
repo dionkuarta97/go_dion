@@ -6,9 +6,8 @@ import Sizes from "../../Theme/Sizes";
 import Fonts from "../../Theme/Fonts";
 
 const proptype = {
-    title: PropTypes.string.isRequired,
-    icon: PropTypes.string,
     children: PropTypes.node.isRequired,
+    tile: PropTypes.node.isRequired,
 };
 
 const ExpandableTile = (props) => {
@@ -21,44 +20,7 @@ const ExpandableTile = (props) => {
                     setIsExpand(!isExpand);
                 }}
             >
-                <View
-                    style={{
-                        flexDirection: "row",
-                        backgroundColor: "white",
-                        paddingVertical: Sizes.fixPadding * 2,
-                        paddingHorizontal: Sizes.fixPadding * 2,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderWidth: 1,
-                        borderColor: "lightgrey",
-                    }}
-                >
-                    {props.icon != null && (
-                        <MaterialIcons
-                            name={props.icon}
-                            size={22}
-                            color="black"
-                            style={{marginRight: Sizes.fixPadding}}
-                        />
-                    )}
-
-                    <Text style={{flex: 1, ...Fonts.black15Bold}}>
-                        {props.title}
-                    </Text>
-                    {isExpand ? (
-                        <MaterialIcons
-                            name="keyboard-arrow-down"
-                            size={25}
-                            color="black"
-                        />
-                    ) : (
-                        <MaterialIcons
-                            name="chevron-right"
-                            size={25}
-                            color="black"
-                        />
-                    )}
-                </View>
+                {props.tile}
             </TouchableOpacity>
             {isExpand && (
                 <Animated.View style={{height: isExpand ? null : 0}}>
