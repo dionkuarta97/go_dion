@@ -9,5 +9,8 @@ export const urlBasePurchase =
     "https://apionline.gobimbelonline.net/purchase/v1";
 export const urlBaseScoring = "https://apionline.gobimbelonline.net/scoring/v1";
 
+/*** AUTH URL */
+export const urlLogin = urlBaseMasterdata + "/login";
+
 /*** HOME URL */
 export const urlHomeMenu = urlBaseMasterdata + "/home/menu";
