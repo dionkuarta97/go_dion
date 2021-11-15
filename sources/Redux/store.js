@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {applyMiddleware, combineReducers, createStore} from "redux";
-import {composeWithDevTools} from "redux-devtools-extension";
-import {persistStore, persistReducer} from "redux-persist";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import { persistStore, persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
+import { authReducer } from "./Auth/authReducer";
 
-import {homeReducer} from "./Home/homeReducer";
+import { homeReducer } from "./Home/homeReducer";
 
 const persistConfig = {
     key: "root",
@@ -12,7 +13,8 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-    homeReducer: persistReducer(persistConfig, homeReducer),
+    authReducer: persistReducer(persistConfig, authReducer),
+    homeReducer: homeReducer,
 });
 
 export const store = createStore(

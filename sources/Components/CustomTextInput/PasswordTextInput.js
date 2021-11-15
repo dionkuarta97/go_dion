@@ -1,7 +1,7 @@
-import React, {useState} from "react";
-import {TextInput, View} from "react-native";
+import React, { useState } from "react";
+import { TextInput, View } from "react-native";
 import PropTypes from "prop-types";
-import {Entypo} from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
@@ -33,11 +33,11 @@ const PasswordTextInput = (props) => {
                 onBlur={() => setFocused(false)}
                 onChangeText={props.onChangeText}
             />
-            <View style={{paddingHorizontal: Sizes.fixPadding}}>
+            <View style={{ paddingHorizontal: Sizes.fixPadding }}>
                 <Entypo
                     name={passwordVisible ? "eye" : "eye-with-line"}
                     size={24}
-                    color={focused ? LpColorsUtils.primaryColor : "#898989"}
+                    color={focused ? Colors.primaryColor : "#898989"}
                     onPress={() => setPasswordVisible(!passwordVisible)}
                 />
             </View>
