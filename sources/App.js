@@ -1,10 +1,10 @@
-import {NavigationContainer} from "@react-navigation/native";
-import {createStackNavigator} from "@react-navigation/stack";
-import React, {useState} from "react";
-import {Provider} from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import React, { useState } from "react";
+import { Provider } from "react-redux";
 
-import {PersistGate} from "redux-persist/integration/react";
-import {persistor, store} from "./Redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor, store } from "./Redux/store";
 import ForgotPasswordScreen from "./Screens/Auth/forgotPasswordScreen";
 import LoginScreen from "./Screens/Auth/loginScreen";
 import RegisterScreen from "./Screens/Auth/registerScreen";
@@ -23,6 +23,10 @@ import PaymentMethodScreen from "./Screens/Payment/paymentMethodScreen";
 import LainnyaScreen from "./Screens/Lainnya/lainnyaScreen";
 import ProfileScreen from "./Screens/Profile/profileScreen";
 import ProfileEditScreen from "./Screens/Profile/profileEditScreen";
+import GoBelajarScreen from "./Screens/GoBelajar/gobelajarScreen";
+import SubMateriScreen from "./Screens/GoBelajar/subMateriScreen";
+import TryoutDetailScreen from "./Screens/GoTryout/tryoutDetailScreen";
+import SoalScreen from "./Screens/Soal/soalScreen";
 
 const Stack = createStackNavigator();
 
@@ -104,6 +108,22 @@ export default App = () => {
                         <Stack.Screen
                             name="ProfileEditScreen"
                             component={ProfileEditScreen}
+                        />
+                        <Stack.Screen
+                            name="GoBelajarScreen"
+                            component={GoBelajarScreen}
+                        />
+                        <Stack.Screen
+                            name="SubMateriScreen"
+                            component={SubMateriScreen}
+                        />
+                        <Stack.Screen
+                            name="TryoutDetailScreen"
+                            component={TryoutDetailScreen}
+                        />
+                        <Stack.Screen
+                            name="SoalScreen"
+                            component={SoalScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
