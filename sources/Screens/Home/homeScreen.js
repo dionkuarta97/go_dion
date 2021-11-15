@@ -7,44 +7,55 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
+    Modal,
 } from "react-native";
-import {useDispatch, useSelector} from "react-redux";
-import {MaterialIcons} from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { MaterialIcons } from "@expo/vector-icons";
 import SliverAppBar from "../../Components/sliverAppBar";
-import {getSliderImages} from "../../Redux/Home/homeActions";
+import { getSliderImages } from "../../Redux/Home/homeActions";
 import HomeContent from "./Component/HomeContent";
-import {useNavigation} from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/core";
 
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
+import LoadingModal from "../../Components/Modal/LoadingModal";
 
 const HomeScreen = (props) => {
+    const isLogin = useSelector((state) => state.authReducer.isLogin);
+    const User = useSelector((state) => state.authReducer.user);
+    console.log(User);
     const navigation = useNavigation();
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <SliverAppBar
                 rightItem={
-                    <View style={{flexDirection: "row", alignItems: "center"}}>
-                        <TouchableOpacity
-                            activeOpacity={0.5}
-                            onPress={() => navigation.navigate("LoginScreen")}
-                        >
-                            <Text
-                                style={{
-                                    paddingHorizontal: 15,
-                                    paddingVertical: 5,
-                                    borderRadius: 50,
-                                    backgroundColor: Colors.blackColor,
-                                    color: Colors.primaryColor,
-                                    fontWeight: "bold",
-                                    letterSpacing: 1.2,
-                                }}
+                    <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                        {!isLogin && (
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                onPress={() =>
+                                    navigation.navigate("LoginScreen")
+                                }
                             >
-                                Login
-                            </Text>
-                        </TouchableOpacity>
-                        <View style={{width: 15}}></View>
+                                <Text
+                                    style={{
+                                        paddingHorizontal: 15,
+                                        paddingVertical: 5,
+                                        borderRadius: 50,
+                                        backgroundColor: Colors.blackColor,
+                                        color: Colors.primaryColor,
+                                        fontWeight: "bold",
+                                        letterSpacing: 1.2,
+                                    }}
+                                >
+                                    Login
+                                </Text>
+                            </TouchableOpacity>
+                        )}
+                        <View style={{ width: 15 }} />
                         <MaterialIcons
                             name="notifications"
                             size={25}
@@ -64,9 +75,13 @@ const HomeScreen = (props) => {
                             alignItems: "center",
                         }}
                     >
-                        <View style={{flex: 1}}>
+                        <View style={{ flex: 1 }}>
                             <Text>Hello,</Text>
-                            <Text style={Fonts.black25Bold}>Guest</Text>
+                            <Text style={Fonts.black25Bold}>
+                                {User.data !== null
+                                    ? User.data.user.full_name
+                                    : "Guest"}
+                            </Text>
                         </View>
                         <TouchableOpacity
                             activeOpacity={0.9}
