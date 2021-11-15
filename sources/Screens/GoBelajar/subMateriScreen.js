@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/core";
 import React from "react";
 import { Text, View, SafeAreaView, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -8,9 +9,11 @@ import Sizes from "../../Theme/Sizes";
 import CompStyles from "../../Theme/styles/globalStyles";
 
 const SubMateriScreen = () => {
-    const renderItem = (title, subtitle) => {
+    const navigation = useNavigation();
+
+    const renderItem = (title, subtitle, onPress) => {
         return (
-            <TouchableOpacity activeOpacity={0.6}>
+            <TouchableOpacity activeOpacity={0.6} onPress={onPress}>
                 <View style={CompStyles.defaultCard}>
                     <View style={{ flexDirection: "row" }}>
                         <View
@@ -40,7 +43,9 @@ const SubMateriScreen = () => {
                 </Text>
                 {renderItem("Video", "Kumpulan video menarik")}
                 {renderItem("PDF", "Materi belajar disini")}
-                {renderItem("Ujian", "Uji pemahaman")}
+                {renderItem("Ujian", "Uji pemahaman", () =>
+                    navigation.navigate("TryoutDetailScreen")
+                )}
             </View>
         </SafeAreaView>
     );

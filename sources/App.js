@@ -25,6 +25,8 @@ import ProfileScreen from "./Screens/Profile/profileScreen";
 import ProfileEditScreen from "./Screens/Profile/profileEditScreen";
 import GoBelajarScreen from "./Screens/GoBelajar/gobelajarScreen";
 import SubMateriScreen from "./Screens/GoBelajar/subMateriScreen";
+import TryoutDetailScreen from "./Screens/GoTryout/tryoutDetailScreen";
+import SoalScreen from "./Screens/Soal/soalScreen";
 
 const Stack = createStackNavigator();
 
@@ -114,6 +116,14 @@ export default App = () => {
                         <Stack.Screen
                             name="SubMateriScreen"
                             component={SubMateriScreen}
+                        />
+                        <Stack.Screen
+                            name="TryoutDetailScreen"
+                            component={TryoutDetailScreen}
+                        />
+                        <Stack.Screen
+                            name="SoalScreen"
+                            component={SoalScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
