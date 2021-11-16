@@ -1,13 +1,24 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Image, Text, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {useNavigation} from "@react-navigation/core";
+import {useDispatch, useSelector} from "react-redux";
+import {getMe} from "../../../Redux/Profile/profileActions";
 
 const ProfileContent = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    const profile = useSelector((state) => state.profileReducer.profile);
+    console.log(profile);
+
+    useEffect(() => {
+        dispatch(getMe());
+    }, []);
+
     const renderInfoTile = (lable, value, icon) => {
         return (
             <View
@@ -48,7 +59,7 @@ const ProfileContent = () => {
                 resizeMode="contain"
             />
             <Text style={{...Fonts.black19Bold, marginTop: Sizes.fixPadding}}>
-                Rifqi Radifan
+                {profile.full_name}
             </Text>
 
             <View
@@ -70,16 +81,58 @@ const ProfileContent = () => {
                         Edit Profile
                     </Text>
                 </TouchableOpacity>
-                {renderInfoTile("Email", "emailku@gmail.com", "email")}
-                {renderInfoTile("Phone Number", "081341377912", "phone")}
-                {renderInfoTile("Class Level", "7", "class")}
-                {renderInfoTile("Wali Name", "Michael Boston", "person")}
+                {renderInfoTile("Email", profile.email, "email")}
+                {renderInfoTile("Phone Number", profile.phone, "phone")}
+                {renderInfoTile("Class Level", profile.kelas, "class")}
+                {/* Data Alamat */}
+                <Text
+                    style={{
+                        ...Fonts.orangeColor16Bold,
+                        marginVertical: Sizes.fixPadding,
+                    }}
+                >
+                    Address Info
+                </Text>
+                {renderInfoTile("Province", profile.provinsi, "map")}
+                {renderInfoTile("City", profile.kota, "apartment")}
+                {renderInfoTile("Address", profile.alamat, "pin-drop")}
+                {/* Data Sekolah */}
+                <Text
+                    style={{
+                        ...Fonts.orangeColor16Bold,
+                        marginVertical: Sizes.fixPadding,
+                    }}
+                >
+                    School Info
+                </Text>
                 {renderInfoTile(
-                    "Wali Email",
-                    "michaelboston@email.com",
-                    "email"
+                    "School Province",
+                    profile.provinsi_sekolah,
+                    "map"
                 )}
-                {renderInfoTile("Wali Phone Number", "0813213123", "phone")}
+                {renderInfoTile(
+                    "School City",
+                    profile.kota_sekolah,
+                    "apartment"
+                )}
+                {renderInfoTile("School Name", profile.sekolah, "school")}
+
+                {/* Data Wali */}
+                <Text
+                    style={{
+                        ...Fonts.orangeColor16Bold,
+                        marginVertical: Sizes.fixPadding,
+                    }}
+                >
+                    Wali Info
+                </Text>
+                {renderInfoTile("Wali Name", profile.nama_wali, "person")}
+                {renderInfoTile("Wali Email", profile.email_wali, "email")}
+                {renderInfoTile(
+                    "Wali Phone Number",
+                    profile.phone_wali,
+                    "phone"
+                )}
             </View>
         </View>
     );

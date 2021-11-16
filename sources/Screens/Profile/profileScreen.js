@@ -6,9 +6,11 @@ import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import ProfileContent from "./Component/ProfileContent";
 import {useNavigation} from "@react-navigation/core";
+import {useSelector} from "react-redux";
 
 const ProfileScreen = () => {
     const navigation = useNavigation();
+
     return (
         <SafeAreaView style={{flex: 1}}>
             <SliverAppBar

@@ -1,11 +1,12 @@
-import { urlLogin } from "../../Services/ApiUrl";
+import {urlLogin} from "../../Services/ApiUrl";
 import {
     defaultDoneState,
     defaultErrorState,
     defaultFailedState,
     defaultInitState,
 } from "../helper";
-import { SET_LOGIN, SET_LOGIN_DATA } from "./authTypes";
+import {setProfile} from "../Profile/profileActions";
+import {SET_LOGIN, SET_LOGIN_DATA, SET_TOKEN} from "./authTypes";
 
 export function setLoginStatus(status) {
     return {
@@ -14,13 +15,13 @@ export function setLoginStatus(status) {
     };
 }
 
-export function getLogin({ username, password }) {
+export function getLogin({username, password}) {
     return async (dispatch, getState) => {
         dispatch(setLoginData(defaultInitState));
         try {
             fetch(urlLogin, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
                     username: username,
                     password: password,
@@ -31,6 +32,8 @@ export function getLogin({ username, password }) {
                     if (json.status) {
                         dispatch(setLoginData(defaultDoneState(json.data)));
                         dispatch(setLoginStatus(true));
+                        dispatch(setToken(json.data.token));
+                        dispatch(setProfile(json.data.user));
                     } else
                         dispatch(
                             setLoginData(defaultFailedState(json.message))
@@ -42,6 +45,13 @@ export function getLogin({ username, password }) {
         } catch (err) {
             dispatch(setLoginData(defaultErrorState));
         }
+    };
+}
+
+export function setToken(token) {
+    return {
+        type: SET_TOKEN,
+        payload: token,
     };
 }
 

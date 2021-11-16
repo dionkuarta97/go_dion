@@ -1,6 +1,6 @@
-import { useNavigation } from "@react-navigation/core";
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {useNavigation} from "@react-navigation/core";
+import React, {useEffect, useState} from "react";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
@@ -8,7 +8,7 @@ import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextI
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     getLogin,
     setLoginData,
@@ -20,13 +20,14 @@ import DefaultModal from "../../../Components/Modal/DefaultModal";
 const LoginContent = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const User = useSelector((state) => state.authReducer.user);
 
     const [usernameText, setUsernameText] = useState("");
     const [passwordText, setPasswordText] = useState("");
 
+    const login = useSelector((state) => state.authReducer.login);
+
     useEffect(() => {
-        dispatch(setLoginData({ ...User, error: null, loading: false }));
+        dispatch(setLoginData({error: null, loading: false, data: null}));
     }, []);
 
     const registerText = () => {
@@ -72,8 +73,8 @@ const LoginContent = () => {
                 paddingHorizontal: Sizes.fixPadding * 2.0,
             }}
         >
-            {User.loading && <LoadingModal />}
-            {User.data !== null && (
+            {login.loading && <LoadingModal />}
+            {login.data !== null && (
                 <DefaultModal>
                     <Text>Berhasil Login</Text>
                     <DefaultPrimaryButton
@@ -93,8 +94,8 @@ const LoginContent = () => {
                 onChangeText={(value) => setPasswordText(value)}
             />
 
-            {User.error !== null && (
-                <Text style={{ color: "red" }}>{User.error}</Text>
+            {login.error !== null && (
+                <Text style={{color: "red"}}>{login.error}</Text>
             )}
 
             <DefaultPrimaryButton

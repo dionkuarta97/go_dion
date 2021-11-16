@@ -1,13 +1,13 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import {Alert, Text, TouchableOpacity, View} from "react-native";
+import {MaterialIcons} from "@expo/vector-icons";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
 import Fonts from "../../../Theme/Fonts";
-import { useNavigation } from "@react-navigation/core";
-import { useDispatch, useSelector } from "react-redux";
-import { setLoginData, setLoginStatus } from "../../../Redux/Auth/authActions";
-import { defaultInitState } from "../../../Redux/helper";
+import {useNavigation} from "@react-navigation/core";
+import {useDispatch, useSelector} from "react-redux";
+import {setLoginData, setLoginStatus} from "../../../Redux/Auth/authActions";
+import {defaultInitState} from "../../../Redux/helper";
 
 const LainnyaContent = () => {
     const isLogin = useSelector((state) => state.authReducer.isLogin);
@@ -43,10 +43,17 @@ const LainnyaContent = () => {
         );
     };
     return (
-        <View style={{ flex: 1, paddingVertical: Sizes.fixPadding * 2 }}>
-            {renderTile("Profil", "person", () =>
-                navigation.navigate("ProfileScreen")
-            )}
+        <View style={{flex: 1, paddingVertical: Sizes.fixPadding * 2}}>
+            {renderTile("Profil", "person", () => {
+                if (isLogin) {
+                    navigation.navigate("ProfileScreen");
+                } else {
+                    Alert.alert(
+                        "Tidak Bisa Masuk",
+                        "Anda belum punya akun untuk mengakses menu ini"
+                    );
+                }
+            })}
             {renderTile("History Pengerjaan", "history", () =>
                 navigation.navigate("history")
             )}

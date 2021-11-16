@@ -12,5 +12,8 @@ export const urlBaseScoring = "https://apionline.gobimbelonline.net/scoring/v1";
 /*** AUTH URL */
 export const urlLogin = urlBaseMasterdata + "/login";
 
+/*** PROFILE URL */
+export const urlMe = urlBaseMasterdata + "/auth/me";
+
 /*** HOME URL */
 export const urlHomeMenu = urlBaseMasterdata + "/home/menu";
