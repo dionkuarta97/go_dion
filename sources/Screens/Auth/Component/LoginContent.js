@@ -33,7 +33,7 @@ const LoginContent = () => {
     const registerText = () => {
         return (
             <TouchableOpacity
-                onPress={() => navigation.navigate("RegisterScreen")}
+                onPress={() => navigation.navigate("EmailCheckScreen")}
             >
                 <Text
                     style={{

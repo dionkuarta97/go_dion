@@ -1,10 +1,10 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import React, { useState } from "react";
-import { Provider } from "react-redux";
+import {NavigationContainer} from "@react-navigation/native";
+import {createStackNavigator} from "@react-navigation/stack";
+import React, {useState} from "react";
+import {Provider} from "react-redux";
 
-import { PersistGate } from "redux-persist/integration/react";
-import { persistor, store } from "./Redux/store";
+import {PersistGate} from "redux-persist/integration/react";
+import {persistor, store} from "./Redux/store";
 import ForgotPasswordScreen from "./Screens/Auth/forgotPasswordScreen";
 import LoginScreen from "./Screens/Auth/loginScreen";
 import RegisterScreen from "./Screens/Auth/registerScreen";
@@ -27,6 +27,7 @@ import GoBelajarScreen from "./Screens/GoBelajar/gobelajarScreen";
 import SubMateriScreen from "./Screens/GoBelajar/subMateriScreen";
 import TryoutDetailScreen from "./Screens/GoTryout/tryoutDetailScreen";
 import SoalScreen from "./Screens/Soal/soalScreen";
+import EmailCheckScreen from "./Screens/Auth/emailCheckScreen";
 
 const Stack = createStackNavigator();
 
@@ -48,6 +49,10 @@ export default App = () => {
                         <Stack.Screen
                             name="LoginScreen"
                             component={LoginScreen}
+                        />
+                        <Stack.Screen
+                            name="EmailCheckScreen"
+                            component={EmailCheckScreen}
                         />
                         <Stack.Screen
                             name="RegisterScreen"

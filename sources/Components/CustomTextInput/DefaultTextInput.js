@@ -19,8 +19,10 @@ const DefaultTextInput = (props) => {
         >
             <TextInput
                 autoCapitalize="none"
+                value={props.value}
                 placeholder={props.placeholder}
                 style={{
+                    flex: 1,
                     ...Fonts.black17Regular,
                     paddingVertical: Sizes.fixPadding / 2,
                 }}
@@ -36,5 +38,6 @@ export default DefaultTextInput;
 
 DefaultTextInput.propTypes = {
     placeholder: PropTypes.string,
+    value: PropTypes.string,
     onChangeText: PropTypes.func,
 };
