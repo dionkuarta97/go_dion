@@ -77,7 +77,9 @@ const HomeScreen = (props) => {
                         <View style={{flex: 1}}>
                             <Text>Hello,</Text>
                             <Text style={Fonts.black25Bold}>
-                                {isLogin ? profile.full_name : "Guest"}
+                                {isLogin && profile !== null
+                                    ? profile.full_name
+                                    : "Guest"}
                             </Text>
                         </View>
                         <TouchableOpacity

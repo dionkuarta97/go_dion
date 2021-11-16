@@ -30,6 +30,7 @@ export function getLogin({username, password}) {
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
+                        console.log(json);
                         dispatch(setLoginData(defaultDoneState(json.data)));
                         dispatch(setLoginStatus(true));
                         dispatch(setToken(json.data.token));

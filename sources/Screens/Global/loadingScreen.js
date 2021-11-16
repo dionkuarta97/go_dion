@@ -28,6 +28,7 @@ export default LoadingScreen = ({navigation}) => {
         _loadFontsAsync();
 
         if (login.data !== null) {
+            console.log("Load ");
             dispatch(setProfile(login.data.user));
             dispatch(setToken(login.data.token));
         }
