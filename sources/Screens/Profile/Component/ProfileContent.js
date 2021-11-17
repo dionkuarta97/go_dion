@@ -70,7 +70,11 @@ const ProfileContent = () => {
             >
                 <TouchableOpacity
                     activeOpacity={0.6}
-                    onPress={() => navigation.navigate("ProfileEditScreen")}
+                    onPress={() =>
+                        navigation.navigate("ProfileEditScreen", {
+                            profile: profile,
+                        })
+                    }
                 >
                     <Text
                         style={{
