@@ -1,5 +1,6 @@
 import {
     SET_EMAIL_CHECK,
+    SET_FORGOT_PASSWORD,
     SET_LOGIN,
     SET_LOGIN_DATA,
     SET_REGISTER,
@@ -24,6 +25,11 @@ const initialState = {
         error: null,
         data: null,
     },
+    forgotPassword: {
+        loading: false,
+        error: null,
+        data: null,
+    },
 };
 
 export function authReducer(state = initialState, action) {
@@ -43,7 +49,6 @@ export function authReducer(state = initialState, action) {
                 ...state,
                 login: action.payload,
             };
-
         case SET_EMAIL_CHECK:
             return {
                 ...state,
@@ -54,7 +59,11 @@ export function authReducer(state = initialState, action) {
                 ...state,
                 register: action.payload,
             };
-
+        case SET_FORGOT_PASSWORD:
+            return {
+                ...state,
+                forgotPassword: action.payload,
+            };
         default:
             return state;
     }

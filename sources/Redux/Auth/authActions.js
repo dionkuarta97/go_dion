@@ -1,4 +1,9 @@
-import {urlCheckEmail, urlLogin, urlRegister} from "../../Services/ApiUrl";
+import {
+    urlCheckEmail,
+    urlForgotPassword,
+    urlLogin,
+    urlRegister,
+} from "../../Services/ApiUrl";
 import {
     defaultDoneState,
     defaultErrorState,
@@ -8,6 +13,7 @@ import {
 import {setProfile} from "../Profile/profileActions";
 import {
     SET_EMAIL_CHECK,
+    SET_FORGOT_PASSWORD,
     SET_LOGIN,
     SET_LOGIN_DATA,
     SET_REGISTER,
@@ -134,6 +140,43 @@ export function getRegister(bodyParams) {
                 });
         } catch (err) {
             dispatch(setRegister(defaultErrorState));
+        }
+    };
+}
+
+export function setForgotPassword(state) {
+    return {
+        type: SET_FORGOT_PASSWORD,
+        payload: state,
+    };
+}
+
+export function getForgotPassword(email) {
+    return async (dispatch, getState) => {
+        dispatch(setForgotPassword(defaultInitState));
+        try {
+            fetch(urlForgotPassword, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({email: email}),
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    if (json.status) {
+                        console.log(json);
+                        dispatch(
+                            setForgotPassword(defaultDoneState(json.message))
+                        );
+                    } else
+                        dispatch(
+                            setForgotPassword(defaultFailedState(json.message))
+                        );
+                })
+                .catch((err) => {
+                    dispatch(setForgotPassword(defaultErrorState));
+                });
+        } catch (err) {
+            dispatch(setForgotPassword(defaultErrorState));
         }
     };
 }
