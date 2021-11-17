@@ -11,6 +11,18 @@ export const urlBaseScoring = "https://apionline.gobimbelonline.net/scoring/v1";
 
 /*** AUTH URL */
 export const urlLogin = urlBaseMasterdata + "/login";
+export const urlCheckEmail = urlBaseMasterdata + "/check-email";
+export const urlRegister = urlBaseMasterdata + "/register";
+export const urlForgotPassword = urlBaseMasterdata + "/fp/recovery";
+
+/*** DATA URL */
+export const urlWilayah = urlBaseMasterdata + "/master/wilayah";
+export const urlProvinsi = urlWilayah + "/provinsi";
+export const urlCommon = urlBaseMasterdata + "/master/common";
+export const urlKelas = urlBaseMasterdata + "/grades";
+
+/*** PROFILE URL */
+export const urlMe = urlBaseMasterdata + "/auth/me";
 
 /*** HOME URL */
 export const urlHomeMenu = urlBaseMasterdata + "/home/menu";

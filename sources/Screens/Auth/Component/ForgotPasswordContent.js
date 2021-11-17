@@ -1,5 +1,5 @@
 import {useNavigation} from "@react-navigation/core";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Text, View} from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
@@ -8,11 +8,27 @@ import {Fontisto} from "@expo/vector-icons";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    getForgotPassword,
+    setForgotPassword,
+} from "../../../Redux/Auth/authActions";
+import LoadingModal from "../../../Components/Modal/LoadingModal";
 
 const ForgotPasswordContent = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const forgotPassword = useSelector(
+        (state) => state.authReducer.forgotPassword
+    );
 
-    const [kirim, setKirim] = useState(false);
+    useEffect(() => {
+        dispatch(setForgotPassword({loading: false, error: null, data: null}));
+        setEmail("");
+    }, []);
+
+    const [email, setEmail] = useState("");
+
     return (
         <View
             style={{
@@ -20,7 +36,8 @@ const ForgotPasswordContent = () => {
                 paddingHorizontal: Sizes.fixPadding * 2.0,
             }}
         >
-            {!kirim ? (
+            {forgotPassword.loading && <LoadingModal />}
+            {forgotPassword.data === null ? (
                 <View>
                     <View style={{marginBottom: Sizes.fixPadding}}>
                         <Text style={{...Fonts.black17Regular}}>
@@ -28,11 +45,20 @@ const ForgotPasswordContent = () => {
                             mengirimkan link untuk informasi password
                         </Text>
                     </View>
-                    <DefaultTextInput placeholder="email kamu" />
+                    <DefaultTextInput
+                        placeholder="email kamu"
+                        onChangeText={setEmail}
+                    />
+
+                    {forgotPassword.error !== null && (
+                        <Text style={{color: "red", opacity: 0.8}}>
+                            {forgotPassword.error}
+                        </Text>
+                    )}
 
                     <DefaultPrimaryButton
                         text="Kirim Permintaan"
-                        onPress={() => setKirim(true)}
+                        onPress={() => dispatch(getForgotPassword(email))}
                     />
                 </View>
             ) : (
@@ -47,7 +73,7 @@ const ForgotPasswordContent = () => {
                             style={{marginVertical: 50, alignItems: "center"}}
                         >
                             <Text style={{...Fonts.black17Regular}}>
-                                Kami mengirimkan link ke email kamu
+                                Kami mengirimkan reset link ke email kamu
                             </Text>
                             <Text
                                 style={{
@@ -55,7 +81,7 @@ const ForgotPasswordContent = () => {
                                     marginTop: 20,
                                 }}
                             >
-                                emailku@gmail.com
+                                {email}
                             </Text>
                         </View>
                     </View>

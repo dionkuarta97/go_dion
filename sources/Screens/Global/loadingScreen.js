@@ -1,8 +1,17 @@
 import React, {useEffect, useLayoutEffect} from "react";
 import {View, StyleSheet, Text} from "react-native";
 import * as Font from "expo-font";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    setLoginData,
+    setLoginStatus,
+    setToken,
+} from "../../Redux/Auth/authActions";
+import {setProfile} from "../../Redux/Profile/profileActions";
 
 export default LoadingScreen = ({navigation}) => {
+    const dispatch = useDispatch();
+    const login = useSelector((state) => state.authReducer.login);
     const _loadFontsAsync = async () => {
         await Font.loadAsync({
             SignikaNegative_Bold: require("../../../assets/Fonts/SignikaNegative-Bold.ttf"),
@@ -17,6 +26,17 @@ export default LoadingScreen = ({navigation}) => {
 
     useEffect(() => {
         _loadFontsAsync();
+
+        if (login.data !== null) {
+            console.log("Load ");
+            dispatch(setProfile(login.data.user));
+            dispatch(setToken(login.data.token));
+        }
+
+        // dispatch(setToken(null));
+        // dispatch(setLoginStatus(false));
+        // dispatch(setProfile(null));
+        // dispatch(setLoginData({loading: false, error: null, data: null}));
     }, []);
 
     return (

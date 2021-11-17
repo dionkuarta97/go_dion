@@ -41,7 +41,7 @@ const RegisterScreen = (props) => {
                 toolbarMaxHeight={230}
                 src={require("../../../assets/Images/appbar_bg.png")}
             >
-                <RegisterContent />
+                <RegisterContent sendedEmail={props.route.params.email} />
                 <StatusBar backgroundColor={Colors.primaryColor} />
             </SliverAppBar>
         </SafeAreaView>

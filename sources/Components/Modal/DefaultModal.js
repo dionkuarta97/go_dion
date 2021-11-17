@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
     dialog: {
         width: Dimensions.get("screen").width * 0.8,
-        maxHeight: 120,
+        maxHeight: Dimensions.get("screen").width * 0.8,
         backgroundColor: "white",
         padding: Sizes.fixPadding * 2,
         borderRadius: Sizes.fixPadding,
