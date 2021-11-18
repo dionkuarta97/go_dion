@@ -1,11 +1,20 @@
 import {useNavigation} from "@react-navigation/core";
-import React from "react";
-import {FlatList, Text, TouchableOpacity, View} from "react-native";
+import React, {useLayoutEffect} from "react";
+import {
+    ActivityIndicator,
+    FlatList,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import ProductCard from "../../../Components/ProductCard";
 
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
+import {useDispatch, useSelector} from "react-redux";
+import {getGroupedProduk} from "../../../Redux/Produk/produkActions";
 
 const products = [
     {id: 1, title: "a"},
@@ -16,18 +25,19 @@ const products = [
 
 const ProductContent = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const groupedProduk = useSelector(
+        (state) => state.produkReducer.groupedProduk
+    );
+
+    useLayoutEffect(() => {
+        dispatch(getGroupedProduk());
+    }, []);
 
     const sectionHeader = (title) => {
         return (
-            <View
-                style={{
-                    marginHorizontal: Sizes.fixPadding,
-                    flexDirection: "row",
-                    alignItems: "center",
-                }}
-            >
+            <View style={styles.sectionContainer}>
                 <Text style={{...Fonts.black20Bold, flex: 1}}>{title}</Text>
-
                 <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() => navigation.navigate("ProductCategoryScreen")}
@@ -42,39 +52,63 @@ const ProductContent = () => {
 
     return (
         <View style={{paddingVertical: Sizes.fixPadding}}>
-            <View>
-                {sectionHeader("Paket Belajar")}
-                <FlatList
-                    keyExtractor={(item) => `${item.id}`}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={(item) => <ProductCard />}
-                    data={products}
-                    contentContainerStyle={{
-                        paddingHorizontal: Sizes.fixPadding,
-                        paddingTop: Sizes.fixPadding * 2.0,
-                        paddingBottom: Sizes.fixPadding * 4.0,
-                    }}
-                />
-            </View>
-
-            <View>
-                {sectionHeader("Paket Tryout")}
-                <FlatList
-                    keyExtractor={(item) => `${item.id}`}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={(item) => <ProductCard />}
-                    data={products}
-                    contentContainerStyle={{
-                        paddingHorizontal: Sizes.fixPadding,
-                        paddingTop: Sizes.fixPadding * 2.0,
-                        paddingBottom: Sizes.fixPadding * 4.0,
-                    }}
-                />
-            </View>
+            {groupedProduk.loading && (
+                <ActivityIndicator color={Colors.orangeColor} size={30} />
+            )}
+            {groupedProduk.error !== null && <Text>{groupedProduk.error}</Text>}
+            {groupedProduk.data !== null &&
+                groupedProduk.data.map((val, index) => {
+                    return (
+                        <View key={`groupedproduk-${val._id}`}>
+                            {sectionHeader(val.title)}
+                            {val.data.length !== 0 ? (
+                                <FlatList
+                                    keyExtractor={(item, index) =>
+                                        `${item._id}`
+                                    }
+                                    horizontal={true}
+                                    showsHorizontalScrollIndicator={false}
+                                    renderItem={({item}) => (
+                                        <ProductCard
+                                            data={item}
+                                            section={val.section}
+                                        />
+                                    )}
+                                    data={val.data}
+                                    contentContainerStyle={
+                                        styles.contentContainer
+                                    }
+                                />
+                            ) : (
+                                <View
+                                    style={{
+                                        padding: Sizes.fixPadding,
+                                        height: 100,
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <Text>Produk Kosong</Text>
+                                </View>
+                            )}
+                        </View>
+                    );
+                })}
         </View>
     );
 };
 
 export default ProductContent;
+
+const styles = StyleSheet.create({
+    sectionContainer: {
+        marginHorizontal: Sizes.fixPadding,
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    contentContainer: {
+        paddingHorizontal: Sizes.fixPadding,
+        paddingTop: Sizes.fixPadding * 2.0,
+        paddingBottom: Sizes.fixPadding * 4.0,
+    },
+});
