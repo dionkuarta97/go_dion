@@ -140,11 +140,11 @@ const ProfileEditScreen = (props) => {
                             marginBottom: Sizes.fixPadding,
                         }}
                     >
-                        <Image
+                        {/* <Image
                             style={{width: 120, height: 120, borderRadius: 60}}
                             source={require("../../../assets/Images/user_profile/user_2.jpg")}
                             resizeMode="contain"
-                        />
+                        /> */}
                     </View>
                     <Text style={{...Fonts.black17Bold}}>Detail Info</Text>
                     <DefaultTextInput

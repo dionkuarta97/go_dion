@@ -53,11 +53,11 @@ const ProfileContent = () => {
                 alignItems: "center",
             }}
         >
-            <Image
+            {/* <Image
                 style={{width: 120, height: 120, borderRadius: 60}}
                 source={require("../../../../assets/Images/user_profile/user_2.jpg")}
                 resizeMode="contain"
-            />
+            /> */}
             <Text style={{...Fonts.black19Bold, marginTop: Sizes.fixPadding}}>
                 {profile.full_name}
             </Text>
