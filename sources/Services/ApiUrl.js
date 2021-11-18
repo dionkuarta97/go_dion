@@ -27,3 +27,6 @@ export const urlUpdateMe = urlBaseMasterdata + "/auth/me/update";
 
 /*** HOME URL */
 export const urlHomeMenu = urlBaseMasterdata + "/home/menu";
+
+/*** PRODUK URL */
+export const urlGroupedProduk = urlBaseMasterdata + "/products";

@@ -7,6 +7,7 @@ import thunk from "redux-thunk";
 import {authReducer} from "./Auth/authReducer";
 import {dataReducer} from "./Data/dataReducer";
 import {homeReducer} from "./Home/homeReducer";
+import {produkReducer} from "./Produk/produkReducer";
 import {profileReducer} from "./Profile/profileReducer";
 
 const persistConfig = {
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     dataReducer: dataReducer,
     homeReducer: homeReducer,
     profileReducer: profileReducer,
+    produkReducer: produkReducer,
 });
 
 export const store = createStore(
