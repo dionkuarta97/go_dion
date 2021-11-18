@@ -25,20 +25,21 @@ const {width} = Dimensions.get("screen");
 
 const ProductDetailScreen = (props) => {
     const navigation = useNavigation();
+    const item = props.route.params.item;
+    const section = props.route.params.section;
+    console.log(item);
 
     const productInfo = () => {
         return (
             <View>
-                <Text style={{...Fonts.primaryColor16Regular}}>
-                    Paket Belajar
-                </Text>
+                <Text style={{...Fonts.primaryColor16Regular}}>{section}</Text>
                 <Text
                     style={{
                         ...Fonts.primaryColor28Bold,
                         marginVertical: Sizes.fixPadding,
                     }}
                 >
-                    Paket Belajar bersama sama
+                    {item.title}
                 </Text>
                 <View
                     style={{
@@ -62,7 +63,7 @@ const ProductDetailScreen = (props) => {
                         Rp. 45.000
                     </Text>
                 </View>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() =>
                         this.props.navigation.navigate("TakeCourse", {
@@ -89,7 +90,7 @@ const ProductDetailScreen = (props) => {
                     }}
                 >
                     <Text style={{...Fonts.black17Bold}}>Watch Trailer</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         );
     };
@@ -136,7 +137,7 @@ const ProductDetailScreen = (props) => {
                 toolBarMinHeight={40}
                 toolbarMaxHeight={370}
                 isImageBlur={true}
-                src={require("../../../assets/Images/new_course/new_course_4.png")}
+                src={{uri: item.thumbnail}}
             >
                 <ProductDetailContent />
                 <StatusBar backgroundColor={Colors.blackColor} />

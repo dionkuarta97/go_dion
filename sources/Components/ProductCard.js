@@ -31,12 +31,16 @@ const dummyProductData = {
 
 const ProductCard = (props) => {
     const navigation = useNavigation();
-    console.log(props);
     const item = props.data == undefined ? dummyProductData : props.data;
     return (
         <TouchableOpacity
             activeOpacity={0.9}
-            onPress={() => navigation.navigate("ProductDetailScreen")}
+            onPress={() =>
+                navigation.navigate("ProductDetailScreen", {
+                    item: item,
+                    section: props.section,
+                })
+            }
             style={styles.card}
         >
             <Image

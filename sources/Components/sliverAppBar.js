@@ -161,7 +161,7 @@ const SliverAppBar = (props) => {
                             styles.backgroundImage,
                             {
                                 height: toolbarMaxHeight,
-                                backgroundColor: "rgba(0, 0, 0, 0.30)",
+                                backgroundColor: "rgba(0, 0, 0, 0.50)",
                                 opacity: imageOpacity,
                                 borderBottomLeftRadius: borderBottomRadius,
                                 borderBottomRightRadius: borderBottomRadius,
