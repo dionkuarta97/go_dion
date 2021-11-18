@@ -1,11 +1,16 @@
-import {urlMe} from "../../Services/ApiUrl";
+import {urlMe, urlUpdateMe} from "../../Services/ApiUrl";
 import {
     defaultDoneState,
     defaultErrorState,
     defaultFailedState,
     defaultInitState,
 } from "../helper";
-import {SET_ME, SET_PROFILE, SET_STATISTIC} from "./profileTypes";
+import {
+    SET_ME,
+    SET_PROFILE,
+    SET_STATISTIC,
+    SET_UPDATE_PROFILE,
+} from "./profileTypes";
 
 export function getMe() {
     return async (dispatch, getState) => {
@@ -56,5 +61,47 @@ export function setMe(userData) {
     return {
         type: SET_ME,
         payload: userData,
+    };
+}
+
+export function setUpdateProfile(userData) {
+    return {
+        type: SET_UPDATE_PROFILE,
+        payload: userData,
+    };
+}
+
+export function getUpdateProfile(bodyParams) {
+    return async (dispatch, getState) => {
+        dispatch(setUpdateProfile(defaultInitState));
+        try {
+            fetch(urlUpdateMe, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getState().authReducer.token}`,
+                },
+                body: bodyParams,
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+
+                    if (json.status) {
+                        dispatch(setUpdateProfile(defaultDoneState(json.data)));
+                        dispatch(setProfile(json.data));
+                    } else
+                        dispatch(
+                            setUpdateProfile(defaultFailedState(json.message))
+                        );
+                })
+                .catch((err) => {
+                    console.log(err);
+                    dispatch(setUpdateProfile(defaultErrorState));
+                });
+        } catch (err) {
+            console.log(err);
+            dispatch(setUpdateProfile(defaultErrorState));
+        }
     };
 }

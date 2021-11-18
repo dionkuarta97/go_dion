@@ -23,6 +23,7 @@ export const urlKelas = urlBaseMasterdata + "/grades";
 
 /*** PROFILE URL */
 export const urlMe = urlBaseMasterdata + "/auth/me";
+export const urlUpdateMe = urlBaseMasterdata + "/auth/me/update";
 
 /*** HOME URL */
 export const urlHomeMenu = urlBaseMasterdata + "/home/menu";

@@ -1,4 +1,9 @@
-import {SET_ME, SET_PROFILE, SET_STATISTIC} from "./profileTypes";
+import {
+    SET_ME,
+    SET_PROFILE,
+    SET_STATISTIC,
+    SET_UPDATE_PROFILE,
+} from "./profileTypes";
 
 const initialState = {
     me: {
@@ -8,6 +13,11 @@ const initialState = {
     },
     profile: null,
     statistic: null,
+    updateProfile: {
+        loading: false,
+        error: null,
+        data: null,
+    },
 };
 
 export function profileReducer(state = initialState, action) {
@@ -27,7 +37,11 @@ export function profileReducer(state = initialState, action) {
                 ...state,
                 statistic: action.payload,
             };
-
+        case SET_UPDATE_PROFILE:
+            return {
+                ...state,
+                updateProfile: action.payload,
+            };
         default:
             return state;
     }
