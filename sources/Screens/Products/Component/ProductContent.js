@@ -34,13 +34,18 @@ const ProductContent = () => {
         dispatch(getGroupedProduk());
     }, []);
 
-    const sectionHeader = (title) => {
+    const sectionHeader = (id, title) => {
         return (
             <View style={styles.sectionContainer}>
                 <Text style={{...Fonts.black20Bold, flex: 1}}>{title}</Text>
                 <TouchableOpacity
                     activeOpacity={0.8}
-                    onPress={() => navigation.navigate("ProductCategoryScreen")}
+                    onPress={() =>
+                        navigation.navigate("ProductCategoryScreen", {
+                            id: id,
+                            title: title,
+                        })
+                    }
                 >
                     <Text style={{...Fonts.orangeColor14Bold}}>
                         Lihat Semua
@@ -60,7 +65,7 @@ const ProductContent = () => {
                 groupedProduk.data.map((val, index) => {
                     return (
                         <View key={`groupedproduk-${val._id}`}>
-                            {sectionHeader(val.title)}
+                            {sectionHeader(val._id, val.title)}
                             {val.data.length !== 0 ? (
                                 <FlatList
                                     keyExtractor={(item, index) =>

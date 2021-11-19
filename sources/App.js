@@ -28,6 +28,8 @@ import SubMateriScreen from "./Screens/GoBelajar/subMateriScreen";
 import TryoutDetailScreen from "./Screens/GoTryout/tryoutDetailScreen";
 import SoalScreen from "./Screens/Soal/soalScreen";
 import EmailCheckScreen from "./Screens/Auth/emailCheckScreen";
+import productPurchasedScreen from "./Screens/Products/productPurchasedScreen";
+import ProductPurchasedScreen from "./Screens/Products/productPurchasedScreen";
 
 const Stack = createStackNavigator();
 
@@ -77,6 +79,10 @@ export default App = () => {
                         <Stack.Screen
                             name="ProductDetailScreen"
                             component={ProductDetailScreen}
+                        />
+                        <Stack.Screen
+                            name="ProductPurchasedScreen"
+                            component={ProductPurchasedScreen}
                         />
                         <Stack.Screen
                             name="FilterScreen"

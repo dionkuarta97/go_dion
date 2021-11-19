@@ -3,8 +3,10 @@ import {Text, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 import Colors from "../../Theme/Colors";
 import {useNavigation} from "@react-navigation/core";
+import {useSelector} from "react-redux";
 
 const ActionButtonCart = () => {
+    const cart = useSelector((state) => state.cartReducer.cart);
     const navigation = useNavigation();
     return (
         <View>
@@ -29,7 +31,7 @@ const ActionButtonCart = () => {
                     alignItems: "center",
                 }}
             >
-                <Text style={{fontSize: 10}}>12</Text>
+                <Text style={{fontSize: 10}}>{cart.length}</Text>
             </View>
         </View>
     );

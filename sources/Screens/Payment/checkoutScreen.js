@@ -15,22 +15,25 @@ import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import {ScrollView} from "react-native-gesture-handler";
 import {useNavigation} from "@react-navigation/core";
+import {useSelector} from "react-redux";
 
 const CheckoutScreen = () => {
     const navigation = useNavigation();
-    const renderItem = () => {
+
+    const cart = useSelector((state) => state.cartReducer.cart);
+
+    const renderItem = (item) => {
         return (
-            <View style={styles.item}>
-                <Text style={{flex: 4, ...Fonts.gray15Bold}}>
-                    Paket Komplit Ujian Nasional 0
-                </Text>
+            <View style={styles.item} key={item._id}>
+                <Text style={{flex: 4, ...Fonts.gray15Bold}}>{item.title}</Text>
                 <Text
                     style={{
                         flex: 1,
                         ...Fonts.gray15Regular,
                     }}
                 >
-                    Rp. 50.000
+                    IDR{" "}
+                    {item.price_discount > 0 ? item.price_discount : item.price}
                 </Text>
             </View>
         );
@@ -49,13 +52,7 @@ const CheckoutScreen = () => {
                     }}
                 >
                     <ScrollView style={{flex: 1}}>
-                        {renderItem()}
-                        {renderItem()}
-                        {renderItem()}
-                        {renderItem()}
-                        {renderItem()}
-                        {renderItem()}
-                        {renderItem()}
+                        {cart.map((val) => renderItem(val))}
                     </ScrollView>
 
                     <View
@@ -79,7 +76,15 @@ const CheckoutScreen = () => {
                                 ...Fonts.black17Regular,
                             }}
                         >
-                            Rp. 50.000
+                            IDR{" "}
+                            {cart.reduce(
+                                (total, x) =>
+                                    total +
+                                    (x.price_discount > 0
+                                        ? x.price_discount
+                                        : x.price),
+                                0
+                            )}
                         </Text>
                     </View>
                 </View>

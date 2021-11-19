@@ -32,7 +32,6 @@ export function getListProvince() {
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
-                        console.log(json);
                         dispatch(setListProvince(defaultDoneState(json.data)));
                     } else
                         dispatch(
@@ -61,7 +60,6 @@ export function getListCity(idprovinsi) {
             ? urlWilayah + `/${idprovinsi}/kabkota`
             : urlWilayah + "/kabkota";
 
-    console.log(url);
     return async (dispatch, getState) => {
         dispatch(setListCity(defaultInitState));
         try {
@@ -69,7 +67,6 @@ export function getListCity(idprovinsi) {
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
-                        console.log(json);
                         dispatch(setListCity(defaultDoneState(json.data)));
                     } else
                         dispatch(setListCity(defaultFailedState(json.message)));
@@ -96,7 +93,6 @@ export function getListSekolah(idkabkota) {
             ? urlCommon + `/${idkabkota}/sekolah`
             : urlCommon + "/sekolah";
 
-    console.log(url);
     return async (dispatch, getState) => {
         dispatch(setListSekolah(defaultInitState));
         try {
@@ -104,7 +100,6 @@ export function getListSekolah(idkabkota) {
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
-                        console.log(json);
                         dispatch(setListSekolah(defaultDoneState(json.data)));
                     } else
                         dispatch(
@@ -135,7 +130,6 @@ export function getListGrades() {
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
-                        console.log(json);
                         dispatch(setListGrades(defaultDoneState(json.data)));
                     } else
                         dispatch(

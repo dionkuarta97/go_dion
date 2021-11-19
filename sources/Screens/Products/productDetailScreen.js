@@ -20,14 +20,18 @@ import Colors from "../../Theme/Colors";
 
 import {useNavigation} from "@react-navigation/core";
 import ProductDetailContent from "./Component/ProductDetailContent";
+import {addToCart} from "../../Redux/Cart/cartActions";
 
 const {width} = Dimensions.get("screen");
 
 const ProductDetailScreen = (props) => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+
     const item = props.route.params.item;
     const section = props.route.params.section;
-    console.log(item);
+
+    const cart = useSelector((state) => state.cartReducer.cart);
 
     const productInfo = () => {
         return (
@@ -60,25 +64,23 @@ const ProductDetailScreen = (props) => {
                         </Text>
                     </View>
                     <Text style={{...Fonts.primaryColor25Bold}}>
-                        Rp. 45.000
+                        IDR{" "}
+                        {item.price_discount > 0
+                            ? item.price_discount
+                            : item.price}
                     </Text>
                 </View>
-                {/* <TouchableOpacity
+                <TouchableOpacity
                     activeOpacity={0.9}
-                    onPress={() =>
-                        this.props.navigation.navigate("TakeCourse", {
-                            courseName: this.courseName,
-                            image: this.image,
-                        })
-                    }
+                    onPress={() => dispatch(addToCart(item))}
                     style={{
                         ...styles.button,
                         backgroundColor: Colors.primaryColor,
                     }}
                 >
-                    <Text style={{...Fonts.black17Bold}}>Take the Course</Text>
+                    <Text style={{...Fonts.black17Bold}}>Buy Now</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() =>
                         this.props.navigation.navigate("WatchTrailer")
@@ -107,29 +109,53 @@ const ProductDetailScreen = (props) => {
                     />
                 }
                 rightItem={
-                    <TouchableOpacity
-                        activeOpacity={0.9}
-                        onPress={() => {}}
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
-                    >
-                        <MaterialIcons
-                            name={true ? "done" : "add"}
-                            size={24}
-                            color={Colors.primaryColor}
-                        />
-                        <Text
+                    !cart.some((val) => val._id === item._id) ? (
+                        <TouchableOpacity
+                            activeOpacity={0.9}
+                            onPress={() => dispatch(addToCart(item))}
                             style={{
-                                ...Fonts.primaryColor16Regular,
-                                marginLeft: Sizes.fixPadding - 5.0,
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "center",
                             }}
                         >
-                            {true ? "Added to Wishlist" : "Add to Wishlist"}
-                        </Text>
-                    </TouchableOpacity>
+                            <MaterialIcons
+                                name={"add"}
+                                size={24}
+                                color={Colors.primaryColor}
+                            />
+                            <Text
+                                style={{
+                                    ...Fonts.primaryColor16Regular,
+                                    marginLeft: Sizes.fixPadding - 5.0,
+                                }}
+                            >
+                                Add to Cart
+                            </Text>
+                        </TouchableOpacity>
+                    ) : (
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <MaterialIcons
+                                name={"done"}
+                                size={24}
+                                color={Colors.primaryColor}
+                            />
+                            <Text
+                                style={{
+                                    ...Fonts.primaryColor16Regular,
+                                    marginLeft: Sizes.fixPadding - 5.0,
+                                }}
+                            >
+                                Added to Cart
+                            </Text>
+                        </View>
+                    )
                 }
                 element={productInfo()}
                 borderBottomRadius={20}
@@ -139,7 +165,7 @@ const ProductDetailScreen = (props) => {
                 isImageBlur={true}
                 src={{uri: item.thumbnail}}
             >
-                <ProductDetailContent />
+                <ProductDetailContent item={item} />
                 <StatusBar backgroundColor={Colors.blackColor} />
             </SliverAppBar>
         </SafeAreaView>

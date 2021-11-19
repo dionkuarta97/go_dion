@@ -5,6 +5,7 @@ import {persistStore, persistReducer} from "redux-persist";
 import thunk from "redux-thunk";
 
 import {authReducer} from "./Auth/authReducer";
+import {cartReducer} from "./Cart/cartReducer";
 import {dataReducer} from "./Data/dataReducer";
 import {homeReducer} from "./Home/homeReducer";
 import {produkReducer} from "./Produk/produkReducer";
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     homeReducer: homeReducer,
     profileReducer: profileReducer,
     produkReducer: produkReducer,
+    cartReducer: cartReducer,
 });
 
 export const store = createStore(
