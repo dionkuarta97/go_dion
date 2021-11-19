@@ -16,6 +16,7 @@ import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import {ScrollView} from "react-native-gesture-handler";
 import {useNavigation} from "@react-navigation/core";
 import {useSelector} from "react-redux";
+import PaymentMethodCard from "./Component/PaymentMethodCard";
 
 const CheckoutScreen = () => {
     const navigation = useNavigation();
@@ -89,48 +90,7 @@ const CheckoutScreen = () => {
                     </View>
                 </View>
 
-                <View
-                    style={{
-                        ...styles.card,
-                        padding: Sizes.fixPadding,
-                    }}
-                >
-                    <View style={{flexDirection: "row", alignItems: "center"}}>
-                        <MaterialIcons
-                            name="account-balance-wallet"
-                            size={22}
-                            color="black"
-                        />
-                        <Text
-                            style={{
-                                flex: 1,
-                                ...Fonts.black17Bold,
-                                marginLeft: 10,
-                            }}
-                        >
-                            Metode Pembayaran
-                        </Text>
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={() =>
-                                navigation.navigate("PaymentMethodScreen")
-                            }
-                        >
-                            <Text style={{...Fonts.orangeColor17Bold}}>
-                                Ubah
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <Text
-                        style={{
-                            ...Fonts.gray15Regular,
-                            marginLeft: 32,
-                            marginTop: 5,
-                        }}
-                    >
-                        Belum memilih metode
-                    </Text>
-                </View>
+                <PaymentMethodCard />
 
                 <DefaultPrimaryButton
                     text="Lanjutkan Pembayaran"
