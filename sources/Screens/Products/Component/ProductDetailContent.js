@@ -1,22 +1,43 @@
 import React from "react";
-import {Text, View} from "react-native";
-import DefaultTabBar from "../../../Components/DefaultTabBar";
-import ProductTabInfo from "./ProductTabInfo";
-import ProductTabMateri from "./ProductTabMateri";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
+import Divider from "../../../Components/Divider";
 
-const ProductDetailContent = () => {
+import Fonts from "../../../Theme/Fonts";
+import Sizes from "../../../Theme/Sizes";
+
+const ProductDetailContent = (props) => {
+    const item = props.item;
+
+    const titleText = (title) => {
+        return <Text style={{...Fonts.indigoColor18Bold}}>{title}</Text>;
+    };
     return (
-        <View style={{flex: 1}}>
-            <DefaultTabBar
-                routes={[
-                    {key: "item1", title: "Overview"},
-                    {key: "item2", title: "Materi"},
-                ]}
-                screen={[<ProductTabInfo />, <ProductTabMateri />]}
-            />
-            <Text>Tes</Text>
+        <View
+            style={{
+                flex: 1,
+                paddingHorizontal: Sizes.fixPadding,
+                paddingVertical: Sizes.fixPadding * 3,
+            }}
+        >
+            <ScrollView
+                nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
+            >
+                {titleText("Informasi")}
+                <View style={styles.content}>
+                    <Text>{item.desc}</Text>
+                </View>
+                <Divider />
+            </ScrollView>
         </View>
     );
 };
 
 export default ProductDetailContent;
+
+const styles = StyleSheet.create({
+    content: {
+        padding: Sizes.fixPadding,
+        height: 1000,
+    },
+});

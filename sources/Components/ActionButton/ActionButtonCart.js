@@ -3,8 +3,10 @@ import {Text, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 import Colors from "../../Theme/Colors";
 import {useNavigation} from "@react-navigation/core";
+import {useSelector} from "react-redux";
 
 const ActionButtonCart = () => {
+    const cart = useSelector((state) => state.cartReducer.cart);
     const navigation = useNavigation();
     return (
         <View>
@@ -13,24 +15,28 @@ const ActionButtonCart = () => {
                     name="shopping-cart"
                     size={25}
                     color="black"
-                    onPress={() => navigation.navigate("CartScreen")}
+                    onPress={() => {
+                        if (cart.length > 0) navigation.navigate("CartScreen");
+                    }}
                 />
             </View>
-            <View
-                style={{
-                    position: "absolute",
-                    width: 18,
-                    height: 18,
-                    backgroundColor: Colors.orangeColor,
-                    right: -9,
-                    top: -9,
-                    borderRadius: 9,
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <Text style={{fontSize: 10}}>12</Text>
-            </View>
+            {cart.length > 0 && (
+                <View
+                    style={{
+                        position: "absolute",
+                        width: 18,
+                        height: 18,
+                        backgroundColor: Colors.orangeColor,
+                        right: -9,
+                        top: -9,
+                        borderRadius: 9,
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Text style={{fontSize: 10}}>{cart.length}</Text>
+                </View>
+            )}
         </View>
     );
 };

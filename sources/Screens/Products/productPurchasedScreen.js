@@ -21,34 +21,25 @@ import ProductCard from "../../Components/ProductCard";
 import {useNavigation} from "@react-navigation/core";
 import ActionButtonFilter from "../../Components/ActionButton/ActionButtonFilter";
 import {useDispatch, useSelector} from "react-redux";
-import {getAllProduk} from "../../Redux/Produk/produkActions";
-import PurchasedProductBottom from "./Component/PurchasedProductBottom";
+import {getPurchasedproduk} from "../../Redux/Produk/produkActions";
 
-const products = [
-    {id: 1, title: "a"},
-    {id: 2, title: "a"},
-    {id: 3, title: "a"},
-    {id: 4, title: "a"},
-    {id: 5, title: "a"},
-    {id: 6, title: "a"},
-];
-
-const ProductCategoryScreen = (props) => {
+const ProductPurchasedScreen = (props) => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const allProduk = useSelector((state) => state.produkReducer.allProduk);
+    const purchasedProduk = useSelector(
+        (state) => state.produkReducer.purchasedProduk
+    );
 
     const section_id = props.route.params.id;
-    const title = props.route.params.title;
 
     useEffect(() => {
-        dispatch(getAllProduk(section_id));
+        dispatch(getPurchasedproduk(section_id));
     }, []);
 
     return (
         <SafeAreaView style={{flex: 1}}>
             <DefaultAppBar
-                title={title}
+                title="Produk Terbeli"
                 backEnabled={true}
                 rightItem={
                     <View style={{flexDirection: "row"}}>
@@ -59,7 +50,7 @@ const ProductCategoryScreen = (props) => {
                 }
             />
             <View style={{flex: 1}}>
-                {allProduk.loading && (
+                {purchasedProduk.loading && (
                     <View
                         style={{
                             flex: 1,
@@ -73,8 +64,8 @@ const ProductCategoryScreen = (props) => {
                         />
                     </View>
                 )}
-                {allProduk.data !== null &&
-                    (allProduk.data.length !== 0 ? (
+                {purchasedProduk.data !== null &&
+                    (purchasedProduk.data.length !== 0 ? (
                         <FlatGrid
                             listKey="productlist"
                             itemDimension={220}
@@ -85,15 +76,22 @@ const ProductCategoryScreen = (props) => {
                                     section={title}
                                 />
                             )}
-                            data={allProduk.data}
+                            data={purchasedProduk.data}
                         />
                     ) : (
-                        <Text>Produk Kosong</Text>
+                        <View
+                            style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Text>Produk Kosong</Text>
+                        </View>
                     ))}
             </View>
-            <PurchasedProductBottom sectionId={section_id} />
         </SafeAreaView>
     );
 };
 
-export default ProductCategoryScreen;
+export default ProductPurchasedScreen;

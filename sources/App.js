@@ -12,7 +12,6 @@ import CartScreen from "./Screens/Cart/cartScreen";
 import FilterResultScreen from "./Screens/Filter/filterResultScreen";
 import FilterScreen from "./Screens/Filter/filterScreen";
 
-import LoadingScreen from "./Screens/Global/loadingScreen";
 import MainScreen from "./Screens/Global/mainScreen";
 import PaymentScreen from "./Screens/Payment/paymentScreen";
 import ProductCategoryScreen from "./Screens/Products/productCategoryScreen";
@@ -28,6 +27,9 @@ import SubMateriScreen from "./Screens/GoBelajar/subMateriScreen";
 import TryoutDetailScreen from "./Screens/GoTryout/tryoutDetailScreen";
 import SoalScreen from "./Screens/Soal/soalScreen";
 import EmailCheckScreen from "./Screens/Auth/emailCheckScreen";
+import productPurchasedScreen from "./Screens/Products/productPurchasedScreen";
+import ProductPurchasedScreen from "./Screens/Products/productPurchasedScreen";
+import initialScreen from "./Screens/Global/initialScreen";
 
 const Stack = createStackNavigator();
 
@@ -37,14 +39,14 @@ export default App = () => {
             <PersistGate loading={null} persistor={persistor}>
                 <NavigationContainer>
                     <Stack.Navigator
-                        initialRouteName="LoadingScreen"
+                        initialRouteName="InitialScreen"
                         screenOptions={{
                             headerShown: false,
                         }}
                     >
                         <Stack.Screen
-                            name="LoadingScreen"
-                            component={LoadingScreen}
+                            name="InitialScreen"
+                            component={initialScreen}
                         />
                         <Stack.Screen
                             name="LoginScreen"
@@ -77,6 +79,10 @@ export default App = () => {
                         <Stack.Screen
                             name="ProductDetailScreen"
                             component={ProductDetailScreen}
+                        />
+                        <Stack.Screen
+                            name="ProductPurchasedScreen"
+                            component={ProductPurchasedScreen}
                         />
                         <Stack.Screen
                             name="FilterScreen"

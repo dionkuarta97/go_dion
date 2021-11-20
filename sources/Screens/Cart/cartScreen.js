@@ -22,9 +22,13 @@ import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import ProductCardHorizontal from "../../Components/Card/ProductCardHorizontal";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import {useNavigation} from "@react-navigation/core";
+import {clearCart} from "../../Redux/Cart/cartActions";
 
 const CartScreen = (props) => {
+    const dispatch = useDispatch();
     const navigation = useNavigation();
+    const isLogin = useSelector((state) => state.authReducer.isLogin);
+    const cart = useSelector((state) => state.cartReducer.cart);
 
     return (
         <SafeAreaView style={{flex: 1}}>
@@ -32,22 +36,26 @@ const CartScreen = (props) => {
                 title="Keranjang"
                 backEnabled={true}
                 rightItem={
-                    <View>
+                    <TouchableOpacity onPress={() => dispatch(clearCart())}>
                         <Text>Kosongkan</Text>
-                    </View>
+                    </TouchableOpacity>
                 }
             />
             <ScrollView style={{flex: 1, padding: Sizes.fixPadding * 2}}>
-                <ProductCardHorizontal />
-                <ProductCardHorizontal />
-                <ProductCardHorizontal />
-                <ProductCardHorizontal />
-                <ProductCardHorizontal />
-                <ProductCardHorizontal />
-                <ProductCardHorizontal />
-                <ProductCardHorizontal />
-                <ProductCardHorizontal />
-                <ProductCardHorizontal />
+                {cart.map((val) => (
+                    <ProductCardHorizontal
+                        key={val._id}
+                        id={val._id}
+                        title={val.title}
+                        thumbnail={val.thumbnail}
+                        price={
+                            val.price_discount > 0
+                                ? val.price_discount
+                                : val.price
+                        }
+                    />
+                ))}
+
                 <View style={{height: 25}} />
             </ScrollView>
             <View
@@ -68,7 +76,7 @@ const CartScreen = (props) => {
                     <Text style={{flex: 1, ...Fonts.black17Regular}}>
                         Jumlah Item
                     </Text>
-                    <Text style={{...Fonts.black17Regular}}>10</Text>
+                    <Text style={{...Fonts.black17Regular}}>{cart.length}</Text>
                 </View>
 
                 <View
@@ -86,12 +94,23 @@ const CartScreen = (props) => {
                             color: Colors.orangeColor,
                         }}
                     >
-                        Rp. 200.000
+                        IDR{" "}
+                        {cart.reduce(
+                            (total, x) =>
+                                total +
+                                (x.price_discount > 0
+                                    ? x.price_discount
+                                    : x.price),
+                            0
+                        )}
                     </Text>
                 </View>
                 <DefaultPrimaryButton
                     text="Checkout"
-                    onPress={() => navigation.navigate("CheckoutScreen")}
+                    onPress={() => {
+                        if (isLogin) navigation.navigate("CheckoutScreen");
+                        else navigation.navigate("LoginScreen");
+                    }}
                 />
             </View>
             <StatusBar backgroundColor={Colors.primaryColor} />

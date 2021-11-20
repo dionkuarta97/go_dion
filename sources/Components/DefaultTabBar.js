@@ -32,7 +32,7 @@ const DefaultTabBar = (props) => {
                     {...item}
                     indicatorStyle={{backgroundColor: Colors.orangeColor}}
                     tabStyle={{
-                        width: Dimensions.get("window").width / 2,
+                        width: Dimensions.get("window").width / routes.length,
                     }}
                     style={{backgroundColor: Colors.whiteColor}}
                     renderLabel={({route, focused, color}) => (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
     SafeAreaView,
     StatusBar,
@@ -15,22 +15,44 @@ import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import {ScrollView} from "react-native-gesture-handler";
 import {useNavigation} from "@react-navigation/core";
+import {useDispatch, useSelector} from "react-redux";
+import PaymentMethodCard from "./Component/PaymentMethodCard";
+import {
+    getPaymentProcess,
+    setPaymentMethod,
+    setPaymentProcess,
+    setSelectedPaymentMethod,
+} from "../../Redux/Payment/paymentActions";
+import LoadingModal from "../../Components/Modal/LoadingModal";
+import {clearCart} from "../../Redux/Cart/cartActions";
+import DefaultModal from "../../Components/Modal/DefaultModal";
 
 const CheckoutScreen = () => {
+    const dispatch = useDispatch();
     const navigation = useNavigation();
-    const renderItem = () => {
+
+    const cart = useSelector((state) => state.cartReducer.cart);
+    const paymentProcess = useSelector(
+        (state) => state.paymentReducer.paymentProcess
+    );
+
+    useEffect(() => {
+        dispatch(setSelectedPaymentMethod(null));
+        dispatch(setPaymentProcess({loading: false, error: null, data: null}));
+    }, []);
+
+    const renderItem = (item) => {
         return (
-            <View style={styles.item}>
-                <Text style={{flex: 4, ...Fonts.gray15Bold}}>
-                    Paket Komplit Ujian Nasional 0
-                </Text>
+            <View style={styles.item} key={item._id}>
+                <Text style={{flex: 4, ...Fonts.gray15Bold}}>{item.title}</Text>
                 <Text
                     style={{
                         flex: 1,
                         ...Fonts.gray15Regular,
                     }}
                 >
-                    Rp. 50.000
+                    IDR{" "}
+                    {item.price_discount > 0 ? item.price_discount : item.price}
                 </Text>
             </View>
         );
@@ -49,13 +71,7 @@ const CheckoutScreen = () => {
                     }}
                 >
                     <ScrollView style={{flex: 1}}>
-                        {renderItem()}
-                        {renderItem()}
-                        {renderItem()}
-                        {renderItem()}
-                        {renderItem()}
-                        {renderItem()}
-                        {renderItem()}
+                        {cart.map((val) => renderItem(val))}
                     </ScrollView>
 
                     <View
@@ -79,58 +95,44 @@ const CheckoutScreen = () => {
                                 ...Fonts.black17Regular,
                             }}
                         >
-                            Rp. 50.000
+                            IDR{" "}
+                            {cart.reduce(
+                                (total, x) =>
+                                    total +
+                                    (x.price_discount > 0
+                                        ? x.price_discount
+                                        : x.price),
+                                0
+                            )}
                         </Text>
                     </View>
                 </View>
 
-                <View
-                    style={{
-                        ...styles.card,
-                        padding: Sizes.fixPadding,
-                    }}
-                >
-                    <View style={{flexDirection: "row", alignItems: "center"}}>
-                        <MaterialIcons
-                            name="account-balance-wallet"
-                            size={22}
-                            color="black"
-                        />
-                        <Text
-                            style={{
-                                flex: 1,
-                                ...Fonts.black17Bold,
-                                marginLeft: 10,
-                            }}
-                        >
-                            Metode Pembayaran
-                        </Text>
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={() =>
-                                navigation.navigate("PaymentMethodScreen")
-                            }
-                        >
-                            <Text style={{...Fonts.orangeColor17Bold}}>
-                                Ubah
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <Text
-                        style={{
-                            ...Fonts.gray15Regular,
-                            marginLeft: 32,
-                            marginTop: 5,
-                        }}
-                    >
-                        Belum memilih metode
-                    </Text>
-                </View>
+                <PaymentMethodCard />
 
                 <DefaultPrimaryButton
                     text="Lanjutkan Pembayaran"
-                    onPress={() => navigation.navigate("PaymentMethod")}
+                    onPress={() => {
+                        dispatch(getPaymentProcess());
+                    }}
                 />
+
+                {paymentProcess.loading && <LoadingModal />}
+                {paymentProcess.data !== null && (
+                    <DefaultModal>
+                        <Text>Berhasil melakukan checkout</Text>
+                        <DefaultPrimaryButton
+                            text="Lihat status pembayaran"
+                            onPress={() => {
+                                dispatch(clearCart());
+                                navigation.popToTop();
+                                navigation.navigate("PaymentScreen", {
+                                    orderId: paymentProcess.data.order_id,
+                                });
+                            }}
+                        />
+                    </DefaultModal>
+                )}
             </View>
         </SafeAreaView>
     );
