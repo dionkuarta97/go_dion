@@ -78,7 +78,7 @@ const LoginContent = () => {
                 <DefaultModal>
                     <Text>Berhasil Login</Text>
                     <DefaultPrimaryButton
-                        text="Kembali ke Halaman Utama"
+                        text="Kembali ke Sebelumnya"
                         onPress={() => {
                             navigation.goBack();
                         }}

@@ -72,7 +72,11 @@ const ProductDetailScreen = (props) => {
                 </View>
                 <TouchableOpacity
                     activeOpacity={0.9}
-                    onPress={() => dispatch(addToCart(item))}
+                    onPress={() => {
+                        dispatch(addToCart(item));
+                        navigation.popToTop();
+                        navigation.navigate("CartScreen");
+                    }}
                     style={{
                         ...styles.button,
                         backgroundColor: Colors.primaryColor,

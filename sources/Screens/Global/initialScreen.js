@@ -9,7 +9,7 @@ import {
 } from "../../Redux/Auth/authActions";
 import {setProfile} from "../../Redux/Profile/profileActions";
 
-export default LoadingScreen = ({navigation}) => {
+export default InitialScreen = ({navigation}) => {
     const dispatch = useDispatch();
     const login = useSelector((state) => state.authReducer.login);
     const _loadFontsAsync = async () => {
@@ -21,6 +21,7 @@ export default LoadingScreen = ({navigation}) => {
         //TODO:Navigate to Splashscreen
         setTimeout(() => {
             navigation.replace("MainScreen");
+            // navigation.replace("PaymentScreen");
         }, 2000);
     };
 

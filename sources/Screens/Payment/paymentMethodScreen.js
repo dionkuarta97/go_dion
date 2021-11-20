@@ -51,6 +51,7 @@ const PaymentMethodScreen = () => {
     const renderSubItem = (subItem) => {
         return (
             <TouchableOpacity
+                key={subItem.name}
                 onPress={() => {
                     dispatch(setSelectedPaymentMethod(subItem));
                     navigation.goBack();

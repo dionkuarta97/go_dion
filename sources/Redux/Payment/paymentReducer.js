@@ -1,4 +1,11 @@
-import {SET_PAYMENT_METHOD, SET_SELECTED_PAYMENT_METHOD} from "./paymentTypes";
+import {
+    SET_CURRENT_PAYMENT,
+    SET_PAYMENT_DETAIL,
+    SET_PAYMENT_LIST,
+    SET_PAYMENT_METHOD,
+    SET_PAYMENT_PROCESS,
+    SET_SELECTED_PAYMENT_METHOD,
+} from "./paymentTypes";
 
 const initialState = {
     paymentMethod: {
@@ -7,6 +14,22 @@ const initialState = {
         data: null,
     },
     selectedPaymentMethod: null,
+    paymentProcess: {
+        loading: false,
+        error: null,
+        data: null,
+    },
+    currentPayment: null,
+    paymentList: {
+        loading: false,
+        error: null,
+        data: null,
+    },
+    paymentDetail: {
+        loading: false,
+        error: null,
+        data: null,
+    },
 };
 
 export function paymentReducer(state = initialState, action) {
@@ -20,6 +43,26 @@ export function paymentReducer(state = initialState, action) {
             return {
                 ...state,
                 selectedPaymentMethod: action.payload,
+            };
+        case SET_PAYMENT_PROCESS:
+            return {
+                ...state,
+                paymentProcess: action.payload,
+            };
+        case SET_CURRENT_PAYMENT:
+            return {
+                ...state,
+                currentPayment: action.payload,
+            };
+        case SET_PAYMENT_LIST:
+            return {
+                ...state,
+                paymentList: action.payload,
+            };
+        case SET_PAYMENT_DETAIL:
+            return {
+                ...state,
+                paymentDetail: action.payload,
             };
         default:
             return state;

@@ -4,8 +4,10 @@ import {MaterialIcons} from "@expo/vector-icons";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import {useSelector} from "react-redux";
+import {useNavigation} from "@react-navigation/core";
 
 const PaymentMethodCard = () => {
+    const navigation = useNavigation();
     const selectedPaymentMethod = useSelector(
         (state) => state.paymentReducer.selectedPaymentMethod
     );

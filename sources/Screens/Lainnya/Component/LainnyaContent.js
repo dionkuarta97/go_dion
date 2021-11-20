@@ -6,8 +6,13 @@ import Colors from "../../../Theme/Colors";
 import Fonts from "../../../Theme/Fonts";
 import {useNavigation} from "@react-navigation/core";
 import {useDispatch, useSelector} from "react-redux";
-import {setLoginData, setLoginStatus} from "../../../Redux/Auth/authActions";
+import {
+    setLoginData,
+    setLoginStatus,
+    setToken,
+} from "../../../Redux/Auth/authActions";
 import {defaultInitState} from "../../../Redux/helper";
+import {setMe, setProfile} from "../../../Redux/Profile/profileActions";
 
 const LainnyaContent = () => {
     const isLogin = useSelector((state) => state.authReducer.isLogin);
@@ -60,6 +65,8 @@ const LainnyaContent = () => {
             {isLogin &&
                 renderTile("Logout", "logout", () => {
                     dispatch(setLoginStatus(false));
+                    dispatch(setToken(null));
+                    dispatch(setProfile(null));
                     dispatch(
                         setLoginData({
                             data: null,

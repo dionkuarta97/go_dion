@@ -26,8 +26,9 @@ import {clearCart} from "../../Redux/Cart/cartActions";
 
 const CartScreen = (props) => {
     const dispatch = useDispatch();
-    const cart = useSelector((state) => state.cartReducer.cart);
     const navigation = useNavigation();
+    const isLogin = useSelector((state) => state.authReducer.isLogin);
+    const cart = useSelector((state) => state.cartReducer.cart);
 
     return (
         <SafeAreaView style={{flex: 1}}>
@@ -106,7 +107,10 @@ const CartScreen = (props) => {
                 </View>
                 <DefaultPrimaryButton
                     text="Checkout"
-                    onPress={() => navigation.navigate("CheckoutScreen")}
+                    onPress={() => {
+                        if (isLogin) navigation.navigate("CheckoutScreen");
+                        else navigation.navigate("LoginScreen");
+                    }}
                 />
             </View>
             <StatusBar backgroundColor={Colors.primaryColor} />

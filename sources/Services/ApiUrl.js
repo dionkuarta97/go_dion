@@ -32,4 +32,6 @@ export const urlHomeMenu = urlBaseMasterdata + "/home/menu";
 export const urlGroupedProduk = urlBaseMasterdata + "/products";
 
 /*** PAYMENT URL */
+export const urlPayment = urlBasePurchase + "/payments";
 export const urlPaymentMethod = urlBasePurchase + "/payments/method";
+export const urlPaymentProcess = urlBasePurchase + "/payments/process";

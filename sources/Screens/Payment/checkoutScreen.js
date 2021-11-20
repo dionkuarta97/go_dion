@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
     SafeAreaView,
     StatusBar,
@@ -15,13 +15,31 @@ import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import {ScrollView} from "react-native-gesture-handler";
 import {useNavigation} from "@react-navigation/core";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PaymentMethodCard from "./Component/PaymentMethodCard";
+import {
+    getPaymentProcess,
+    setPaymentMethod,
+    setPaymentProcess,
+    setSelectedPaymentMethod,
+} from "../../Redux/Payment/paymentActions";
+import LoadingModal from "../../Components/Modal/LoadingModal";
+import {clearCart} from "../../Redux/Cart/cartActions";
+import DefaultModal from "../../Components/Modal/DefaultModal";
 
 const CheckoutScreen = () => {
+    const dispatch = useDispatch();
     const navigation = useNavigation();
 
     const cart = useSelector((state) => state.cartReducer.cart);
+    const paymentProcess = useSelector(
+        (state) => state.paymentReducer.paymentProcess
+    );
+
+    useEffect(() => {
+        dispatch(setSelectedPaymentMethod(null));
+        dispatch(setPaymentProcess({loading: false, error: null, data: null}));
+    }, []);
 
     const renderItem = (item) => {
         return (
@@ -94,8 +112,27 @@ const CheckoutScreen = () => {
 
                 <DefaultPrimaryButton
                     text="Lanjutkan Pembayaran"
-                    onPress={() => navigation.navigate("PaymentMethod")}
+                    onPress={() => {
+                        dispatch(getPaymentProcess());
+                    }}
                 />
+
+                {paymentProcess.loading && <LoadingModal />}
+                {paymentProcess.data !== null && (
+                    <DefaultModal>
+                        <Text>Berhasil melakukan checkout</Text>
+                        <DefaultPrimaryButton
+                            text="Lihat status pembayaran"
+                            onPress={() => {
+                                dispatch(clearCart());
+                                navigation.popToTop();
+                                navigation.navigate("PaymentScreen", {
+                                    orderId: paymentProcess.data.order_id,
+                                });
+                            }}
+                        />
+                    </DefaultModal>
+                )}
             </View>
         </SafeAreaView>
     );
