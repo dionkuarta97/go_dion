@@ -41,7 +41,8 @@ workflows:
                   # Note that tracks can be specified when retrieving latest build number from Google Play, for example:
                   # export NEW_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks=alpha) + 1))
                   # export NEW_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME") + 1))
-                  cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets
+                  cd android && ./gradlew clean
+                  ./gradlew assembleRelease -x bundleReleaseJsAndAssets
         artifacts:
             - android/app/build/outputs/**/*.apk
       
