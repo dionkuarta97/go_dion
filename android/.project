@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>goonlinemobileUI</name>
+	<name>go_online_mobile_UI</name>
 	<comment>Project android created by Buildship.</comment>
 	<projects>
 	</projects>
@@ -16,7 +16,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1637205203412</id>
+			<id>1637458942852</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

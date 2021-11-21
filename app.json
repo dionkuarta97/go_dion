@@ -5,7 +5,13 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.go.app"
+    },
+    "ios": {
+      "bundleIdentifier": "com.go.app"
+    }
   },
   "name": "go_online_mobile_UI"
 }
