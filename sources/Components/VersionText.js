@@ -1,17 +1,22 @@
 import React from "react";
 import {Text, View} from "react-native";
+import {useSelector} from "react-redux";
+import Sizes from "../Theme/Sizes";
 
 const VersionText = () => {
+    const androidVersion = useSelector(
+        (state) => state.versionReducer.androidVersion
+    );
     return (
         <View
             style={{
                 flexDirection: "row",
-                flex: 1,
+                paddingVertical: Sizes.fixPadding * 2,
                 justifyContent: "center",
                 alignItems: "center",
             }}
         >
-            <Text>Version </Text>
+            <Text>Version {androidVersion}</Text>
         </View>
     );
 };

@@ -61,7 +61,6 @@ const CartScreen = (props) => {
                         source={require("../../../assets/Images/helper/empty.png")}
                         resizeMode="contain"
                     />
-                    <Text>Cart anda masih kosong</Text>
                 </View>
             )}
             <StatusBar backgroundColor={Colors.primaryColor} />
