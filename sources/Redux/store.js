@@ -11,6 +11,7 @@ import {homeReducer} from "./Home/homeReducer";
 import {paymentReducer} from "./Payment/paymentReducer";
 import {produkReducer} from "./Produk/produkReducer";
 import {profileReducer} from "./Profile/profileReducer";
+import {materiReducer} from "./Materi/materiReducer";
 
 const persistConfig = {
     key: "root",
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     produkReducer: produkReducer,
     cartReducer: cartReducer,
     paymentReducer: paymentReducer,
+    materiReducer: materiReducer,
 });
 
 export const store = createStore(

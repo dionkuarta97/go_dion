@@ -35,3 +35,7 @@ export const urlGroupedProduk = urlBaseMasterdata + "/products";
 export const urlPayment = urlBasePurchase + "/payments";
 export const urlPaymentMethod = urlBasePurchase + "/payments/method";
 export const urlPaymentProcess = urlBasePurchase + "/payments/process";
+
+/*** MATERI URL */
+
+export const urlMateri = urlBaseMasterdata + "/materi";
