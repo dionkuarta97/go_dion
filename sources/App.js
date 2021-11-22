@@ -30,6 +30,7 @@ import EmailCheckScreen from "./Screens/Auth/emailCheckScreen";
 import productPurchasedScreen from "./Screens/Products/productPurchasedScreen";
 import ProductPurchasedScreen from "./Screens/Products/productPurchasedScreen";
 import initialScreen from "./Screens/Global/initialScreen";
+import NewPasswordScreen from "./Screens/Auth/newPasswordScreen";
 
 const Stack = createStackNavigator();
 
@@ -63,6 +64,10 @@ export default App = () => {
                         <Stack.Screen
                             name="ForgotPasswordScreen"
                             component={ForgotPasswordScreen}
+                        />
+                        <Stack.Screen
+                            name="NewPasswordScreen"
+                            component={NewPasswordScreen}
                         />
                         <Stack.Screen
                             name="MainScreen"
