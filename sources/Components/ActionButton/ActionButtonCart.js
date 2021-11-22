@@ -16,7 +16,7 @@ const ActionButtonCart = () => {
                     size={25}
                     color="black"
                     onPress={() => {
-                        if (cart.length > 0) navigation.navigate("CartScreen");
+                        navigation.navigate("CartScreen");
                     }}
                 />
             </View>
