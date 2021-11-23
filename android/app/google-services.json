@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "970848806829",
+    "project_id": "goexpert-a23b1",
+    "storage_bucket": "goexpert-a23b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970848806829:android:eebe6abf56337c59586324",
+        "android_client_info": {
+          "package_name": "com.go.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "970848806829-g6ivqqrl0ca97o2bpjfulifa2lbtsapf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5ECzh0kqBTkl1OJ56gqwohzc9XKfG-is"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "970848806829-g6ivqqrl0ca97o2bpjfulifa2lbtsapf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
