@@ -86,7 +86,7 @@ const LoginContent = () => {
                 </DefaultModal>
             )}
             <DefaultTextInput
-                placeholder="Username"
+                placeholder="Email"
                 onChangeText={(value) => setUsernameText(value)}
             />
             <PasswordTextInput

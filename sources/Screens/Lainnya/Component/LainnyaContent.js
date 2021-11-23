@@ -13,6 +13,7 @@ import {
 } from "../../../Redux/Auth/authActions";
 import {defaultInitState} from "../../../Redux/helper";
 import {setMe, setProfile} from "../../../Redux/Profile/profileActions";
+import VersionText from "../../../Components/VersionText";
 
 const LainnyaContent = () => {
     const isLogin = useSelector((state) => state.authReducer.isLogin);
@@ -75,6 +76,8 @@ const LainnyaContent = () => {
                         })
                     );
                 })}
+
+            <VersionText />
         </View>
     );
 };

@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
+    Dimensions,
 } from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {MaterialIcons} from "@expo/vector-icons";
@@ -23,11 +24,10 @@ import ProductCardHorizontal from "../../Components/Card/ProductCardHorizontal";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import {useNavigation} from "@react-navigation/core";
 import {clearCart} from "../../Redux/Cart/cartActions";
+import CartContent from "./Component/cartContent";
 
 const CartScreen = (props) => {
     const dispatch = useDispatch();
-    const navigation = useNavigation();
-    const isLogin = useSelector((state) => state.authReducer.isLogin);
     const cart = useSelector((state) => state.cartReducer.cart);
 
     return (
@@ -41,78 +41,28 @@ const CartScreen = (props) => {
                     </TouchableOpacity>
                 }
             />
-            <ScrollView style={{flex: 1, padding: Sizes.fixPadding * 2}}>
-                {cart.map((val) => (
-                    <ProductCardHorizontal
-                        key={val._id}
-                        id={val._id}
-                        title={val.title}
-                        thumbnail={val.thumbnail}
-                        price={
-                            val.price_discount > 0
-                                ? val.price_discount
-                                : val.price
-                        }
-                    />
-                ))}
-
-                <View style={{height: 25}} />
-            </ScrollView>
-            <View
-                style={{
-                    paddingHorizontal: Sizes.fixPadding,
-                    backgroundColor: "white",
-                }}
-            >
+            {cart.length > 0 ? (
+                <CartContent />
+            ) : (
                 <View
                     style={{
-                        flexDirection: "row",
-                        alignItems: "center",
+                        flex: 1,
                         justifyContent: "center",
-                        paddingVertical: 3,
-                        marginTop: 10,
+                        alignItems: "center",
+                        backgroundColor: "white",
                     }}
                 >
-                    <Text style={{flex: 1, ...Fonts.black17Regular}}>
-                        Jumlah Item
-                    </Text>
-                    <Text style={{...Fonts.black17Regular}}>{cart.length}</Text>
-                </View>
-
-                <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        paddingVertical: 3,
-                    }}
-                >
-                    <Text style={{flex: 1, ...Fonts.black19Bold}}>Total</Text>
-                    <Text
+                    <Image
                         style={{
-                            ...Fonts.primaryColor23Bold,
-                            color: Colors.orangeColor,
+                            height: Dimensions.get("screen").width / 2,
+                            width: Dimensions.get("screen").width / 2,
+                            borderRadius: 50,
                         }}
-                    >
-                        IDR{" "}
-                        {cart.reduce(
-                            (total, x) =>
-                                total +
-                                (x.price_discount > 0
-                                    ? x.price_discount
-                                    : x.price),
-                            0
-                        )}
-                    </Text>
+                        source={require("../../../assets/Images/helper/empty.png")}
+                        resizeMode="contain"
+                    />
                 </View>
-                <DefaultPrimaryButton
-                    text="Checkout"
-                    onPress={() => {
-                        if (isLogin) navigation.navigate("CheckoutScreen");
-                        else navigation.navigate("LoginScreen");
-                    }}
-                />
-            </View>
+            )}
             <StatusBar backgroundColor={Colors.primaryColor} />
         </SafeAreaView>
     );

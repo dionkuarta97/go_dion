@@ -20,6 +20,8 @@ import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
 import LoadingModal from "../../Components/Modal/LoadingModal";
+import ActionButtonCart from "../../Components/ActionButton/ActionButtonCart";
+import VersionText from "../../Components/VersionText";
 
 const HomeScreen = (props) => {
     const isLogin = useSelector((state) => state.authReducer.isLogin);
@@ -64,6 +66,8 @@ const HomeScreen = (props) => {
                                 console.log("notif")
                             }
                         />
+                        <View style={{width: 15}} />
+                        <ActionButtonCart />
                     </View>
                 }
                 element={
@@ -82,22 +86,24 @@ const HomeScreen = (props) => {
                                     : "Guest"}
                             </Text>
                         </View>
-                        <TouchableOpacity
-                            activeOpacity={0.9}
-                            onPress={() =>
-                                this.props.navigation.navigate("AccountSetting")
-                            }
-                        >
-                            <Image
-                                style={{
-                                    height: 80.0,
-                                    width: 80.0,
-                                    borderRadius: 40.0,
-                                }}
-                                source={require("../../../assets/Images/user_profile/user_3.jpg")}
-                                resizeMode="contain"
-                            />
-                        </TouchableOpacity>
+                        {isLogin && (
+                            <TouchableOpacity
+                                activeOpacity={0.9}
+                                onPress={() =>
+                                    navigation.navigate("ProfileScreen")
+                                }
+                            >
+                                <Image
+                                    style={{
+                                        height: 80.0,
+                                        width: 80.0,
+                                        borderRadius: 40.0,
+                                    }}
+                                    source={require("../../../assets/Images/user_profile/user_3.jpg")}
+                                    resizeMode="contain"
+                                />
+                            </TouchableOpacity>
+                        )}
                     </View>
                 }
                 toolbarColor={Colors.primaryColor}
@@ -106,6 +112,7 @@ const HomeScreen = (props) => {
                 src={require("../../../assets/Images/appbar_bg.png")}
             >
                 <HomeContent />
+                <VersionText />
                 <StatusBar backgroundColor={Colors.primaryColor} />
             </SliverAppBar>
         </SafeAreaView>
