@@ -30,6 +30,8 @@ import EmailCheckScreen from "./Screens/Auth/emailCheckScreen";
 import productPurchasedScreen from "./Screens/Products/productPurchasedScreen";
 import ProductPurchasedScreen from "./Screens/Products/productPurchasedScreen";
 import initialScreen from "./Screens/Global/initialScreen";
+import MateriVideoScreen from "./Screens/GoBelajar/materiVideoScreen";
+import MateriEbookScreen from "./Screens/GoBelajar/materiEbookScreen";
 
 const Stack = createStackNavigator();
 
@@ -127,6 +129,14 @@ export default App = () => {
                         <Stack.Screen
                             name="SubMateriScreen"
                             component={SubMateriScreen}
+                        />
+                        <Stack.Screen
+                            name="MateriVideoScreen"
+                            component={MateriVideoScreen}
+                        />
+                        <Stack.Screen
+                            name="MateriEbookScreen"
+                            component={MateriEbookScreen}
                         />
                         <Stack.Screen
                             name="TryoutDetailScreen"

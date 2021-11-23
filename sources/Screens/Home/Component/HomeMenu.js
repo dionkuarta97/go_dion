@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
+    Alert,
     Image,
     StyleSheet,
     Text,
@@ -20,6 +21,7 @@ const HomeMenu = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const homeMenuState = useSelector((state) => state.homeReducer.homeMenu);
+    const isLogin = useSelector((state) => state.authReducer.isLogin);
 
     useEffect(() => {
         dispatch(getHomeMenu());
@@ -31,7 +33,14 @@ const HomeMenu = () => {
                 navigation.navigate("ProductScreen");
                 break;
             case 1:
-                navigation.navigate("GoBelajarScreen");
+                if (isLogin) {
+                    navigation.navigate("GoBelajarScreen");
+                } else {
+                    Alert.alert(
+                        "Tidak Bisa Masuk",
+                        "Anda belum punya akun untuk mengakses menu ini"
+                    );
+                }
             default:
                 break;
         }
