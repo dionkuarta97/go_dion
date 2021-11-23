@@ -37,11 +37,7 @@
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0",
-    "@react-native-firebase/analytics": "^12.9.1",
-    "@react-native-firebase/app": "^12.9.1",
-    "@react-native-firebase/dynamic-links": "^12.9.2",
-    "@react-native-firebase/firestore": "^13.0.1"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
