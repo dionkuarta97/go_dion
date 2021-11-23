@@ -1440,11 +1440,14 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/dynamic-links/-/dynamic-links-13.0.1.tgz#d14fbb3af304c6a7dfeb183d7cbe43e840cf07a9"
   integrity sha512-X0gOogwOncjOAtpevX4PRo5fIqQPjjWi0nNNs+C6TgWdf1EujO5ipyYlUUeJOj9wr11NL4dGGgemBxNNa9tD+g==
 
+<<<<<<< HEAD
 "@react-native-firebase/firestore@^13.0.1":
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-13.0.1.tgz#76463fadb4ac63aa0127a5ae3957bb68108fe3b6"
   integrity sha512-kOkoQvdYU5W9iAZX9SAN7aoNvZpZZ3CywzoQer0uHp2gFwm02TCeOeEGOVhsbuh+D4uRdD3k5My/zV97OWTlFw==
 
+=======
+>>>>>>> dev-newpassword
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"

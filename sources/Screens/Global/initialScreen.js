@@ -21,7 +21,6 @@ export default InitialScreen = ({navigation}) => {
         //TODO:Navigate to Splashscreen
         setTimeout(() => {
             navigation.replace("MainScreen");
-            // navigation.replace("PaymentScreen");
         }, 2000);
     };
 
