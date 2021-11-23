@@ -33,6 +33,7 @@ import initialScreen from "./Screens/Global/initialScreen";
 import MateriVideoScreen from "./Screens/GoBelajar/materiVideoScreen";
 import MateriEbookScreen from "./Screens/GoBelajar/materiEbookScreen";
 import NewPasswordScreen from "./Screens/Auth/newPasswordScreen";
+import PDFScreen from "./Screens/GoBelajar/pdfScreen";
 
 const Stack = createStackNavigator();
 
@@ -143,6 +144,7 @@ export default App = () => {
                             name="MateriEbookScreen"
                             component={MateriEbookScreen}
                         />
+                        <Stack.Screen name="PDFScreen" component={PDFScreen} />
                         <Stack.Screen
                             name="TryoutDetailScreen"
                             component={TryoutDetailScreen}
