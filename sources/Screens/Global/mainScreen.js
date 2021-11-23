@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
+    Dimensions,
+    Image,
     SafeAreaView,
     StatusBar,
     StyleSheet,
@@ -17,6 +19,7 @@ import HomeScreen from "../Home/homeScreen";
 import CartScreen from "../Cart/cartScreen";
 import PurchaseScreen from "../Purchase/purchaseScreen";
 import LainnyaScreen from "../Lainnya/lainnyaScreen";
+import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 
 const bottomNavMenu = [
     {title: "Home", icon: "home"},
@@ -73,7 +76,29 @@ export default MainScreen = (props) => {
             ) : currentIndex == 4 ? (
                 <LainnyaScreen />
             ) : (
-                <HomeScreen />
+                <SafeAreaView style={{flex: 1}}>
+                    <DefaultAppBar
+                        title={currentIndex == 2 ? "Laporan" : "Leaderboard"}
+                    />
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "white",
+                        }}
+                    >
+                        <Image
+                            style={{
+                                width: Dimensions.get("screen").width / 2,
+                                height: Dimensions.get("screen").width / 2,
+                            }}
+                            source={require("../../../assets/Images/helper/underdev.png")}
+                        />
+
+                        <Text>Under Development</Text>
+                    </View>
+                </SafeAreaView>
             )}
 
             <View style={styles.bottomTabBarStyle}>

@@ -60,9 +60,6 @@ const LainnyaContent = () => {
                     );
                 }
             })}
-            {renderTile("History Pengerjaan", "history", () =>
-                navigation.navigate("history")
-            )}
             {isLogin &&
                 renderTile("Logout", "logout", () => {
                     dispatch(setLoginStatus(false));

@@ -2,6 +2,7 @@ import {useNavigation} from "@react-navigation/core";
 import React, {useEffect, useState} from "react";
 import {
     ActivityIndicator,
+    Keyboard,
     SafeAreaView,
     Text,
     TextInput,
@@ -43,25 +44,23 @@ const EmailCheckScreen = () => {
                         placeholder="ketikkan email kamu"
                     />
                 </View>
+                {checkEmail.error !== null && (
+                    <Text style={{color: Colors.neutralRedColor}}>
+                        {checkEmail.error}
+                    </Text>
+                )}
+                {checkEmail.loading && (
+                    <ActivityIndicator color={Colors.orangeColor} size={24} />
+                )}
                 <DefaultPrimaryButton
                     text="Check"
-                    onPress={() => dispatch(getEmailCheck(email))}
+                    onPress={() => {
+                        dispatch(getEmailCheck(email));
+                        Keyboard.dismiss();
+                    }}
                 />
             </View>
-            {checkEmail.loading && (
-                <ActivityIndicator color={Colors.orangeColor} size={24} />
-            )}
-            {checkEmail.error !== null && (
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
-                    <Text>{checkEmail.error}</Text>
-                </View>
-            )}
+
             {checkEmail.data !== null && (
                 <View
                     style={{

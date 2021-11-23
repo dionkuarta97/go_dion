@@ -57,16 +57,6 @@ const HomeScreen = (props) => {
                             </TouchableOpacity>
                         )}
                         <View style={{width: 15}} />
-                        <MaterialIcons
-                            name="notifications"
-                            size={25}
-                            color="black"
-                            onPress={() =>
-                                // props.navigation.navigate("Notification")
-                                console.log("notif")
-                            }
-                        />
-                        <View style={{width: 15}} />
                         <ActionButtonCart />
                     </View>
                 }
