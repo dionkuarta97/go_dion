@@ -6,6 +6,7 @@ import {
     SafeAreaView,
     StyleSheet,
     TouchableOpacity,
+    Image,
 } from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 
@@ -19,15 +20,16 @@ import Sizes from "../../Theme/Sizes";
 import CompStyles from "../../Theme/styles/globalStyles";
 import LoadingIndicator from "../../Components/Indicator/LoadingIndicator";
 
-const SubMateriScreen = () => {
+const SubMateriScreen = (props) => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const materiDetail = useSelector(
         (state) => state.materiReducer.materiDetail
     );
+    const materiId = props.route.params.materiId;
 
     useEffect(() => {
-        dispatch(getMateriDetail());
+        dispatch(getMateriDetail(materiId));
     }, []);
 
     const renderSubItem = (title, onPress) => {
@@ -65,12 +67,23 @@ const SubMateriScreen = () => {
                         <View style={{flexDirection: "row"}}>
                             <View
                                 style={{
-                                    height: 80,
-                                    width: 80,
-                                    backgroundColor: Colors.orangeColor,
-                                    borderRadius: Sizes.fixPadding,
+                                    width: 90,
+                                    height: 90,
+                                    backgroundColor: "#FF8181",
+                                    borderRadius: 12,
+                                    justifyContent: "center",
+                                    alignItems: "center",
                                 }}
-                            ></View>
+                            >
+                                <Image
+                                    source={require("../../../assets/Images/helper/noimage2.png")}
+                                    style={{
+                                        width: "80%",
+                                        height: undefined,
+                                        aspectRatio: 1,
+                                    }}
+                                />
+                            </View>
                             <View
                                 style={{marginLeft: Sizes.fixPadding, flex: 1}}
                             >
@@ -90,7 +103,9 @@ const SubMateriScreen = () => {
                         })
                     )}
                     {renderSubItem("E-Book", () =>
-                        navigation.navigate("MateriEbookScreen")
+                        navigation.navigate("MateriEbookScreen", {
+                            ebooks: item.pdf,
+                        })
                     )}
                     {renderSubItem("Quiz")}
                 </ExpandableTile>
