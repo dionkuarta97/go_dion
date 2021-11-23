@@ -25,7 +25,7 @@
     "react-native-countdown-component": "^2.7.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-pager-view": "5.4.6",
-    "react-native-pdf": "^6.4.0",
+    "react-native-pdf": "^6.3.0",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
@@ -37,12 +37,16 @@
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "@react-native-firebase/analytics": "^13.0.1",
+    "@react-native-firebase/app": "^13.0.1",
+    "@react-native-firebase/dynamic-links": "^13.0.1",
+    "@react-native-firebase/firestore": "^13.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
   },
   "private": true,
-  "name": "go_online_mobile_UI",
+  "name": "com.go.app",
   "version": "1.0.0"
 }
