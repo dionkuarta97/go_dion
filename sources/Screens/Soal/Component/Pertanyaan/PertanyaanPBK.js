@@ -1,29 +1,56 @@
-import React, { useState } from "react";
-import { Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import React, {useEffect, useState} from "react";
+import {Text, View} from "react-native";
+import {TouchableOpacity} from "react-native-gesture-handler";
+import HTMLView from "react-native-htmlview";
 import CompStyles from "../../../../Theme/styles/globalStyles";
+import {formatQuestion} from "../../Utils/formatQuestion";
 
-const PertanyaanPBK = () => {
-    const [selectedAnswer, setSelectedAnswer] = useState(["A"]);
+const options = ["A", "B", "C", "D", "E", "F"];
+const PertanyaanPBK = (props) => {
+    const question = props.question;
 
-    const isOnAnswer = (opt) => {
-        const answer = selectedAnswer.find((val) => val == opt) ?? false;
-        return answer;
-    };
+    const [selectedAnswer, setSelectedAnswer] = useState([]);
 
-    const changeAnswer = (opt) => {
-        if (isOnAnswer(opt) === opt) {
-            setSelectedAnswer((prevState) =>
-                prevState.filter((val) => val !== opt)
+    useEffect(() => {
+        if (props.answer === null) {
+            const initAnswer = [...Array(question.jawaban.length).keys()].map(
+                (val) => -1
             );
+            setSelectedAnswer(initAnswer);
         } else {
-            setSelectedAnswer((prevState) => [...prevState, opt]);
+            setSelectedAnswer(props.answer);
         }
+    }, [question]);
+
+    const isOnAnswer = (index) => {
+        return selectedAnswer[index] === 1;
     };
 
-    const renderOption = ({ opt }) => {
+    const changeAnswer = (index) => {
+        let userAnswer = [];
+        if (isOnAnswer(index)) {
+            const newState = [...selectedAnswer];
+            newState[index] = -1;
+            userAnswer = newState;
+            setSelectedAnswer(newState);
+        } else {
+            const newState = [...selectedAnswer];
+            newState[index] = 1;
+            userAnswer = newState;
+            setSelectedAnswer(newState);
+        }
+        console.log(userAnswer);
+        props.onSelect(userAnswer);
+    };
+
+    const renderOption = (answer, index) => {
         return (
-            <TouchableOpacity onPress={() => changeAnswer(opt)}>
+            <TouchableOpacity
+                onPress={() => {
+                    changeAnswer(index);
+                }}
+                key={`answer${index}`}
+            >
                 <View
                     style={{
                         flexDirection: "row",
@@ -32,17 +59,12 @@ const PertanyaanPBK = () => {
                         borderRadius: 10,
                         borderWidth: 1,
                         marginTop: 10,
-                        borderColor:
-                            isOnAnswer(opt) == opt ? "#7DC579" : "#91919F",
-                        backgroundColor:
-                            isOnAnswer(opt) == opt ? "#E1FFDF" : null,
+                        borderColor: isOnAnswer(index) ? "#7DC579" : "#91919F",
+                        backgroundColor: isOnAnswer(index) ? "#E1FFDF" : null,
                     }}
                 >
-                    <Text>{opt}.</Text>
-                    <Text style={{ marginLeft: 10 }}>
-                        sadasldkj alskj dlaksjd klasj dlasdlasjl as jlsakj
-                        dlkasj kldasd .
-                    </Text>
+                    <Text style={{marginRight: 10}}>{options[index]}.</Text>
+                    <HTMLView value={answer.pilihan} />
                 </View>
             </TouchableOpacity>
         );
@@ -50,20 +72,14 @@ const PertanyaanPBK = () => {
 
     return (
         <View style={CompStyles.defaultCard}>
-            <View style={{ flexDirection: "row" }}>
-                <Text>1. </Text>
-                <Text style={{ flex: 1 }}>
-                    Jika ada seorang murid dengan nilai 75, maka pasti ada murid
-                    dengen nilai 85
-                </Text>
+            <View style={{flexDirection: "row"}}>
+                {/* <HTMLView value={formatQuestion(question.pertanyaan)} /> */}
             </View>
 
             <View>
-                {renderOption({ opt: "A" })}
-                {renderOption({ opt: "B" })}
-                {renderOption({ opt: "C" })}
-                {renderOption({ opt: "D" })}
-                {renderOption({ opt: "E" })}
+                {question.jawaban.map((item, index) =>
+                    renderOption(item, index)
+                )}
             </View>
         </View>
     );

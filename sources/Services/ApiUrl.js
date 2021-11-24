@@ -37,5 +37,7 @@ export const urlPaymentMethod = urlBasePurchase + "/payments/method";
 export const urlPaymentProcess = urlBasePurchase + "/payments/process";
 
 /*** MATERI URL */
-
 export const urlMateri = urlBaseMasterdata + "/materi";
+
+/*** QUESTS URL */
+export const urlQuests = urlBaseMasterdata + "/quests";
