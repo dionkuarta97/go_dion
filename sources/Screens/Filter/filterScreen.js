@@ -25,7 +25,7 @@ const FilterScreen = () => {
                 }}
             >
                 <FilterSearchText />
-                <FilterSearchCategories />
+                {/* <FilterSearchCategories /> */}
             </ScrollView>
         </SafeAreaView>
     );

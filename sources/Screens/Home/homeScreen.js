@@ -89,7 +89,7 @@ const HomeScreen = (props) => {
                                         width: 80.0,
                                         borderRadius: 40.0,
                                     }}
-                                    source={require("../../../assets/Images/user_profile/user_3.jpg")}
+                                    source={require("../../../assets/Images/user_profile/no-user.jpg")}
                                     resizeMode="contain"
                                 />
                             </TouchableOpacity>
