@@ -187,7 +187,7 @@ const ProductDetailScreen = (props) => {
                                     marginLeft: Sizes.fixPadding - 5.0,
                                 }}
                             >
-                                Add to Cart
+                                Keranjang
                             </Text>
                         </TouchableOpacity>
                     ) : (
