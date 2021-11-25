@@ -34,6 +34,7 @@ import MateriVideoScreen from "./Screens/GoBelajar/materiVideoScreen";
 import MateriEbookScreen from "./Screens/GoBelajar/materiEbookScreen";
 import NewPasswordScreen from "./Screens/Auth/newPasswordScreen";
 import PDFScreen from "./Screens/GoBelajar/pdfScreen";
+import ScoreScreen from "./Screens/Score/scoreScreen";
 
 const Stack = createStackNavigator();
 
@@ -152,6 +153,10 @@ export default App = () => {
                         <Stack.Screen
                             name="SoalScreen"
                             component={SoalScreen}
+                        />
+                        <Stack.Screen
+                            name="ScoreScreen"
+                            component={ScoreScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

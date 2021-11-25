@@ -21,6 +21,8 @@ export default InitialScreen = ({navigation}) => {
         //TODO:Navigate to Splashscreen
         setTimeout(() => {
             navigation.replace("MainScreen");
+            // navigation.replace("MainScreen");
+            // navigation.replace("ScoreScreen");
         }, 2000);
     };
 

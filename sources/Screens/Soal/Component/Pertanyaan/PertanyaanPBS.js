@@ -1,14 +1,29 @@
-import React, { useState } from "react";
-import { Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import React, {useEffect, useState} from "react";
+import {Text, View} from "react-native";
+import {TouchableOpacity} from "react-native-gesture-handler";
+import HTMLView from "react-native-htmlview";
 import CompStyles from "../../../../Theme/styles/globalStyles";
 
-const PertanyaanPBS = () => {
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
+const options = ["A", "B", "C", "D", "E", "F"];
+const PertanyaanPBS = (props) => {
+    const question = props.question;
+    const [selectedAnswer, setSelectedAnswer] = useState(-1);
 
-    const renderOption = ({ opt }) => {
+    useEffect(() => {
+        if (props.answer === null) setSelectedAnswer(-1);
+        else setSelectedAnswer(props.answer);
+    }, [question]);
+
+    const renderOption = (answer, index) => {
         return (
-            <TouchableOpacity onPress={() => setSelectedAnswer(opt)}>
+            <TouchableOpacity
+                key={"answer" + index}
+                onPress={() => {
+                    setSelectedAnswer(index);
+                    props.onSelect([index]);
+                }}
+                key={`answer${index}`}
+            >
                 <View
                     style={{
                         flexDirection: "row",
@@ -18,36 +33,28 @@ const PertanyaanPBS = () => {
                         borderWidth: 1,
                         marginTop: 10,
                         borderColor:
-                            selectedAnswer == opt ? "#7DC579" : "#91919F",
+                            selectedAnswer == index ? "#7DC579" : "#91919F",
                         backgroundColor:
-                            selectedAnswer == opt ? "#E1FFDF" : null,
+                            selectedAnswer == index ? "#E1FFDF" : null,
                     }}
                 >
-                    <Text>{opt}.</Text>
-                    <Text style={{ marginLeft: 10 }}>
-                        sadasldkj alskj dlaksjd klasj dlasdlasjl as jlsakj
-                        dlkasj kldasd .
-                    </Text>
+                    <Text style={{marginRight: 10}}>{options[index]}.</Text>
+                    <HTMLView value={answer.pilihan} />
                 </View>
             </TouchableOpacity>
         );
     };
 
     return (
-        <View style={CompStyles.defaultCard}>
-            <View style={{ flexDirection: "row" }}>
-                <Text>1. </Text>
-                <Text style={{ flex: 1 }}>
-                    Jika ada seorang murid dengan nilai 75, maka pasti ada murid
-                    dengen nilai 85
-                </Text>
+        <View style={CompStyles.defaultCard} key={question._id}>
+            <View style={{flexDirection: "row"}}>
+                <HTMLView value={question.pertanyaan} />
             </View>
 
             <View>
-                {renderOption({ opt: "A" })}
-                {renderOption({ opt: "B" })}
-                {renderOption({ opt: "C" })}
-                {renderOption({ opt: "D" })}
+                {question.jawaban.map((item, index) =>
+                    renderOption(item, index)
+                )}
             </View>
         </View>
     );

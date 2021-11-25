@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, {useEffect, useState} from "react";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
 import Colors from "../../../Theme/Colors";
 import Sizes from "../../../Theme/Sizes";
 
 const NavigasiSoal = (props) => {
     const [index, setIndex] = useState(props.currentIndex);
+
+    useEffect(() => {
+        setIndex(props.currentIndex);
+    }, [props.currentIndex]);
     return (
         <View
             style={{
@@ -19,7 +23,7 @@ const NavigasiSoal = (props) => {
             }}
         >
             {index !== 0 && (
-                <View style={{ flex: 1 }}>
+                <View style={{flex: 1}}>
                     <TouchableOpacity
                         style={styles.prevButton}
                         onPress={() => {
@@ -33,7 +37,7 @@ const NavigasiSoal = (props) => {
             )}
 
             {index !== props.itemLength - 1 && (
-                <View style={{ flex: 2 }}>
+                <View style={{flex: 2}}>
                     <TouchableOpacity
                         style={styles.nextButton}
                         onPress={() => {
@@ -47,7 +51,7 @@ const NavigasiSoal = (props) => {
             )}
 
             {index === props.itemLength - 1 && (
-                <View style={{ flex: 2 }}>
+                <View style={{flex: 2}}>
                     <TouchableOpacity
                         style={styles.nextButton}
                         onPress={props.onFinish}

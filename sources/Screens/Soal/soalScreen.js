@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     Alert,
     SafeAreaView,
@@ -7,10 +7,13 @@ import {
     View,
     StyleSheet,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {TouchableOpacity} from "react-native-gesture-handler";
+import {useDispatch, useSelector} from "react-redux";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import RoundedButton from "../../Components/Button/RoundedButton";
+import LoadingIndicator from "../../Components/Indicator/LoadingIndicator";
+import {getSoal, setNumber} from "../../Redux/Soal/soalActions";
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
@@ -24,86 +27,22 @@ import PertanyaanPBCT from "./Component/Pertanyaan/PertanyaanPBCT";
 import PertanyaanPBK from "./Component/Pertanyaan/PertanyaanPBK";
 import PertanyaanPBS from "./Component/Pertanyaan/PertanyaanPBS";
 import SoalPG from "./Component/Pertanyaan/PertanyaanPBS";
+import SoalContent from "./Component/soalContent";
 import TimerSoal from "./Component/TimerSoal";
 
 const SoalScreen = () => {
-    const totalSoal = 5;
-    const [number, setNumber] = useState(1);
+    const dispatch = useDispatch();
+    const soal = useSelector((state) => state.soalReducer.soal);
 
-    const [visibleStatusModal, setVisibleStatusModal] = useState(false);
-
-    const [delay, setDelay] = useState(false);
+    useEffect(() => {
+        dispatch(getSoal());
+    }, []);
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            {visibleStatusModal && (
-                <ModalStatusSoal
-                    onClose={() => {
-                        setVisibleStatusModal(false);
-                        console.log("tes modal");
-                    }}
-                />
-            )}
+        <SafeAreaView style={{flex: 1}}>
             <DefaultAppBar title="Soal" />
-            <View style={{ padding: Sizes.fixPadding * 2 }}>
-                <Text style={{ color: Colors.ligthGreyColor }}>Sesi 1/2</Text>
-                <View style={{ flexDirection: "row" }}>
-                    <Text style={{ ...Fonts.black17Bold, flex: 1 }}>
-                        Bahasa Indonesia
-                    </Text>
-                    <View>
-                        {/* <TimerSoal
-                            length={10}
-                            onDelay={() => {
-                                console.log("delay mulai");
-                                setDelay(true);
-                            }}
-                            onFinish={() => {
-                                setDelay(false);
-                                console.log("selesai");
-                            }}
-                        /> */}
-                    </View>
-                </View>
-            </View>
-            {delay && <DelaySession />}
-            {!delay && (
-                <View style={{ flex: 1 }}>
-                    <View
-                        style={{
-                            flex: 1,
-                            paddingHorizontal: Sizes.fixPadding * 2,
-                            marginTop: Sizes.fixPadding,
-                        }}
-                    >
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                marginBottom: Sizes.fixPadding,
-                            }}
-                        >
-                            <Text style={{ flex: 1, color: "black" }}>
-                                Soal {number}/{totalSoal}
-                            </Text>
-
-                            <RoundedButton
-                                title="Lihat Status"
-                                onPress={() => setVisibleStatusModal(true)}
-                            />
-                        </View>
-                        <ScrollView style={{ flex: 1 }}>
-                            <PertanyaanEssayMajemuk />
-                        </ScrollView>
-                    </View>
-                    <NavigasiSoal
-                        itemLength={totalSoal}
-                        currentIndex={0}
-                        onChange={(index) => setNumber(index + 1)}
-                        onFinish={() => console.log("Selesai")}
-                    />
-                </View>
-            )}
+            {soal.loading && <LoadingIndicator />}
+            {soal.data != null && <SoalContent />}
         </SafeAreaView>
     );
 };

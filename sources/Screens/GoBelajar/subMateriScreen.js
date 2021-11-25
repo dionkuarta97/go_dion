@@ -13,12 +13,14 @@ import {MaterialIcons} from "@expo/vector-icons";
 import {useDispatch, useSelector} from "react-redux";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import ExpandableTile from "../../Components/Tile/ExpendableTile";
-import {getMateriDetail} from "../../Redux/Materi/materiActions";
+import {getMateriDetail, setMateriQuiz} from "../../Redux/Materi/materiActions";
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
 import CompStyles from "../../Theme/styles/globalStyles";
 import LoadingIndicator from "../../Components/Indicator/LoadingIndicator";
+import {urlQuests} from "../../Services/ApiUrl";
+import {setSoalUrl} from "../../Redux/Soal/soalActions";
 
 const SubMateriScreen = (props) => {
     const dispatch = useDispatch();
@@ -107,7 +109,16 @@ const SubMateriScreen = (props) => {
                             ebooks: item.pdf,
                         })
                     )}
-                    {renderSubItem("Quiz")}
+                    {item.quiz &&
+                        renderSubItem("Quiz", () => {
+                            dispatch(
+                                setSoalUrl(
+                                    urlQuests +
+                                        `/materi/${materiId}/bab/${item._id}`
+                                )
+                            );
+                            navigation.navigate("SoalScreen");
+                        })}
                 </ExpandableTile>
             </View>
         );

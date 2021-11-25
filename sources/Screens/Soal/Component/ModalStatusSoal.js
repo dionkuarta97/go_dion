@@ -9,19 +9,23 @@ import {
     TouchableOpacity,
     StyleSheet,
 } from "react-native";
-import { FlatGrid } from "react-native-super-grid";
+import {FlatGrid} from "react-native-super-grid";
 import Colors from "../../../Theme/Colors";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 
 const ModalStatusSoal = (props) => {
+    const questions = props.questions;
+    const answers = props.answers;
+    const number = props.number;
+
     return (
         <Modal transparent={true} animationType="fade">
             <View style={styles.container}>
                 <View style={styles.dimBackground} />
                 <View style={styles.dialog}>
-                    <Text style={{ ...Fonts.black17Bold, alignSelf: "center" }}>
-                        Status Soal | Soal 15
+                    <Text style={{...Fonts.black17Bold, alignSelf: "center"}}>
+                        Status Soal | Soal {questions.length}
                     </Text>
                     <FlatGrid
                         itemDimension={75}
@@ -31,30 +35,46 @@ const ModalStatusSoal = (props) => {
                             justifyContent: "center",
                         }}
                         item
-                        data={[1, 2, 3, 4, 5]}
-                        renderItem={(index, item) => {
+                        data={questions}
+                        renderItem={({item, index}) => {
                             return (
-                                <View
-                                    style={{
-                                        width: 75,
-                                        height: 75,
-                                        // backgroundColor: "#FFE9E9",
-                                        backgroundColor: "#E1FFDF",
-
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        borderRadius: Sizes.fixPadding * 2,
-                                    }}
+                                <TouchableOpacity
+                                    onPress={() => props.onSelect(index)}
                                 >
-                                    <Text
+                                    <View
                                         style={{
-                                            // color: "#FF8181",
-                                            color: "#7DC579",
+                                            width: 75,
+                                            height: 75,
+                                            // backgroundColor: "#FFE9E9",
+                                            backgroundColor:
+                                                index == number
+                                                    ? "#7DC579"
+                                                    : answers[index] !==
+                                                      undefined
+                                                    ? "#E1FFDF"
+                                                    : "#FFE9E9",
+
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            borderRadius: Sizes.fixPadding * 2,
                                         }}
                                     >
-                                        12
-                                    </Text>
-                                </View>
+                                        <Text
+                                            style={{
+                                                // color: "#FF8181",
+                                                color:
+                                                    index == number
+                                                        ? "white"
+                                                        : answers[index] !==
+                                                          undefined
+                                                        ? "#7DC579"
+                                                        : "#FF8181",
+                                            }}
+                                        >
+                                            {index + 1}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
                             );
                         }}
                     />

@@ -13,6 +13,7 @@ import {produkReducer} from "./Produk/produkReducer";
 import {profileReducer} from "./Profile/profileReducer";
 import {materiReducer} from "./Materi/materiReducer";
 import {versionReducer} from "./Version/versionReducer";
+import {soalReducer} from "./Soal/soalReducer";
 
 const persistConfig = {
     key: "root",
@@ -21,6 +22,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     authReducer: persistReducer(persistConfig, authReducer),
+    soalReducer: persistReducer(persistConfig, soalReducer),
     dataReducer: dataReducer,
     homeReducer: homeReducer,
     profileReducer: profileReducer,
