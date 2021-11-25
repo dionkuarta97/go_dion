@@ -2,6 +2,7 @@ import React from "react";
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 import PropTypes from "prop-types";
+import NumberFormat from "react-number-format";
 
 import CompStyles from "../../Theme/styles/globalStyles";
 import Sizes from "../../Theme/Sizes";
@@ -26,9 +27,18 @@ const ProductCardHorizontal = (props) => {
                     <Text style={{...Fonts.black17Bold}}>{props.title}</Text>
                     <View style={{flex: 1}} />
                     <View style={{flexDirection: "row", alignItems: "center"}}>
-                        <Text style={{flex: 1, ...Fonts.black15Bold}}>
-                            IDR {props.price}
-                        </Text>
+                        <NumberFormat
+                            value={props.price}
+                            displayType={"text"}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            prefix={"IDR "}
+                            renderText={(value, props) => (
+                                <Text style={{flex: 1, ...Fonts.black15Bold}}>
+                                    {value}
+                                </Text>
+                            )}
+                        />
 
                         <TouchableOpacity
                             activeOpacity={0.7}

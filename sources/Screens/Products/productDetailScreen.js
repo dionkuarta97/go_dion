@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {MaterialIcons} from "@expo/vector-icons";
 import SliverAppBar from "../../Components/sliverAppBar";
 import {getSliderImages} from "../../Redux/Home/homeActions";
+import NumberFormat from "react-number-format";
 
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
@@ -63,12 +64,22 @@ const ProductDetailScreen = (props) => {
                             (7 Reviews)
                         </Text>
                     </View>
-                    <Text style={{...Fonts.primaryColor25Bold}}>
-                        IDR{" "}
-                        {item.price_discount > 0
-                            ? item.price_discount
-                            : item.price}
-                    </Text>
+                    <NumberFormat
+                        value={
+                            item.price_discount > 0
+                                ? item.price_discount
+                                : item.price
+                        }
+                        displayType={"text"}
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        prefix={"IDR "}
+                        renderText={(value, props) => (
+                            <Text style={{...Fonts.primaryColor25Bold}}>
+                                {value}
+                            </Text>
+                        )}
+                    />
                 </View>
                 <TouchableOpacity
                     activeOpacity={0.9}

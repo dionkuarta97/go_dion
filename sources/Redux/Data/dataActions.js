@@ -28,7 +28,7 @@ export function getListProvince() {
     return async (dispatch, getState) => {
         dispatch(setListProvince(defaultInitState));
         try {
-            fetch(urlProvinsi)
+            fetch(urlProvinsi + "?limit=-1")
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
@@ -57,8 +57,8 @@ export function setListCity(state) {
 export function getListCity(idprovinsi) {
     const url =
         idprovinsi !== null
-            ? urlWilayah + `/${idprovinsi}/kabkota`
-            : urlWilayah + "/kabkota";
+            ? urlWilayah + `/${idprovinsi}/kabkota?limit=-1`
+            : urlWilayah + "/kabkota?limit=-1";
 
     return async (dispatch, getState) => {
         dispatch(setListCity(defaultInitState));
@@ -90,8 +90,8 @@ export function setListSekolah(state) {
 export function getListSekolah(idkabkota) {
     const url =
         idkabkota !== null
-            ? urlCommon + `/${idkabkota}/sekolah`
-            : urlCommon + "/sekolah";
+            ? urlCommon + `/${idkabkota}/sekolah?limit=-1`
+            : urlCommon + "/sekolah?limit=-1";
 
     return async (dispatch, getState) => {
         dispatch(setListSekolah(defaultInitState));

@@ -40,7 +40,7 @@ const SoalScreen = () => {
 
     return (
         <SafeAreaView style={{flex: 1}}>
-            <DefaultAppBar title="Soal" />
+            <DefaultAppBar title="Soal" backEnabled={true} />
             {soal.loading && <LoadingIndicator />}
             {soal.data != null && <SoalContent />}
         </SafeAreaView>

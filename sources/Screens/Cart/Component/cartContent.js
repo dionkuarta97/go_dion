@@ -1,6 +1,8 @@
 import {useNavigation} from "@react-navigation/core";
 import React from "react";
 import {ScrollView, Text, View} from "react-native";
+import NumberFormat from "react-number-format";
+
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import {useDispatch, useSelector} from "react-redux";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
@@ -63,14 +65,9 @@ const CartContent = () => {
                     }}
                 >
                     <Text style={{flex: 1, ...Fonts.black19Bold}}>Total</Text>
-                    <Text
-                        style={{
-                            ...Fonts.primaryColor23Bold,
-                            color: Colors.orangeColor,
-                        }}
-                    >
-                        IDR{" "}
-                        {cart.reduce(
+
+                    <NumberFormat
+                        value={cart.reduce(
                             (total, x) =>
                                 total +
                                 (x.price_discount > 0
@@ -78,7 +75,21 @@ const CartContent = () => {
                                     : x.price),
                             0
                         )}
-                    </Text>
+                        displayType={"text"}
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        prefix={"IDR "}
+                        renderText={(value, props) => (
+                            <Text
+                                style={{
+                                    ...Fonts.primaryColor23Bold,
+                                    color: Colors.orangeColor,
+                                }}
+                            >
+                                {value}
+                            </Text>
+                        )}
+                    />
                 </View>
                 <DefaultPrimaryButton
                     text="Checkout"

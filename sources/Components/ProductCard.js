@@ -2,6 +2,7 @@ import {useNavigation} from "@react-navigation/core";
 import React from "react";
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from "prop-types";
+import NumberFormat from "react-number-format";
 
 import Fonts from "../Theme/Fonts";
 import Sizes from "../Theme/Sizes";
@@ -66,29 +67,47 @@ const ProductCard = (props) => {
                             marginTop: Sizes.fixPadding - 5.0,
                         }}
                     >
-                        <Text
-                            style={{
-                                color: Colors.orangeColor,
-                                textDecorationLine: "line-through",
-                            }}
-                        >
-                            IDR {item.price}
-                        </Text>
+                        <NumberFormat
+                            value={item.price}
+                            displayType={"text"}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            prefix={"IDR "}
+                            renderText={(value, props) => (
+                                <Text
+                                    style={{
+                                        color: Colors.orangeColor,
+                                        textDecorationLine: "line-through",
+                                    }}
+                                >
+                                    {value}
+                                </Text>
+                            )}
+                        />
                     </View>
                 )}
 
-                <Text
-                    style={{
-                        ...Fonts.black19Bold,
-                        marginTop: Sizes.fixPadding,
-                    }}
-                >
-                    {`IDR ${
+                <NumberFormat
+                    value={
                         item.price_discount !== 0
                             ? item.price_discount
                             : item.price
-                    }`}
-                </Text>
+                    }
+                    displayType={"text"}
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    prefix={"IDR "}
+                    renderText={(value, props) => (
+                        <Text
+                            style={{
+                                ...Fonts.black19Bold,
+                                marginTop: Sizes.fixPadding,
+                            }}
+                        >
+                            {value}
+                        </Text>
+                    )}
+                />
             </View>
         </TouchableOpacity>
     );
