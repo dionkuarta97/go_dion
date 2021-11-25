@@ -53,7 +53,7 @@ const ProductDetailScreen = (props) => {
                         alignItems: "center",
                     }}
                 >
-                    <View style={{flexDirection: "row", alignItems: "center"}}>
+                    {/* <View style={{flexDirection: "row", alignItems: "center"}}>
                         <Text style={{...Fonts.primaryColor16Regular}}>5</Text>
                         <MaterialIcons
                             name="star"
@@ -63,7 +63,49 @@ const ProductDetailScreen = (props) => {
                         <Text style={{...Fonts.primaryColor16Regular}}>
                             (7 Reviews)
                         </Text>
-                    </View>
+                    </View> */}
+                    {item.price_discount > 0 && (
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      marginBottom: 5,
+                      backgroundColor: Colors.primaryColor,
+                      padding:10
+                    }}
+                  >
+                    <NumberFormat
+                      value={item.price}
+                      displayType={"text"}
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      prefix={"Rp "}
+                      renderText={(value, props) => (
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            textDecorationLine: "line-through",
+                          }}
+                        >
+                          {value}
+                        </Text>
+                      )}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "bold",
+                        color: "green",
+                      }}
+                    >
+                      {Math.round(
+                        ((item.price - item.price_discount) /
+                          item.price) *
+                          100
+                      )}
+                      % off
+                    </Text>
+                  </View>
+                )}
                     <NumberFormat
                         value={
                             item.price_discount > 0
