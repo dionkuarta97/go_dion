@@ -4,7 +4,7 @@ import {MaterialIcons} from "@expo/vector-icons";
 
 import Sizes from "../../Theme/Sizes";
 import {useNavigation} from "@react-navigation/core";
-// import Pdf from "react-native-pdf";
+import Pdf from "react-native-pdf";
 
 const PDFScreen = (props) => {
     const navigation = useNavigation();
@@ -38,7 +38,7 @@ const PDFScreen = (props) => {
                 />
                 <View style={{flex: 1}} />
             </View>
-            {/* 
+
             <Pdf
                 source={{uri: book}}
                 onLoadComplete={(numberOfPages, filePath) => {
@@ -58,7 +58,7 @@ const PDFScreen = (props) => {
                     backgroundColor: "red",
                     width: Dimensions.get("screen").width,
                 }}
-            /> */}
+            />
         </View>
     );
 };
