@@ -54,7 +54,7 @@ export default InitialScreen = ({navigation}) => {
                 resizeMode="contain"
             />
             <View style={{height:20}}></View>
-            <Text>Loading</Text>
+            <Text>Loading...</Text>
         </View>
     );
 };

@@ -82,7 +82,7 @@ const ProductDetailScreen = (props) => {
                         backgroundColor: Colors.primaryColor,
                     }}
                 >
-                    <Text style={{...Fonts.black17Bold}}>Buy Now</Text>
+                    <Text style={{...Fonts.black17Bold}}>Beli Sekarang</Text>
                 </TouchableOpacity>
                 {/* <TouchableOpacity
                     activeOpacity={0.9}
