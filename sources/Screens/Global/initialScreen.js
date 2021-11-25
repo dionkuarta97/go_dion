@@ -1,5 +1,5 @@
 import React, {useEffect, useLayoutEffect} from "react";
-import {View, StyleSheet, Text} from "react-native";
+import {View, StyleSheet, Text, Image} from "react-native";
 import * as Font from "expo-font";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -43,6 +43,17 @@ export default InitialScreen = ({navigation}) => {
 
     return (
         <View style={styles.container}>
+            
+            <Image
+                style={{
+                    height: 100.0,
+                    width: 100.0,
+                    borderRadius: 40.0,
+                }}
+                source={require("../../../assets/Images/icon.png")}
+                resizeMode="contain"
+            />
+            <View style={{height:20}}></View>
             <Text>Loading</Text>
         </View>
     );
