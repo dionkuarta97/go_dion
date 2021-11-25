@@ -55,7 +55,7 @@ const PDFScreen = (props) => {
                 }}
                 style={{
                     flex: 1,
-                    backgroundColor: "red",
+                    backgroundColor: "black",
                     width: Dimensions.get("screen").width,
                 }}
             />

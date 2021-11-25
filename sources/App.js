@@ -35,6 +35,7 @@ import MateriEbookScreen from "./Screens/GoBelajar/materiEbookScreen";
 import NewPasswordScreen from "./Screens/Auth/newPasswordScreen";
 import PDFScreen from "./Screens/GoBelajar/pdfScreen";
 import ScoreScreen from "./Screens/Score/scoreScreen";
+import Colors from "../sources/Theme/Colors";
 
 const Stack = createStackNavigator();
 
@@ -145,7 +146,18 @@ export default App = () => {
                             name="MateriEbookScreen"
                             component={MateriEbookScreen}
                         />
-                        <Stack.Screen name="PDFScreen" component={PDFScreen} />
+                        <Stack.Screen
+                            name="PDFScreen"
+                            component={PDFScreen}
+                            options={{
+                                headerShown: true,
+                                headerTintColor: "black",
+                                title: "",
+                                headerStyle: {
+                                    backgroundColor: Colors.primaryColor
+                                },
+                            }}
+                        />
                         <Stack.Screen
                             name="TryoutDetailScreen"
                             component={TryoutDetailScreen}
