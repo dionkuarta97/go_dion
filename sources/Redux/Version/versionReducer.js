@@ -1,6 +1,6 @@
 const initialState = {
-    androidVersion: "1.0.0",
-    iosVersion: "1.0.0",
+    androidVersion: "0.1.43",
+    iosVersion: "0.0.0",
 };
 
 export function versionReducer(state = initialState, action) {
