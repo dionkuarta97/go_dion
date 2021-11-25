@@ -75,7 +75,7 @@ const SoalContent = () => {
                         {!delay ? (
                             <CountDown
                                 key={"Count 1"}
-                                until={10}
+                                until={sessionDuration}
                                 digitStyle={{
                                     backgroundColor: "transparent",
                                 }}
@@ -107,7 +107,7 @@ const SoalContent = () => {
                         ) : (
                             <CountDown
                                 key={"Count 2"}
-                                until={5}
+                                until={sessionWaitingDuration}
                                 digitStyle={{
                                     backgroundColor: "transparent",
                                 }}
