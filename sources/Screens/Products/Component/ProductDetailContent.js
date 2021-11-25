@@ -26,8 +26,16 @@ const ProductDetailContent = (props) => {
                 {titleText("Informasi")}
                 <View style={styles.content}>
                     <Text>{item.desc}</Text>
+                    <Divider />
+                    <Text>Kategory: {item.details.category}</Text>
+                    <Divider />
+                    <Text>Level: {item.details.level}</Text>
+                    <Divider />
+                    <Text>Wilayah: {item.details.wilayah}</Text>
                 </View>
-                <Divider />
+                
+
+                
             </ScrollView>
         </View>
     );
