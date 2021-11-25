@@ -8,6 +8,8 @@ import {
     View,
 } from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
+import NumberFormat from "react-number-format";
+
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
@@ -45,15 +47,27 @@ const CheckoutScreen = () => {
         return (
             <View style={styles.item} key={item._id}>
                 <Text style={{flex: 4, ...Fonts.gray15Bold}}>{item.title}</Text>
-                <Text
-                    style={{
-                        flex: 1,
-                        ...Fonts.gray15Regular,
-                    }}
-                >
-                    IDR{" "}
-                    {item.price_discount > 0 ? item.price_discount : item.price}
-                </Text>
+                <NumberFormat
+                    value={
+                        item.price_discount > 0
+                            ? item.price_discount
+                            : item.price
+                    }
+                    displayType={"text"}
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    prefix={"IDR "}
+                    renderText={(value, props) => (
+                        <Text
+                            style={{
+                                flex: 1,
+                                ...Fonts.gray15Regular,
+                            }}
+                        >
+                            {value}
+                        </Text>
+                    )}
+                />
             </View>
         );
     };
@@ -90,13 +104,8 @@ const CheckoutScreen = () => {
                         >
                             Total
                         </Text>
-                        <Text
-                            style={{
-                                ...Fonts.black17Regular,
-                            }}
-                        >
-                            IDR{" "}
-                            {cart.reduce(
+                        <NumberFormat
+                            value={cart.reduce(
                                 (total, x) =>
                                     total +
                                     (x.price_discount > 0
@@ -104,7 +113,20 @@ const CheckoutScreen = () => {
                                         : x.price),
                                 0
                             )}
-                        </Text>
+                            displayType={"text"}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            prefix={"IDR "}
+                            renderText={(value, props) => (
+                                <Text
+                                    style={{
+                                        ...Fonts.black17Regular,
+                                    }}
+                                >
+                                    {value}
+                                </Text>
+                            )}
+                        />
                     </View>
                 </View>
 

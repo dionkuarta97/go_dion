@@ -7,6 +7,9 @@ import {
     Text,
     View,
 } from "react-native";
+import NumberFormat from "react-number-format";
+import moment from "moment";
+
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {useDispatch, useSelector} from "react-redux";
 import DefaultCard from "../../../Components/Card/DefaultCard";
@@ -69,8 +72,24 @@ const PurchaseContent = (props) => {
                     </View>
 
                     <Divider />
-                    <Text>{item.payment_detail.transaction_time}</Text>
-                    <Text>Total : IDR {item.payment_detail.gross_amount}</Text>
+                    <Text>
+                        {moment(item.payment_detail.transaction_time).format(
+                            "DD MMM YYYY, HH:mm"
+                        ) + " WIB"}
+                    </Text>
+                    <View style={{flexDirection: "row"}}>
+                        <Text>Total : </Text>
+                        <NumberFormat
+                            value={
+                                item.payment_detail.gross_amount.split(".")[0]
+                            }
+                            displayType={"text"}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            prefix={"IDR "}
+                            renderText={(value, props) => <Text>{value}</Text>}
+                        />
+                    </View>
                 </View>
             </TouchableOpacity>
         );

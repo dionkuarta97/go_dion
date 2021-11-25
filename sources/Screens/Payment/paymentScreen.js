@@ -7,6 +7,7 @@ import {
     View,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
+import NumberFormat from "react-number-format";
 
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
@@ -170,10 +171,22 @@ const PaymentScreen = (props) => {
                             <Text style={{marginTop: Sizes.fixPadding}}>
                                 Total Amount
                             </Text>
-                            <Text style={{...Fonts.black17Bold}}>
-                                IDR{" "}
-                                {paymentDetail.data.payment_detail.gross_amount}
-                            </Text>
+                            <NumberFormat
+                                value={
+                                    paymentDetail.data.payment_detail.gross_amount.split(
+                                        "."
+                                    )[0]
+                                }
+                                displayType={"text"}
+                                thousandSeparator="."
+                                decimalSeparator=","
+                                prefix={"IDR "}
+                                renderText={(value, props) => (
+                                    <Text style={{...Fonts.black17Bold}}>
+                                        {value}
+                                    </Text>
+                                )}
+                            />
                         </View>
                     </View>
                 )}
