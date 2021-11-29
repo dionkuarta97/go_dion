@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
     Animated,
     Platform,
@@ -105,8 +105,8 @@ const SliverAppBar = (props) => {
                 scrollEventThrottle={1}
                 showsVerticalScrollIndicator={false}
                 onScroll={Animated.event(
-                    [{nativeEvent: {contentOffset: {y: scrollY}}}],
-                    {useNativeDriver: true}
+                    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                    { useNativeDriver: true }
                 )}
             >
                 <View
@@ -124,7 +124,7 @@ const SliverAppBar = (props) => {
                     {
                         backgroundColor: toolbarColor,
                         height: toolbarMaxHeight,
-                        transform: [{translateY: headerTranslate}],
+                        transform: [{ translateY: headerTranslate }],
                     },
                 ]}
             >
@@ -136,7 +136,7 @@ const SliverAppBar = (props) => {
                                 height: toolbarMaxHeight,
                                 backgroundColor: toolbarColor,
                                 opacity: imageOpacity,
-                                transform: [{translateY: imageTranslate}],
+                                transform: [{ translateY: imageTranslate }],
                             },
                         ]}
                         borderBottomLeftRadius={borderBottomRadius}
@@ -150,7 +150,7 @@ const SliverAppBar = (props) => {
                                 height: toolbarMaxHeight,
                                 backgroundColor: "white",
                                 opacity: videoOpacity,
-                                transform: [{translateY: imageTranslate}],
+                                transform: [{ translateY: imageTranslate }],
                             },
                         ]}
                     ></Animated.View>
@@ -161,7 +161,7 @@ const SliverAppBar = (props) => {
                             styles.backgroundImage,
                             {
                                 height: toolbarMaxHeight,
-                                backgroundColor: "rgba(0, 0, 0, 0.50)",
+                                backgroundColor: "rgba(0, 0, 0, 0.70)",
                                 opacity: imageOpacity,
                                 borderBottomLeftRadius: borderBottomRadius,
                                 borderBottomRightRadius: borderBottomRadius,
@@ -175,7 +175,7 @@ const SliverAppBar = (props) => {
                         styles.action,
                         {
                             backgroundColor: "transparent",
-                            transform: [{scale: elementScale}],
+                            transform: [{ scale: elementScale }],
                             bottom: isImage ? 20 : 0.0,
                             paddingHorizontal: isImage ? 20 : 0.0,
                         },

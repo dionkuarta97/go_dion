@@ -1,10 +1,10 @@
-import {NavigationContainer} from "@react-navigation/native";
-import {createStackNavigator} from "@react-navigation/stack";
-import React, {useState} from "react";
-import {Provider} from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import React, { useState } from "react";
+import { Provider } from "react-redux";
 
-import {PersistGate} from "redux-persist/integration/react";
-import {persistor, store} from "./Redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor, store } from "./Redux/store";
 import ForgotPasswordScreen from "./Screens/Auth/forgotPasswordScreen";
 import LoginScreen from "./Screens/Auth/loginScreen";
 import RegisterScreen from "./Screens/Auth/registerScreen";
@@ -36,6 +36,7 @@ import NewPasswordScreen from "./Screens/Auth/newPasswordScreen";
 import PDFScreen from "./Screens/GoBelajar/pdfScreen";
 import ScoreScreen from "./Screens/Score/scoreScreen";
 import Colors from "../sources/Theme/Colors";
+import ProductIncludeScreen from "./Screens/Products/productIncludeScreen";
 
 const Stack = createStackNavigator();
 
@@ -93,6 +94,10 @@ export default App = () => {
                         <Stack.Screen
                             name="ProductPurchasedScreen"
                             component={ProductPurchasedScreen}
+                        />
+                        <Stack.Screen
+                            name="ProductIncludeScreen"
+                            component={ProductIncludeScreen}
                         />
                         <Stack.Screen
                             name="FilterScreen"
@@ -154,7 +159,7 @@ export default App = () => {
                                 headerTintColor: "black",
                                 title: "",
                                 headerStyle: {
-                                    backgroundColor: Colors.primaryColor
+                                    backgroundColor: Colors.primaryColor,
                                 },
                             }}
                         />

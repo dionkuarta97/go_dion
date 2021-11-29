@@ -9,21 +9,21 @@ import {
     Image,
     Dimensions,
 } from "react-native";
-import {useDispatch, useSelector} from "react-redux";
-import {MaterialIcons} from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { MaterialIcons } from "@expo/vector-icons";
 import SliverAppBar from "../../Components/sliverAppBar";
-import {getSliderImages} from "../../Redux/Home/homeActions";
+import { getSliderImages } from "../../Redux/Home/homeActions";
 import NumberFormat from "react-number-format";
 
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
 
-import {useNavigation} from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/core";
 import ProductDetailContent from "./Component/ProductDetailContent";
-import {addToCart} from "../../Redux/Cart/cartActions";
+import { addToCart } from "../../Redux/Cart/cartActions";
 
-const {width} = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 
 const ProductDetailScreen = (props) => {
     const navigation = useNavigation();
@@ -37,93 +37,70 @@ const ProductDetailScreen = (props) => {
     const productInfo = () => {
         return (
             <View>
-                <Text style={{...Fonts.primaryColor16Regular}}>{section}</Text>
                 <Text
                     style={{
-                        ...Fonts.primaryColor28Bold,
+                        ...Fonts.primaryColor16Regular,
+                        fontWeight: "bold",
+                    }}
+                >
+                    {section}
+                </Text>
+                <Text
+                    style={{
+                        fontSize: 22,
+                        color: "white",
+                        fontWeight: "bold",
                         marginVertical: Sizes.fixPadding,
                     }}
                 >
                     {item.title}
                 </Text>
-                <View
-                    style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}
-                >
-                    {/* <View style={{flexDirection: "row", alignItems: "center"}}>
-                        <Text style={{...Fonts.primaryColor16Regular}}>5</Text>
-                        <MaterialIcons
-                            name="star"
-                            size={17}
-                            color={Colors.primaryColor}
-                        />
-                        <Text style={{...Fonts.primaryColor16Regular}}>
-                            (7 Reviews)
-                        </Text>
-                    </View> */}
-                    {item.price_discount > 0 && (
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      marginBottom: 5,
-                      backgroundColor: Colors.primaryColor,
-                      padding:10
-                    }}
-                  >
-                    <NumberFormat
-                      value={item.price}
-                      displayType={"text"}
-                      thousandSeparator="."
-                      decimalSeparator=","
-                      prefix={"Rp "}
-                      renderText={(value, props) => (
+                <NumberFormat
+                    value={
+                        item.price_discount > 0
+                            ? item.price_discount
+                            : item.price
+                    }
+                    displayType={"text"}
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    prefix={"IDR "}
+                    renderText={(value, props) => (
                         <Text
-                          style={{
-                            fontSize: 14,
-                            textDecorationLine: "line-through",
-                          }}
+                            style={{
+                                fontWeight: "bold",
+                                color: "white",
+                                fontSize: 18,
+                            }}
                         >
-                          {value}
+                            {value}
                         </Text>
-                      )}
-                    />
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: "bold",
-                        color: "green",
-                      }}
-                    >
-                      {Math.round(
-                        ((item.price - item.price_discount) /
-                          item.price) *
-                          100
-                      )}
-                      % off
-                    </Text>
-                  </View>
-                )}
+                    )}
+                />
+                {item.price_discount > 0 && (
                     <NumberFormat
-                        value={
-                            item.price_discount > 0
-                                ? item.price_discount
-                                : item.price
-                        }
+                        value={item.price}
                         displayType={"text"}
                         thousandSeparator="."
                         decimalSeparator=","
                         prefix={"IDR "}
                         renderText={(value, props) => (
-                            <Text style={{...Fonts.primaryColor25Bold}}>
+                            <Text
+                                style={{
+                                    fontWeight: "bold",
+                                    color: "white",
+                                    opacity: 0.6,
+                                    fontSize: 14,
+                                    textDecorationLine: "line-through",
+                                }}
+                            >
                                 {value}
                             </Text>
                         )}
                     />
-                </View>
-                <TouchableOpacity
+                )}
+
+                {/* <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => {
                         dispatch(addToCart(item));
@@ -136,26 +113,13 @@ const ProductDetailScreen = (props) => {
                     }}
                 >
                     <Text style={{...Fonts.black17Bold}}>Beli Sekarang</Text>
-                </TouchableOpacity>
-                {/* <TouchableOpacity
-                    activeOpacity={0.9}
-                    onPress={() =>
-                        this.props.navigation.navigate("WatchTrailer")
-                    }
-                    style={{
-                        ...styles.button,
-                        backgroundColor: Colors.whiteColor,
-                        marginBottom: Sizes.fixPadding,
-                    }}
-                >
-                    <Text style={{...Fonts.black17Bold}}>Watch Trailer</Text>
                 </TouchableOpacity> */}
             </View>
         );
     };
 
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <SliverAppBar
                 leftItem={
                     <MaterialIcons
@@ -209,7 +173,7 @@ const ProductDetailScreen = (props) => {
                                     marginLeft: Sizes.fixPadding - 5.0,
                                 }}
                             >
-                                Added to Cart
+                                Sudah ditambahkan
                             </Text>
                         </View>
                     )
@@ -220,7 +184,7 @@ const ProductDetailScreen = (props) => {
                 toolBarMinHeight={40}
                 toolbarMaxHeight={370}
                 isImageBlur={true}
-                src={{uri: item.thumbnail}}
+                src={{ uri: item.thumbnail }}
             >
                 <ProductDetailContent item={item} />
                 <StatusBar backgroundColor={Colors.blackColor} />

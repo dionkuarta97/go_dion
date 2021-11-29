@@ -1,4 +1,4 @@
-import {urlGroupedProduk} from "../../Services/ApiUrl";
+import { urlGroupedProduk } from "../../Services/ApiUrl";
 import {
     defaultDoneState,
     defaultErrorState,
@@ -8,6 +8,7 @@ import {
 import {
     SET_ALL_PRODUK,
     SET_GROUPED_PRODUK,
+    SET_INCLUDES_PRODUK,
     SET_PURCHASED_PRODUK,
     SET_TOTAL_PURCHASED_PRODUK,
 } from "./produkTypes";
@@ -168,6 +169,46 @@ export function getPurchasedproduk(section_id) {
         } catch (err) {
             console.log(err);
             dispatch(setPurchasedProduk(defaultErrorState));
+        }
+    };
+}
+
+export function setIncludesProduk(state) {
+    return {
+        type: SET_INCLUDES_PRODUK,
+        payload: state,
+    };
+}
+
+export function getIncludesProduk(produkId) {
+    return async (dispatch, getState) => {
+        dispatch(setIncludesProduk(defaultInitState));
+        try {
+            fetch(urlGroupedProduk + `/${produkId}/include`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${getState().authReducer.token}`,
+                },
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    if (json.status) {
+                        dispatch(
+                            setIncludesProduk(defaultDoneState(json.data))
+                        );
+                    } else
+                        dispatch(
+                            setIncludesProduk(defaultFailedState(json.message))
+                        );
+                })
+                .catch((err) => {
+                    console.log(err);
+                    dispatch(setIncludesProduk(defaultErrorState));
+                });
+        } catch (err) {
+            console.log(err);
+            dispatch(setIncludesProduk(defaultErrorState));
         }
     };
 }
