@@ -1,57 +1,93 @@
 import React from "react";
-import {ScrollView, StyleSheet, Text, View, TouchableOpacity, Dimensions} from "react-native";
+import {
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    Dimensions,
+} from "react-native";
 import Divider from "../../../Components/Divider";
 
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
+import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/core";
+import { addToCart } from "../../../Redux/Cart/cartActions";
 
-const {width} = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 
 const ProductDetailContent = (props) => {
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+
     const item = props.item;
 
     const titleText = (title) => {
-        return <Text style={{...Fonts.indigoColor18Bold}}>{title}</Text>;
+        return (
+            <Text
+                style={{ ...Fonts.black17Bold, marginBottom: Sizes.fixPadding }}
+            >
+                {title}
+            </Text>
+        );
+    };
+
+    const infoTile = (title, text) => {
+        return (
+            <View
+                style={{
+                    flexDirection: "row",
+                    borderBottomWidth: 1,
+                    borderBottomColor: "lightgrey",
+                    paddingVertical: Sizes.fixPadding,
+                }}
+            >
+                <Text style={{ flex: 1, color: "grey" }}>{title}</Text>
+                <Text style={{ flex: 3 }}>{text}</Text>
+            </View>
+        );
     };
     return (
         <View
             style={{
                 flex: 1,
-                paddingHorizontal: Sizes.fixPadding,
+                paddingHorizontal: Sizes.fixPadding * 2,
                 paddingVertical: Sizes.fixPadding * 3,
+                backgroundColor: "white",
             }}
         >
             <ScrollView
                 nestedScrollEnabled={true}
                 showsVerticalScrollIndicator={false}
             >
-                {titleText("Informasi")}
+                {titleText("Detail Produk")}
                 <View style={styles.content}>
-                    <Text>{item.desc}</Text>
-                    <Divider />
-                    <Text>Kategory: {item.details.category}</Text>
-                    <Divider />
-                    <Text>Level: {item.details.level}</Text>
-                    <Divider />
-                    <Text>Wilayah: {item.details.wilayah}</Text>
-                    <Divider />
-                    {item.purchased && (
-                        <TouchableOpacity
-                            activeOpacity={0.9}
+                    {infoTile("Informasi", item.desc)}
+                    {infoTile("Kategori", item.details.category)}
+                    {infoTile("Level", item.details.level)}
+                    {infoTile("Wilayah", item.details.wilayah)}
+
+                    {item.purchased ? (
+                        <DefaultPrimaryButton
+                            text="Lanjutkan Belajar Kamu"
                             onPress={() => {
-                                // dispatch(addToCart(item));
-                                // navigation.navigate("CartScreen");
+                                navigation.navigate("ProductIncludeScreen", {
+                                    produkId: item._id,
+                                });
                             }}
-                            style={{
-                                ...styles.button,
-                                backgroundColor: Colors.primaryColor,
+                        />
+                    ) : (
+                        <DefaultPrimaryButton
+                            text="Beli Sekarang"
+                            onPress={() => {
+                                dispatch(addToCart(item));
+                                navigation.popToTop();
+                                navigation.navigate("CartScreen");
                             }}
-                        >
-                            <Text style={{...Fonts.black17Bold}}>
-                                Lanjutkan Belajar Kamu
-                            </Text>
-                        </TouchableOpacity>
+                        />
                     )}
                 </View>
             </ScrollView>
@@ -62,10 +98,7 @@ const ProductDetailContent = (props) => {
 export default ProductDetailContent;
 
 const styles = StyleSheet.create({
-    content: {
-        padding: Sizes.fixPadding,
-        height: 1000,
-    },
+    content: {},
     button: {
         paddingVertical: Sizes.fixPadding + 2.0,
         alignItems: "center",

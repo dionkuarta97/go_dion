@@ -1,6 +1,7 @@
-import {useNavigation} from "@react-navigation/core";
 import React from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { useNavigation } from "@react-navigation/core";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import PropTypes from "prop-types";
 import NumberFormat from "react-number-format";
 
@@ -44,13 +45,21 @@ const ProductCard = (props) => {
             }
             style={styles.card}
         >
-            <Image
-                source={{uri: item.thumbnail}}
-                resizeMode="cover"
-                style={styles.image}
-            />
+            <View style={{ position: "relative" }}>
+                <Image
+                    source={{ uri: item.thumbnail }}
+                    resizeMode="cover"
+                    style={styles.image}
+                />
+
+                {item.purchased && (
+                    <View style={styles.purchasedCircle}>
+                        <MaterialIcons name="check" size={20} color="white" />
+                    </View>
+                )}
+            </View>
             <View style={styles.infoContainer}>
-                <Text style={{...Fonts.gray15Regular}}>{item.title}</Text>
+                <Text style={{ ...Fonts.gray15Regular }}>{item.title}</Text>
                 <Text
                     style={{
                         ...Fonts.black17Bold,
@@ -139,5 +148,16 @@ const styles = StyleSheet.create({
         paddingHorizontal: Sizes.fixPadding,
         paddingTop: Sizes.fixPadding,
         paddingBottom: Sizes.fixPadding * 2.0,
+    },
+    purchasedCircle: {
+        position: "absolute",
+        width: 25,
+        height: 25,
+        backgroundColor: "green",
+        top: 10,
+        right: 10,
+        borderRadius: 13,
+        justifyContent: "center",
+        alignItems: "center",
     },
 });

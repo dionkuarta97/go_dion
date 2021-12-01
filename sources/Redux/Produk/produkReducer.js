@@ -1,6 +1,7 @@
 import {
     SET_ALL_PRODUK,
     SET_GROUPED_PRODUK,
+    SET_INCLUDES_PRODUK,
     SET_PURCHASED_PRODUK,
     SET_TOTAL_PURCHASED_PRODUK,
 } from "./produkTypes";
@@ -22,6 +23,11 @@ const initialState = {
         data: null,
     },
     purchasedProduk: {
+        loading: false,
+        error: null,
+        data: null,
+    },
+    includesProduk: {
         loading: false,
         error: null,
         data: null,
@@ -49,6 +55,11 @@ export function produkReducer(state = initialState, action) {
             return {
                 ...state,
                 purchasedProduk: action.payload,
+            };
+        case SET_INCLUDES_PRODUK:
+            return {
+                ...state,
+                includesProduk: action.payload,
             };
         default:
             return state;
