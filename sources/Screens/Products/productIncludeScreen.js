@@ -30,6 +30,7 @@ const ProductIncludeScreen = (props) => {
                 onPress={() =>
                     navigation.navigate("SubMateriScreen", {
                         materiId: item._id,
+                        materiTitle: item.title
                     })
                 }
             >
