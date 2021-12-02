@@ -42,10 +42,22 @@ import BaseurlScreen from "./Screens/Lainnya/baseurlScreen";
 const Stack = createStackNavigator();
 
 export default App = () => {
+
+    const config = {
+        screens: {
+          NewPasswordScreen: 'newpassword/:email/:token/:date/:expdate'
+        },
+      };
+
+    const linking = {
+        prefixes: ['https://goapp/'],
+        config,
+      };
+
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <NavigationContainer>
+                <NavigationContainer linking={linking}>
                     <Stack.Navigator
                         initialRouteName="InitialScreen"
                         screenOptions={{
