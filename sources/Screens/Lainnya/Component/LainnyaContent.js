@@ -60,9 +60,9 @@ const LainnyaContent = () => {
                     );
                 }
             })}
-            {renderTile("Base Url", "link", () => {
+            {/* {renderTile("Base Url", "link", () => {
                 navigation.navigate("BaseurlScreen");
-            })}
+            })} */}
             {isLogin &&
                 renderTile("Logout", "logout", () => {
                     dispatch(setLoginStatus(false));

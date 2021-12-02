@@ -1,7 +1,7 @@
 import { SET_BASEURL } from "./initTypes";
 
 const initialState = {
-    baseUrl: "https://apionline.gobimbelonline.net",
+    baseUrl: null,
 };
 
 export function initReducer(state = initialState, action) {

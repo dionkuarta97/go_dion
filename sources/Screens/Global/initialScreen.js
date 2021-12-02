@@ -1,17 +1,19 @@
-import React, {useEffect, useLayoutEffect} from "react";
-import {View, StyleSheet, Text, Image} from "react-native";
+import React, { useEffect, useLayoutEffect } from "react";
+import { View, StyleSheet, Text, Image } from "react-native";
 import * as Font from "expo-font";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     setLoginData,
     setLoginStatus,
     setToken,
 } from "../../Redux/Auth/authActions";
-import {setProfile} from "../../Redux/Profile/profileActions";
+import { setProfile } from "../../Redux/Profile/profileActions";
 
-export default InitialScreen = ({navigation}) => {
+export default InitialScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const login = useSelector((state) => state.authReducer.login);
+    const baseUrl = useSelector((state) => state.initReducer.baseUrl);
+
     const _loadFontsAsync = async () => {
         await Font.loadAsync({
             SignikaNegative_Bold: require("../../../assets/Fonts/SignikaNegative-Bold.ttf"),
@@ -20,9 +22,9 @@ export default InitialScreen = ({navigation}) => {
 
         //TODO:Navigate to Splashscreen
         setTimeout(() => {
-            navigation.replace("MainScreen");
             // navigation.replace("MainScreen");
-            // navigation.replace("ScoreScreen");
+            if (baseUrl !== null) navigation.replace("MainScreen");
+            else navigation.replace("BaseurlScreen");
         }, 2000);
     };
 
@@ -43,7 +45,6 @@ export default InitialScreen = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            
             <Image
                 style={{
                     height: 100.0,
@@ -53,7 +54,7 @@ export default InitialScreen = ({navigation}) => {
                 source={require("../../../assets/Images/icon.png")}
                 resizeMode="contain"
             />
-            <View style={{height:20}}></View>
+            <View style={{ height: 20 }}></View>
             <Text>Loading...</Text>
         </View>
     );

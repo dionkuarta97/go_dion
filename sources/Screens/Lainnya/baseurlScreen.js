@@ -13,14 +13,25 @@ const BaseurlScreen = () => {
     const navigation = useNavigation();
 
     const [newBaseUrl, setNewBaseUrl] = useState("");
+    const defaultBaseUrl = "https://apionline.gobimbelonline.net";
 
     const baseUrl = useSelector((state) => state.initReducer.baseUrl);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <DefaultAppBar title="Ganti BaseUrl" backEnabled={true} />
+            <DefaultAppBar title="Initial Base Url" />
             <View style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
-                <Text>Current Base Url : {baseUrl}</Text>
+                <Text>Default Base Url : {defaultBaseUrl}</Text>
+                <DefaultPrimaryButton
+                    text="Use Default Base Url"
+                    onPress={() => {
+                        dispatch(setBaseurl(defaultBaseUrl));
+
+                        navigation.replace("MainScreen");
+                    }}
+                />
+
+                <Text>OR</Text>
 
                 <DefaultTextInput
                     placeholder="New BaseUrl"
@@ -30,17 +41,9 @@ const BaseurlScreen = () => {
                     text="Submit New Base Url"
                     onPress={() => {
                         dispatch(setBaseurl(newBaseUrl));
+                        navigation.replace("MainScreen");
                     }}
                 />
-                <TouchableOpacity
-                    onPress={() => {
-                        dispatch(
-                            setBaseurl("https://apionline.gobimbelonline.net")
-                        );
-                    }}
-                >
-                    <Text>Back to normal</Text>
-                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );
