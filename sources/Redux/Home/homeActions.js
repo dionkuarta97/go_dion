@@ -1,21 +1,21 @@
-import {urlHomeMenu} from "../../Services/ApiUrl";
+import { urlHomeMenu } from "../../Services/ApiUrl";
 import {
     defaultDoneState,
     defaultErrorState,
     defaultFailedState,
     defaultInitState,
 } from "../helper";
-import {SET_HOME_MENU, SET_SLIDER_IMAGES} from "./homeTypes";
+import { SET_HOME_MENU, SET_SLIDER_IMAGES } from "./homeTypes";
 
 export function getSliderImages() {
     return async (dispatch) => {
-        dispatch(setSliderImages({loading: true, error: null, data: null}));
+        dispatch(setSliderImages({ loading: true, error: null, data: null }));
         try {
             dispatch(
                 setSliderImages({
                     loading: false,
                     error: null,
-                    data: {1: "kuda", 2: "ayam"},
+                    data: { 1: "kuda", 2: "ayam" },
                 })
             );
         } catch (err) {
@@ -40,9 +40,10 @@ export function setSliderImages(sliderImages) {
 
 export function getHomeMenu() {
     return async (dispatch, getState) => {
+        const urlBase = getState().initReducer.baseUrl;
         dispatch(setHomeMenu(defaultInitState));
         try {
-            fetch(urlHomeMenu)
+            fetch(urlBase + urlHomeMenu)
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {

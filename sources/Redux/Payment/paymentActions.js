@@ -30,7 +30,8 @@ export function getPaymentMethod(section_id) {
     return async (dispatch, getState) => {
         dispatch(setPaymentMethod(defaultInitState));
         try {
-            fetch(urlPaymentMethod, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlPaymentMethod, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,
@@ -85,7 +86,8 @@ export function getPaymentProcess(section_id) {
 
                 console.log(bodyParams);
 
-                fetch(urlPaymentProcess, {
+                const urlBase = getState().initReducer.baseUrl;
+                fetch(urlBase + urlPaymentProcess, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -137,7 +139,8 @@ export function getPaymentList(status) {
         dispatch(setPaymentList(defaultInitState));
 
         try {
-            fetch(urlPayment + `?status=${status}`, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlPayment + `?status=${status}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,
@@ -176,7 +179,8 @@ export function getPaymentDetail(orderId) {
         dispatch(setPaymentDetail(defaultInitState));
 
         try {
-            fetch(urlPayment + `/status?order_id=${orderId}`, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlPayment + `/status?order_id=${orderId}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,

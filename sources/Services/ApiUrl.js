@@ -1,13 +1,12 @@
 /**
  * base url dengan Kong
  */
+export const urlBase = "https://apionline.gobimbelonline.net";
 
-export const urlBaseMock = "https://apionline.gobimbelonline.net/moc";
-export const urlBaseMasterdata =
-    "https://apionline.gobimbelonline.net/masterdata/v1";
-export const urlBasePurchase =
-    "https://apionline.gobimbelonline.net/purchase/v1";
-export const urlBaseScoring = "https://apionline.gobimbelonline.net/scoring/v1";
+export const urlBaseMock = "/moc";
+export const urlBaseMasterdata = "/masterdata/v1";
+export const urlBasePurchase = "/purchase/v1";
+export const urlBaseScoring = "/scoring/v1";
 
 /*** AUTH URL */
 export const urlLogin = urlBaseMasterdata + "/login";

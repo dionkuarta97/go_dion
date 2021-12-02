@@ -1,18 +1,18 @@
 import React from "react";
-import {Alert, Text, TouchableOpacity, View} from "react-native";
-import {MaterialIcons} from "@expo/vector-icons";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
 import Fonts from "../../../Theme/Fonts";
-import {useNavigation} from "@react-navigation/core";
-import {useDispatch, useSelector} from "react-redux";
+import { useNavigation } from "@react-navigation/core";
+import { useDispatch, useSelector } from "react-redux";
 import {
     setLoginData,
     setLoginStatus,
     setToken,
 } from "../../../Redux/Auth/authActions";
-import {defaultInitState} from "../../../Redux/helper";
-import {setMe, setProfile} from "../../../Redux/Profile/profileActions";
+import { defaultInitState } from "../../../Redux/helper";
+import { setMe, setProfile } from "../../../Redux/Profile/profileActions";
 import VersionText from "../../../Components/VersionText";
 
 const LainnyaContent = () => {
@@ -49,7 +49,7 @@ const LainnyaContent = () => {
         );
     };
     return (
-        <View style={{flex: 1, paddingVertical: Sizes.fixPadding * 2}}>
+        <View style={{ flex: 1, paddingVertical: Sizes.fixPadding * 2 }}>
             {renderTile("Profil", "person", () => {
                 if (isLogin) {
                     navigation.navigate("ProfileScreen");
@@ -59,6 +59,9 @@ const LainnyaContent = () => {
                         "Anda belum punya akun untuk mengakses menu ini"
                     );
                 }
+            })}
+            {renderTile("Base Url", "link", () => {
+                navigation.navigate("BaseurlScreen");
             })}
             {isLogin &&
                 renderTile("Logout", "logout", () => {
