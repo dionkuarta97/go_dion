@@ -38,14 +38,26 @@ import ScoreScreen from "./Screens/Score/scoreScreen";
 import Colors from "../sources/Theme/Colors";
 import ProductIncludeScreen from "./Screens/Products/productIncludeScreen";
 import ScoreListScreen from "./Screens/Score/scoreListScreen";
+import BaseurlScreen from "./Screens/Lainnya/baseurlScreen";
 
 const Stack = createStackNavigator();
 
 export default App = () => {
+    const config = {
+        screens: {
+            NewPasswordScreen: "newpassword/:email/:token/:date/:expdate",
+        },
+    };
+
+    const linking = {
+        prefixes: ["https://goapp/"],
+        config,
+    };
+
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <NavigationContainer>
+                <NavigationContainer linking={linking}>
                     <Stack.Navigator
                         initialRouteName="InitialScreen"
                         screenOptions={{
@@ -127,6 +139,10 @@ export default App = () => {
                         <Stack.Screen
                             name="LainnyaScreen"
                             component={LainnyaScreen}
+                        />
+                        <Stack.Screen
+                            name="BaseurlScreen"
+                            component={BaseurlScreen}
                         />
                         <Stack.Screen
                             name="ProfileScreen"

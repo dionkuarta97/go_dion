@@ -25,7 +25,7 @@ const GoBelajarScreen = () => {
         return (
             <TouchableOpacity
                 onPress={() =>
-                    navigation.navigate("SubMateriScreen", {materiId: item._id})
+                    navigation.navigate("SubMateriScreen", {materiId: item._id, materiTitle: item.title})
                 }
             >
                 <View style={CompStyles.defaultCard}>

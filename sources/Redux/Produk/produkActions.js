@@ -24,7 +24,8 @@ export function getGroupedProduk() {
     return async (dispatch, getState) => {
         dispatch(setGroupedProduk(defaultInitState));
         try {
-            fetch(urlGroupedProduk, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlGroupedProduk, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,
@@ -61,7 +62,8 @@ export function getAllProduk(section_id) {
     return async (dispatch, getState) => {
         dispatch(setAllProduk(defaultInitState));
         try {
-            fetch(urlGroupedProduk + `/${section_id}`, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlGroupedProduk + `/${section_id}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,
@@ -98,12 +100,16 @@ export function getTotalPurchasedProduk(section_id) {
     return async (dispatch, getState) => {
         dispatch(setTotalPurchasedProduk(defaultInitState));
         try {
-            fetch(urlGroupedProduk + `/${section_id}/purchased/count`, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${getState().authReducer.token}`,
-                },
-            })
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(
+                urlBase + urlGroupedProduk + `/${section_id}/purchased/count`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${getState().authReducer.token}`,
+                    },
+                }
+            )
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
@@ -142,7 +148,8 @@ export function getPurchasedproduk(section_id) {
     return async (dispatch, getState) => {
         dispatch(setPurchasedProduk(defaultInitState));
         try {
-            fetch(urlGroupedProduk + `/${section_id}/purchased`, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlGroupedProduk + `/${section_id}/purchased`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,
@@ -184,7 +191,8 @@ export function getIncludesProduk(produkId) {
     return async (dispatch, getState) => {
         dispatch(setIncludesProduk(defaultInitState));
         try {
-            fetch(urlGroupedProduk + `/${produkId}/include`, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlGroupedProduk + `/${produkId}/include`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,

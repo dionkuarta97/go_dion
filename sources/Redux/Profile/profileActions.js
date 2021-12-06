@@ -1,4 +1,4 @@
-import {urlMe, urlUpdateMe} from "../../Services/ApiUrl";
+import { urlMe, urlUpdateMe } from "../../Services/ApiUrl";
 import {
     defaultDoneState,
     defaultErrorState,
@@ -16,7 +16,8 @@ export function getMe() {
     return async (dispatch, getState) => {
         dispatch(setMe(defaultInitState));
         try {
-            fetch(urlMe, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlMe, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,
@@ -75,7 +76,8 @@ export function getUpdateProfile(bodyParams) {
     return async (dispatch, getState) => {
         dispatch(setUpdateProfile(defaultInitState));
         try {
-            fetch(urlUpdateMe, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlUpdateMe, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

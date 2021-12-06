@@ -15,6 +15,7 @@ import { materiReducer } from "./Materi/materiReducer";
 import { versionReducer } from "./Version/versionReducer";
 import { soalReducer } from "./Soal/soalReducer";
 import { scoreReducer } from "./Score/scoreReducer";
+import { initReducer } from "./Init/initReducer";
 
 const persistConfig = {
     key: "root",
@@ -22,6 +23,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+    initReducer: persistReducer(persistConfig, initReducer),
     authReducer: persistReducer(persistConfig, authReducer),
     soalReducer: persistReducer(persistConfig, soalReducer),
     dataReducer: dataReducer,

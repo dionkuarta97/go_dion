@@ -10,7 +10,7 @@ import {
     defaultFailedState,
     defaultInitState,
 } from "../helper";
-import {setProfile} from "../Profile/profileActions";
+import { setProfile } from "../Profile/profileActions";
 import {
     SET_EMAIL_CHECK,
     SET_FORGOT_PASSWORD,
@@ -27,13 +27,15 @@ export function setLoginStatus(status) {
     };
 }
 
-export function getLogin({username, password}) {
+export function getLogin({ username, password }) {
     return async (dispatch, getState) => {
+        const urlBase = getState().initReducer.baseUrl;
+
         dispatch(setLoginData(defaultInitState));
         try {
-            fetch(urlLogin, {
+            fetch(urlBase + urlLogin, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     username: username,
                     password: password,
@@ -85,12 +87,14 @@ export function setEmailCheck(state) {
 export function getEmailCheck(email) {
     console.log(email);
     return async (dispatch, getState) => {
+        const urlBase = getState().initReducer.baseUrl;
+
         dispatch(setEmailCheck(defaultInitState));
         try {
-            fetch(urlCheckEmail, {
+            fetch(urlBase + urlCheckEmail, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email: email}),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: email }),
             })
                 .then((response) => response.json())
                 .then((json) => {
@@ -122,9 +126,10 @@ export function getRegister(bodyParams) {
     return async (dispatch, getState) => {
         dispatch(setRegister(defaultInitState));
         try {
-            fetch(urlRegister, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlRegister, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json" },
                 body: bodyParams,
             })
                 .then((response) => response.json())
@@ -155,10 +160,11 @@ export function getForgotPassword(email) {
     return async (dispatch, getState) => {
         dispatch(setForgotPassword(defaultInitState));
         try {
-            fetch(urlForgotPassword, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlForgotPassword, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email: email}),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: email }),
             })
                 .then((response) => response.json())
                 .then((json) => {

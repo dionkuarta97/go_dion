@@ -29,6 +29,7 @@ const SubMateriScreen = (props) => {
         (state) => state.materiReducer.materiDetail
     );
     const materiId = props.route.params.materiId;
+    const materiTitle = props.route.params.materiTitle;
 
     useEffect(() => {
         dispatch(getMateriDetail(materiId));
@@ -126,7 +127,7 @@ const SubMateriScreen = (props) => {
 
     return (
         <SafeAreaView style={{flex: 1}}>
-            <DefaultAppBar title="Pendahuluan" backEnabled={true} />
+            <DefaultAppBar title={materiTitle} backEnabled={true} />
             <View style={styles.container}>
                 {/* {renderItem("Video", "Kumpulan video menarik")}
                 {renderItem("PDF", "Materi belajar disini")}

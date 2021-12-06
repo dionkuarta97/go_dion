@@ -28,7 +28,8 @@ export function getListProvince() {
     return async (dispatch, getState) => {
         dispatch(setListProvince(defaultInitState));
         try {
-            fetch(urlProvinsi + "?limit=-1")
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlProvinsi + "?limit=-1")
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
@@ -63,7 +64,8 @@ export function getListCity(idprovinsi) {
     return async (dispatch, getState) => {
         dispatch(setListCity(defaultInitState));
         try {
-            fetch(url)
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + url)
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
@@ -96,7 +98,8 @@ export function getListSekolah(idkabkota) {
     return async (dispatch, getState) => {
         dispatch(setListSekolah(defaultInitState));
         try {
-            fetch(url)
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + url)
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
@@ -126,7 +129,8 @@ export function getListGrades() {
     return async (dispatch, getState) => {
         dispatch(setListGrades(defaultInitState));
         try {
-            fetch(urlKelas)
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlKelas)
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.status) {
