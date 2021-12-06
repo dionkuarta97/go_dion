@@ -19,7 +19,8 @@ export function getScore(idMateri) {
         dispatch(setScore(defaultInitState));
         try {
             console.log(getState().soalReducer.url);
-            fetch(urlListScore + `/${idMateri}`, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlListScore + `/${idMateri}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,
@@ -53,7 +54,9 @@ export function getListScore() {
         dispatch(setListScore(defaultInitState));
         try {
             console.log(getState().soalReducer.url);
-            fetch(urlListScore, {
+            const urlBase = getState().initReducer.baseUrl;
+
+            fetch(urlBase + urlListScore, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,
