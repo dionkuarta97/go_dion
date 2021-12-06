@@ -41,3 +41,6 @@ export const urlMateri = urlBaseMasterdata + "/materi";
 
 /*** QUESTS URL */
 export const urlQuests = urlBaseMasterdata + "/quests";
+
+/*** SCORE URL */
+export const urlListScore = urlBaseScoring + "/scoring/myscore";
