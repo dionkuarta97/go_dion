@@ -1,4 +1,4 @@
-import {urlQuests} from "../../Services/ApiUrl";
+import { urlQuests } from "../../Services/ApiUrl";
 import {
     defaultDoneState,
     defaultErrorState,
@@ -32,7 +32,8 @@ export function getSoal() {
         dispatch(setSoal(defaultInitState));
         try {
             console.log(getState().soalReducer.url);
-            fetch(getState().soalReducer.url, {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + getState().soalReducer.url, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,
@@ -78,15 +79,14 @@ export function setSaveAnswer(state) {
 export function saveAnswer() {
     return async (dispatch, getState) => {
         dispatch(setSaveAnswer(defaultInitState));
-
         try {
             const bodyParams = JSON.stringify({
                 related_to: getState().soalReducer.soal.data.related_to,
                 raw_data: getState().soalReducer.soal.data.sessions,
                 answers: getState().soalReducer.answers,
             });
-
-            fetch(urlQuests + "/save", {
+            const urlBase = getState().initReducer.baseUrl;
+            fetch(urlBase + urlQuests + "/save", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
