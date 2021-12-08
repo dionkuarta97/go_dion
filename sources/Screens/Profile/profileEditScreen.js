@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useState} from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
     View,
     Text,
@@ -7,13 +7,13 @@ import {
     Image,
     ScrollView,
 } from "react-native";
-import {MaterialIcons} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultTextInput from "../../Components/CustomTextInput/DefaultTextInput";
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
-import {useNavigation} from "@react-navigation/core";
-import {useDispatch, useSelector} from "react-redux";
+import { useNavigation } from "@react-navigation/core";
+import { useDispatch, useSelector } from "react-redux";
 import OnTapTextInput from "../../Components/CustomTextInput/OnTapTextInput";
 import RoleBottomSheet from "../../Components/BottomSheet/RoleBottomSheet";
 import KelasBottomSheet from "../../Components/BottomSheet/KelasBottomSheet";
@@ -84,11 +84,11 @@ const ProfileEditScreen = (props) => {
     //End: State for Form
 
     useLayoutEffect(() => {
-        dispatch(setUpdateProfile({loading: false, data: null, error: null}));
+        dispatch(setUpdateProfile({ loading: false, data: null, error: null }));
     }, []);
 
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <DefaultAppBar
                 title="Edit Profile"
                 backEnabled={true}
@@ -133,7 +133,7 @@ const ProfileEditScreen = (props) => {
                     paddingHorizontal: Sizes.fixPadding * 2,
                 }}
             >
-                <View style={{width: "100%", flex: 1}}>
+                <View style={{ width: "100%", flex: 1 }}>
                     <View
                         style={{
                             alignItems: "center",
@@ -146,7 +146,7 @@ const ProfileEditScreen = (props) => {
                             resizeMode="contain"
                         /> */}
                     </View>
-                    <Text style={{...Fonts.black17Bold}}>Detail Info</Text>
+                    <Text style={{ ...Fonts.black17Bold }}>Detail Info</Text>
                     <DefaultTextInput
                         placeholder="Email"
                         value={email}
@@ -237,7 +237,8 @@ const ProfileEditScreen = (props) => {
                     {cityBottomSheetVisible && (
                         <CityBottomSheet
                             idProvinsi={
-                                province !== null
+                                province !== null &&
+                                province.idprovinsi !== null
                                     ? province.idprovinsi.toString()
                                     : null
                             }
@@ -294,7 +295,8 @@ const ProfileEditScreen = (props) => {
                     {schoolCityBottomSheetVisible && (
                         <CityBottomSheet
                             idProvinsi={
-                                schoolProvince !== null
+                                schoolProvince !== null &&
+                                schoolProvince.idprovinsi !== null
                                     ? schoolProvince.idprovinsi.toString()
                                     : null
                             }
@@ -318,7 +320,8 @@ const ProfileEditScreen = (props) => {
                     {schoolNameBottomSheetVisible && (
                         <SchoolBottomSheet
                             idkabkota={
-                                schoolCity !== null
+                                schoolCity !== null &&
+                                schoolCity.idkabkota !== null
                                     ? schoolCity.idkabkota.toString()
                                     : null
                             }
@@ -357,13 +360,13 @@ const ProfileEditScreen = (props) => {
                         value={waliEmail}
                         onChangeText={setWaliEmail}
                     />
-                    <View style={{height: 100}} />
+                    <View style={{ height: 100 }} />
                 </View>
             </ScrollView>
             {update.loading && <LoadingModal />}
             {update.data !== null && (
                 <DefaultModal>
-                    <Text style={{marginBottom: Sizes.fixPadding * 2}}>
+                    <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>
                         Berhasil memperbarui data profile.
                     </Text>
                     <DefaultPrimaryButton

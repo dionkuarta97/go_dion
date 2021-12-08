@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/core";
 import React, { useEffect, useState } from "react";
 import { Dimensions, Image, SafeAreaView, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import ActionButtonHome from "../../Components/ActionButton/ActionButtonHome";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import { getScore } from "../../Redux/Score/scoreActions";
@@ -24,7 +25,10 @@ const ScoreScreen = (props) => {
     const [done, setDone] = useState(false);
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <DefaultAppBar title="Detail Score" />
+            <DefaultAppBar
+                title="Detail Score"
+                rightItem={<ActionButtonHome />}
+            />
             <View style={{ flex: 1, position: "relative" }}>
                 <View
                     style={{

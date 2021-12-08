@@ -29,6 +29,7 @@ import PurchasedProductBottom from "./Component/PurchasedProductBottom";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import CompStyles from "../../Theme/styles/globalStyles";
 import NumberFormat from "react-number-format";
+import EmptyIndicator from "../../Components/Indicator/EmptyIndicator";
 
 const products = [
     { id: 1, title: "a" },
@@ -223,7 +224,7 @@ const ProductCategoryScreen = (props) => {
                             data={allProduk.data}
                         />
                     ) : (
-                        <Text>Produk Kosong</Text>
+                        <EmptyIndicator />
                     ))}
             </View>
             <PurchasedProductBottom sectionId={section_id} />

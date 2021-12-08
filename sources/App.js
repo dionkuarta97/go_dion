@@ -27,7 +27,6 @@ import SubMateriScreen from "./Screens/GoBelajar/subMateriScreen";
 import TryoutDetailScreen from "./Screens/GoTryout/tryoutDetailScreen";
 import SoalScreen from "./Screens/Soal/soalScreen";
 import EmailCheckScreen from "./Screens/Auth/emailCheckScreen";
-import productPurchasedScreen from "./Screens/Products/productPurchasedScreen";
 import ProductPurchasedScreen from "./Screens/Products/productPurchasedScreen";
 import initialScreen from "./Screens/Global/initialScreen";
 import MateriVideoScreen from "./Screens/GoBelajar/materiVideoScreen";
@@ -39,6 +38,7 @@ import Colors from "../sources/Theme/Colors";
 import ProductIncludeScreen from "./Screens/Products/productIncludeScreen";
 import ScoreListScreen from "./Screens/Score/scoreListScreen";
 import BaseurlScreen from "./Screens/Lainnya/baseurlScreen";
+import PurchasePendingScreen from "./Screens/Purchase/purchasePendingScreen";
 
 const Stack = createStackNavigator();
 
@@ -135,6 +135,10 @@ export default App = () => {
                         <Stack.Screen
                             name="CheckoutScreen"
                             component={CheckoutScreen}
+                        />
+                        <Stack.Screen
+                            name="PurchasePendingScreen"
+                            component={PurchasePendingScreen}
                         />
                         <Stack.Screen
                             name="LainnyaScreen"

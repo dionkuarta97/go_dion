@@ -24,6 +24,7 @@ const ProductDetailContent = (props) => {
     const navigation = useNavigation();
 
     const item = props.item;
+    const onCart = props.onCart;
 
     const titleText = (title) => {
         return (
@@ -70,7 +71,7 @@ const ProductDetailContent = (props) => {
                     {infoTile("Level", item.details.level)}
                     {infoTile("Wilayah", item.details.wilayah)}
 
-                    {item.purchased ? (
+                    {item.purchased && (
                         <DefaultPrimaryButton
                             text="Lanjutkan Belajar Kamu"
                             onPress={() => {
@@ -79,11 +80,22 @@ const ProductDetailContent = (props) => {
                                 });
                             }}
                         />
-                    ) : (
+                    )}
+                    {!item.purchased && !onCart && (
                         <DefaultPrimaryButton
                             text="Beli Sekarang"
                             onPress={() => {
                                 dispatch(addToCart(item));
+                                navigation.popToTop();
+                                navigation.navigate("CartScreen");
+                            }}
+                        />
+                    )}
+
+                    {!item.purchased && onCart && (
+                        <DefaultPrimaryButton
+                            text="Sudah Ditambahkan"
+                            onPress={() => {
                                 navigation.popToTop();
                                 navigation.navigate("CartScreen");
                             }}

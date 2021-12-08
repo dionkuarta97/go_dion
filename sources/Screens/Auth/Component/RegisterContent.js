@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
-import {Text, View, TouchableOpacity} from "react-native";
-import {MaterialIcons} from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { Text, View, TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
@@ -10,20 +10,20 @@ import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
 import OnTapTextInput from "../../../Components/CustomTextInput/OnTapTextInput";
 import DefaultBottomSheet from "../../../Components/BottomSheet/DefaultBottomSheet";
-import {TextInput} from "react-native-gesture-handler";
-import {FlatGrid} from "react-native-super-grid";
+import { TextInput } from "react-native-gesture-handler";
+import { FlatGrid } from "react-native-super-grid";
 import ProvinceBottomSheet from "../../../Components/BottomSheet/ProvinceBottomSheet";
 import CityBottomSheet from "../../../Components/BottomSheet/CityBottomSheet";
 import RoleBottomSheet from "../../../Components/BottomSheet/RoleBottomSheet";
 import KelasBottomSheet from "../../../Components/BottomSheet/KelasBottomSheet";
 import SchoolBottomSheet from "../../../Components/BottomSheet/SchoolBottomSheet";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
 import DefaultModal from "../../../Components/Modal/DefaultModal";
-import {getRegister, setRegister} from "../../../Redux/Auth/authActions";
-import {useNavigation} from "@react-navigation/core";
+import { getRegister, setRegister } from "../../../Redux/Auth/authActions";
+import { useNavigation } from "@react-navigation/core";
 
-const RegisterContent = ({sendedEmail}) => {
+const RegisterContent = ({ sendedEmail }) => {
     const [classBottomSheetVisible, setClassBottomSheetVisible] =
         useState(false);
     const [roleBottomeSheetVisible, setRoleBottomeSheetVisible] =
@@ -69,8 +69,20 @@ const RegisterContent = ({sendedEmail}) => {
     const register = useSelector((state) => state.authReducer.register);
 
     useEffect(() => {
-        dispatch(setRegister({loading: false, data: null, error: null}));
+        dispatch(setRegister({ loading: false, data: null, error: null }));
     }, []);
+
+    function passwordValidation(text) {
+        if (text.length < 8) return "Password must be atleast 8 characters";
+        if (!text.match(new RegExp("[A-Z]")))
+            return "Password must contain at least one uppercase";
+        if (!text.match(new RegExp("[a-z]")))
+            return "Password must contain at least one lowercase";
+        if (text.search(/[0-9]/) < 0) {
+            return "Your password must contain at least one digit";
+        }
+        return null;
+    }
 
     return (
         <View
@@ -80,7 +92,7 @@ const RegisterContent = ({sendedEmail}) => {
             }}
         >
             <View>
-                <Text style={{...Fonts.black20Bold}}>Account Form</Text>
+                <Text style={{ ...Fonts.black20Bold }}>Account Form</Text>
 
                 <DefaultTextInput
                     placeholder="Email"
@@ -137,20 +149,24 @@ const RegisterContent = ({sendedEmail}) => {
                     placeholder="Password"
                     onChangeText={setPassword}
                 />
-
+                {passwordValidation(password) != null && (
+                    <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                        {passwordValidation(password)}
+                    </Text>
+                )}
                 <PasswordTextInput
                     placeholder="Password Repeat"
                     onChangeText={setRepeatPassword}
                 />
                 {password !== repeatPassword && (
-                    <Text style={{color: "red", opacity: 0.6}}>
+                    <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
                         Password tidak sama
                     </Text>
                 )}
             </View>
 
-            <View style={{marginTop: Sizes.fixPadding * 3.0}}>
-                <Text style={{...Fonts.black20Bold}}>Address Form</Text>
+            <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
+                <Text style={{ ...Fonts.black20Bold }}>Address Form</Text>
 
                 <OnTapTextInput
                     placeholder="Province"
@@ -199,8 +215,8 @@ const RegisterContent = ({sendedEmail}) => {
                 />
             </View>
 
-            <View style={{marginTop: Sizes.fixPadding * 3.0}}>
-                <Text style={{...Fonts.black20Bold}}>School Form</Text>
+            <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
+                <Text style={{ ...Fonts.black20Bold }}>School Form</Text>
 
                 <OnTapTextInput
                     placeholder="School Province"
@@ -268,8 +284,8 @@ const RegisterContent = ({sendedEmail}) => {
                 )}
             </View>
 
-            <View style={{marginTop: Sizes.fixPadding * 3.0}}>
-                <Text style={{...Fonts.black20Bold}}>Wali Info Form</Text>
+            <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
+                <Text style={{ ...Fonts.black20Bold }}>Wali Info Form</Text>
 
                 <DefaultTextInput
                     placeholder="Wali Name"
@@ -287,8 +303,8 @@ const RegisterContent = ({sendedEmail}) => {
                 />
             </View>
 
-            <View style={{flexDirection: "row"}}>
-                <View style={{flex: 1}}>
+            <View style={{ flexDirection: "row" }}>
+                <View style={{ flex: 1 }}>
                     <DefaultPrimaryButton
                         text="Submit"
                         onPress={() => {
@@ -327,7 +343,7 @@ const RegisterContent = ({sendedEmail}) => {
             {register.loading && <LoadingModal />}
             {register.data !== null && (
                 <DefaultModal>
-                    <Text style={{marginBottom: Sizes.fixPadding * 2}}>
+                    <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>
                         Berhasil Regitrasi, Cek email kamu untuk memverifikasi
                         pembuatan akun.
                     </Text>

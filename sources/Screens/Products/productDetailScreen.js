@@ -186,7 +186,10 @@ const ProductDetailScreen = (props) => {
                 isImageBlur={true}
                 src={{ uri: item.thumbnail }}
             >
-                <ProductDetailContent item={item} />
+                <ProductDetailContent
+                    item={item}
+                    onCart={cart.some((val) => val._id === item._id)}
+                />
                 <StatusBar backgroundColor={Colors.blackColor} />
             </SliverAppBar>
         </SafeAreaView>

@@ -1,8 +1,8 @@
-import {useNavigation} from "@react-navigation/core";
-import React, {useEffect} from "react";
+import { useNavigation } from "@react-navigation/core";
+import React, { useEffect } from "react";
 
-import {LogBox, Text, TouchableOpacity, View} from "react-native";
-import {FlatList} from "react-native-gesture-handler";
+import { LogBox, Text, TouchableOpacity, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import Carousel from "react-native-snap-carousel";
 import ProductCard from "../../../Components/ProductCard";
 import Fonts from "../../../Theme/Fonts";
@@ -11,12 +11,13 @@ import Colors from "../../../Theme/Colors";
 import HomeCarousel from "./HomeCarousel";
 import HomeMenu from "./HomeMenu";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
+import HomePendingPayment from "./HomePendingPayment";
 
 const products = [
-    {id: 1, title: "a"},
-    {id: 2, title: "a"},
-    {id: 3, title: "a"},
-    {id: 4, title: "a"},
+    { id: 1, title: "a" },
+    { id: 2, title: "a" },
+    { id: 3, title: "a" },
+    { id: 4, title: "a" },
 ];
 
 const HomeContent = () => {
@@ -39,9 +40,7 @@ const HomeContent = () => {
             .getInitialLink()
             .then((link) => {
                 console.log("======== Link useEffect =======");
-                if (
-                    link.url === "https://gobimbelonline.net/newpassword"
-                ) {
+                if (link.url === "https://gobimbelonline.net/newpassword") {
                     console.log("new password called...");
                     navigation.navigate("NewPasswordScreen");
                 }
@@ -62,10 +61,10 @@ const HomeContent = () => {
                     alignItems: "center",
                 }}
             >
-                <Text style={{...Fonts.black20Bold, flex: 1}}>{title}</Text>
+                <Text style={{ ...Fonts.black20Bold, flex: 1 }}>{title}</Text>
 
                 <TouchableOpacity activeOpacity={0.8}>
-                    <Text style={{...Fonts.orangeColor14Bold}}>
+                    <Text style={{ ...Fonts.orangeColor14Bold }}>
                         Lihat Semua
                     </Text>
                 </TouchableOpacity>
@@ -74,8 +73,9 @@ const HomeContent = () => {
     };
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             <HomeCarousel />
+            <HomePendingPayment />
             <HomeMenu />
 
             <View>
@@ -111,7 +111,7 @@ const HomeContent = () => {
                 />
             </View>
 
-            <View style={{height: 50}}></View>
+            <View style={{ height: 50 }}></View>
         </View>
     );
 };

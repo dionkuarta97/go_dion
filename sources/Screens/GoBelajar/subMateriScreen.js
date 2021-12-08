@@ -1,5 +1,5 @@
-import {useNavigation} from "@react-navigation/core";
-import React, {useEffect} from "react";
+import { useNavigation } from "@react-navigation/core";
+import React, { useEffect } from "react";
 import {
     Text,
     View,
@@ -8,19 +8,23 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
-import {MaterialIcons} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import ExpandableTile from "../../Components/Tile/ExpendableTile";
-import {getMateriDetail, setMateriQuiz} from "../../Redux/Materi/materiActions";
+import {
+    getMateriDetail,
+    setMateriQuiz,
+} from "../../Redux/Materi/materiActions";
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
 import CompStyles from "../../Theme/styles/globalStyles";
 import LoadingIndicator from "../../Components/Indicator/LoadingIndicator";
-import {urlQuests} from "../../Services/ApiUrl";
-import {setSoalUrl} from "../../Redux/Soal/soalActions";
+import { urlQuests } from "../../Services/ApiUrl";
+import { setSoalUrl } from "../../Redux/Soal/soalActions";
+import EmptyIndicator from "../../Components/Indicator/EmptyIndicator";
 
 const SubMateriScreen = (props) => {
     const dispatch = useDispatch();
@@ -49,7 +53,7 @@ const SubMateriScreen = (props) => {
                         flexDirection: "row",
                     }}
                 >
-                    <Text style={{...Fonts.black15Regular, flex: 1}}>
+                    <Text style={{ ...Fonts.black15Regular, flex: 1 }}>
                         {title}
                     </Text>
                     <MaterialIcons
@@ -67,7 +71,7 @@ const SubMateriScreen = (props) => {
             <View style={CompStyles.defaultCard} key={item._id}>
                 <ExpandableTile
                     header={
-                        <View style={{flexDirection: "row"}}>
+                        <View style={{ flexDirection: "row" }}>
                             <View
                                 style={{
                                     width: 90,
@@ -88,7 +92,10 @@ const SubMateriScreen = (props) => {
                                 />
                             </View>
                             <View
-                                style={{marginLeft: Sizes.fixPadding, flex: 1}}
+                                style={{
+                                    marginLeft: Sizes.fixPadding,
+                                    flex: 1,
+                                }}
                             >
                                 <Text style={Fonts.gray15Bold}>
                                     {item.title}
@@ -100,16 +107,18 @@ const SubMateriScreen = (props) => {
                         </View>
                     }
                 >
-                    {renderSubItem("Video", () =>
-                        navigation.navigate("MateriVideoScreen", {
-                            videos: item.video,
-                        })
-                    )}
-                    {renderSubItem("E-Book", () =>
-                        navigation.navigate("MateriEbookScreen", {
-                            ebooks: item.pdf,
-                        })
-                    )}
+                    {item.video.length > 0 &&
+                        renderSubItem("Video", () =>
+                            navigation.navigate("MateriVideoScreen", {
+                                videos: item.video,
+                            })
+                        )}
+                    {item.pdf.length > 0 &&
+                        renderSubItem("E-Book", () =>
+                            navigation.navigate("MateriEbookScreen", {
+                                ebooks: item.pdf,
+                            })
+                        )}
                     {item.quiz &&
                         renderSubItem("Quiz", () => {
                             dispatch(
@@ -126,7 +135,7 @@ const SubMateriScreen = (props) => {
     };
 
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <DefaultAppBar title={materiTitle} backEnabled={true} />
             <View style={styles.container}>
                 {/* {renderItem("Video", "Kumpulan video menarik")}
@@ -136,10 +145,16 @@ const SubMateriScreen = (props) => {
                 )} */}
                 {materiDetail.loading && <LoadingIndicator />}
                 {materiDetail.data !== null && (
-                    <View style={{flex: 1}}>
-                        {materiDetail.data.map((item, index) => {
-                            return renderItem(item);
-                        })}
+                    <View style={{ flex: 1 }}>
+                        {materiDetail.data.length > 0 ? (
+                            <View style={{ flex: 1 }}>
+                                {materiDetail.data.map((item, index) => {
+                                    return renderItem(item);
+                                })}
+                            </View>
+                        ) : (
+                            <EmptyIndicator />
+                        )}
                     </View>
                 )}
             </View>

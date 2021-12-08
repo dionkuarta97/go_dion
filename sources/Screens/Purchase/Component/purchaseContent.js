@@ -1,5 +1,5 @@
-import {useNavigation} from "@react-navigation/core";
-import React, {useEffect} from "react";
+import { useNavigation } from "@react-navigation/core";
+import React, { useEffect } from "react";
 import {
     ActivityIndicator,
     FlatList,
@@ -10,15 +10,16 @@ import {
 import NumberFormat from "react-number-format";
 import moment from "moment";
 
-import {TouchableOpacity} from "react-native-gesture-handler";
-import {useDispatch, useSelector} from "react-redux";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useDispatch, useSelector } from "react-redux";
 import DefaultCard from "../../../Components/Card/DefaultCard";
 import Divider from "../../../Components/Divider";
-import {getPaymentList} from "../../../Redux/Payment/paymentActions";
+import { getPaymentList } from "../../../Redux/Payment/paymentActions";
 import Colors from "../../../Theme/Colors";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import CompStyles from "../../../Theme/styles/globalStyles";
+import EmptyIndicator from "../../../Components/Indicator/EmptyIndicator";
 
 const PurchaseContent = (props) => {
     const dispatch = useDispatch();
@@ -46,7 +47,9 @@ const PurchaseContent = (props) => {
                         ...CompStyles.defaultCard,
                     }}
                 >
-                    <View style={{flexDirection: "row", alignItems: "center"}}>
+                    <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                    >
                         <Text
                             style={{
                                 flex: 1,
@@ -77,7 +80,7 @@ const PurchaseContent = (props) => {
                             "DD MMM YYYY, HH:mm"
                         ) + " WIB"}
                     </Text>
-                    <View style={{flexDirection: "row"}}>
+                    <View style={{ flexDirection: "row" }}>
                         <Text>Total : </Text>
                         <NumberFormat
                             value={
@@ -96,21 +99,25 @@ const PurchaseContent = (props) => {
     };
 
     return (
-        <View style={{flex: 1, padding: Sizes.fixPadding * 2}}>
+        <View style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
             {paymentList.loading && (
                 <View>
                     <ActivityIndicator color={Colors.primaryColor} size={30} />
                 </View>
             )}
             {paymentList.data !== null && (
-                <View style={{flex: 1}}>
-                    <FlatList
-                        style={{marginBottom: Sizes.fixPadding * 7}}
-                        keyExtractor={(item) => `${item._id}`}
-                        data={paymentList.data}
-                        renderItem={({item, index}) => renderItem(item)}
-                        scrollEnabled={true}
-                    />
+                <View style={{ flex: 1 }}>
+                    {paymentList.data.length > 0 ? (
+                        <FlatList
+                            style={{ marginBottom: Sizes.fixPadding * 7 }}
+                            keyExtractor={(item) => `${item._id}`}
+                            data={paymentList.data}
+                            renderItem={({ item, index }) => renderItem(item)}
+                            scrollEnabled={true}
+                        />
+                    ) : (
+                        <EmptyIndicator />
+                    )}
                 </View>
             )}
         </View>

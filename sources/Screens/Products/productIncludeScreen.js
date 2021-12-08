@@ -13,6 +13,7 @@ import { getMateri } from "../../Redux/Materi/materiActions";
 import LoadingIndicator from "../../Components/Indicator/LoadingIndicator";
 import { getIncludesProduk } from "../../Redux/Produk/produkActions";
 import NumberFormat from "react-number-format";
+import EmptyIndicator from "../../Components/Indicator/EmptyIndicator";
 
 const ProductIncludeScreen = (props) => {
     const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const ProductIncludeScreen = (props) => {
                 onPress={() =>
                     navigation.navigate("SubMateriScreen", {
                         materiId: item._id,
-                        materiTitle: item.title
+                        materiTitle: item.title,
                     })
                 }
             >
@@ -96,11 +97,19 @@ const ProductIncludeScreen = (props) => {
             >
                 {includes.loading && <LoadingIndicator />}
                 {includes.data !== null && (
-                    <FlatList
-                        data={includes.data}
-                        keyExtractor={(item) => item._id}
-                        renderItem={({ item, index }) => renderItem(item)}
-                    />
+                    <View style={{ flex: 1 }}>
+                        {includes.data > 0 ? (
+                            <FlatList
+                                data={includes.data}
+                                keyExtractor={(item) => item._id}
+                                renderItem={({ item, index }) =>
+                                    renderItem(item)
+                                }
+                            />
+                        ) : (
+                            <EmptyIndicator />
+                        )}
+                    </View>
                 )}
             </View>
         </SafeAreaView>
