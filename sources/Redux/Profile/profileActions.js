@@ -107,3 +107,46 @@ export function getUpdateProfile(bodyParams) {
         }
     };
 }
+
+export function updatePassword(bodyParams) {
+    
+    
+    return async (dispatch, getState) => {
+        // bodyParams['token'] = `Bearer ${getState().authReducer.token}`
+        console.log("params : ",bodyParams);
+        dispatch(setUpdateProfile(defaultInitState));
+        try {
+            fetch(
+                "https://apionline.gobimbelonline.net/masterdata/v1/fp/reset",
+                {
+                    method: "PUT",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bodyParams),
+                }
+            )
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+
+                    // if (json.status) {
+                    //     dispatch(
+                    //         setUpdateProfile(defaultDoneState(json.data))
+                    //     );
+                    //     dispatch(setProfile(json.data));
+                    // } else
+                    //     dispatch(
+                    //         setUpdateProfile(
+                    //             defaultFailedState(json.message)
+                    //         )
+                    //     );
+                })
+                .catch((err) => {
+                    console.log("catch err: ",err);
+                    // dispatch(setUpdateProfile(defaultErrorState));
+                });
+        } catch (err) {
+            console.log("err:",err);
+            // dispatch(setUpdateProfile(defaultErrorState));
+        }
+    };
+}
