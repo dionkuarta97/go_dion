@@ -77,6 +77,7 @@ export function setSaveAnswer(state) {
 }
 
 export function saveAnswer(status) {
+    console.log("save answer...")
     return async (dispatch, getState) => {
         dispatch(setSaveAnswer(defaultInitState));
         try {

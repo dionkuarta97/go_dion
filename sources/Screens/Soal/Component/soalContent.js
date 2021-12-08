@@ -161,7 +161,7 @@ const SoalContent = () => {
                     Sesi Berakhir
                 </Text>
                 <Text style={{ color: "grey" }}>
-                    Sabar ya, sesi selanjutnya sedan dipersiapkan
+                    Sabar ya, sesi selanjutnya sedang dipersiapkan
                 </Text>
 
                 <Progress.Bar
@@ -205,6 +205,7 @@ const SoalContent = () => {
                         flex: 1,
                         justifyContent: "center",
                         alignItems: "center",
+                        marginHorizontal:20
                     }}
                 >
                     <Image

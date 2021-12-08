@@ -15,11 +15,16 @@ export function setScore(data) {
 }
 
 export function getScore(idMateri) {
+    console.log("get score...")
     return async (dispatch, getState) => {
         dispatch(setScore(defaultInitState));
         try {
-            console.log(getState().soalReducer.url);
+            // console.log(getState().soalReducer.url);
+            
             const urlBase = getState().initReducer.baseUrl;
+
+            console.log(urlBase + urlListScore + `/${idMateri}`)
+            
             fetch(urlBase + urlListScore + `/${idMateri}`, {
                 method: "GET",
                 headers: {
