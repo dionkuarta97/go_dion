@@ -37,22 +37,22 @@ import PDFScreen from "./Screens/GoBelajar/pdfScreen";
 import ScoreScreen from "./Screens/Score/scoreScreen";
 import Colors from "../sources/Theme/Colors";
 import ProductIncludeScreen from "./Screens/Products/productIncludeScreen";
+import ScoreListScreen from "./Screens/Score/scoreListScreen";
 import BaseurlScreen from "./Screens/Lainnya/baseurlScreen";
 
 const Stack = createStackNavigator();
 
 export default App = () => {
-
     const config = {
         screens: {
-          NewPasswordScreen: 'newpassword/:email/:token/:date/:expdate'
+            NewPasswordScreen: "newpassword/:email/:token/:date/:expdate",
         },
-      };
+    };
 
     const linking = {
-        prefixes: ['https://goapp/'],
+        prefixes: ["https://goapp/"],
         config,
-      };
+    };
 
     return (
         <Provider store={store}>
@@ -191,6 +191,10 @@ export default App = () => {
                         <Stack.Screen
                             name="ScoreScreen"
                             component={ScoreScreen}
+                        />
+                        <Stack.Screen
+                            name="ScoreListScreen"
+                            component={ScoreListScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

@@ -14,6 +14,7 @@ import { profileReducer } from "./Profile/profileReducer";
 import { materiReducer } from "./Materi/materiReducer";
 import { versionReducer } from "./Version/versionReducer";
 import { soalReducer } from "./Soal/soalReducer";
+import { scoreReducer } from "./Score/scoreReducer";
 import { initReducer } from "./Init/initReducer";
 
 const persistConfig = {
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
     cartReducer: cartReducer,
     paymentReducer: paymentReducer,
     materiReducer: materiReducer,
+    scoreReducer: scoreReducer,
     versionReducer: versionReducer,
 });
 

@@ -60,6 +60,16 @@ const LainnyaContent = () => {
                     );
                 }
             })}
+            {renderTile("Score History", "history", () => {
+                if (isLogin) {
+                    navigation.navigate("ScoreListScreen");
+                } else {
+                    Alert.alert(
+                        "Tidak Bisa Masuk",
+                        "Anda belum punya akun untuk mengakses menu ini"
+                    );
+                }
+            })}
             {/* {renderTile("Base Url", "link", () => {
                 navigation.navigate("BaseurlScreen");
             })} */}

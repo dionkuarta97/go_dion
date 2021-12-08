@@ -1,9 +1,9 @@
-import {useNavigation} from "@react-navigation/core";
-import React, {useEffect, useState} from "react";
-import {Image, ScrollView, Text, View} from "react-native";
+import { useNavigation } from "@react-navigation/core";
+import React, { useEffect, useState } from "react";
+import { Image, ScrollView, Text, View } from "react-native";
 import CountDown from "react-native-countdown-component";
-import {Colors} from "react-native/Libraries/NewAppScreen";
-import {useDispatch, useSelector} from "react-redux";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import { useDispatch, useSelector } from "react-redux";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import RoundedButton from "../../../Components/Button/RoundedButton";
 import {
@@ -26,6 +26,8 @@ const SoalContent = () => {
     const navigation = useNavigation();
 
     const number = useSelector((state) => state.soalReducer.currentNumber);
+    const quizId = useSelector((state) => state.soalReducer.soal.data._id);
+
     const sessions = useSelector(
         (state) => state.soalReducer.soal.data.sessions
     );
@@ -56,19 +58,19 @@ const SoalContent = () => {
     const [visibleStatusModal, setVisibleStatusModal] = useState(false);
 
     useEffect(() => {
-        dispatch(setSaveAnswer({loading: false, error: null, data: null}));
+        dispatch(setSaveAnswer({ loading: false, error: null, data: null }));
         dispatch(setFinalAnswer([]));
         dispatch(setNumber(1));
     }, []);
 
     const headerComponent = () => {
         return (
-            <View style={{padding: Sizes.fixPadding * 2}}>
-                <Text style={{color: Colors.ligthGreyColor}}>
+            <View style={{ padding: Sizes.fixPadding * 2 }}>
+                <Text style={{ color: Colors.ligthGreyColor }}>
                     Sesi {sessionIndex + 1}/{sessionTotal}
                 </Text>
-                <View style={{flexDirection: "row"}}>
-                    <Text style={{...Fonts.black17Bold, flex: 1}}>
+                <View style={{ flexDirection: "row" }}>
+                    <Text style={{ ...Fonts.black17Bold, flex: 1 }}>
                         Bahasa Indonesia
                     </Text>
                     <View>
@@ -99,8 +101,8 @@ const SoalContent = () => {
                                 }}
                                 size={14}
                                 timeToShow={["M", "S"]}
-                                timeLabels={{m: null, s: null}}
-                                style={{...Fonts.blackRegular}}
+                                timeLabels={{ m: null, s: null }}
+                                style={{ ...Fonts.blackRegular }}
                                 onChange={(t) => {}}
                                 running={!finish && !delay}
                             />
@@ -117,8 +119,8 @@ const SoalContent = () => {
                                 }}
                                 size={14}
                                 timeToShow={["M", "S"]}
-                                timeLabels={{m: null, s: null}}
-                                style={{...Fonts.blackRegular}}
+                                timeLabels={{ m: null, s: null }}
+                                style={{ ...Fonts.blackRegular }}
                                 onChange={(t) => {}}
                                 running={true}
                             />
@@ -139,14 +141,14 @@ const SoalContent = () => {
                 }}
             >
                 <Image
-                    style={{height: 200}}
+                    style={{ height: 200 }}
                     resizeMode="contain"
                     source={require("../../../../assets/Images/soal/sesidone.png")}
                 />
-                <Text style={{marginTop: 30, fontWeight: "bold"}}>
+                <Text style={{ marginTop: 30, fontWeight: "bold" }}>
                     Sesi Berakhir
                 </Text>
-                <Text style={{color: "grey"}}>
+                <Text style={{ color: "grey" }}>
                     Sabar ya, sesi selanjutnya sedan dipersiapkan
                 </Text>
             </View>
@@ -163,14 +165,14 @@ const SoalContent = () => {
                 }}
             >
                 <Image
-                    style={{height: 200}}
+                    style={{ height: 200 }}
                     resizeMode="contain"
                     source={require("../../../../assets/Images/soal/onsend.png")}
                 />
-                <Text style={{marginTop: 30, fontWeight: "bold"}}>
+                <Text style={{ marginTop: 30, fontWeight: "bold" }}>
                     Jawaban sedang dikirim,
                 </Text>
-                <Text style={{color: "grey", textAlign: "center"}}>
+                <Text style={{ color: "grey", textAlign: "center" }}>
                     Tunggu sebentar ya, hasil pengiriman akan segera muncul
                 </Text>
             </View>
@@ -179,7 +181,7 @@ const SoalContent = () => {
 
     const finishComponent = () => {
         return (
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
                 <View
                     style={{
                         flex: 1,
@@ -188,14 +190,14 @@ const SoalContent = () => {
                     }}
                 >
                     <Image
-                        style={{height: 200}}
+                        style={{ height: 200 }}
                         resizeMode="contain"
                         source={require("../../../../assets/Images/soal/ondone.png")}
                     />
-                    <Text style={{marginTop: 30, fontWeight: "bold"}}>
+                    <Text style={{ marginTop: 30, fontWeight: "bold" }}>
                         Berhasil Dikirim
                     </Text>
-                    <Text style={{color: "grey", textAlign: "center"}}>
+                    <Text style={{ color: "grey", textAlign: "center" }}>
                         Kamu bisa cek skor kamu dengan klik tombol dibawah ini.
                     </Text>
                 </View>
@@ -210,12 +212,14 @@ const SoalContent = () => {
                         elevation: 30,
                     }}
                 >
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                         <DefaultPrimaryButton
                             text="Cek Skor Kamu"
                             onPress={() => {
                                 navigation.popToTop();
-                                navigation.navigate("ScoreScreen");
+                                navigation.navigate("ScoreScreen", {
+                                    idMateri: quizId,
+                                });
                             }}
                         />
                     </View>
@@ -286,13 +290,13 @@ const SoalContent = () => {
     };
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             {!finish && headerComponent()}
             {finish && save.loading && loadingSendComponent()}
             {finish && save.data !== null && finishComponent()}
             {delay && sessionWaitComponent()}
             {!delay && !finish && (
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                     <View
                         style={{
                             flex: 1,
@@ -307,7 +311,7 @@ const SoalContent = () => {
                                 marginBottom: Sizes.fixPadding,
                             }}
                         >
-                            <Text style={{flex: 1, color: "black"}}>
+                            <Text style={{ flex: 1, color: "black" }}>
                                 Soal {number}/{questions.length}
                             </Text>
 
@@ -316,7 +320,7 @@ const SoalContent = () => {
                                 onPress={() => setVisibleStatusModal(true)}
                             />
                         </View>
-                        <ScrollView style={{flex: 1}}>
+                        <ScrollView style={{ flex: 1 }}>
                             {questionTypeComponent()}
                         </ScrollView>
                     </View>
