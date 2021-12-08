@@ -23,33 +23,33 @@ const products = [
 const HomeContent = () => {
     const navigation = useNavigation();
 
-    const handleDynamicLink = (link) => {
-        console.log("dynamic link called...");
-        console.log("=====>", link);
-        // Handle dynamic link inside your own application
-        if (link.url === "https://gobimbelonline.net/newpassword") {
-            navigation.navigate("NewPasswordScreen");
-        }
-    };
+    // const handleDynamicLink = (link) => {
+    //     console.log("dynamic link called...");
+    //     console.log("=====>", link);
+    //     // Handle dynamic link inside your own application
+    //     if (link.url === "https://gobimbelonline.net/newpassword") {
+    //         navigation.navigate("NewPasswordScreen");
+    //     }
+    // };
 
     useEffect(() => {
         LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
         // listen to dynamic links
-        dynamicLinks()
-            .getInitialLink()
-            .then((link) => {
-                console.log("======== Link useEffect =======");
-                if (link.url === "https://gobimbelonline.net/newpassword") {
-                    console.log("new password called...");
-                    navigation.navigate("NewPasswordScreen");
-                }
-            });
+        // dynamicLinks()
+        //     .getInitialLink()
+        //     .then((link) => {
+        //         console.log("======== Link useEffect =======");
+        //         if (link.url === "https://gobimbelonline.net/newpassword") {
+        //             console.log("new password called...");
+        //             navigation.navigate("NewPasswordScreen");
+        //         }
+        //     });
 
-        // subscribe to dynamic link
-        const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
-        // When the component is unmounted, remove the listener
-        return () => unsubscribe();
+        // // subscribe to dynamic link
+        // const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+        // // When the component is unmounted, remove the listener
+        // return () => unsubscribe();
     }, []);
 
     const sectionHeader = (title) => {
