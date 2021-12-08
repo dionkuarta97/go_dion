@@ -13,11 +13,30 @@ import PasswordTextInput from "../../Components/CustomTextInput/PasswordTextInpu
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
+import {useDispatch, useSelector} from "react-redux";
 
-const NewPasswordScreen = () => {
+const NewPasswordScreen = ({route}) => {
     const navigation = useNavigation();
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
+
+    const params = route.params
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log("params ===> ", params)
+    }, []);
+
+    function updateParams() {
+        var par = {
+            email: params.email,
+            token: params.token,
+            password: password,
+        };
+
+        dispatch(updatePassword(par));
+    }
 
     function passwordValidation(text) {
         if (text.length < 8) return "Password must be atleast 8 characters";
@@ -59,7 +78,9 @@ const NewPasswordScreen = () => {
                 <View style={{ flex: 1 }} />
 
                 {password !== "" && password === repeatPassword && (
-                    <DefaultPrimaryButton text="Submit" />
+                    <DefaultPrimaryButton text="Submit" onPress={
+                        () => updateParams()
+                    } />
                 )}
             </View>
             <StatusBar
