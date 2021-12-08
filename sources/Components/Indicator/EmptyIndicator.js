@@ -1,5 +1,5 @@
 import React from "react";
-import {Text, View} from "react-native";
+import { Dimensions, Image, Text, View } from "react-native";
 
 const EmptyIndicator = () => {
     return (
@@ -8,10 +8,17 @@ const EmptyIndicator = () => {
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "white",
             }}
         >
-            <Text>Empty</Text>
+            <Image
+                style={{
+                    height: Dimensions.get("screen").width / 2,
+                    width: Dimensions.get("screen").width / 2,
+                    borderRadius: 50,
+                }}
+                source={require("../../../assets/Images/helper/empty.png")}
+                resizeMode="contain"
+            />
         </View>
     );
 };

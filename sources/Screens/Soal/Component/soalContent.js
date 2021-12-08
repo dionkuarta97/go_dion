@@ -2,10 +2,10 @@ import { useNavigation } from "@react-navigation/core";
 import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import CountDown from "react-native-countdown-component";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import RoundedButton from "../../../Components/Button/RoundedButton";
+import * as Progress from "react-native-progress";
 import {
     saveAnswer,
     setFinalAnswer,
@@ -20,6 +20,7 @@ import PertanyaanPBK from "./Pertanyaan/PertanyaanPBK";
 import PertanyaanPBS from "./Pertanyaan/PertanyaanPBS";
 import PertanyaanPBT from "./Pertanyaan/PertanyaanPBT";
 import TimerSoal from "./TimerSoal";
+import Colors from "../../../Theme/Colors";
 
 const SoalContent = () => {
     const dispatch = useDispatch();
@@ -57,6 +58,8 @@ const SoalContent = () => {
 
     const [visibleStatusModal, setVisibleStatusModal] = useState(false);
 
+    const [delayTime, setDelayTime] = useState(0);
+
     useEffect(() => {
         dispatch(setSaveAnswer({ loading: false, error: null, data: null }));
         dispatch(setFinalAnswer([]));
@@ -83,8 +86,13 @@ const SoalContent = () => {
                                 }}
                                 showSeparator={true}
                                 onFinish={() => {
+                                    var status = "not_done";
+                                    if (answers.length === questions.length) {
+                                        status = "done";
+                                    }
                                     if (sessionIndex + 1 !== sessionTotal) {
                                         setDelay(true);
+                                        setDelayTime(0);
                                         dispatch(setNumber(1));
                                         const sesIndex = sessionIndex + 1;
                                         setSessionIndex(sesIndex);
@@ -92,11 +100,12 @@ const SoalContent = () => {
                                             sessions[sesIndex].questions
                                         );
                                         dispatch(setFinalAnswer(answers));
+                                        dispatch(saveAnswer(status));
                                         setAnswers([]);
                                     } else {
                                         setFinish(true);
                                         dispatch(setFinalAnswer(answers));
-                                        dispatch(saveAnswer());
+                                        dispatch(saveAnswer(status));
                                     }
                                 }}
                                 size={14}
@@ -116,12 +125,15 @@ const SoalContent = () => {
                                 showSeparator={true}
                                 onFinish={() => {
                                     setDelay(false);
+                                    setDelayTime(0);
                                 }}
                                 size={14}
                                 timeToShow={["M", "S"]}
                                 timeLabels={{ m: null, s: null }}
                                 style={{ ...Fonts.blackRegular }}
-                                onChange={(t) => {}}
+                                onChange={(t) => {
+                                    setDelayTime(t);
+                                }}
                                 running={true}
                             />
                         )}
@@ -151,6 +163,12 @@ const SoalContent = () => {
                 <Text style={{ color: "grey" }}>
                     Sabar ya, sesi selanjutnya sedan dipersiapkan
                 </Text>
+
+                <Progress.Bar
+                    progress={1 - delayTime / sessionWaitingDuration}
+                    width={200}
+                    color={Colors.primaryColor}
+                />
             </View>
         );
     };

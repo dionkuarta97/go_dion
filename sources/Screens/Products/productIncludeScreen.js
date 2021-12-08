@@ -98,7 +98,7 @@ const ProductIncludeScreen = (props) => {
                 {includes.loading && <LoadingIndicator />}
                 {includes.data !== null && (
                     <View style={{ flex: 1 }}>
-                        {includes.data > 0 ? (
+                        {includes.data.length > 0 ? (
                             <FlatList
                                 data={includes.data}
                                 keyExtractor={(item) => item._id}

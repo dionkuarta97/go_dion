@@ -45,9 +45,13 @@ export function soalReducer(state = initialState, action) {
                 saveAnswer: action.payload,
             };
         case SET_FINAL_ANSWER:
+            // return {
+            //     ...state,
+            //     answers: [...state.answers, action.payload],
+            // };
             return {
                 ...state,
-                answers: [...state.answers, action.payload],
+                answers: action.payload,
             };
         default:
             return state;

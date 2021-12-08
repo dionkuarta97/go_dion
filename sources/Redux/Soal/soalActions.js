@@ -76,7 +76,7 @@ export function setSaveAnswer(state) {
     };
 }
 
-export function saveAnswer() {
+export function saveAnswer(status) {
     return async (dispatch, getState) => {
         dispatch(setSaveAnswer(defaultInitState));
         try {
@@ -84,6 +84,7 @@ export function saveAnswer() {
                 related_to: getState().soalReducer.soal.data.related_to,
                 raw_data: getState().soalReducer.soal.data.sessions,
                 answers: getState().soalReducer.answers,
+                status: status,
             });
             const urlBase = getState().initReducer.baseUrl;
             fetch(urlBase + urlQuests + "/save", {
