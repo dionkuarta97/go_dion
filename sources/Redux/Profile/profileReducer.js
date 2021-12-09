@@ -3,6 +3,7 @@ import {
     SET_PROFILE,
     SET_STATISTIC,
     SET_UPDATE_PROFILE,
+    SET_NEW_PASSWORD,
 } from "./profileTypes";
 
 const initialState = {
@@ -14,6 +15,11 @@ const initialState = {
     profile: null,
     statistic: null,
     updateProfile: {
+        loading: false,
+        error: null,
+        data: null,
+    },
+    updatePassword: {
         loading: false,
         error: null,
         data: null,
@@ -41,6 +47,11 @@ export function profileReducer(state = initialState, action) {
             return {
                 ...state,
                 updateProfile: action.payload,
+            };
+        case SET_NEW_PASSWORD:
+            return {
+                ...state,
+                updatePassword: action.payload,
             };
         default:
             return state;

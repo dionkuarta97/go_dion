@@ -1,5 +1,5 @@
-import { useNavigation } from "@react-navigation/core";
-import React, { useState } from "react";
+import {useNavigation} from "@react-navigation/core";
+import React, {useState} from "react";
 import {
     SafeAreaView,
     StatusBar,
@@ -14,18 +14,23 @@ import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
 import {useDispatch, useSelector} from "react-redux";
+import DefaultModal from "../../Components/Modal/DefaultModal";
 
 const NewPasswordScreen = ({route}) => {
     const navigation = useNavigation();
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
 
-    const params = route.params
+    const params = route.params;
 
     const dispatch = useDispatch();
 
+    const updatePassword = useSelector(
+        (state) => state.profileReducer.updatePassword
+    );
+
     useEffect(() => {
-        console.log("params ===> ", params)
+        console.log("params ===> ", params);
     }, []);
 
     function updateParams() {
@@ -51,10 +56,10 @@ const NewPasswordScreen = ({route}) => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{flex: 1}}>
             <DefaultAppBar title="New Password" />
-            <View style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
-                <Text style={{ ...Fonts.black15Bold }}>
+            <View style={{flex: 1, padding: Sizes.fixPadding * 2}}>
+                <Text style={{...Fonts.black15Bold}}>
                     Masukkan password baru kamu
                 </Text>
                 <PasswordTextInput
@@ -62,7 +67,7 @@ const NewPasswordScreen = ({route}) => {
                     onChangeText={setPassword}
                 />
                 {passwordValidation(password) != null && (
-                    <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                    <Text style={{fontSize: 12, color: "red", opacity: 0.5}}>
                         {passwordValidation(password)}
                     </Text>
                 )}
@@ -71,16 +76,34 @@ const NewPasswordScreen = ({route}) => {
                     onChangeText={setRepeatPassword}
                 />
                 {password !== repeatPassword && (
-                    <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                    <Text style={{fontSize: 12, color: "red", opacity: 0.5}}>
                         Password Tidak Sama
                     </Text>
                 )}
-                <View style={{ flex: 1 }} />
+                <View style={{flex: 1}} />
 
                 {password !== "" && password === repeatPassword && (
-                    <DefaultPrimaryButton text="Submit" onPress={
-                        () => updateParams()
-                    } />
+                    <DefaultPrimaryButton
+                        text="Submit"
+                        onPress={() => updateParams()}
+                    />
+                )}
+
+                {updatePassword.data !== null && (
+                    <DefaultModal>
+                        <Text>Password Berhasil Diperbaharui</Text>
+                        <DefaultPrimaryButton
+                            text="Ke Halaman Login"
+                            onPress={() => {
+                                // todo : replace route
+                                navigation.navigate("LoginScreen");
+                            }}
+                        />
+                    </DefaultModal>
+                )}
+
+                {updatePassword.error !== null && (
+                    <Text style={{color: "red"}}>{login.error}</Text>
                 )}
             </View>
             <StatusBar

@@ -10,6 +10,7 @@ import {
     SET_PROFILE,
     SET_STATISTIC,
     SET_UPDATE_PROFILE,
+    SET_NEW_PASSWORD
 } from "./profileTypes";
 
 export function getMe() {
@@ -128,25 +129,32 @@ export function updatePassword(bodyParams) {
                 .then((json) => {
                     console.log(json);
 
-                    // if (json.status) {
-                    //     dispatch(
-                    //         setUpdateProfile(defaultDoneState(json.data))
-                    //     );
-                    //     dispatch(setProfile(json.data));
-                    // } else
-                    //     dispatch(
-                    //         setUpdateProfile(
-                    //             defaultFailedState(json.message)
-                    //         )
-                    //     );
+                    if (json.status) {
+                        dispatch(
+                            setNewPassword(defaultDoneState(json.data))
+                        );
+                        // dispatch(setProfile(json.data));
+                    } else
+                        dispatch(
+                            setUpdateProfile(
+                                defaultFailedState(json.message)
+                            )
+                        );
                 })
                 .catch((err) => {
                     console.log("catch err: ",err);
-                    // dispatch(setUpdateProfile(defaultErrorState));
+                    dispatch(setNewPassword(defaultErrorState));
                 });
         } catch (err) {
             console.log("err:",err);
-            // dispatch(setUpdateProfile(defaultErrorState));
+            dispatch(setNewPassword(defaultErrorState));
         }
+    };
+}
+
+export function setNewPassword(password) {
+    return {
+        type: SET_NEW_PASSWORD,
+        payload: password,
     };
 }
