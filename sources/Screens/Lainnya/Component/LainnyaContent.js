@@ -50,7 +50,7 @@ const LainnyaContent = () => {
     };
     return (
         <View style={{ flex: 1, paddingVertical: Sizes.fixPadding * 2 }}>
-            {renderTile("Profil", "person", () => {
+            {isLogin && renderTile("Profil", "person", () => {
                 if (isLogin) {
                     navigation.navigate("ProfileScreen");
                 } else {
@@ -60,7 +60,7 @@ const LainnyaContent = () => {
                     );
                 }
             })}
-            {renderTile("Score History", "history", () => {
+            {isLogin && renderTile("Score History", "history", () => {
                 if (isLogin) {
                     navigation.navigate("ScoreListScreen");
                 } else {

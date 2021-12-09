@@ -98,7 +98,8 @@ const NewPasswordScreen = ({route}) => {
                             text="Ke Halaman Login"
                             onPress={() => {
                                 // todo : replace route
-                                navigation.navigate("LoginScreen");
+                                navigation.goBack();
+                                // navigation.navigate("LoginScreen");
                             }}
                         />
                     </DefaultModal>
