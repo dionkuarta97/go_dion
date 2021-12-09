@@ -111,11 +111,11 @@ export function getUpdateProfile(bodyParams) {
 
 export function updatePassword(bodyParams) {
     
-    
+    console.log("update password...")
     return async (dispatch, getState) => {
         // bodyParams['token'] = `Bearer ${getState().authReducer.token}`
         console.log("params : ",bodyParams);
-        dispatch(setUpdateProfile(defaultInitState));
+        dispatch(setNewPassword(defaultInitState));
         try {
             fetch(
                 "https://apionline.gobimbelonline.net/masterdata/v1/fp/reset",
@@ -131,7 +131,7 @@ export function updatePassword(bodyParams) {
 
                     if (json.status) {
                         dispatch(
-                            setNewPassword(defaultDoneState(json.data))
+                            setNewPassword(defaultDoneState(json.code))
                         );
                         // dispatch(setProfile(json.data));
                     } else
@@ -152,9 +152,9 @@ export function updatePassword(bodyParams) {
     };
 }
 
-export function setNewPassword(password) {
+export function setNewPassword(userData) {
     return {
         type: SET_NEW_PASSWORD,
-        payload: password,
+        payload: userData,
     };
 }

@@ -161,6 +161,7 @@ export function getForgotPassword(email) {
         dispatch(setForgotPassword(defaultInitState));
         try {
             const urlBase = getState().initReducer.baseUrl;
+            console.log(urlBase + urlForgotPassword)
             fetch(urlBase + urlForgotPassword, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

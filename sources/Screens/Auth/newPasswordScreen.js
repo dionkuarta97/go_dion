@@ -1,5 +1,5 @@
 import {useNavigation} from "@react-navigation/core";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {
     SafeAreaView,
     StatusBar,
@@ -15,6 +15,7 @@ import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
 import {useDispatch, useSelector} from "react-redux";
 import DefaultModal from "../../Components/Modal/DefaultModal";
+import {updatePassword} from "../../Redux/Profile/profileActions";
 
 const NewPasswordScreen = ({route}) => {
     const navigation = useNavigation();
@@ -25,7 +26,7 @@ const NewPasswordScreen = ({route}) => {
 
     const dispatch = useDispatch();
 
-    const updatePassword = useSelector(
+    const _updatePassword = useSelector(
         (state) => state.profileReducer.updatePassword
     );
 
@@ -34,6 +35,7 @@ const NewPasswordScreen = ({route}) => {
     }, []);
 
     function updateParams() {
+        console.log("update params...");
         var par = {
             email: params.email,
             token: params.token,
@@ -89,7 +91,7 @@ const NewPasswordScreen = ({route}) => {
                     />
                 )}
 
-                {updatePassword.data !== null && (
+                {_updatePassword.data == 200 && (
                     <DefaultModal>
                         <Text>Password Berhasil Diperbaharui</Text>
                         <DefaultPrimaryButton
@@ -102,7 +104,7 @@ const NewPasswordScreen = ({route}) => {
                     </DefaultModal>
                 )}
 
-                {updatePassword.error !== null && (
+                {_updatePassword.error !== null && (
                     <Text style={{color: "red"}}>{login.error}</Text>
                 )}
             </View>
