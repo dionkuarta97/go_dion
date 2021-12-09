@@ -97,7 +97,22 @@ const NewPasswordScreen = ({route}) => {
                         <DefaultPrimaryButton
                             text="Ke Halaman Login"
                             onPress={() => {
+                                // todo : replace route to init
+                                navigation.goBack();
+                                navigation.goBack();
+                            }}
+                        />
+                    </DefaultModal>
+                )}
+
+{_updatePassword.data == 400 && (
+                    <DefaultModal>
+                        <Text>Password Gagal Diperbaharui</Text>
+                        <DefaultPrimaryButton
+                            text="Ke Halaman Login"
+                            onPress={() => {
                                 // todo : replace route
+                                // _updatePassword.data = 0
                                 navigation.goBack();
                                 // navigation.navigate("LoginScreen");
                             }}

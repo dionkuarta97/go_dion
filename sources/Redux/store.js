@@ -20,6 +20,7 @@ import { initReducer } from "./Init/initReducer";
 const persistConfig = {
     key: "root",
     storage: AsyncStorage,
+    blacklist:['updatePassword']
 };
 
 const rootReducer = combineReducers({
