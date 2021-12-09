@@ -29,7 +29,7 @@ const TimerSoal = (props) => {
         return () => clearInterval(interval);
     }, []);
 
-    return <Text style={{ ...Fonts.black19Regular }}>{timerCount}</Text>;
+    return <Text style={{ ...Fonts.primaryColor25Bold }}>{timerCount}</Text>;
 };
 
 TimerSoal.propTypes = {

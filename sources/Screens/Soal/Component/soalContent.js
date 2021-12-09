@@ -214,7 +214,7 @@ const SoalContent = () => {
                         source={require("../../../../assets/Images/soal/ondone.png")}
                     />
                     <Text style={{ marginTop: 30, fontWeight: "bold" }}>
-                        Berhasil Dikirim
+                        Jawaban Kamu Berhasil Dikirim
                     </Text>
                     <Text style={{ color: "grey", textAlign: "center" }}>
                         Kamu bisa cek skor kamu dengan klik tombol dibawah ini.
