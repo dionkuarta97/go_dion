@@ -100,7 +100,6 @@ const SoalContent = () => {
                                             sessions[sesIndex].questions
                                         );
                                         dispatch(setFinalAnswer(answers));
-                                        dispatch(saveAnswer(status));
                                         setAnswers([]);
                                     } else {
                                         setFinish(true);
@@ -205,7 +204,7 @@ const SoalContent = () => {
                         flex: 1,
                         justifyContent: "center",
                         alignItems: "center",
-                        marginHorizontal:20
+                        marginHorizontal: 20,
                     }}
                 >
                     <Image

@@ -12,6 +12,7 @@ import HomeCarousel from "./HomeCarousel";
 import HomeMenu from "./HomeMenu";
 import dynamicLinks from "@react-native-firebase/dynamic-links";
 import HomePendingPayment from "./HomePendingPayment";
+import { useSelector } from "react-redux";
 
 const products = [
     { id: 1, title: "a" },
@@ -22,6 +23,7 @@ const products = [
 
 const HomeContent = () => {
     const navigation = useNavigation();
+    const isLogin = useSelector((state) => state.authReducer.isLogin);
 
     // const handleDynamicLink = (link) => {
     //     console.log("dynamic link called...");
@@ -75,7 +77,7 @@ const HomeContent = () => {
     return (
         <View style={{ flex: 1 }}>
             <HomeCarousel />
-            <HomePendingPayment />
+            {isLogin && <HomePendingPayment />}
             <HomeMenu />
 
             <View>

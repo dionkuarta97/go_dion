@@ -1,30 +1,35 @@
 import React from "react";
-import {StyleSheet, Text, View} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Fonts from "../../Theme/Fonts";
 import Colors from "../../Theme/Colors";
 import Sizes from "../../Theme/Sizes";
 
 import PropTypes from "prop-types";
-import {MaterialIcons} from "@expo/vector-icons";
-import {useNavigation} from "@react-navigation/core";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/core";
 
 const propTypes = {
     title: PropTypes.string,
     rightItem: PropTypes.node,
     backEnabled: PropTypes.bool,
+    backPressed: PropTypes.func,
 };
 
 const DefaultAppBar = (props) => {
     const navigation = useNavigation();
     return (
         <View style={styles.appBar}>
-            <View style={{flex: 1, flexDirection: "row"}}>
+            <View style={{ flex: 1, flexDirection: "row" }}>
                 {props.backEnabled && (
                     <MaterialIcons
                         name="arrow-back-ios"
                         size={24}
                         color="black"
-                        onPress={() => navigation.goBack()}
+                        onPress={
+                            props.backPressed != null
+                                ? props.backPressed
+                                : () => navigation.goBack()
+                        }
                     />
                 )}
                 <Text
