@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     Alert,
     SafeAreaView,
@@ -6,41 +6,50 @@ import {
     ScrollView,
     View,
     StyleSheet,
+    BackHandler,
 } from "react-native";
-import {TouchableOpacity} from "react-native-gesture-handler";
-import {useDispatch, useSelector} from "react-redux";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/core";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
-import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
-import RoundedButton from "../../Components/Button/RoundedButton";
+
 import LoadingIndicator from "../../Components/Indicator/LoadingIndicator";
-import {getSoal, setNumber} from "../../Redux/Soal/soalActions";
-import Colors from "../../Theme/Colors";
-import Fonts from "../../Theme/Fonts";
-import Sizes from "../../Theme/Sizes";
-import CompStyles from "../../Theme/styles/globalStyles";
-import DelaySession from "./Component/DelaySession";
-import ModalStatusSoal from "./Component/ModalStatusSoal";
-import NavigasiSoal from "./Component/NavigasiSoal";
-import PertanyaanEssay from "./Component/Pertanyaan/PertanyaanEssay";
-import PertanyaanEssayMajemuk from "./Component/Pertanyaan/PertanyaanEssayMajemuk";
-import PertanyaanPBCT from "./Component/Pertanyaan/PertanyaanPBCT";
-import PertanyaanPBK from "./Component/Pertanyaan/PertanyaanPBK";
-import PertanyaanPBS from "./Component/Pertanyaan/PertanyaanPBS";
-import SoalPG from "./Component/Pertanyaan/PertanyaanPBS";
+import { getSoal, setNumber } from "../../Redux/Soal/soalActions";
+
 import SoalContent from "./Component/soalContent";
-import TimerSoal from "./Component/TimerSoal";
 
 const SoalScreen = () => {
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const soal = useSelector((state) => state.soalReducer.soal);
 
     useEffect(() => {
         dispatch(getSoal());
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            () => true
+        );
+        return () => backHandler.remove();
     }, []);
 
     return (
-        <SafeAreaView style={{flex: 1}}>
-            <DefaultAppBar title="Soal" backEnabled={true} />
+        <SafeAreaView style={{ flex: 1 }}>
+            <DefaultAppBar
+                title="Soal"
+                backEnabled={true}
+                backPressed={() => {
+                    Alert.alert("Cancel taking quiz", "Are you sure?", [
+                        {
+                            text: "Cancel",
+                            onPress: () => {},
+                        },
+                        {
+                            text: "Yes",
+                            onPress: () => navigation.goBack(),
+                        },
+                    ]);
+                }}
+            />
             {soal.loading && <LoadingIndicator />}
             {soal.data != null && <SoalContent />}
         </SafeAreaView>
