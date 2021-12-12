@@ -87,6 +87,9 @@ export function saveAnswer(status) {
                 answers: getState().soalReducer.answers,
                 status: status,
             });
+            console.log("=== Save Answers ===")
+            console.log(bodyParams)
+            console.log("=== Save Answers: eof ===")
             const urlBase = getState().initReducer.baseUrl;
             fetch(urlBase + urlQuests + "/save", {
                 method: "POST",

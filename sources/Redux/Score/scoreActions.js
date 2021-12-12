@@ -23,9 +23,9 @@ export function getScore(idMateri) {
             
             const urlBase = getState().initReducer.baseUrl;
 
-            console.log(urlBase + urlListScore + `/${idMateri}`)
+            console.log(urlBase + urlListScore)
             
-            fetch(urlBase + urlListScore + `/${idMateri}`, {
+            fetch(urlBase + urlListScore, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${getState().authReducer.token}`,
