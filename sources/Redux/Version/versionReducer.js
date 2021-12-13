@@ -1,5 +1,5 @@
 const initialState = {
-    androidVersion: "0.1.43",
+    androidVersion: "0.1.45",
     iosVersion: "0.0.0",
 };
 
