@@ -60,7 +60,7 @@ const LainnyaContent = () => {
                     );
                 }
             })}
-            {isLogin && renderTile("Score History", "history", () => {
+            {/* {isLogin && renderTile("Score History", "history", () => {
                 if (isLogin) {
                     navigation.navigate("ScoreListScreen");
                 } else {
@@ -69,7 +69,7 @@ const LainnyaContent = () => {
                         "Anda belum punya akun untuk mengakses menu ini"
                     );
                 }
-            })}
+            })} */}
             {/* {renderTile("Base Url", "link", () => {
                 navigation.navigate("BaseurlScreen");
             })} */}
