@@ -39,170 +39,79 @@ import ProductIncludeScreen from "./Screens/Products/productIncludeScreen";
 import ScoreListScreen from "./Screens/Score/scoreListScreen";
 import BaseurlScreen from "./Screens/Lainnya/baseurlScreen";
 import PurchasePendingScreen from "./Screens/Purchase/purchasePendingScreen";
+import GantiPasswordScreen from "./Screens/Profile/GantiPasswordScreen";
 
 const Stack = createStackNavigator();
 
 export default App = () => {
-    const config = {
-        screens: {
-            NewPasswordScreen: "newpassword/:email/:token/:date/:expdate",
-        },
-    };
+  const config = {
+    screens: {
+      NewPasswordScreen: "newpassword/:email/:token/:date/:expdate",
+    },
+  };
 
-    const linking = {
-        prefixes: ["https://goapp/"],
-        config,
-    };
+  const linking = {
+    prefixes: ["https://goapp/"],
+    config,
+  };
 
-    return (
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <NavigationContainer linking={linking}>
-                    <Stack.Navigator
-                        initialRouteName="InitialScreen"
-                        screenOptions={{
-                            headerShown: false,
-                        }}
-                    >
-                        <Stack.Screen
-                            name="InitialScreen"
-                            component={initialScreen}
-                        />
-                        <Stack.Screen
-                            name="LoginScreen"
-                            component={LoginScreen}
-                        />
-                        <Stack.Screen
-                            name="EmailCheckScreen"
-                            component={EmailCheckScreen}
-                        />
-                        <Stack.Screen
-                            name="RegisterScreen"
-                            component={RegisterScreen}
-                        />
-                        <Stack.Screen
-                            name="ForgotPasswordScreen"
-                            component={ForgotPasswordScreen}
-                        />
-                        <Stack.Screen
-                            name="NewPasswordScreen"
-                            component={NewPasswordScreen}
-                        />
-                        <Stack.Screen
-                            name="MainScreen"
-                            component={MainScreen}
-                        />
-                        <Stack.Screen
-                            name="ProductScreen"
-                            component={ProductScreen}
-                        />
-                        <Stack.Screen
-                            name="ProductCategoryScreen"
-                            component={ProductCategoryScreen}
-                        />
-                        <Stack.Screen
-                            name="ProductDetailScreen"
-                            component={ProductDetailScreen}
-                        />
-                        <Stack.Screen
-                            name="ProductPurchasedScreen"
-                            component={ProductPurchasedScreen}
-                        />
-                        <Stack.Screen
-                            name="ProductIncludeScreen"
-                            component={ProductIncludeScreen}
-                        />
-                        <Stack.Screen
-                            name="FilterScreen"
-                            component={FilterScreen}
-                        />
-                        <Stack.Screen
-                            name="FilterResultScreen"
-                            component={FilterResultScreen}
-                        />
-                        <Stack.Screen
-                            name="CartScreen"
-                            component={CartScreen}
-                        />
-                        <Stack.Screen
-                            name="PaymentScreen"
-                            component={PaymentScreen}
-                        />
-                        <Stack.Screen
-                            name="PaymentMethodScreen"
-                            component={PaymentMethodScreen}
-                        />
-                        <Stack.Screen
-                            name="CheckoutScreen"
-                            component={CheckoutScreen}
-                        />
-                        <Stack.Screen
-                            name="PurchasePendingScreen"
-                            component={PurchasePendingScreen}
-                        />
-                        <Stack.Screen
-                            name="LainnyaScreen"
-                            component={LainnyaScreen}
-                        />
-                        <Stack.Screen
-                            name="BaseurlScreen"
-                            component={BaseurlScreen}
-                        />
-                        <Stack.Screen
-                            name="ProfileScreen"
-                            component={ProfileScreen}
-                        />
-                        <Stack.Screen
-                            name="ProfileEditScreen"
-                            component={ProfileEditScreen}
-                        />
-                        <Stack.Screen
-                            name="GoBelajarScreen"
-                            component={GoBelajarScreen}
-                        />
-                        <Stack.Screen
-                            name="SubMateriScreen"
-                            component={SubMateriScreen}
-                        />
-                        <Stack.Screen
-                            name="MateriVideoScreen"
-                            component={MateriVideoScreen}
-                        />
-                        <Stack.Screen
-                            name="MateriEbookScreen"
-                            component={MateriEbookScreen}
-                        />
-                        <Stack.Screen
-                            name="PDFScreen"
-                            component={PDFScreen}
-                            options={{
-                                headerShown: true,
-                                headerTintColor: "black",
-                                title: "",
-                                headerStyle: {
-                                    backgroundColor: Colors.primaryColor,
-                                },
-                            }}
-                        />
-                        <Stack.Screen
-                            name="TryoutDetailScreen"
-                            component={TryoutDetailScreen}
-                        />
-                        <Stack.Screen
-                            name="SoalScreen"
-                            component={SoalScreen}
-                        />
-                        <Stack.Screen
-                            name="ScoreScreen"
-                            component={ScoreScreen}
-                        />
-                        <Stack.Screen
-                            name="ScoreListScreen"
-                            component={ScoreListScreen}
-                        />
-                    </Stack.Navigator>
-                </NavigationContainer>
-            </PersistGate>
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer linking={linking}>
+          <Stack.Navigator
+            initialRouteName="InitialScreen"
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="InitialScreen" component={initialScreen} />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="EmailCheckScreen" component={EmailCheckScreen} />
+            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+            <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
+            <Stack.Screen name="NewPasswordScreen" component={NewPasswordScreen} />
+            <Stack.Screen name="MainScreen" component={MainScreen} />
+            <Stack.Screen name="ProductScreen" component={ProductScreen} />
+            <Stack.Screen name="ProductCategoryScreen" component={ProductCategoryScreen} />
+            <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen} />
+            <Stack.Screen name="ProductPurchasedScreen" component={ProductPurchasedScreen} />
+            <Stack.Screen name="ProductIncludeScreen" component={ProductIncludeScreen} />
+            <Stack.Screen name="FilterScreen" component={FilterScreen} />
+            <Stack.Screen name="FilterResultScreen" component={FilterResultScreen} />
+            <Stack.Screen name="CartScreen" component={CartScreen} />
+            <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+            <Stack.Screen name="PaymentMethodScreen" component={PaymentMethodScreen} />
+            <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
+            <Stack.Screen name="PurchasePendingScreen" component={PurchasePendingScreen} />
+            <Stack.Screen name="LainnyaScreen" component={LainnyaScreen} />
+            <Stack.Screen name="BaseurlScreen" component={BaseurlScreen} />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen name="ProfileEditScreen" component={ProfileEditScreen} />
+            <Stack.Screen name="GantiPasswordScreen" component={GantiPasswordScreen} />
+            <Stack.Screen name="GoBelajarScreen" component={GoBelajarScreen} />
+            <Stack.Screen name="SubMateriScreen" component={SubMateriScreen} />
+            <Stack.Screen name="MateriVideoScreen" component={MateriVideoScreen} />
+            <Stack.Screen name="MateriEbookScreen" component={MateriEbookScreen} />
+            <Stack.Screen
+              name="PDFScreen"
+              component={PDFScreen}
+              options={{
+                headerShown: true,
+                headerTintColor: "black",
+                title: "",
+                headerStyle: {
+                  backgroundColor: Colors.primaryColor,
+                },
+              }}
+            />
+            <Stack.Screen name="TryoutDetailScreen" component={TryoutDetailScreen} />
+            <Stack.Screen name="SoalScreen" component={SoalScreen} />
+            <Stack.Screen name="ScoreScreen" component={ScoreScreen} />
+            <Stack.Screen name="ScoreListScreen" component={ScoreListScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
+  );
 };

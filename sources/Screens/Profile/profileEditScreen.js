@@ -1,11 +1,11 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, Alert } from "react-native";
+import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, Alert, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultTextInput from "../../Components/CustomTextInput/DefaultTextInput";
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation, useFocusEffect } from "@react-navigation/core";
 import { useDispatch, useSelector } from "react-redux";
 import OnTapTextInput from "../../Components/CustomTextInput/OnTapTextInput";
 import RoleBottomSheet from "../../Components/BottomSheet/RoleBottomSheet";
@@ -18,6 +18,10 @@ import LoadingModal from "../../Components/Modal/LoadingModal";
 import DefaultModal from "../../Components/Modal/DefaultModal";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import { getListCity, getListProvince } from "../../Redux/Data/dataActions";
+import PasswordTextInput from "../../Components/CustomTextInput/PasswordTextInput";
+import Colors from "../../Theme/Colors";
+import { getCheckPassword, setCheckPassword } from "../../Redux/Auth/authActions";
+import NewModalLoading from "../../Components/Modal/NewLoadingModal";
 
 const ProfileEditScreen = (props) => {
   const navigation = useNavigation();
@@ -25,7 +29,8 @@ const ProfileEditScreen = (props) => {
 
   const profile = props.route.params.profile;
   const update = useSelector((state) => state.profileReducer.updateProfile);
-
+  const { checkPassword } = useSelector((state) => state.authReducer);
+  const [modalVisible, setModalVisible] = useState(false);
   const [classBottomSheetVisible, setClassBottomSheetVisible] = useState(false);
   const [roleBottomeSheetVisible, setRoleBottomeSheetVisible] = useState(false);
   const [provinceBottomSheetVisible, setProvinceBottomSheetVisible] = useState(false);
@@ -47,7 +52,17 @@ const ProfileEditScreen = (props) => {
     if (id !== undefined) return id[0]?.idprovinsi;
   };
 
+  const getIdProfinsiSchool = (provinsi) => {
+    const id = listProvince.data?.filter((value) => value.provinsi === provinsi);
+    if (id !== undefined) return id[0]?.idprovinsi;
+  };
+
   const getIdKabKota = (city) => {
+    const id = listCity.data?.filter((value) => value.kabkota === city);
+    if (id !== undefined) return id[0]?.idkabkota;
+  };
+
+  const getIdKabKotaSchool = (city) => {
     const id = listCity.data?.filter((value) => value.kabkota === city);
     if (id !== undefined) return id[0]?.idkabkota;
   };
@@ -61,7 +76,7 @@ const ProfileEditScreen = (props) => {
   const [address, setAddress] = useState(profile.alamat);
 
   const [schoolProvince, setSchoolProvince] = useState({
-    idprovinsi: getIdProfinsi(profile.provinsi_sekolah),
+    idprovinsi: getIdProfinsiSchool(profile.provinsi_sekolah),
     provinsi: profile.provinsi_sekolah,
   });
   const [schoolCity, setSchoolCity] = useState({});
@@ -70,7 +85,24 @@ const ProfileEditScreen = (props) => {
   const [waliName, setWaliName] = useState(profile.nama_wali);
   const [waliPhone, setWaliPhone] = useState(profile.phone_wali);
   const [waliEmail, setWaliEmail] = useState(profile.email_wali);
+  const [oldPassword, setOldpassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [reNewPassword, setReNewPassword] = useState("");
   //End: State for Form
+
+  function passwordValidation(text) {
+    if (text.length < 8) return "Password must be atleast 8 characters";
+    if (!text.match(new RegExp("[A-Z]"))) return "Password must contain at least one uppercase";
+    if (!text.match(new RegExp("[a-z]"))) return "Password must contain at least one lowercase";
+    if (text.search(/[0-9]/) < 0) {
+      return "Your password must contain at least one digit";
+    }
+    return null;
+  }
+
+  const handlePress = () => {
+    dispatch(getCheckPassword({ username: profile.email, password: oldPassword }));
+  };
 
   useEffect(() => {
     setCity({
@@ -78,17 +110,30 @@ const ProfileEditScreen = (props) => {
       kabkota: profile.kota,
     });
     setSchoolCity({
-      idkabkota: getIdKabKota(profile.kota_sekolah),
+      idkabkota: getIdKabKotaSchool(profile.kota_sekolah),
       kabkota: profile.kota_sekolah,
     });
   }, []);
-
+  useEffect(() => {
+    if (checkPassword.loading === true) {
+      setModalVisible(true);
+    } else {
+      setTimeout(() => setModalVisible(false), 500);
+    }
+  }, [checkPassword]);
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(setCheckPassword({ valid: false, loading: false, error: null }));
+    }, [])
+  );
   useLayoutEffect(() => {
     dispatch(setUpdateProfile({ loading: false, data: null, error: null }));
 
     dispatch(getListProvince());
     dispatch(getListCity(schoolProvince["idprovinsi"]));
   }, []);
+
+  console.log(checkPassword);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -98,7 +143,7 @@ const ProfileEditScreen = (props) => {
         rightItem={
           <TouchableOpacity
             onPress={() => {
-              const bodyParams = JSON.stringify({
+              let data = {
                 email: email,
                 full_name: name,
                 kelas: kelas,
@@ -113,8 +158,18 @@ const ProfileEditScreen = (props) => {
                 nama_wali: waliName,
                 email_wali: waliEmail,
                 phone_wali: waliPhone,
-              });
+              };
+              if (newPassword !== "") data["password"] = newPassword;
+              const bodyParams = JSON.stringify(data);
               console.log(bodyParams);
+              if (newPassword) {
+                if (passwordValidation(newPassword) !== null) {
+                  Alert.alert("WARNING", "Format Password Anda Salah");
+                }
+                if (newPassword !== reNewPassword) {
+                  Alert.alert("WARNING", "Password Tidak Sama");
+                }
+              }
               if (city.idkabkota === null) {
                 Alert.alert("WARNING", "Alamat Kab/Kota Tidak Boleh Kosong");
               } else if (schoolCity.idkabkota === null) {
@@ -137,6 +192,7 @@ const ProfileEditScreen = (props) => {
           paddingHorizontal: Sizes.fixPadding * 2,
         }}
       >
+        <NewModalLoading modalVisible={modalVisible} />
         <View style={{ width: "100%", flex: 1 }}>
           <View
             style={{
@@ -228,7 +284,7 @@ const ProfileEditScreen = (props) => {
           />
           {cityBottomSheetVisible && (
             <CityBottomSheet
-              idProvinsi={province !== null && province.idprovinsi !== null ? province.idprovinsi.toString() : null}
+              idProvinsi={province !== null && province?.idprovinsi !== null ? province?.idprovinsi : null}
               onClose={() => setCityBottomSheetVisible(false)}
               onSelect={(value) => {
                 setCityBottomSheetVisible(false);
@@ -277,7 +333,7 @@ const ProfileEditScreen = (props) => {
           />
           {schoolCityBottomSheetVisible && (
             <CityBottomSheet
-              idProvinsi={schoolProvince !== null && schoolProvince.idprovinsi !== null ? schoolProvince.idprovinsi.toString() : null}
+              idProvinsi={schoolProvince !== null && schoolProvince?.idprovinsi !== null ? schoolProvince?.idprovinsi : null}
               onClose={() => setSchoolCityBottomSheetVisible(false)}
               onSelect={(value) => {
                 setSchoolCityBottomSheetVisible(false);
@@ -296,7 +352,7 @@ const ProfileEditScreen = (props) => {
           />
           {schoolNameBottomSheetVisible && (
             <SchoolBottomSheet
-              idkabkota={schoolCity !== null && schoolCity.idkabkota !== null ? schoolCity.idkabkota.toString() : null}
+              idkabkota={schoolCity !== null && schoolCity?.idkabkota !== null ? schoolCity?.idkabkota : null}
               onClose={() => setSchoolNameBottomSheetVisible(false)}
               onSelect={(value) => {
                 setSchoolNameBottomSheetVisible(false);
@@ -318,6 +374,51 @@ const ProfileEditScreen = (props) => {
           <DefaultTextInput placeholder="Wali Phone Number" value={waliPhone} onChangeText={setWaliPhone} />
 
           <DefaultTextInput placeholder="Wali Email" value={waliEmail} onChangeText={setWaliEmail} />
+
+          <Text
+            style={{
+              ...Fonts.black17Bold,
+              marginTop: Sizes.fixPadding,
+            }}
+          >
+            Ganti Password
+          </Text>
+          <PasswordTextInput placeholder="Masukan Password Lama" onChangeText={(val) => setOldpassword(val)} />
+          {checkPassword.valid !== true && (
+            <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={handlePress}>
+              <Text style={{ ...Fonts.black19Bold }}>Cek</Text>
+            </TouchableOpacity>
+          )}
+
+          {checkPassword.error === 401 && <Text style={{ color: "red", marginTop: 30 }}>Password Kamu Salah !</Text>}
+          {checkPassword.error === 500 && <Text style={{ color: "red", marginTop: 30 }}>Terjadi kesalahan saat memproses data, Coba Lagi Nanti</Text>}
+
+          {checkPassword.valid === true && (
+            <>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  alignItems: "center",
+                }}
+              >
+                <PasswordTextInput onChangeText={(val) => setNewPassword(val)} placeholder="Masukan Password Baru" />
+              </View>
+              {passwordValidation(newPassword) != null && <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>{passwordValidation(newPassword)}</Text>}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  alignItems: "center",
+                }}
+              >
+                <PasswordTextInput onChangeText={(val) => setReNewPassword(val)} placeholder="Masukan Password Baru Sekali Lagi" />
+              </View>
+              {newPassword !== reNewPassword && <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>Password tidak sama</Text>}
+            </>
+          )}
           <View style={{ height: 100 }} />
         </View>
       </ScrollView>
@@ -338,3 +439,15 @@ const ProfileEditScreen = (props) => {
 };
 
 export default ProfileEditScreen;
+
+const styles = StyleSheet.create({
+  button: {
+    alignSelf: "center",
+    width: 80,
+    backgroundColor: Colors.ligthGreyColor,
+    paddingVertical: Sizes.fixPadding + 5.0,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: Sizes.fixPadding - 5.0,
+  },
+});

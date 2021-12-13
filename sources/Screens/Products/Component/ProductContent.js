@@ -53,7 +53,7 @@ const ProductContent = () => {
         groupedProduk.data.map((val, index) => {
           return (
             <View key={`groupedproduk-${val._id}`}>
-              {sectionHeader(val._id, val.data[0]?.category === "materi" ? "Paket Belajar" : val.data[0]?.category === "Paket tryout" ? "Tryout" : "Paket Rusak")}
+              {sectionHeader(val._id, val.data[0]?.category === "materi" ? "Paket Belajar" : val.data[0]?.category === "tryout" ? "Paket Tryout" : "Buku Sakti")}
               {val.data.length !== 0 ? (
                 <FlatList
                   keyExtractor={(item, index) => `${item._id}`}

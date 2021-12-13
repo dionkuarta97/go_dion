@@ -16,18 +16,20 @@ const ProfileScreen = () => {
       <SliverAppBar
         leftItem={<MaterialIcons name="arrow-back-ios" size={24} color={Colors.blackColor} onPress={() => navigation.goBack()} />}
         rightItem={
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={() =>
-              navigation.navigate("ProfileEditScreen", {
-                profile: profile,
-              })
-            }
-          >
-            <Text style={Fonts.black20Bold}>
-              <MaterialIcons size={24} name="edit" /> Edit Profile
-            </Text>
-          </TouchableOpacity>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() =>
+                navigation.navigate("ProfileEditScreen", {
+                  profile: profile,
+                })
+              }
+            >
+              <Text style={{ paddingHorizontal: 15, paddingVertical: 5, borderRadius: 50, backgroundColor: Colors.blackColor, color: Colors.primaryColor, fontWeight: "bold", letterSpacing: 1.2, fontSize: 20 }}>
+                <MaterialIcons size={24} name="edit" /> Edit Profile
+              </Text>
+            </TouchableOpacity>
+          </View>
         }
         element={
           <View
