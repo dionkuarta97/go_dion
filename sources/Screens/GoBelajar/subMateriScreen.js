@@ -127,7 +127,7 @@ const SubMateriScreen = (props) => {
                                         `/materi/${materiId}/bab/${item._id}`
                                 )
                             );
-                            navigation.navigate("SoalScreen");
+                            navigation.navigate("SoalScreen", {title:item.title});
                         })}
                 </ExpandableTile>
             </View>

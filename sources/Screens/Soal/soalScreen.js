@@ -18,7 +18,8 @@ import { getSoal, setNumber } from "../../Redux/Soal/soalActions";
 
 import SoalContent from "./Component/soalContent";
 
-const SoalScreen = () => {
+const SoalScreen = ({route}) => {
+    const params = route.params
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const soal = useSelector((state) => state.soalReducer.soal);
@@ -51,7 +52,7 @@ const SoalScreen = () => {
                 }}
             />
             {soal.loading && <LoadingIndicator />}
-            {soal.data != null && <SoalContent />}
+            {soal.data != null && <SoalContent title={params.title}/>}
         </SafeAreaView>
     );
 };

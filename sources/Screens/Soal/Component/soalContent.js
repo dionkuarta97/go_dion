@@ -22,7 +22,7 @@ import PertanyaanPBT from "./Pertanyaan/PertanyaanPBT";
 import TimerSoal from "./TimerSoal";
 import Colors from "../../../Theme/Colors";
 
-const SoalContent = () => {
+const SoalContent = (props) => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
@@ -74,7 +74,7 @@ const SoalContent = () => {
                 </Text>
                 <View style={{ flexDirection: "row" }}>
                     <Text style={{ ...Fonts.black17Bold, flex: 1 }}>
-                        Bahasa Indonesia
+                        {props.title}
                     </Text>
                     <View>
                         {!delay ? (
