@@ -375,51 +375,64 @@ const ProfileEditScreen = (props) => {
 
           <DefaultTextInput placeholder="Wali Email" value={waliEmail} onChangeText={setWaliEmail} />
 
-          <Text
+          <View
             style={{
-              ...Fonts.black17Bold,
-              marginTop: Sizes.fixPadding,
+              borderRadius: 15,
+              borderWidth: 1,
+              marginTop: 10,
+              backgroundColor: "white",
+              marginBottom: 70,
+              paddingEnd: 10,
+              paddingStart: 10,
+              paddingBottom: 20,
+              paddingTop: 10,
             }}
           >
-            Ganti Password
-          </Text>
-          <PasswordTextInput placeholder="Masukan Password Lama" onChangeText={(val) => setOldpassword(val)} />
-          {checkPassword.valid !== true && (
-            <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={handlePress}>
-              <Text style={{ ...Fonts.black19Bold }}>Cek</Text>
-            </TouchableOpacity>
-          )}
+            <Text
+              style={{
+                ...Fonts.black17Bold,
+                marginTop: Sizes.fixPadding,
+              }}
+            >
+              Ganti Password
+            </Text>
+            <PasswordTextInput placeholder="Masukan Password Lama" onChangeText={(val) => setOldpassword(val)} />
+            {checkPassword.valid !== true && (
+              <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={handlePress}>
+                <Text style={{ ...Fonts.black19Bold }}>Cek</Text>
+              </TouchableOpacity>
+            )}
 
-          {checkPassword.error === 401 && <Text style={{ color: "red", marginTop: 30 }}>Password Kamu Salah !</Text>}
-          {checkPassword.error === 500 && <Text style={{ color: "red", marginTop: 30 }}>Terjadi kesalahan saat memproses data, Coba Lagi Nanti</Text>}
+            {checkPassword.error === 401 && <Text style={{ color: "red", marginTop: 30 }}>Password Kamu Salah !</Text>}
+            {checkPassword.error === 500 && <Text style={{ color: "red", marginTop: 30 }}>Terjadi kesalahan saat memproses data, Coba Lagi Nanti</Text>}
 
-          {checkPassword.valid === true && (
-            <>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: "100%",
-                  alignItems: "center",
-                }}
-              >
-                <PasswordTextInput onChangeText={(val) => setNewPassword(val)} placeholder="Masukan Password Baru" />
-              </View>
-              {passwordValidation(newPassword) != null && <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>{passwordValidation(newPassword)}</Text>}
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: "100%",
-                  alignItems: "center",
-                }}
-              >
-                <PasswordTextInput onChangeText={(val) => setReNewPassword(val)} placeholder="Masukan Password Baru Sekali Lagi" />
-              </View>
-              {newPassword !== reNewPassword && <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>Password tidak sama</Text>}
-            </>
-          )}
-          <View style={{ height: 100 }} />
+            {checkPassword.valid === true && (
+              <>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    alignItems: "center",
+                  }}
+                >
+                  <PasswordTextInput onChangeText={(val) => setNewPassword(val)} placeholder="Masukan Password Baru" />
+                </View>
+                {passwordValidation(newPassword) != null && <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>{passwordValidation(newPassword)}</Text>}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    alignItems: "center",
+                  }}
+                >
+                  <PasswordTextInput onChangeText={(val) => setReNewPassword(val)} placeholder="Masukan Password Baru Sekali Lagi" />
+                </View>
+                {newPassword !== reNewPassword && <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>Password tidak sama</Text>}
+              </>
+            )}
+          </View>
         </View>
       </ScrollView>
       {update.loading && <LoadingModal />}
