@@ -63,6 +63,7 @@ export function setNumber(number) {
 }
 
 export function setFinalAnswer(array) {
+    console.log("-------------> setFinalAnswer:", array)
     return {
         type: SET_FINAL_ANSWER,
         payload: array,
@@ -70,6 +71,7 @@ export function setFinalAnswer(array) {
 }
 
 export function setSaveAnswer(state) {
+    console.log("-------------> save answer:", state)
     return {
         type: SET_SAVE_ANSWER,
         payload: state,

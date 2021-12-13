@@ -5,7 +5,7 @@ import Sizes from "../../../Theme/Sizes";
 const OnResult = (props) => {
     const detail = props.detail;
 
-    console.log(detail);
+    console.log("---> :",detail[0].sessions.scores[0]);
     return (
         <View style={{ flex: 1, alignItems: "center" }}>
             <View
@@ -22,7 +22,7 @@ const OnResult = (props) => {
                         fontSize: 28,
                     }}
                 >
-                    {detail.sessions.scores[0].final_score}
+                    {detail[0].sessions.scores[0].final_score}
                 </Text>
             </View>
             <View
@@ -35,7 +35,7 @@ const OnResult = (props) => {
             >
                 <Text style={{ color: "grey", flex: 1 }}>Full Score</Text>
                 <Text style={{ fontWeight: "bold" }}>
-                    {detail.sessions.scores[0].user_statistics.true_answer}
+                    {detail[0].sessions.scores[0].user_statistics.true_answer}
                 </Text>
             </View>
             <View
@@ -48,7 +48,7 @@ const OnResult = (props) => {
             >
                 <Text style={{ color: "grey", flex: 1 }}>Half Score</Text>
                 <Text style={{ fontWeight: "bold" }}>
-                    {detail.sessions.scores[0].user_statistics.true_half_answer}
+                    {detail[0].sessions.scores[0].user_statistics.true_half_answer}
                 </Text>
             </View>
             <View
@@ -61,7 +61,7 @@ const OnResult = (props) => {
             >
                 <Text style={{ color: "grey", flex: 1 }}>False Score</Text>
                 <Text style={{ fontWeight: "bold" }}>
-                    {detail.sessions.scores[0].user_statistics.false_answer}
+                    {detail[0].sessions.scores[0].user_statistics.false_answer}
                 </Text>
             </View>
             <View
@@ -74,7 +74,7 @@ const OnResult = (props) => {
             >
                 <Text style={{ color: "grey", flex: 1 }}>Zero Score</Text>
                 <Text style={{ fontWeight: "bold" }}>
-                    {detail.sessions.scores[0].user_statistics.no_answer}
+                    {detail[0].sessions.scores[0].user_statistics.no_answer}
                 </Text>
             </View>
         </View>

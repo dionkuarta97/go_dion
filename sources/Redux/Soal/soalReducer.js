@@ -47,7 +47,7 @@ export function soalReducer(state = initialState, action) {
         case SET_FINAL_ANSWER:
             return {
                 ...state,
-                answers: [...state.answers, action.payload],
+                answers: [action.payload],
             };
         // return {
         //     ...state,

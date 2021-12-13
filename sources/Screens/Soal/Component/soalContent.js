@@ -61,7 +61,7 @@ const SoalContent = (props) => {
     const [delayTime, setDelayTime] = useState(0);
 
     useEffect(() => {
-        dispatch(setSaveAnswer({ loading: false, error: null, data: null }));
+        // dispatch(setSaveAnswer({ loading: false, error: null, data: null }));
         dispatch(setFinalAnswer([]));
         dispatch(setNumber(1));
     }, []);
@@ -255,6 +255,8 @@ const SoalContent = (props) => {
             };
             currentAnswer[number - 1] = tes;
             setAnswers(currentAnswer);
+            console.log("-----> Current Answer")
+            console.log(currentAnswer)
         }
         switch (questions[number - 1].tipe) {
             case "PBS":
