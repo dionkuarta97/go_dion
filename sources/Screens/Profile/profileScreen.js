@@ -25,8 +25,8 @@ const ProfileScreen = () => {
                 })
               }
             >
-              <Text style={{ paddingHorizontal: 15, paddingVertical: 5, borderRadius: 50, backgroundColor: Colors.blackColor, color: Colors.primaryColor, fontWeight: "bold", letterSpacing: 1.2, fontSize: 20 }}>
-                <MaterialIcons size={24} name="edit" /> Edit Profile
+              <Text style={{ paddingHorizontal: 15, paddingVertical: 5, borderRadius: 50, backgroundColor: Colors.blackColor, color: Colors.primaryColor, fontWeight: "bold", letterSpacing: 1.2, fontSize: 14 }}>
+                <MaterialIcons size={14} name="edit" /> Edit Profile
               </Text>
             </TouchableOpacity>
           </View>
