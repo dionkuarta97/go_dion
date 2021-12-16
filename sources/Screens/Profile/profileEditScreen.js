@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, Alert, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, SafeAreaView, Image, ScrollView, Alert, StyleSheet, ActivityIndicator } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultTextInput from "../../Components/CustomTextInput/DefaultTextInput";
@@ -17,7 +17,6 @@ import { getUpdateProfile, setUpdateProfile } from "../../Redux/Profile/profileA
 import LoadingModal from "../../Components/Modal/LoadingModal";
 import DefaultModal from "../../Components/Modal/DefaultModal";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
-import { getListCity, getListProvince } from "../../Redux/Data/dataActions";
 import PasswordTextInput from "../../Components/CustomTextInput/PasswordTextInput";
 import Colors from "../../Theme/Colors";
 import { getCheckPassword, setCheckPassword } from "../../Redux/Auth/authActions";
@@ -59,6 +58,7 @@ const ProfileEditScreen = (props) => {
 
   const getIdKabKota = (city) => {
     const id = listCity.data?.filter((value) => value.kabkota === city);
+
     if (id !== undefined) return id[0]?.idkabkota;
   };
 
@@ -67,18 +67,12 @@ const ProfileEditScreen = (props) => {
     if (id !== undefined) return id[0]?.idkabkota;
   };
 
-  const [province, setProvince] = useState({
-    idprovinsi: getIdProfinsi(profile.provinsi),
-    provinsi: profile.provinsi,
-  });
+  const [province, setProvince] = useState({});
   const [city, setCity] = useState({});
 
   const [address, setAddress] = useState(profile.alamat);
 
-  const [schoolProvince, setSchoolProvince] = useState({
-    idprovinsi: getIdProfinsiSchool(profile.provinsi_sekolah),
-    provinsi: profile.provinsi_sekolah,
-  });
+  const [schoolProvince, setSchoolProvince] = useState({});
   const [schoolCity, setSchoolCity] = useState({});
   const [schoolName, setSchoolName] = useState(profile.sekolah);
 
@@ -105,16 +99,6 @@ const ProfileEditScreen = (props) => {
   };
 
   useEffect(() => {
-    setCity({
-      idkabkota: getIdKabKota(profile.kota),
-      kabkota: profile.kota,
-    });
-    setSchoolCity({
-      idkabkota: getIdKabKotaSchool(profile.kota_sekolah),
-      kabkota: profile.kota_sekolah,
-    });
-  }, []);
-  useEffect(() => {
     if (checkPassword.loading === true) {
       setModalVisible(true);
     } else {
@@ -128,12 +112,24 @@ const ProfileEditScreen = (props) => {
   );
   useLayoutEffect(() => {
     dispatch(setUpdateProfile({ loading: false, data: null, error: null }));
+    setProvince({
+      idprovinsi: getIdProfinsi(profile.provinsi),
+      provinsi: profile.provinsi,
+    });
+    setSchoolProvince({
+      idprovinsi: getIdProfinsiSchool(profile.provinsi_sekolah),
+      provinsi: profile.provinsi_sekolah,
+    });
+    setCity({
+      idkabkota: getIdKabKota(profile.kota),
+      kabkota: profile.kota,
+    });
 
-    dispatch(getListProvince());
-    dispatch(getListCity(schoolProvince["idprovinsi"]));
+    setSchoolCity({
+      idkabkota: getIdKabKotaSchool(profile.kota_sekolah),
+      kabkota: profile.kota_sekolah,
+    });
   }, []);
-
-  console.log(checkPassword);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -347,6 +343,10 @@ const ProfileEditScreen = (props) => {
             placeholder="School Name"
             value={schoolName}
             onTap={() => {
+              setSchoolCity({
+                idkabkota: getIdKabKotaSchool(profile.kota_sekolah),
+                kabkota: profile.kota_sekolah,
+              });
               setSchoolNameBottomSheetVisible(true);
             }}
           />
