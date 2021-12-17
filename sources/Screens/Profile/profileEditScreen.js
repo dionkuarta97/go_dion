@@ -131,6 +131,8 @@ const ProfileEditScreen = (props) => {
     });
   }, []);
 
+  console.log(schoolCity);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar
