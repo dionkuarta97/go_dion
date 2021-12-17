@@ -23,7 +23,7 @@ const products = [
 ];
 
 const FirstRoute = () => {
-  const [slice, setSlice] = useState(4);
+  const [slice, setSlice] = useState(6);
   const { resultSearchProduct } = useSelector((state) => state.produkReducer);
   const [products, setProducts] = useState(resultSearchProduct.data[0].items);
 
@@ -43,12 +43,13 @@ const FirstRoute = () => {
           onScroll={(e) => {
             if (handleInfinityScroll(e)) {
               if (slice < products?.length) {
-                setSlice(slice + 4);
+                setSlice(slice + 6);
               }
             }
           }}
           listKey="productlist"
-          numColumns={2}
+          style={{ flexDirection: "column" }}
+          numColumns={1}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
@@ -94,7 +95,7 @@ const FirstRoute = () => {
 };
 
 const SecondRoute = () => {
-  const [slice, setSlice] = useState(4);
+  const [slice, setSlice] = useState(6);
   const { resultSearchProduct } = useSelector((state) => state.produkReducer);
   const [products, setProducts] = useState(resultSearchProduct.data[1].items);
 
@@ -114,12 +115,13 @@ const SecondRoute = () => {
           onScroll={(e) => {
             if (handleInfinityScroll(e)) {
               if (slice < products?.length) {
-                setSlice(slice + 4);
+                setSlice(slice + 6);
               }
             }
           }}
           listKey="productlist"
-          numColumns={2}
+          style={{ flexDirection: "column" }}
+          numColumns={1}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
@@ -164,7 +166,7 @@ const SecondRoute = () => {
   );
 };
 const ThirdRoute = () => {
-  const [slice, setSlice] = useState(4);
+  const [slice, setSlice] = useState(6);
   const { resultSearchProduct } = useSelector((state) => state.produkReducer);
   const [products, setProducts] = useState(resultSearchProduct.data[2].items);
 
@@ -184,12 +186,13 @@ const ThirdRoute = () => {
           onScroll={(e) => {
             if (handleInfinityScroll(e)) {
               if (slice < products?.length) {
-                setSlice(slice + 4);
+                setSlice(slice + 6);
               }
             }
           }}
           listKey="productlist"
-          numColumns={2}
+          numColumns={1}
+          numColumns={1}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
