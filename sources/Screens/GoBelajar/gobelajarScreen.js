@@ -84,8 +84,6 @@ const GoBelajarScreen = () => {
       <View
         style={{
           flex: 1,
-          paddingVertical: Sizes.fixPadding * 3,
-          paddingHorizontal: Sizes.fixPadding * 2,
         }}
       >
         {materi.loading && <LoadingIndicator />}

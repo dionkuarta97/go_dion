@@ -161,30 +161,33 @@ const PaymentScreen = (props) => {
                   <View View key={val._id}>
                     <View
                       style={{
-                        flexDirection: "row",
                         marginEnd: 8,
                         marginStart: 8,
                         marginTop: 5,
                       }}
                     >
-                      <Text>{idx + 1}. </Text>
-                      <Text style={{ marginEnd: "auto" }}>{val.title}</Text>
-                      <NumberFormat
-                        value={val.price_discount !== 0 ? val.price_discount : val.price}
-                        displayType={"text"}
-                        thousandSeparator="."
-                        decimalSeparator=","
-                        prefix={"IDR "}
-                        renderText={(value, props) => (
-                          <Text
-                            style={{
-                              ...Fonts.black17Bold,
-                            }}
-                          >
-                            {value}
-                          </Text>
-                        )}
-                      />
+                      <Text style={{ marginEnd: "auto" }}>
+                        {idx + 1}. {val.title}
+                      </Text>
+                      <View style={{ flexDirection: "row" }}>
+                        <Text style={{ marginEnd: "auto", marginStart: 15 }}>Harga :</Text>
+                        <NumberFormat
+                          value={val.price_discount !== 0 ? val.price_discount : val.price}
+                          displayType={"text"}
+                          thousandSeparator="."
+                          decimalSeparator=","
+                          prefix={"IDR "}
+                          renderText={(value, props) => (
+                            <Text
+                              style={{
+                                ...Fonts.black17Bold,
+                              }}
+                            >
+                              {value}
+                            </Text>
+                          )}
+                        />
+                      </View>
                     </View>
                     {val.price_discount > 0 && (
                       <View style={{ alignItems: "flex-end", marginEnd: 8 }}>
