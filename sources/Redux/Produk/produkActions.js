@@ -1,6 +1,6 @@
 import { urlGroupedProduk } from "../../Services/ApiUrl";
 import { defaultDoneState, defaultErrorState, defaultFailedState, defaultInitState } from "../helper";
-import { SET_ALL_PRODUK, SET_GROUPED_PRODUK, SET_INCLUDES_PRODUK, SET_PURCHASED_PRODUK, SET_TOTAL_PURCHASED_PRODUK } from "./produkTypes";
+import { SET_ALL_PRODUK, SET_GROUPED_PRODUK, SET_INCLUDES_PRODUK, SET_PURCHASED_PRODUK, SET_TOTAL_PURCHASED_PRODUK, SET_SEARCH_PRODUCT_TITLE } from "./produkTypes";
 
 export function setGroupedProduk(state) {
   return {
@@ -175,6 +175,35 @@ export function getIncludesProduk(produkId) {
     } catch (err) {
       console.log(err);
       dispatch(setIncludesProduk(defaultErrorState));
+    }
+  };
+}
+
+export function setSearchProductTitle(payload) {
+  return {
+    type: SET_SEARCH_PRODUCT_TITLE,
+    payload,
+  };
+}
+
+export function getSearchProductTitle(payload) {
+  return async (dispatch, getState) => {
+    dispatch(setSearchProductTitle(defaultInitState));
+    try {
+      const urlBase = getState().initReducer.baseUrl;
+      const response = await fetch(urlBase + "/masterdata/v1/search/product?q=" + payload, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().authReducer.token}`,
+        },
+      });
+      const result = await response.json();
+      if (result.status) dispatch(setSearchProductTitle(defaultDoneState(result.data)));
+      else dispatch(setSearchProductTitle(defaultFailedState(result.message)));
+    } catch (err) {
+      console.log(err);
+      dispatch(setSearchProductTitle(defaultErrorState));
     }
   };
 }
