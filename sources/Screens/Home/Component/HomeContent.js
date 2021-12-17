@@ -80,7 +80,7 @@ const HomeContent = () => {
             {isLogin && <HomePendingPayment />}
             <HomeMenu />
 
-            <View>
+            {/* <View>
                 {sectionHeader("Materi Baru")}
 
                 <FlatList
@@ -111,7 +111,7 @@ const HomeContent = () => {
                         paddingBottom: Sizes.fixPadding * 4.0,
                     }}
                 />
-            </View>
+            </View> */}
 
             <View style={{ height: 50 }}></View>
         </View>
