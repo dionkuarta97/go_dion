@@ -345,10 +345,6 @@ const ProfileEditScreen = (props) => {
             placeholder="School Name"
             value={schoolName}
             onTap={() => {
-              setSchoolCity({
-                idkabkota: getIdKabKotaSchool(profile.kota_sekolah),
-                kabkota: profile.kota_sekolah,
-              });
               setSchoolNameBottomSheetVisible(true);
             }}
           />
