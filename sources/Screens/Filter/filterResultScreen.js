@@ -48,14 +48,14 @@ const FirstRoute = () => {
             }
           }}
           listKey="productlist"
-          itemDimension={190}
+          numColumns={2}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
               newStyle={{
                 card: {
                   elevation: 1.0,
-                  width: 190.0,
+                  width: "100%",
                   height: 300,
                   backgroundColor: Colors.whiteColor,
                   overflow: "hidden",
@@ -64,7 +64,7 @@ const FirstRoute = () => {
                   marginBottom: 10,
                 },
                 image: {
-                  width: 190.0,
+                  width: "100%",
                   height: 150.0,
                 },
                 purchasedCircle: {
@@ -119,14 +119,14 @@ const SecondRoute = () => {
             }
           }}
           listKey="productlist"
-          itemDimension={190}
+          numColumns={2}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
               newStyle={{
                 card: {
                   elevation: 1.0,
-                  width: 190.0,
+                  width: "100%",
                   height: 300,
                   backgroundColor: Colors.whiteColor,
                   overflow: "hidden",
@@ -135,7 +135,7 @@ const SecondRoute = () => {
                   marginBottom: 10,
                 },
                 image: {
-                  width: 190.0,
+                  width: "100%",
                   height: 150.0,
                 },
                 purchasedCircle: {
@@ -189,14 +189,14 @@ const ThirdRoute = () => {
             }
           }}
           listKey="productlist"
-          itemDimension={190}
+          numColumns={2}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
               newStyle={{
                 card: {
                   elevation: 1.0,
-                  width: 190.0,
+                  width: "100%",
                   height: 300,
                   backgroundColor: Colors.whiteColor,
                   overflow: "hidden",
@@ -205,7 +205,7 @@ const ThirdRoute = () => {
                   marginBottom: 10,
                 },
                 image: {
-                  width: 190.0,
+                  width: "100%",
                   height: 150.0,
                 },
                 purchasedCircle: {
