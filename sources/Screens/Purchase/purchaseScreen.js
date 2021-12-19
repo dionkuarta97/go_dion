@@ -12,26 +12,22 @@ import Colors from "../../Theme/Colors";
 import PurchaseContent from "./Component/purchaseContent";
 
 const PurchaseScreen = () => {
-    return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <DefaultAppBar backEnabled={false} title="Pembelian" />
-            <DefaultTabBar
-                routes={[
-                    { key: "item1", title: "Pending" },
-                    { key: "item2", title: "Success" },
-                    { key: "item3", title: "Expired" },
-                ]}
-                screen={[
-                    <PurchaseContent status="pending" />,
-                    <PurchaseContent status="done" />,
-                    <PurchaseContent status="expire" />,
-                ]}
-            />
-            {/* <View style={{flex: 1}}>
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <DefaultAppBar backEnabled={false} title="Pembelian" />
+      <DefaultTabBar
+        routes={[
+          { key: "item1", title: "Pending" },
+          { key: "item2", title: "Success" },
+          { key: "item3", title: "Expired" },
+        ]}
+        screen={[<PurchaseContent status="pending" />, <PurchaseContent status="done" />, <PurchaseContent status="expire" />]}
+      />
+      {/* <View style={{flex: 1}}>
                 <PurchaseContent />
             </View> */}
-        </SafeAreaView>
-    );
+    </SafeAreaView>
+  );
 };
 
 export default PurchaseScreen;
