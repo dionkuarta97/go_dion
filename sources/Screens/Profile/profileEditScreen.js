@@ -131,6 +131,8 @@ const ProfileEditScreen = (props) => {
     });
   }, []);
 
+  console.log(schoolCity);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar
@@ -343,10 +345,6 @@ const ProfileEditScreen = (props) => {
             placeholder="School Name"
             value={schoolName}
             onTap={() => {
-              setSchoolCity({
-                idkabkota: getIdKabKotaSchool(profile.kota_sekolah),
-                kabkota: profile.kota_sekolah,
-              });
               setSchoolNameBottomSheetVisible(true);
             }}
           />

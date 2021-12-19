@@ -23,7 +23,7 @@ const products = [
 ];
 
 const FirstRoute = () => {
-  const [slice, setSlice] = useState(4);
+  const [slice, setSlice] = useState(6);
   const { resultSearchProduct } = useSelector((state) => state.produkReducer);
   const [products, setProducts] = useState(resultSearchProduct.data[0].items);
 
@@ -43,19 +43,20 @@ const FirstRoute = () => {
           onScroll={(e) => {
             if (handleInfinityScroll(e)) {
               if (slice < products?.length) {
-                setSlice(slice + 4);
+                setSlice(slice + 6);
               }
             }
           }}
           listKey="productlist"
-          itemDimension={190}
+          style={{ flexDirection: "column" }}
+          numColumns={1}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
               newStyle={{
                 card: {
                   elevation: 1.0,
-                  width: 190.0,
+                  width: "100%",
                   height: 300,
                   backgroundColor: Colors.whiteColor,
                   overflow: "hidden",
@@ -64,7 +65,7 @@ const FirstRoute = () => {
                   marginBottom: 10,
                 },
                 image: {
-                  width: 190.0,
+                  width: "100%",
                   height: 150.0,
                 },
                 purchasedCircle: {
@@ -94,7 +95,7 @@ const FirstRoute = () => {
 };
 
 const SecondRoute = () => {
-  const [slice, setSlice] = useState(4);
+  const [slice, setSlice] = useState(6);
   const { resultSearchProduct } = useSelector((state) => state.produkReducer);
   const [products, setProducts] = useState(resultSearchProduct.data[1].items);
 
@@ -114,19 +115,20 @@ const SecondRoute = () => {
           onScroll={(e) => {
             if (handleInfinityScroll(e)) {
               if (slice < products?.length) {
-                setSlice(slice + 4);
+                setSlice(slice + 6);
               }
             }
           }}
           listKey="productlist"
-          itemDimension={190}
+          style={{ flexDirection: "column" }}
+          numColumns={1}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
               newStyle={{
                 card: {
                   elevation: 1.0,
-                  width: 190.0,
+                  width: "100%",
                   height: 300,
                   backgroundColor: Colors.whiteColor,
                   overflow: "hidden",
@@ -135,7 +137,7 @@ const SecondRoute = () => {
                   marginBottom: 10,
                 },
                 image: {
-                  width: 190.0,
+                  width: "100%",
                   height: 150.0,
                 },
                 purchasedCircle: {
@@ -164,7 +166,7 @@ const SecondRoute = () => {
   );
 };
 const ThirdRoute = () => {
-  const [slice, setSlice] = useState(4);
+  const [slice, setSlice] = useState(6);
   const { resultSearchProduct } = useSelector((state) => state.produkReducer);
   const [products, setProducts] = useState(resultSearchProduct.data[2].items);
 
@@ -184,19 +186,20 @@ const ThirdRoute = () => {
           onScroll={(e) => {
             if (handleInfinityScroll(e)) {
               if (slice < products?.length) {
-                setSlice(slice + 4);
+                setSlice(slice + 6);
               }
             }
           }}
           listKey="productlist"
-          itemDimension={190}
+          numColumns={1}
+          numColumns={1}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
               newStyle={{
                 card: {
                   elevation: 1.0,
-                  width: 190.0,
+                  width: "100%",
                   height: 300,
                   backgroundColor: Colors.whiteColor,
                   overflow: "hidden",
@@ -205,7 +208,7 @@ const ThirdRoute = () => {
                   marginBottom: 10,
                 },
                 image: {
-                  width: 190.0,
+                  width: "100%",
                   height: 150.0,
                 },
                 purchasedCircle: {
