@@ -50,7 +50,7 @@ const SubMateriScreen = (props) => {
 
   const renderItem = (item) => {
     return (
-      <View style={CompStyles.defaultCard} key={item._id}>
+      <View style={{ ...CompStyles.defaultCard, marginBottom: 0, marginTop: 8 }} key={item._id}>
         <ExpandableTile
           header={
             <View style={{ flexDirection: "row" }}>
@@ -140,6 +140,8 @@ export default SubMateriScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: Sizes.fixPadding * 2,
+    paddingEnd: 15,
+    paddingStart: 15,
+    paddingBottom: 15,
   },
 });

@@ -94,6 +94,13 @@ const ProfileEditScreen = (props) => {
     return null;
   }
 
+  function phoneNumberValidation(int) {
+    if (int.search(/[0-9]/) < 0) {
+      return "Phone Number Must Numeric";
+    }
+    return null;
+  }
+
   const handlePress = () => {
     dispatch(getCheckPassword({ username: profile.email, password: oldPassword }));
   };
@@ -131,8 +138,6 @@ const ProfileEditScreen = (props) => {
     });
   }, []);
 
-  console.log(schoolCity);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar
@@ -168,12 +173,23 @@ const ProfileEditScreen = (props) => {
                   Alert.alert("WARNING", "Password Tidak Sama");
                 }
               }
+
               if (city.idkabkota === null) {
                 Alert.alert("WARNING", "Alamat Kab/Kota Tidak Boleh Kosong");
               } else if (schoolCity.idkabkota === null) {
                 Alert.alert("WARNING", "Alamat Sekolah Tidak Boleh Kosong");
               } else if (schoolName === "--PILIH SEKOLAH--") {
                 Alert.alert("WARNING", "Nama Sekolah Tidak Boleh Kosong");
+              } else if (update.error) {
+                Alert.alert(update.error);
+              } else if (phoneNumberValidation(phone) !== null) {
+                Alert.alert(phoneNumberValidation(phone));
+              } else if (waliPhone) {
+                if (phoneNumberValidation(waliPhone) !== null) {
+                  Alert.alert(phoneNumberValidation(waliPhone));
+                } else {
+                  dispatch(getUpdateProfile(bodyParams));
+                }
               } else {
                 dispatch(getUpdateProfile(bodyParams));
               }

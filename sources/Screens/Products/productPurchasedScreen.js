@@ -63,7 +63,7 @@ const ProductPurchasedScreen = (props) => {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("ProductDetailScreen", {
-                      item: item,
+                      item: { ...item, purchased: true },
                       section: item.details.category,
                     });
                   }}

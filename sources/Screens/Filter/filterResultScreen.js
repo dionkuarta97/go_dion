@@ -48,8 +48,7 @@ const FirstRoute = () => {
             }
           }}
           listKey="productlist"
-          style={{ flexDirection: "column" }}
-          numColumns={1}
+          itemDimension={Dimensions.get("window").width / 2.4}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
@@ -57,7 +56,7 @@ const FirstRoute = () => {
                 card: {
                   elevation: 1.0,
                   width: "100%",
-                  height: 300,
+                  height: Dimensions.get("window").height / 2.6,
                   backgroundColor: Colors.whiteColor,
                   overflow: "hidden",
                   marginRight: Sizes.fixPadding * 2.0,
@@ -66,7 +65,7 @@ const FirstRoute = () => {
                 },
                 image: {
                   width: "100%",
-                  height: 150.0,
+                  height: Dimensions.get("window").height / 6.6,
                 },
                 purchasedCircle: {
                   position: "absolute",
@@ -120,8 +119,7 @@ const SecondRoute = () => {
             }
           }}
           listKey="productlist"
-          style={{ flexDirection: "column" }}
-          numColumns={1}
+          itemDimension={Dimensions.get("window").width / 2.4}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
@@ -129,7 +127,7 @@ const SecondRoute = () => {
                 card: {
                   elevation: 1.0,
                   width: "100%",
-                  height: 300,
+                  height: Dimensions.get("window").height / 2.6,
                   backgroundColor: Colors.whiteColor,
                   overflow: "hidden",
                   marginRight: Sizes.fixPadding * 2.0,
@@ -138,7 +136,7 @@ const SecondRoute = () => {
                 },
                 image: {
                   width: "100%",
-                  height: 150.0,
+                  height: Dimensions.get("window").height / 6.6,
                 },
                 purchasedCircle: {
                   position: "absolute",
@@ -191,8 +189,7 @@ const ThirdRoute = () => {
             }
           }}
           listKey="productlist"
-          numColumns={1}
-          numColumns={1}
+          itemDimension={Dimensions.get("window").width / 2.4}
           renderItem={(item) => (
             <ProductCard
               data={item.item}
@@ -200,7 +197,7 @@ const ThirdRoute = () => {
                 card: {
                   elevation: 1.0,
                   width: "100%",
-                  height: 300,
+                  height: Dimensions.get("window").height / 2.6,
                   backgroundColor: Colors.whiteColor,
                   overflow: "hidden",
                   marginRight: Sizes.fixPadding * 2.0,
@@ -209,7 +206,7 @@ const ThirdRoute = () => {
                 },
                 image: {
                   width: "100%",
-                  height: 150.0,
+                  height: Dimensions.get("window").height / 6.6,
                 },
                 purchasedCircle: {
                   position: "absolute",

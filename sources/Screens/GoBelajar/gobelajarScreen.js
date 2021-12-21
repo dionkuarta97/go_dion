@@ -33,7 +33,7 @@ const GoBelajarScreen = () => {
           })
         }
       >
-        <View style={CompStyles.defaultCard}>
+        <View style={{ ...CompStyles.defaultCard, marginBottom: 0, marginTop: 8, marginEnd: 10, marginStart: 10 }}>
           <View style={{ flexDirection: "row" }}>
             <View
               style={{
