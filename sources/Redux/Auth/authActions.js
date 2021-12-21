@@ -1,12 +1,19 @@
 import { urlCheckEmail, urlForgotPassword, urlLogin, urlRegister } from "../../Services/ApiUrl";
 import { defaultDoneState, defaultErrorState, defaultFailedState, defaultInitState } from "../helper";
 import { setProfile } from "../Profile/profileActions";
-import { SET_EMAIL_CHECK, SET_FORGOT_PASSWORD, SET_LOGIN, SET_LOGIN_DATA, SET_REGISTER, SET_TOKEN, SET_CHANGE_PASSWORD } from "./authTypes";
+import { SET_EMAIL_CHECK, SET_FORGOT_PASSWORD, SET_LOGIN, SET_LOGIN_DATA, SET_FIRST_LOGIN, SET_REGISTER, SET_TOKEN, SET_CHANGE_PASSWORD } from "./authTypes";
 
 export function setLoginStatus(status) {
   return {
     type: SET_LOGIN,
     payload: status,
+  };
+}
+
+export function setFirstLogin(payload) {
+  return {
+    type: SET_FIRST_LOGIN,
+    payload,
   };
 }
 

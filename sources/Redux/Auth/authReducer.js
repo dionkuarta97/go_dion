@@ -1,6 +1,7 @@
-import { SET_EMAIL_CHECK, SET_FORGOT_PASSWORD, SET_LOGIN, SET_LOGIN_DATA, SET_REGISTER, SET_TOKEN, SET_CHANGE_PASSWORD } from "./authTypes";
+import { SET_EMAIL_CHECK, SET_FORGOT_PASSWORD, SET_LOGIN, SET_LOGIN_DATA, SET_REGISTER, SET_TOKEN, SET_CHANGE_PASSWORD, SET_FIRST_LOGIN } from "./authTypes";
 
 const initialState = {
+  firstLogin: true,
   isLogin: false,
   token: null,
   login: {
@@ -36,6 +37,11 @@ export function authReducer(state = initialState, action) {
       return {
         ...state,
         token: action.payload,
+      };
+    case SET_FIRST_LOGIN:
+      return {
+        ...state,
+        firstLogin: action.payload,
       };
     case SET_LOGIN:
       return {
