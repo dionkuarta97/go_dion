@@ -20,7 +20,9 @@ const noMateri = () => {
         />
         <Text style={{ alignSelf: "center" }}>Kamu Belum Memiliki Materi Apapun</Text>
       </View>
-      <DefaultPrimaryButton text="Beli Sekarang" onPress={() => navigation.navigate("ProductScreen")} />
+      <View style={{ paddingStart: 10, paddingEnd: 10 }}>
+        <DefaultPrimaryButton text="Beli Sekarang" onPress={() => navigation.navigate("ProductScreen")} />
+      </View>
     </>
   );
 };

@@ -16,31 +16,30 @@ import { versionReducer } from "./Version/versionReducer";
 import { soalReducer } from "./Soal/soalReducer";
 import { scoreReducer } from "./Score/scoreReducer";
 import { initReducer } from "./Init/initReducer";
+import tryoutReducer from "./Tryout/tryoutReducer";
 
 const persistConfig = {
-    key: "root",
-    storage: AsyncStorage,
-    blacklist:['updatePassword']
+  key: "root",
+  storage: AsyncStorage,
+  blacklist: ["updatePassword"],
 };
 
 const rootReducer = combineReducers({
-    initReducer: persistReducer(persistConfig, initReducer),
-    authReducer: persistReducer(persistConfig, authReducer),
-    soalReducer: persistReducer(persistConfig, soalReducer),
-    dataReducer: dataReducer,
-    homeReducer: homeReducer,
-    profileReducer: profileReducer,
-    produkReducer: produkReducer,
-    cartReducer: cartReducer,
-    paymentReducer: paymentReducer,
-    materiReducer: materiReducer,
-    scoreReducer: scoreReducer,
-    versionReducer: versionReducer,
+  initReducer: persistReducer(persistConfig, initReducer),
+  authReducer: persistReducer(persistConfig, authReducer),
+  soalReducer: persistReducer(persistConfig, soalReducer),
+  dataReducer: dataReducer,
+  homeReducer: homeReducer,
+  profileReducer: profileReducer,
+  produkReducer: produkReducer,
+  cartReducer: cartReducer,
+  paymentReducer: paymentReducer,
+  materiReducer: materiReducer,
+  scoreReducer: scoreReducer,
+  versionReducer: versionReducer,
+  tryoutReducer: tryoutReducer,
 });
 
-export const store = createStore(
-    rootReducer,
-    composeWithDevTools(applyMiddleware(thunk))
-);
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export const persistor = persistStore(store);

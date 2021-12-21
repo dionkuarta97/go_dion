@@ -40,6 +40,7 @@ import ScoreListScreen from "./Screens/Score/scoreListScreen";
 import BaseurlScreen from "./Screens/Lainnya/baseurlScreen";
 import PurchasePendingScreen from "./Screens/Purchase/purchasePendingScreen";
 import GantiPasswordScreen from "./Screens/Profile/GantiPasswordScreen";
+import GoTryoutScreen from "./Screens/GoTryout/GoTryoutScreen";
 
 const Stack = createStackNavigator();
 
@@ -105,6 +106,7 @@ export default App = () => {
                 },
               }}
             />
+            <Stack.Screen name="GoTryoutScreen" component={GoTryoutScreen} />
             <Stack.Screen name="TryoutDetailScreen" component={TryoutDetailScreen} />
             <Stack.Screen name="SoalScreen" component={SoalScreen} />
             <Stack.Screen name="ScoreScreen" component={ScoreScreen} />
