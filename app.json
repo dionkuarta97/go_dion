@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "go_online_mobile_UI",
+    "name": "GO Online",
     "slug": "go_online_mobile_UI",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
     ],
     "android": {
-      "package": "com.go.app"
+      "package": "com.goonline.app"
     },
     "ios": {
-      "bundleIdentifier": "com.go.app"
+      "bundleIdentifier": "com.goonline.app"
     }
   },
-  "name": "go_online_mobile_UI"
+  "name": "GO Online"
 }

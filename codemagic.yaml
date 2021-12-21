@@ -6,7 +6,7 @@ workflows:
         environment:
             vars:
                 # GCLOUD_SERVICE_ACCOUNT_CREDENTIALS: Encrypted(...) # <-- Put encrypted CONTENTS of your Gloud crendentials file here
-                PACKAGE_NAME: "com.go.app" # <-- Put your package name here e.g. com.domain.myapp
+                PACKAGE_NAME: "com.goonline.app" # <-- Put your package name here e.g. com.domain.myapp
                 FCI_KEYSTORE: goapp.keystore # <-- Put your encrypted keystore file here
                 FCI_KEYSTORE_PASSWORD: goapp123 # <-- Put your encrypted keystore password here
                 FCI_KEY_ALIAS: goappkey # <-- Put your encrypted keystore alias password here
@@ -45,4 +45,3 @@ workflows:
                   ./gradlew assembleRelease -x bundleReleaseJsAndAssets
         artifacts:
             - android/app/build/outputs/**/*.apk
-      

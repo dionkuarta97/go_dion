@@ -54,6 +54,6 @@
     "@babel/core": "^7.12.9"
   },
   "private": true,
-  "name": "com.go.app",
+  "name": "com.goonline.app",
   "version": "1.0.0"
 }

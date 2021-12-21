@@ -1,4 +1,4 @@
-package com.go.app;
+package com.goonline.app;
 import android.content.res.Configuration;
 import android.content.Intent;
 
