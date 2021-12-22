@@ -41,6 +41,7 @@ import BaseurlScreen from "./Screens/Lainnya/baseurlScreen";
 import PurchasePendingScreen from "./Screens/Purchase/purchasePendingScreen";
 import GantiPasswordScreen from "./Screens/Profile/GantiPasswordScreen";
 import GoTryoutScreen from "./Screens/GoTryout/GoTryoutScreen";
+import BoardingScreen from "./Screens/Boarding/BoardingScreen";
 
 const Stack = createStackNavigator();
 
@@ -111,6 +112,7 @@ export default App = () => {
             <Stack.Screen name="SoalScreen" component={SoalScreen} />
             <Stack.Screen name="ScoreScreen" component={ScoreScreen} />
             <Stack.Screen name="ScoreListScreen" component={ScoreListScreen} />
+            <Stack.Screen name="BoardingScreen" component={BoardingScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

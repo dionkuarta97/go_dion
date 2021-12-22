@@ -64,18 +64,27 @@ const RegisterContent = ({ sendedEmail }) => {
     dispatch(setRegister({ loading: false, data: null, error: null }));
   }, []);
 
+  const emailValidate = (text) => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (reg.test(text) === false) {
+      return "Format Email Anda Salah";
+    } else {
+      return null;
+    }
+  };
+
   function passwordValidation(text) {
-    if (text.length < 8) return "Password must be atleast 8 characters";
-    if (!text.match(new RegExp("[A-Z]"))) return "Password must contain at least one uppercase";
-    if (!text.match(new RegExp("[a-z]"))) return "Password must contain at least one lowercase";
+    if (text.length < 8) return "Password Harus Lebih Dari 8 Karakter, Mengandung Huruf Besar, Huruf Kecil & Angka";
+    if (!text.match(new RegExp("[A-Z]"))) return "Password Harus Mengandung Huruf Besar, Huruf Kecil & Angka";
+    if (!text.match(new RegExp("[a-z]"))) return "Password Harus Mengandung Huruf Kecil & Angka";
     if (text.search(/[0-9]/) < 0) {
-      return "Your password must contain at least one digit";
+      return "Password Harus Mengandung Angka";
     }
     return null;
   }
 
   function phoneNumberValidation(int) {
-    if (int.search(/[0-9]/) < 0) {
+    if (isNaN(int)) {
       return "Phone Number Must Numeric";
     }
     return null;
@@ -268,8 +277,15 @@ const RegisterContent = ({ sendedEmail }) => {
               });
               console.log("Submit");
               console.log(bodyParams);
+              if (waliEmail) {
+                if (emailValidate(waliEmail) !== null) {
+                  Alert.alert(emailValidate(waliEmail));
+                }
+              }
               if (phoneNumberValidation(phone) !== null) {
                 Alert.alert(phoneNumberValidation(phone));
+              } else if (emailValidate(email) !== null) {
+                Alert.alert(emailValidate(email));
               } else if (passwordValidation(password) !== null) {
                 Alert.alert(passwordValidation(password));
               } else if (waliPhone) {
