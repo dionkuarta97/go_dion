@@ -85,17 +85,17 @@ const ProfileEditScreen = (props) => {
   //End: State for Form
 
   function passwordValidation(text) {
-    if (text.length < 8) return "Password must be atleast 8 characters";
-    if (!text.match(new RegExp("[A-Z]"))) return "Password must contain at least one uppercase";
-    if (!text.match(new RegExp("[a-z]"))) return "Password must contain at least one lowercase";
+    if (text.length < 8) return "Password Harus Lebih Dari 8 Karakter, Mengandung Huruf Besar, Huruf Kecil & Angka";
+    if (!text.match(new RegExp("[A-Z]"))) return "Password Harus Mengandung Huruf Besar, Huruf Kecil & Angka";
+    if (!text.match(new RegExp("[a-z]"))) return "Password Harus Mengandung Huruf Kecil & Angka";
     if (text.search(/[0-9]/) < 0) {
-      return "Your password must contain at least one digit";
+      return "Password Harus Mengandung Angka";
     }
     return null;
   }
 
   function phoneNumberValidation(int) {
-    if (int.search(/[0-9]/) < 0) {
+    if (isNaN(int)) {
       return "Phone Number Must Numeric";
     }
     return null;
@@ -103,6 +103,15 @@ const ProfileEditScreen = (props) => {
 
   const handlePress = () => {
     dispatch(getCheckPassword({ username: profile.email, password: oldPassword }));
+  };
+
+  const emailValidate = (text) => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (reg.test(text) === false) {
+      return "Format Email Anda Salah";
+    } else {
+      return null;
+    }
   };
 
   useEffect(() => {
@@ -165,6 +174,11 @@ const ProfileEditScreen = (props) => {
               if (newPassword !== "") data["password"] = newPassword;
               const bodyParams = JSON.stringify(data);
               console.log(bodyParams);
+              if (waliEmail) {
+                if (emailValidate(waliEmail) !== null) {
+                  Alert.alert(emailValidate());
+                }
+              }
               if (newPassword) {
                 if (passwordValidation(newPassword) !== null) {
                   Alert.alert("WARNING", "Format Password Anda Salah");
@@ -180,10 +194,10 @@ const ProfileEditScreen = (props) => {
                 Alert.alert("WARNING", "Alamat Sekolah Tidak Boleh Kosong");
               } else if (schoolName === "--PILIH SEKOLAH--") {
                 Alert.alert("WARNING", "Nama Sekolah Tidak Boleh Kosong");
-              } else if (update.error) {
-                Alert.alert(update.error);
               } else if (phoneNumberValidation(phone) !== null) {
                 Alert.alert(phoneNumberValidation(phone));
+              } else if (emailValidate(email) !== null) {
+                Alert.alert(emailValidate(email));
               } else if (waliPhone) {
                 if (phoneNumberValidation(waliPhone) !== null) {
                   Alert.alert(phoneNumberValidation(waliPhone));
