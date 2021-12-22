@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ActivityIndicator, FlatList, Image, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import SliverAppBar from "../../Components/sliverAppBar";
@@ -63,7 +63,7 @@ const ProductPurchasedScreen = (props) => {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("ProductDetailScreen", {
-                      item: { ...item, purchased: true },
+                      item: item,
                       section: item.details.category,
                     });
                   }}
@@ -187,3 +187,17 @@ const ProductPurchasedScreen = (props) => {
 };
 
 export default ProductPurchasedScreen;
+
+const styles = StyleSheet.create({
+  purchasedCircle: {
+    position: "absolute",
+    width: 25,
+    height: 25,
+    backgroundColor: "green",
+    top: 10,
+    right: 10,
+    borderRadius: 13,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

@@ -5,12 +5,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import HomeScreen from "../Home/homeScreen";
 import CartScreen from "../Cart/cartScreen";
 import PurchaseScreen from "../Purchase/purchaseScreen";
 import LainnyaScreen from "../Lainnya/lainnyaScreen";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
+import { getSliderImages } from "../../Redux/Home/homeActions";
 
 const bottomNavMenu = [
   { title: "Home", icon: "home" },
@@ -23,7 +24,11 @@ const bottomNavMenu = [
 export default MainScreen = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { firstLogin } = useSelector((state) => state.authReducer);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getSliderImages());
+  }, []);
   console.log(firstLogin);
 
   const bottomTabBarItem = ({ index, icon, title }) => {

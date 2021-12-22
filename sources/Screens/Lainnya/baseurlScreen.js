@@ -19,6 +19,8 @@ const BaseurlScreen = () => {
   const baseUrl = useSelector((state) => state.initReducer.baseUrl);
   const { firstLogin } = useSelector((state) => state.authReducer);
 
+  console.log(baseUrl);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar title="Initial Base Url" />
@@ -27,11 +29,11 @@ const BaseurlScreen = () => {
         <DefaultPrimaryButton
           text="Use Default Base Url"
           onPress={() => {
-            dispatch(setBaseurl(defaultBaseUrl));
             if (firstLogin) {
+              dispatch(setBaseurl(defaultBaseUrl));
               navigation.replace("BoardingScreen");
-              dispatch(setFirstLogin(false));
             } else {
+              dispatch(setBaseurl(defaultBaseUrl));
               navigation.replace("MainScreen");
             }
           }}
@@ -43,11 +45,11 @@ const BaseurlScreen = () => {
         <DefaultPrimaryButton
           text="Submit New Base Url"
           onPress={() => {
-            dispatch(setBaseurl(newBaseUrl));
             if (firstLogin) {
+              dispatch(setBaseurl(newBaseUrl));
               navigation.replace("BoardingScreen");
-              dispatch(setFirstLogin(false));
             } else {
+              dispatch(setBaseurl(newBaseUrl));
               navigation.replace("MainScreen");
             }
           }}
