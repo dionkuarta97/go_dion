@@ -8,6 +8,7 @@ import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroupedProduk } from "../../../Redux/Produk/produkActions";
+import NoData from "../../../Components/NoData";
 
 const products = [
   { id: 1, title: "a" },
@@ -26,6 +27,8 @@ const ProductContent = () => {
     dispatch(getGroupedProduk());
   }, []);
 
+  console.log(groupedProduk);
+
   const sectionHeader = (id, title) => {
     return (
       <View style={styles.sectionContainer}>
@@ -39,7 +42,10 @@ const ProductContent = () => {
             })
           }
         >
-          <Text style={{ ...Fonts.orangeColor14Bold }}>Lihat Semua</Text>
+          {title !== "Buku Sakti" && (
+            <Text style={{ ...Fonts.orangeColor14Bold }}>Lihat Semua</Text>
+          )}
+
         </TouchableOpacity>
       </View>
     );
@@ -54,26 +60,33 @@ const ProductContent = () => {
           return (
             <View key={`groupedproduk-${val._id}`}>
               {sectionHeader(val._id, val.data[0]?.category === "materi" ? "Paket Belajar" : val.data[0]?.category === "tryout" ? "Paket Tryout" : "Buku Sakti")}
-              {val.data.length !== 0 ? (
-                <FlatList
-                  keyExtractor={(item, index) => `${item._id}`}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  renderItem={({ item }) => <ProductCard data={item} section={val.section} />}
-                  data={val.data}
-                  contentContainerStyle={styles.contentContainer}
-                />
+              {val.data[0]?.category !== "busak" ? (
+                <>
+                  {val.data.length !== 0 ? (
+                    <FlatList
+                      keyExtractor={(item, index) => `${item._id}`}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                      renderItem={({ item }) => <ProductCard data={item} section={val.section} />}
+                      data={val.data}
+                      contentContainerStyle={styles.contentContainer}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        padding: Sizes.fixPadding,
+                        height: 100,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text>Produk Kosong</Text>
+                    </View>
+
+                  )}
+                </>
               ) : (
-                <View
-                  style={{
-                    padding: Sizes.fixPadding,
-                    height: 100,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text>Produk Kosong</Text>
-                </View>
+                <NoData img="noimage" msg="Comming Soon" />
               )}
             </View>
           );

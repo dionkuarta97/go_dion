@@ -1,6 +1,6 @@
-import {useNavigation} from "@react-navigation/core";
-import React, {useEffect, useState} from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { useNavigation } from "@react-navigation/core";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
@@ -8,7 +8,7 @@ import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextI
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     getLogin,
     setLoginData,
@@ -27,8 +27,14 @@ const LoginContent = () => {
     const login = useSelector((state) => state.authReducer.login);
 
     useEffect(() => {
-        dispatch(setLoginData({error: null, loading: false, data: null}));
+        dispatch(setLoginData({ error: null, loading: false, data: null }));
     }, []);
+
+    useEffect(() => {
+        if (login.data) {
+            navigation.goBack();
+        }
+    }, [login.data])
 
     const registerText = () => {
         return (
@@ -74,17 +80,7 @@ const LoginContent = () => {
             }}
         >
             {login.loading && <LoadingModal />}
-            {login.data !== null && (
-                <DefaultModal>
-                    <Text>Berhasil Login</Text>
-                    <DefaultPrimaryButton
-                        text="Kembali ke Sebelumnya"
-                        onPress={() => {
-                            navigation.goBack();
-                        }}
-                    />
-                </DefaultModal>
-            )}
+
             <DefaultTextInput
                 placeholder="Email"
                 onChangeText={(value) => setUsernameText(value)}
@@ -95,7 +91,7 @@ const LoginContent = () => {
             />
 
             {login.error !== null && (
-                <Text style={{color: "red"}}>{login.error}</Text>
+                <Text style={{ color: "red" }}>{login.error}</Text>
             )}
 
             <DefaultPrimaryButton

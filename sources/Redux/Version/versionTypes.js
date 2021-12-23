@@ -1,0 +1,1 @@
+export const SET_CHECK_VERSION = "set check version"

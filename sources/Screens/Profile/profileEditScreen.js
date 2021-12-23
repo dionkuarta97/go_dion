@@ -147,6 +147,13 @@ const ProfileEditScreen = (props) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (update.data) {
+
+      navigation.goBack();
+    }
+  }, [update.data])
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar
@@ -464,17 +471,7 @@ const ProfileEditScreen = (props) => {
         </View>
       </ScrollView>
       {update.loading && <LoadingModal />}
-      {update.data !== null && (
-        <DefaultModal>
-          <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>Berhasil memperbarui data profile.</Text>
-          <DefaultPrimaryButton
-            text="Kembali ke Halaman Profile"
-            onPress={() => {
-              navigation.goBack();
-            }}
-          />
-        </DefaultModal>
-      )}
+
     </SafeAreaView>
   );
 };

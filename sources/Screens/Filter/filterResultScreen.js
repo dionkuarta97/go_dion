@@ -177,59 +177,9 @@ const ThirdRoute = () => {
   }
   return (
     <View style={{ flex: 1, marginTop: 15 }}>
-      {products.length === 0 ? (
-        <NoData msg="Produk Tidak Di Temukan" />
-      ) : (
-        <FlatGrid
-          onScroll={(e) => {
-            if (handleInfinityScroll(e)) {
-              if (slice < products?.length) {
-                setSlice(slice + 6);
-              }
-            }
-          }}
-          listKey="productlist"
-          itemDimension={Dimensions.get("window").width / 2.4}
-          renderItem={(item) => (
-            <ProductCard
-              data={item.item}
-              newStyle={{
-                card: {
-                  elevation: 1.0,
-                  width: "100%",
-                  height: Dimensions.get("window").height / 2.6,
-                  backgroundColor: Colors.whiteColor,
-                  overflow: "hidden",
-                  marginRight: Sizes.fixPadding * 2.0,
-                  borderRadius: 10,
-                  marginBottom: 10,
-                },
-                image: {
-                  width: "100%",
-                  height: Dimensions.get("window").height / 6.6,
-                },
-                purchasedCircle: {
-                  position: "absolute",
-                  width: 25,
-                  height: 25,
-                  backgroundColor: "green",
-                  top: 10,
-                  right: 10,
-                  borderRadius: 13,
-                  justifyContent: "center",
-                  alignItems: "center",
-                },
-                infoContainer: {
-                  paddingHorizontal: Sizes.fixPadding,
-                  paddingTop: Sizes.fixPadding,
-                  paddingBottom: Sizes.fixPadding * 2.0,
-                },
-              }}
-            />
-          )}
-          data={products.slice(0, slice)}
-        />
-      )}
+
+      <NoData msg="Comming Soon" />
+
     </View>
   );
 };
@@ -293,7 +243,7 @@ const FilterResultScreen = (props) => {
                     ) : route.title === "Paket Tryout" ? (
                       <Text style={{ ...Fonts.black17Bold, alignSelf: "center" }}>{resultSearchProduct?.data[1]["total"].toString()}</Text>
                     ) : (
-                      <Text style={{ ...Fonts.black17Bold, alignSelf: "center" }}>{resultSearchProduct?.data[2]["total"].toString()}</Text>
+                      <Text style={{ ...Fonts.black17Bold, alignSelf: "center" }}>Soon</Text>
                     )}
                   </View>
                 );
