@@ -12,13 +12,13 @@ const width = Dimensions.get("window").width;
 
 const carouselItems = [
   {
-    image: require("../../../../assets/Images/new_course/new_course_4.png"),
+    image: require("../../../../assets/Images/slider/image-1.png"),
   },
   {
-    image: require("../../../../assets/Images/new_course/new_course_2.png"),
+    image: require("../../../../assets/Images/slider/image-2.png"),
   },
   {
-    image: require("../../../../assets/Images/new_course/new_course_3.png"),
+    image: require("../../../../assets/Images/slider/image-3.png"),
   },
 ];
 

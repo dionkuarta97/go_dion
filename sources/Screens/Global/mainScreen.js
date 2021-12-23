@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Dimensions, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import HomeScreen from "../Home/homeScreen";
 import CartScreen from "../Cart/cartScreen";
 import PurchaseScreen from "../Purchase/purchaseScreen";
 import LainnyaScreen from "../Lainnya/lainnyaScreen";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
-import { getSliderImages } from "../../Redux/Home/homeActions";
+
+import NoData from '../../Components/NoData'
 
 const bottomNavMenu = [
   { title: "Home", icon: "home" },
@@ -24,11 +25,11 @@ const bottomNavMenu = [
 export default MainScreen = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { firstLogin } = useSelector((state) => state.authReducer);
-  const dispatch = useDispatch();
+  const { checkVersion } = useSelector((state) => state.versionReducer)
 
-  useEffect(() => {
-    dispatch(getSliderImages());
-  }, []);
+  console.log(checkVersion);
+
+
   console.log(firstLogin);
 
   const bottomTabBarItem = ({ index, icon, title }) => {
@@ -63,48 +64,54 @@ export default MainScreen = (props) => {
     );
   };
   return (
-    <View style={{ flex: 1 }}>
-      {currentIndex == 0 ? (
-        <HomeScreen />
-      ) : currentIndex == 1 ? (
-        <PurchaseScreen />
-      ) : currentIndex == 4 ? (
-        <LainnyaScreen />
-      ) : (
-        <SafeAreaView style={{ flex: 1 }}>
-          <DefaultAppBar title={currentIndex == 2 ? "Laporan" : "Leaderboard"} />
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "white",
-            }}
-          >
-            <Image
-              style={{
-                width: Dimensions.get("screen").width / 2,
-                height: Dimensions.get("screen").width / 2,
-              }}
-              source={require("../../../assets/Images/helper/underdev.png")}
-            />
+    <>
+      {checkVersion.upToDate ? (
+        <View style={{ flex: 1 }}>
+          {currentIndex == 0 ? (
+            <HomeScreen />
+          ) : currentIndex == 1 ? (
+            <PurchaseScreen />
+          ) : currentIndex == 4 ? (
+            <LainnyaScreen />
+          ) : (
+            <SafeAreaView style={{ flex: 1 }}>
+              <DefaultAppBar title={currentIndex == 2 ? "Laporan" : "Leaderboard"} />
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "white",
+                }}
+              >
+                <Image
+                  style={{
+                    width: Dimensions.get("screen").width / 2,
+                    height: Dimensions.get("screen").width / 2,
+                  }}
+                  source={require("../../../assets/Images/helper/underdev.png")}
+                />
 
-            <Text>Under Development</Text>
+                <Text>Under Development</Text>
+              </View>
+            </SafeAreaView>
+          )}
+
+          <View style={styles.bottomTabBarStyle}>
+            {bottomNavMenu.map((val, idx) =>
+              bottomTabBarItem({
+                index: idx,
+                icon: <MaterialIcons name={val.icon} size={27} color={Colors.orangeColor} />,
+                title: val.title,
+              })
+            )}
           </View>
-        </SafeAreaView>
+          <StatusBar backgroundColor={Colors.primaryColor} />
+        </View>
+      ) : (
+        <NoData msg={checkVersion.message.replace("Bad Request. ", "")} />
       )}
-
-      <View style={styles.bottomTabBarStyle}>
-        {bottomNavMenu.map((val, idx) =>
-          bottomTabBarItem({
-            index: idx,
-            icon: <MaterialIcons name={val.icon} size={27} color={Colors.orangeColor} />,
-            title: val.title,
-          })
-        )}
-      </View>
-      <StatusBar backgroundColor={Colors.primaryColor} />
-    </View>
+    </>
   );
 };
 

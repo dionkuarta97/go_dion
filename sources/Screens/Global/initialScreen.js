@@ -8,6 +8,7 @@ import {
     setToken,
 } from "../../Redux/Auth/authActions";
 import { setProfile } from "../../Redux/Profile/profileActions";
+import { getVersion } from "../../Redux/Version/versionActions";
 
 export default InitialScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -36,6 +37,8 @@ export default InitialScreen = ({ navigation }) => {
             dispatch(setProfile(login.data.user));
             dispatch(setToken(login.data.token));
         }
+
+        dispatch(getVersion())
 
         // dispatch(setToken(null));
         // dispatch(setLoginStatus(false));
