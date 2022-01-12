@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import NoData from "../../../Components/NoData";
 import { getGoTryout } from "../../../Redux/Tryout/tryoutActions";
@@ -26,7 +26,15 @@ const GoTryoutContent = (props) => {
       ) : tryoutData.error ? (
         <NoData img="NoImage2" msg="Tryout Tidak Di Temukan" />
       ) : (
-        tryoutData.data?.map((el) => <GoTryoutCard data={el} tryoutId={el._id} key={el._id} />)
+        <ScrollView
+          style={{
+            marginBottom: 10,
+          }}
+        >
+          {tryoutData.data?.map((el) => (
+            <GoTryoutCard data={el} tryoutId={el._id} key={el._id} />
+          ))}
+        </ScrollView>
       )}
     </View>
   );

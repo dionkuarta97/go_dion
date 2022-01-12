@@ -19,7 +19,7 @@ const BaseurlScreen = () => {
 
   const baseUrl = useSelector((state) => state.initReducer.baseUrl);
   const { firstLogin } = useSelector((state) => state.authReducer);
-  const { checkVersion } = useSelector((state) => state.versionReducer)
+  const { checkVersion } = useSelector((state) => state.versionReducer);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -43,7 +43,10 @@ const BaseurlScreen = () => {
 
             <Text>OR</Text>
 
-            <DefaultTextInput placeholder="New BaseUrl" onChangeText={setNewBaseUrl} />
+            <DefaultTextInput
+              placeholder="New BaseUrl"
+              onChangeText={setNewBaseUrl}
+            />
             <DefaultPrimaryButton
               text="Submit New Base Url"
               onPress={() => {
@@ -59,7 +62,7 @@ const BaseurlScreen = () => {
           </View>
         </>
       ) : (
-        <NoData msg={checkVersion.message.replace("Bad Request. ", "")} />
+        <NoData msg={checkVersion.message} />
       )}
     </SafeAreaView>
   );

@@ -1,21 +1,21 @@
-import {SET_CHECK_VERSION} from "./versionTypes";
+import { SET_CHECK_VERSION } from "./versionTypes";
 
 const initialState = {
-    androidVersion: "0.1.48",
-    iosVersion: "0.0.0",
-    androidCode: 28,
-    iosCode: 0,
-    checkVersion: {
-        upToDate: false,
-        message: null,
-    },
+  androidVersion: "0.1.48",
+  iosVersion: "0.0.0",
+  androidCode: 28,
+  iosCode: 0,
+  checkVersion: {
+    upToDate: false,
+    message: null,
+  },
 };
 
 export function versionReducer(state = initialState, action) {
-    switch (action.type) {
-        case SET_CHECK_VERSION:
-            return {...state, checkVersion: action.payload};
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case SET_CHECK_VERSION:
+      return { ...state, checkVersion: action.payload };
+    default:
+      return state;
+  }
 }

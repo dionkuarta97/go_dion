@@ -1,5 +1,14 @@
-import React, { useEffect } from "react";
-import { ActivityIndicator, Dimensions, Image, SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import SliverAppBar from "../../Components/sliverAppBar";
@@ -33,15 +42,23 @@ const products = [
 
 const ProductCategoryScreen = (props) => {
   const dispatch = useDispatch();
+  const [page, setPage] = useState(1);
   const navigation = useNavigation();
   const allProduk = useSelector((state) => state.produkReducer.allProduk);
-
   const section_id = props.route.params.id;
   const title = props.route.params.title;
 
   useEffect(() => {
-    dispatch(getAllProduk(section_id));
+    dispatch(getAllProduk(section_id, page));
   }, []);
+
+  function handleInfinityScroll(e) {
+    let mHeight = e.nativeEvent.layoutMeasurement.height;
+    let cSize = e.nativeEvent.contentSize.height;
+    let Y = e.nativeEvent.contentOffset.y;
+    if (Math.ceil(mHeight + Y) >= cSize) return true;
+    return false;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -57,107 +74,94 @@ const ProductCategoryScreen = (props) => {
         }
       />
       <View style={{ flex: 1 }}>
-        {allProduk.loading && (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <ActivityIndicator color={Colors.orangeColor} size={30} />
-          </View>
-        )}
         {allProduk.data !== null &&
           (allProduk.data.length !== 0 ? (
             <FlatList
+              onScroll={(e) => {
+                if (handleInfinityScroll(e)) {
+                  setPage(page + 1);
+                  dispatch(getAllProduk(section_id, page + 1));
+                }
+              }}
               keyExtractor={(item) => item._id}
               renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("ProductDetailScreen", {
-                      item: item,
-                      section: title,
-                    });
-                  }}
-                >
-                  <View
-                    style={{
-                      ...CompStyles.defaultCard,
-                      marginHorizontal: Sizes.fixPadding * 1,
-                      flexDirection: "row",
+                <>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("ProductDetailScreen", {
+                        item: item,
+                        section: title,
+                      });
                     }}
                   >
                     <View
                       style={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: Sizes.fixPadding,
-                        marginRight: Sizes.fixPadding,
-                        overflow: "hidden",
-                        position: "relative",
+                        height: Dimensions.get("window").height / 8,
+                        ...CompStyles.defaultCard,
+                        marginHorizontal: Sizes.fixPadding * 1,
+                        flexDirection: "row",
                       }}
                     >
-                      <Image
-                        source={{ uri: item.thumbnail }}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                        }}
-                        resizeMode="cover"
-                      />
-                      {item.purchased && (
-                        <View style={styles.purchasedCircle}>
-                          <MaterialIcons name="check" size={12} color="white" />
-                        </View>
-                      )}
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-                        paddingVertical: Sizes.fixPadding / 2,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...Fonts.orangeColor14Bold,
-                        }}
-                      >
-                        {title}
-                      </Text>
-                      <Text
-                        style={{
-                          ...Fonts.black17Regular,
-                        }}
-                      >
-                        {item.title}
-                      </Text>
                       <View
                         style={{
-                          flexDirection: "row",
-                          alignItems: "center",
+                          width: Dimensions.get("window").width / 5,
+                          height: Dimensions.get("window").height / 10,
+                          borderRadius: Sizes.fixPadding,
+                          marginRight: Sizes.fixPadding,
+                          overflow: "hidden",
+                          position: "relative",
                         }}
                       >
-                        <NumberFormat
-                          value={item.price_discount !== 0 ? item.price_discount : item.price}
-                          displayType={"text"}
-                          thousandSeparator="."
-                          decimalSeparator=","
-                          prefix={"IDR "}
-                          renderText={(value, props) => (
-                            <Text
-                              style={{
-                                ...Fonts.black17Bold,
-                                paddingVertical: Sizes.fixPadding / 2,
-                              }}
-                            >
-                              {value}
-                            </Text>
-                          )}
+                        <Image
+                          source={{ uri: item.thumbnail }}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                          }}
+                          resizeMode="cover"
                         />
-                        {item.price_discount > 0 && (
+                        {item.purchased && (
+                          <View style={styles.purchasedCircle}>
+                            <MaterialIcons
+                              name="check"
+                              size={12}
+                              color="white"
+                            />
+                          </View>
+                        )}
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          paddingVertical: Sizes.fixPadding / 2,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...Fonts.orangeColor14Bold,
+                          }}
+                        >
+                          {title}
+                        </Text>
+                        <Text
+                          style={{
+                            ...Fonts.black17Regular,
+                          }}
+                        >
+                          {item.title}
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
                           <NumberFormat
-                            value={item.price}
+                            value={
+                              item.price_discount !== 0
+                                ? item.price_discount
+                                : item.price
+                            }
                             displayType={"text"}
                             thousandSeparator="."
                             decimalSeparator=","
@@ -165,21 +169,51 @@ const ProductCategoryScreen = (props) => {
                             renderText={(value, props) => (
                               <Text
                                 style={{
-                                  marginLeft: Sizes.fixPadding,
-                                  color: "black",
-                                  opacity: 0.8,
-                                  textDecorationLine: "line-through",
+                                  ...Fonts.black17Bold,
+                                  paddingVertical: Sizes.fixPadding / 2,
                                 }}
                               >
                                 {value}
                               </Text>
                             )}
                           />
-                        )}
+                          {item.price_discount > 0 && (
+                            <NumberFormat
+                              value={item.price}
+                              displayType={"text"}
+                              thousandSeparator="."
+                              decimalSeparator=","
+                              prefix={"IDR "}
+                              renderText={(value, props) => (
+                                <Text
+                                  style={{
+                                    marginLeft: Sizes.fixPadding,
+                                    color: "black",
+                                    opacity: 0.8,
+                                    textDecorationLine: "line-through",
+                                  }}
+                                >
+                                  {value}
+                                </Text>
+                              )}
+                            />
+                          )}
+                        </View>
                       </View>
                     </View>
-                  </View>
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                  {allProduk.loading && (
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <ActivityIndicator color={Colors.orangeColor} size={30} />
+                    </View>
+                  )}
+                </>
               )}
               data={allProduk.data}
             />

@@ -1,6 +1,18 @@
 import { urlGroupedProduk } from "../../Services/ApiUrl";
-import { defaultDoneState, defaultErrorState, defaultFailedState, defaultInitState } from "../helper";
-import { SET_ALL_PRODUK, SET_GROUPED_PRODUK, SET_INCLUDES_PRODUK, SET_PURCHASED_PRODUK, SET_TOTAL_PURCHASED_PRODUK, SET_SEARCH_PRODUCT_TITLE } from "./produkTypes";
+import {
+  defaultDoneState,
+  defaultErrorState,
+  defaultFailedState,
+  defaultInitState,
+} from "../helper";
+import {
+  SET_ALL_PRODUK,
+  SET_GROUPED_PRODUK,
+  SET_INCLUDES_PRODUK,
+  SET_PURCHASED_PRODUK,
+  SET_TOTAL_PURCHASED_PRODUK,
+  SET_SEARCH_PRODUCT_TITLE,
+} from "./produkTypes";
 
 export function setGroupedProduk(state) {
   return {
@@ -44,12 +56,13 @@ export function setAllProduk(state) {
   };
 }
 
-export function getAllProduk(section_id) {
+export function getAllProduk(section_id, page) {
   return async (dispatch, getState) => {
-    dispatch(setAllProduk(defaultInitState));
     try {
       const urlBase = getState().initReducer.baseUrl;
-      fetch(urlBase + urlGroupedProduk + `/${section_id}`, {
+      const product = getState().produkReducer.allProduk.data;
+      console.log(product, "<<<product");
+      fetch(urlBase + urlGroupedProduk + `/${section_id}?page=${page}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${getState().authReducer.token}`,
@@ -57,9 +70,17 @@ export function getAllProduk(section_id) {
       })
         .then((response) => response.json())
         .then((json) => {
+          console.log(json.data, "daat");
           if (json.status) {
-            dispatch(setAllProduk(defaultDoneState(json.data)));
-          } else dispatch(setAllProduk(defaultFailedState(json.message)));
+            if (page === 1) {
+              dispatch(setAllProduk(defaultDoneState(json.data)));
+            } else if (json.data !== null) {
+              console.log("masuk sini");
+              dispatch(
+                setAllProduk(defaultDoneState([...product, ...json.data]))
+              );
+            }
+          } else dispatch(setAllProduk(defaultDoneState(product)));
         })
         .catch((err) => {
           console.log(err);
@@ -93,8 +114,11 @@ export function getTotalPurchasedProduk(section_id) {
         .then((response) => response.json())
         .then((json) => {
           if (json.status) {
-            dispatch(setTotalPurchasedProduk(defaultDoneState(json.data.total)));
-          } else dispatch(setTotalPurchasedProduk(defaultFailedState(json.message)));
+            dispatch(
+              setTotalPurchasedProduk(defaultDoneState(json.data.total))
+            );
+          } else
+            dispatch(setTotalPurchasedProduk(defaultFailedState(json.message)));
         })
         .catch((err) => {
           dispatch(setTotalPurchasedProduk(defaultErrorState));
@@ -191,15 +215,19 @@ export function getSearchProductTitle(payload) {
     dispatch(setSearchProductTitle(defaultInitState));
     try {
       const urlBase = getState().initReducer.baseUrl;
-      const response = await fetch(urlBase + "/masterdata/v1/search/product?q=" + payload, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getState().authReducer.token}`,
-        },
-      });
+      const response = await fetch(
+        urlBase + "/masterdata/v1/search/product?q=" + payload,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().authReducer.token}`,
+          },
+        }
+      );
       const result = await response.json();
-      if (result.status) dispatch(setSearchProductTitle(defaultDoneState(result.data)));
+      if (result.status)
+        dispatch(setSearchProductTitle(defaultDoneState(result.data)));
       else dispatch(setSearchProductTitle(defaultFailedState(result.message)));
     } catch (err) {
       console.log(err);

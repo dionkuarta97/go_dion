@@ -1,6 +1,12 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useEffect } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import NumberFormat from "react-number-format";
 import moment from "moment";
 
@@ -57,7 +63,12 @@ const PurchaseContent = (props) => {
             <Text
               style={{
                 ...styles.status,
-                backgroundColor: item.status === "pending" ? Colors.primaryColor : item.status === "expire" ? Colors.neutralRedColor : Colors.neutralGreenColor,
+                backgroundColor:
+                  item.status === "pending"
+                    ? Colors.primaryColor
+                    : item.status === "expire"
+                    ? Colors.neutralRedColor
+                    : Colors.neutralGreenColor,
               }}
             >
               {item.status}
@@ -65,10 +76,21 @@ const PurchaseContent = (props) => {
           </View>
 
           <Divider />
-          <Text>{moment(item.payment_detail.transaction_time).format("DD MMM YYYY, HH:mm") + " WIB"}</Text>
+          <Text>
+            {moment(item.payment_detail.transaction_time).format(
+              "DD MMM YYYY, HH:mm"
+            ) + " WIB"}
+          </Text>
           <View style={{ flexDirection: "row" }}>
             <Text>Total : </Text>
-            <NumberFormat value={item.payment_detail.gross_amount.split(".")[0]} displayType={"text"} thousandSeparator="." decimalSeparator="," prefix={"IDR "} renderText={(value, props) => <Text>{value}</Text>} />
+            <NumberFormat
+              value={item.payment_detail.gross_amount.split(".")[0]}
+              displayType={"text"}
+              thousandSeparator="."
+              decimalSeparator=","
+              prefix={"IDR "}
+              renderText={(value, props) => <Text>{value}</Text>}
+            />
           </View>
         </View>
       </TouchableOpacity>
@@ -77,19 +99,22 @@ const PurchaseContent = (props) => {
 
   return (
     <View style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
-      {paymentList.loading && (
+      {paymentList.loading ? (
         <View>
           <ActivityIndicator color={Colors.primaryColor} size={30} />
         </View>
-      )}
-      {paymentList.data !== null && (
+      ) : paymentList.data !== null ? (
         <View style={{ flex: 1 }}>
-          {paymentList.data.length > 0 ? (
-            <FlatList style={{ marginBottom: Sizes.fixPadding * 7 }} keyExtractor={(item) => `${item._id}`} data={paymentList.data} renderItem={({ item, index }) => renderItem(item)} scrollEnabled={true} />
-          ) : (
-            <EmptyIndicator />
-          )}
+          <FlatList
+            style={{ marginBottom: Sizes.fixPadding * 7 }}
+            keyExtractor={(item) => `${item._id}`}
+            data={paymentList.data}
+            renderItem={({ item, index }) => renderItem(item)}
+            scrollEnabled={true}
+          />
         </View>
+      ) : (
+        <EmptyIndicator />
       )}
     </View>
   );

@@ -38,7 +38,9 @@ const TryoutCard = (props) => {
         <TouchableOpacity
           onPress={() => {
             if (!detail.touched) {
-              dispatch(setSoalUrl(urlQuests + `/tryout/${tryoutId}/bab/${detail._id}`));
+              dispatch(
+                setSoalUrl(urlQuests + `/tryout/${tryoutId}/bab/${detail._id}`)
+              );
               navigation.navigate("SoalScreen", { title: detail.title });
             } else if (detail.score) {
               if (detail.score === "processing") {
@@ -65,7 +67,8 @@ const TryoutCard = (props) => {
           >
             <Text style={{ ...Fonts.orangeColor20Bold }}>{detail.title}</Text>
             <Text style={{ ...Fonts.black17Bold }}>
-              TPS ({detail.total_question} Soal - {detail.total_time} menit)
+              TPS ({detail.total_question} Soal - {detail.total_time / 60}{" "}
+              menit)
             </Text>
             <Text style={{ marginTop: 10 }}>{detail.desc}</Text>
             {detail.touched && (

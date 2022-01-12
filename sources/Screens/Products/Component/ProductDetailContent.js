@@ -1,5 +1,12 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Dimensions } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import Divider from "../../../Components/Divider";
 
 import Fonts from "../../../Theme/Fonts";
@@ -22,7 +29,11 @@ const ProductDetailContent = (props) => {
   console.log(item);
 
   const titleText = (title) => {
-    return <Text style={{ ...Fonts.black17Bold, marginBottom: Sizes.fixPadding }}>{title}</Text>;
+    return (
+      <Text style={{ ...Fonts.black17Bold, marginBottom: Sizes.fixPadding }}>
+        {title}
+      </Text>
+    );
   };
 
   const infoTile = (title, text) => {
@@ -49,7 +60,10 @@ const ProductDetailContent = (props) => {
         backgroundColor: "white",
       }}
     >
-      <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        nestedScrollEnabled={true}
+        showsVerticalScrollIndicator={false}
+      >
         {titleText("Detail Produk")}
         <View style={styles.content}>
           {infoTile("Informasi", item.desc)}
@@ -59,7 +73,11 @@ const ProductDetailContent = (props) => {
 
           {item.purchased && (
             <DefaultPrimaryButton
-              text={item.category === "tryout" ? "Lihat Tryout mu" : "Lanjutkan Belajar mu"}
+              text={
+                item.category === "tryout"
+                  ? "Lihat Tryout mu"
+                  : "Lanjutkan Belajar mu"
+              }
               onPress={() => {
                 if (item.category === "tryout") {
                   navigation.navigate("GoTryoutScreen");
@@ -84,7 +102,7 @@ const ProductDetailContent = (props) => {
 
           {!item.purchased && onCart && (
             <DefaultPrimaryButton
-              text="Sudah Ditambahkan"
+              text="Sudah ada di keranjang"
               onPress={() => {
                 navigation.popToTop();
                 navigation.navigate("CartScreen");

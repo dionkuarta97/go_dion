@@ -13,7 +13,7 @@ export const urlLogin = urlBaseMasterdata + "/login";
 export const urlCheckEmail = urlBaseMasterdata + "/check-email";
 export const urlRegister = urlBaseMasterdata + "/register";
 export const urlForgotPassword = urlBaseMasterdata + "/fp/recovery";
-
+export const urlOneSignal = urlBaseMasterdata + "/notifications/player/save";
 /*** DATA URL */
 export const urlWilayah = urlBaseMasterdata + "/master/wilayah";
 export const urlProvinsi = urlWilayah + "/provinsi";
