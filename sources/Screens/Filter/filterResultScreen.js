@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View, useWindowDimensions, Dimensions } from "react-native";
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+  Dimensions,
+} from "react-native";
 import { FlatGrid } from "react-native-super-grid";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import ProductCard from "../../Components/ProductCard";
@@ -177,9 +185,7 @@ const ThirdRoute = () => {
   }
   return (
     <View style={{ flex: 1, marginTop: 15 }}>
-
       <NoData msg="Comming Soon" />
-
     </View>
   );
 };
@@ -212,7 +218,9 @@ const FilterResultScreen = (props) => {
         }}
       >
         <View style={styles.card}>
-          <Text style={{ ...Fonts.black15Regular, color: "grey" }}>Pencarian:</Text>
+          <Text style={{ ...Fonts.black15Regular, color: "grey" }}>
+            Pencarian:
+          </Text>
 
           <Text style={{ ...Fonts.black17Regular }}>{keyword}</Text>
         </View>
@@ -230,20 +238,29 @@ const FilterResultScreen = (props) => {
             <TabBar
               {...item}
               indicatorStyle={{ backgroundColor: Colors.orangeColor }}
-              tabStyle={{
-                width: Dimensions.get("window").width / routes.length,
-              }}
               style={{ backgroundColor: Colors.whiteColor }}
               renderLabel={({ route, focused, color }) => {
                 return (
                   <View style={{ flex: 1 }}>
                     <Text style={{ ...Fonts.black17Bold }}>{route.title}</Text>
                     {route.title === "Paket Belajar" ? (
-                      <Text style={{ ...Fonts.black17Bold, alignSelf: "center" }}>{resultSearchProduct?.data[0]["total"].toString()}</Text>
+                      <Text
+                        style={{ ...Fonts.black17Bold, alignSelf: "center" }}
+                      >
+                        {resultSearchProduct?.data[0]["total"].toString()}
+                      </Text>
                     ) : route.title === "Paket Tryout" ? (
-                      <Text style={{ ...Fonts.black17Bold, alignSelf: "center" }}>{resultSearchProduct?.data[1]["total"].toString()}</Text>
+                      <Text
+                        style={{ ...Fonts.black17Bold, alignSelf: "center" }}
+                      >
+                        {resultSearchProduct?.data[1]["total"].toString()}
+                      </Text>
                     ) : (
-                      <Text style={{ ...Fonts.black17Bold, alignSelf: "center" }}>Soon</Text>
+                      <Text
+                        style={{ ...Fonts.black17Bold, alignSelf: "center" }}
+                      >
+                        Soon
+                      </Text>
                     )}
                   </View>
                 );

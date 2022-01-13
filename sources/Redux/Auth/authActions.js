@@ -1,7 +1,27 @@
-import { urlCheckEmail, urlForgotPassword, urlLogin, urlRegister } from "../../Services/ApiUrl";
-import { defaultDoneState, defaultErrorState, defaultFailedState, defaultInitState } from "../helper";
+import {
+  urlCheckEmail,
+  urlForgotPassword,
+  urlLogin,
+  urlRegister,
+  urlOneSignal,
+} from "../../Services/ApiUrl";
+import {
+  defaultDoneState,
+  defaultErrorState,
+  defaultFailedState,
+  defaultInitState,
+} from "../helper";
 import { setProfile } from "../Profile/profileActions";
-import { SET_EMAIL_CHECK, SET_FORGOT_PASSWORD, SET_LOGIN, SET_LOGIN_DATA, SET_FIRST_LOGIN, SET_REGISTER, SET_TOKEN, SET_CHANGE_PASSWORD } from "./authTypes";
+import {
+  SET_EMAIL_CHECK,
+  SET_FORGOT_PASSWORD,
+  SET_LOGIN,
+  SET_LOGIN_DATA,
+  SET_FIRST_LOGIN,
+  SET_REGISTER,
+  SET_TOKEN,
+  SET_CHANGE_PASSWORD,
+} from "./authTypes";
 
 export function setLoginStatus(status) {
   return {
@@ -17,7 +37,7 @@ export function setFirstLogin(payload) {
   };
 }
 
-export function getLogin({ username, password }) {
+export function getLogin({ username, password, playerId }) {
   return async (dispatch, getState) => {
     const urlBase = getState().initReducer.baseUrl;
 
@@ -39,6 +59,20 @@ export function getLogin({ username, password }) {
             dispatch(setLoginStatus(true));
             dispatch(setToken(json.data.token));
             dispatch(setProfile(json.data.user));
+            fetch(urlBase + urlOneSignal, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${json.data.token}`,
+              },
+              body: JSON.stringify({
+                player_id: playerId,
+              }),
+            })
+              .then((response) => response.json())
+              .then((json) => {
+                console.log(json);
+              });
           } else dispatch(setLoginData(defaultFailedState(json.message)));
         })
         .catch((err) => {
@@ -74,11 +108,18 @@ export function getCheckPassword({ username, password }) {
         .then((response) => response.json())
         .then((json) => {
           if (json.status) {
-            dispatch(setCheckPassword({ loading: false, error: null, valid: true }));
-          } else dispatch(setCheckPassword({ loading: false, error: 401, valid: false }));
+            dispatch(
+              setCheckPassword({ loading: false, error: null, valid: true })
+            );
+          } else
+            dispatch(
+              setCheckPassword({ loading: false, error: 401, valid: false })
+            );
         })
         .catch((err) => {
-          dispatch(setCheckPassword({ loading: false, error: 500, valid: false }));
+          dispatch(
+            setCheckPassword({ loading: false, error: 500, valid: false })
+          );
         });
     } catch (err) {
       dispatch(setCheckPassword({ loading: false, error: 500, valid: false }));
@@ -200,4 +241,8 @@ export function getForgotPassword(email) {
       dispatch(setForgotPassword(defaultErrorState));
     }
   };
+}
+
+export function hitOneSignal(payload) {
+  return async(dispatch, getState);
 }

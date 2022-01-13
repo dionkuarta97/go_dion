@@ -6,7 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import RoundedButton from "../../../Components/Button/RoundedButton";
 import * as Progress from "react-native-progress";
-import { saveAnswer, setFinalAnswer, setNumber, setSaveAnswer } from "../../../Redux/Soal/soalActions";
+import {
+  saveAnswer,
+  setFinalAnswer,
+  setNumber,
+  setSaveAnswer,
+} from "../../../Redux/Soal/soalActions";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import ModalStatusSoal from "./ModalStatusSoal";
@@ -35,9 +40,15 @@ const SoalContent = (props) => {
 
   const [sessionIndex, setSessionIndex] = useState(0);
   const [sessionTotal, setSessionTotal] = useState(sessions.length);
-  const [sessionConfig, setsessionConfig] = useState(sessions[sessionIndex].session_configs);
-  const [sessionDuration, setSessionDuration] = useState(sessionConfig.session_duration);
-  const [sessionWaitingDuration, setsessionWaitingDuration] = useState(sessionConfig.waiting_duration);
+  const [sessionConfig, setsessionConfig] = useState(
+    sessions[sessionIndex].session_configs
+  );
+  const [sessionDuration, setSessionDuration] = useState(
+    sessionConfig.session_duration
+  );
+  const [sessionWaitingDuration, setsessionWaitingDuration] = useState(
+    sessionConfig.waiting_duration
+  );
   // const [sessionDuration, setSessionDuration] = useState(10);
   const [questions, setQuestions] = useState(sessions[sessionIndex].questions);
 
@@ -50,6 +61,9 @@ const SoalContent = (props) => {
     dispatch(setFinalAnswer([]));
     dispatch(setNumber(1));
   }, []);
+
+  console.log(questions[number - 1].tipe, "tipe");
+  console.log(sessions[sessionIndex].questions, "soal");
   const headerComponent = () => {
     return (
       <View style={{ padding: Sizes.fixPadding * 2 }}>
@@ -131,11 +145,21 @@ const SoalContent = (props) => {
           alignItems: "center",
         }}
       >
-        <Image style={{ height: 200 }} resizeMode="contain" source={require("../../../../assets/Images/soal/sesidone.png")} />
+        <Image
+          style={{ height: 200 }}
+          resizeMode="contain"
+          source={require("../../../../assets/Images/soal/sesidone.png")}
+        />
         <Text style={{ marginTop: 30, fontWeight: "bold" }}>Sesi Berakhir</Text>
-        <Text style={{ color: "grey" }}>Sabar ya, sesi selanjutnya sedang dipersiapkan</Text>
+        <Text style={{ color: "grey" }}>
+          Sabar ya, sesi selanjutnya sedang dipersiapkan
+        </Text>
 
-        <Progress.Bar progress={1 - delayTime / sessionWaitingDuration} width={200} color={Colors.primaryColor} />
+        <Progress.Bar
+          progress={1 - delayTime / sessionWaitingDuration}
+          width={200}
+          color={Colors.primaryColor}
+        />
       </View>
     );
   };
@@ -149,9 +173,17 @@ const SoalContent = (props) => {
           alignItems: "center",
         }}
       >
-        <Image style={{ height: 200 }} resizeMode="contain" source={require("../../../../assets/Images/soal/onsend.png")} />
-        <Text style={{ marginTop: 30, fontWeight: "bold" }}>Jawaban sedang dikirim,</Text>
-        <Text style={{ color: "grey", textAlign: "center" }}>Tunggu sebentar ya, hasil pengiriman akan segera muncul</Text>
+        <Image
+          style={{ height: 200 }}
+          resizeMode="contain"
+          source={require("../../../../assets/Images/soal/onsend.png")}
+        />
+        <Text style={{ marginTop: 30, fontWeight: "bold" }}>
+          Jawaban sedang dikirim,
+        </Text>
+        <Text style={{ color: "grey", textAlign: "center" }}>
+          Tunggu sebentar ya, hasil pengiriman akan segera muncul
+        </Text>
       </View>
     );
   };
@@ -167,9 +199,17 @@ const SoalContent = (props) => {
             marginHorizontal: 20,
           }}
         >
-          <Image style={{ height: 200 }} resizeMode="contain" source={require("../../../../assets/Images/soal/ondone.png")} />
-          <Text style={{ marginTop: 30, fontWeight: "bold" }}>Jawaban Kamu Berhasil Dikirim</Text>
-          <Text style={{ color: "grey", textAlign: "center" }}>Kamu bisa cek skor kamu dengan klik tombol dibawah ini.</Text>
+          <Image
+            style={{ height: 200 }}
+            resizeMode="contain"
+            source={require("../../../../assets/Images/soal/ondone.png")}
+          />
+          <Text style={{ marginTop: 30, fontWeight: "bold" }}>
+            Jawaban Kamu Berhasil Dikirim
+          </Text>
+          <Text style={{ color: "grey", textAlign: "center" }}>
+            Kamu bisa cek skor kamu dengan klik tombol dibawah ini.
+          </Text>
         </View>
         <View
           style={{
@@ -215,7 +255,11 @@ const SoalContent = (props) => {
         return (
           <PertanyaanPBS
             question={questions[number - 1]}
-            answer={answers[number - 1] !== undefined ? answers[number - 1].user_answer[0] : null}
+            answer={
+              answers[number - 1] !== undefined
+                ? answers[number - 1].user_answer[0]
+                : null
+            }
             onSelect={(answer) => {
               onSelectAnswer(answer);
               console.log(answers);
@@ -226,7 +270,11 @@ const SoalContent = (props) => {
         return (
           <PertanyaanPBK
             question={questions[number - 1]}
-            answer={answers[number - 1] !== undefined ? answers[number - 1].user_answer : null}
+            answer={
+              answers[number - 1] !== undefined
+                ? answers[number - 1].user_answer
+                : null
+            }
             onSelect={(answer) => {
               onSelectAnswer(answer);
               // console.log(answers);
@@ -237,7 +285,11 @@ const SoalContent = (props) => {
         return (
           <PertanyaanPBT
             question={questions[number - 1]}
-            answer={answers[number - 1] !== undefined ? answers[number - 1].user_answer : null}
+            answer={
+              answers[number - 1] !== undefined
+                ? answers[number - 1].user_answer
+                : null
+            }
             onSelect={(answer) => {
               onSelectAnswer(answer);
               console.log(answers);
@@ -275,11 +327,22 @@ const SoalContent = (props) => {
                 Soal {number}/{questions.length}
               </Text>
 
-              <RoundedButton title="Lihat Status" onPress={() => setVisibleStatusModal(true)} />
+              <RoundedButton
+                title="Lihat Status"
+                onPress={() => setVisibleStatusModal(true)}
+              />
             </View>
-            <ScrollView style={{ flex: 1 }}>{questionTypeComponent()}</ScrollView>
+
+            <ScrollView style={{ flex: 1 }}>
+              {questionTypeComponent()}
+            </ScrollView>
           </View>
-          <NavigasiSoal itemLength={questions.length} currentIndex={number - 1} onChange={(index) => dispatch(setNumber(index + 1))} onFinish={() => console.log("Selesai")} />
+          <NavigasiSoal
+            itemLength={questions.length}
+            currentIndex={number - 1}
+            onChange={(index) => dispatch(setNumber(index + 1))}
+            onFinish={() => console.log("Selesai")}
+          />
         </View>
       )}
       {visibleStatusModal && (

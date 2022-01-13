@@ -1,5 +1,14 @@
-import React, { useState } from "react";
-import { Dimensions, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Dimensions,
+  Image,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import Fonts from "../../Theme/Fonts";
@@ -11,8 +20,8 @@ import CartScreen from "../Cart/cartScreen";
 import PurchaseScreen from "../Purchase/purchaseScreen";
 import LainnyaScreen from "../Lainnya/lainnyaScreen";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
-
-import NoData from '../../Components/NoData'
+import OneSignal from "react-native-onesignal";
+import NoData from "../../Components/NoData";
 
 const bottomNavMenu = [
   { title: "Home", icon: "home" },
@@ -25,16 +34,15 @@ const bottomNavMenu = [
 export default MainScreen = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { firstLogin } = useSelector((state) => state.authReducer);
-  const { checkVersion } = useSelector((state) => state.versionReducer)
-
-  console.log(checkVersion);
-
-
-  console.log(firstLogin);
+  const { checkVersion } = useSelector((state) => state.versionReducer);
 
   const bottomTabBarItem = ({ index, icon, title }) => {
     return (
-      <TouchableOpacity key={index.toString()} activeOpacity={0.9} onPress={() => setCurrentIndex(index)}>
+      <TouchableOpacity
+        key={index.toString()}
+        activeOpacity={0.9}
+        onPress={() => setCurrentIndex(index)}
+      >
         {currentIndex == index ? (
           <View
             style={{
@@ -75,7 +83,9 @@ export default MainScreen = (props) => {
             <LainnyaScreen />
           ) : (
             <SafeAreaView style={{ flex: 1 }}>
-              <DefaultAppBar title={currentIndex == 2 ? "Laporan" : "Leaderboard"} />
+              <DefaultAppBar
+                title={currentIndex == 2 ? "Laporan" : "Leaderboard"}
+              />
               <View
                 style={{
                   flex: 1,
@@ -101,7 +111,13 @@ export default MainScreen = (props) => {
             {bottomNavMenu.map((val, idx) =>
               bottomTabBarItem({
                 index: idx,
-                icon: <MaterialIcons name={val.icon} size={27} color={Colors.orangeColor} />,
+                icon: (
+                  <MaterialIcons
+                    name={val.icon}
+                    size={27}
+                    color={Colors.orangeColor}
+                  />
+                ),
                 title: val.title,
               })
             )}
@@ -109,7 +125,7 @@ export default MainScreen = (props) => {
           <StatusBar backgroundColor={Colors.primaryColor} />
         </View>
       ) : (
-        <NoData msg={checkVersion.message.replace("Bad Request. ", "")} />
+        <NoData msg={checkVersion.message} />
       )}
     </>
   );

@@ -1,8 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
-
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./Redux/store";
 import ForgotPasswordScreen from "./Screens/Auth/forgotPasswordScreen";
@@ -42,6 +41,7 @@ import PurchasePendingScreen from "./Screens/Purchase/purchasePendingScreen";
 import GantiPasswordScreen from "./Screens/Profile/GantiPasswordScreen";
 import GoTryoutScreen from "./Screens/GoTryout/GoTryoutScreen";
 import BoardingScreen from "./Screens/Boarding/BoardingScreen";
+import OneSignal from "react-native-onesignal";
 
 const Stack = createStackNavigator();
 
@@ -57,6 +57,14 @@ export default App = () => {
     config,
   };
 
+  useEffect(() => {
+    OneSignal.setLogLevel(6, 0);
+    OneSignal.setAppId("419576d0-3ce4-47c8-9538-452216cfb157");
+    OneSignal.setNotificationOpenedHandler((notification) => {
+      console.log("OneSignal: notification opened:", notification);
+    });
+  }, []);
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -69,32 +77,74 @@ export default App = () => {
           >
             <Stack.Screen name="InitialScreen" component={initialScreen} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
-            <Stack.Screen name="EmailCheckScreen" component={EmailCheckScreen} />
+            <Stack.Screen
+              name="EmailCheckScreen"
+              component={EmailCheckScreen}
+            />
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-            <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
-            <Stack.Screen name="NewPasswordScreen" component={NewPasswordScreen} />
+            <Stack.Screen
+              name="ForgotPasswordScreen"
+              component={ForgotPasswordScreen}
+            />
+            <Stack.Screen
+              name="NewPasswordScreen"
+              component={NewPasswordScreen}
+            />
             <Stack.Screen name="MainScreen" component={MainScreen} />
             <Stack.Screen name="ProductScreen" component={ProductScreen} />
-            <Stack.Screen name="ProductCategoryScreen" component={ProductCategoryScreen} />
-            <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen} />
-            <Stack.Screen name="ProductPurchasedScreen" component={ProductPurchasedScreen} />
-            <Stack.Screen name="ProductIncludeScreen" component={ProductIncludeScreen} />
+            <Stack.Screen
+              name="ProductCategoryScreen"
+              component={ProductCategoryScreen}
+            />
+            <Stack.Screen
+              name="ProductDetailScreen"
+              component={ProductDetailScreen}
+            />
+            <Stack.Screen
+              name="ProductPurchasedScreen"
+              component={ProductPurchasedScreen}
+            />
+            <Stack.Screen
+              name="ProductIncludeScreen"
+              component={ProductIncludeScreen}
+            />
             <Stack.Screen name="FilterScreen" component={FilterScreen} />
-            <Stack.Screen name="FilterResultScreen" component={FilterResultScreen} />
+            <Stack.Screen
+              name="FilterResultScreen"
+              component={FilterResultScreen}
+            />
             <Stack.Screen name="CartScreen" component={CartScreen} />
             <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
-            <Stack.Screen name="PaymentMethodScreen" component={PaymentMethodScreen} />
+            <Stack.Screen
+              name="PaymentMethodScreen"
+              component={PaymentMethodScreen}
+            />
             <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
-            <Stack.Screen name="PurchasePendingScreen" component={PurchasePendingScreen} />
+            <Stack.Screen
+              name="PurchasePendingScreen"
+              component={PurchasePendingScreen}
+            />
             <Stack.Screen name="LainnyaScreen" component={LainnyaScreen} />
             <Stack.Screen name="BaseurlScreen" component={BaseurlScreen} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-            <Stack.Screen name="ProfileEditScreen" component={ProfileEditScreen} />
-            <Stack.Screen name="GantiPasswordScreen" component={GantiPasswordScreen} />
+            <Stack.Screen
+              name="ProfileEditScreen"
+              component={ProfileEditScreen}
+            />
+            <Stack.Screen
+              name="GantiPasswordScreen"
+              component={GantiPasswordScreen}
+            />
             <Stack.Screen name="GoBelajarScreen" component={GoBelajarScreen} />
             <Stack.Screen name="SubMateriScreen" component={SubMateriScreen} />
-            <Stack.Screen name="MateriVideoScreen" component={MateriVideoScreen} />
-            <Stack.Screen name="MateriEbookScreen" component={MateriEbookScreen} />
+            <Stack.Screen
+              name="MateriVideoScreen"
+              component={MateriVideoScreen}
+            />
+            <Stack.Screen
+              name="MateriEbookScreen"
+              component={MateriEbookScreen}
+            />
             <Stack.Screen
               name="PDFScreen"
               component={PDFScreen}
@@ -108,7 +158,10 @@ export default App = () => {
               }}
             />
             <Stack.Screen name="GoTryoutScreen" component={GoTryoutScreen} />
-            <Stack.Screen name="TryoutDetailScreen" component={TryoutDetailScreen} />
+            <Stack.Screen
+              name="TryoutDetailScreen"
+              component={TryoutDetailScreen}
+            />
             <Stack.Screen name="SoalScreen" component={SoalScreen} />
             <Stack.Screen name="ScoreScreen" component={ScoreScreen} />
             <Stack.Screen name="ScoreListScreen" component={ScoreListScreen} />
