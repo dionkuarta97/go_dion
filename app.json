@@ -2,7 +2,7 @@
   "expo": {
     "name": "GO Online",
     "slug": "go_online_mobile_UI",
-    "version": "1.0.0",
+    "version": "0.1.49",
     "assetBundlePatterns": [
       "**/*"
     ],
