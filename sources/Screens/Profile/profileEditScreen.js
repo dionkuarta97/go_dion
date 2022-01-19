@@ -213,7 +213,7 @@ const ProfileEditScreen = (props) => {
                 nama_wali: waliName,
                 email_wali: waliEmail,
                 phone_wali: waliPhone,
-                program_study: profile.program_study,
+                program_studi: profile.program_studi,
               };
               if (newPassword !== "") data["password"] = newPassword;
               const bodyParams = JSON.stringify(data);
