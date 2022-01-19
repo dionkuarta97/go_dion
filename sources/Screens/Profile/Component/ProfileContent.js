@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Image, Text, View } from "react-native";
+import { Alert, Image, Text, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
@@ -7,13 +7,14 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getMe } from "../../../Redux/Profile/profileActions";
+import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 
 const ProfileContent = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const profile = useSelector((state) => state.profileReducer.profile);
-  console.log(profile);
+  console.log(profile.kelas);
 
   useEffect(() => {
     dispatch(getMe());
@@ -58,7 +59,35 @@ const ProfileContent = () => {
                 source={require("../../../../assets/Images/user_profile/user_2.jpg")}
                 resizeMode="contain"
             /> */}
-      <Text style={{ ...Fonts.black19Bold, marginTop: Sizes.fixPadding }}>{profile.full_name}</Text>
+
+      <View
+        style={{
+          width: 300,
+        }}
+      >
+        <DefaultPrimaryButton
+          onPress={() => {
+            if (profile.kelas !== "12 IPA" && profile.kelas !== "12 IPS") {
+              Alert.alert("Warning", "Anda Belum Kelas 12 SMA");
+            } else {
+              if (profile.program_studi) {
+                navigation.navigate("LihatProdiScreen", {
+                  prodi: profile.program_studi,
+                });
+              } else {
+                navigation.navigate("PilihProdiScreen", {
+                  profile,
+                });
+              }
+            }
+          }}
+          text={profile.program_studi ? "LIHAT PRODI" : "PILIH PRODI"}
+        />
+      </View>
+
+      <Text style={{ ...Fonts.black19Bold, marginTop: Sizes.fixPadding }}>
+        {profile.full_name}
+      </Text>
 
       <View
         style={{

@@ -14,22 +14,26 @@ const ScoreScreen = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const idMateri = props.route.params.idMateri;
+  const related_to = props.route.params.related_to;
   const from = props.route.params.from;
   const score = useSelector((state) => state.scoreReducer.score);
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(getScore(idMateri));
+      dispatch(getScore(related_to));
     }, [])
   );
 
-  console.log(idMateri, "<<<");
+  console.log(related_to, "<<<");
 
   const [done, setDone] = useState(false);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {from ? <DefaultAppBar title="Detail Score" backEnabled={true} /> : <DefaultAppBar title="Detail Score" rightItem={<ActionButtonHome />} />}
+      {from ? (
+        <DefaultAppBar title="Detail Score" backEnabled={true} />
+      ) : (
+        <DefaultAppBar title="Detail Score" rightItem={<ActionButtonHome />} />
+      )}
 
       <View style={{ flex: 1, position: "relative" }}>
         <View
@@ -40,7 +44,11 @@ const ScoreScreen = (props) => {
             paddingVertical: Sizes.fixPadding * 2,
           }}
         >
-          <Image style={{ height: 200 }} resizeMode="contain" source={require("../../../assets/Images/soal/onscoring.png")} />
+          <Image
+            style={{ height: 200 }}
+            resizeMode="contain"
+            source={require("../../../assets/Images/soal/onscoring.png")}
+          />
         </View>
         <View
           style={{
@@ -59,7 +67,10 @@ const ScoreScreen = (props) => {
           {score.data === null && (
             <View style={{ flex: 1 }}>
               <OnScoring />
-              <DefaultPrimaryButton text={"Refresh Skor"} onPress={() => dispatch(getScore(idMateri))} />
+              <DefaultPrimaryButton
+                text={"Refresh Skor"}
+                onPress={() => dispatch(getScore(related_to))}
+              />
             </View>
           )}
           {score.data !== null && (

@@ -4,3 +4,4 @@ export const SET_QUESTION = "set question";
 export const SET_NUMBER = "set number";
 export const SET_SAVE_ANSWER = "set save answer";
 export const SET_FINAL_ANSWER = "set final answer";
+export const SET_SAVE_SCORE = "set save score";

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useEffect, useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
 import CountDown from "react-native-countdown-component";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
@@ -10,7 +10,7 @@ import {
   saveAnswer,
   setFinalAnswer,
   setNumber,
-  setSaveAnswer,
+  setSaveScore,
 } from "../../../Redux/Soal/soalActions";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
@@ -19,19 +19,24 @@ import NavigasiSoal from "./NavigasiSoal";
 import PertanyaanPBK from "./Pertanyaan/PertanyaanPBK";
 import PertanyaanPBS from "./Pertanyaan/PertanyaanPBS";
 import PertanyaanPBT from "./Pertanyaan/PertanyaanPBT";
-import TimerSoal from "./TimerSoal";
 import Colors from "../../../Theme/Colors";
 
 const SoalContent = (props) => {
+  const { blockTime } = props;
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const number = useSelector((state) => state.soalReducer.currentNumber);
-  const quizId = useSelector((state) => state.soalReducer.soal.data._id);
+  const related_to = useSelector(
+    (state) => state.soalReducer.soal.data.related_to
+  );
 
   const sessions = useSelector((state) => state.soalReducer.soal.data.sessions);
-
+  const type = useSelector(
+    (state) => state.soalReducer.soal.data.related_to.key
+  );
   const save = useSelector((state) => state.soalReducer.saveAnswer);
+  const { saveScore } = useSelector((state) => state.soalReducer);
 
   const [delay, setDelay] = useState(false);
   const [finish, setFinish] = useState(false);
@@ -43,37 +48,73 @@ const SoalContent = (props) => {
   const [sessionConfig, setsessionConfig] = useState(
     sessions[sessionIndex].session_configs
   );
+  const [sessionTitle, setSessionTitle] = useState(
+    sessions[sessionIndex].title
+  );
   const [sessionDuration, setSessionDuration] = useState(
     sessionConfig.session_duration
   );
   const [sessionWaitingDuration, setsessionWaitingDuration] = useState(
     sessionConfig.waiting_duration
   );
-  // const [sessionDuration, setSessionDuration] = useState(10);
   const [questions, setQuestions] = useState(sessions[sessionIndex].questions);
 
   const [visibleStatusModal, setVisibleStatusModal] = useState(false);
 
+  const [currentAnswer, setCurrentAnswer] = useState({
+    duration: 6,
+    user_answer: -1,
+  });
+
+  const [duration, setDuration] = useState(0);
+
   const [delayTime, setDelayTime] = useState(0);
+  const [bukaSoal, setBukaSoal] = useState();
+  const [notAnswer, setNotAnswer] = useState(true);
 
   useEffect(() => {
-    // dispatch(setSaveAnswer({ loading: false, error: null, data: null }));
     dispatch(setFinalAnswer([]));
     dispatch(setNumber(1));
+    dispatch(
+      setSaveScore({
+        rawData: [],
+        answers: [],
+        status: null,
+      })
+    );
   }, []);
 
-  console.log(questions[number - 1].tipe, "tipe");
-  console.log(sessions[sessionIndex].questions, "soal");
+  useEffect(() => {
+    if (answers[number - 1] === undefined) {
+      setBukaSoal(duration);
+    } else {
+      setBukaSoal(duration + answers[number - 1].duration);
+    }
+
+    if (notAnswer) {
+      setAnswers([
+        ...answers,
+        {
+          duration: -1,
+          user_answer: [-1],
+        },
+      ]);
+    } else {
+      setNotAnswer(true);
+    }
+  }, [number]);
+
   const headerComponent = () => {
     return (
       <View style={{ padding: Sizes.fixPadding * 2 }}>
+        <Text style={{ ...Fonts.black17Bold }}>{sessionTitle}</Text>
         <Text style={{ color: Colors.ligthGreyColor }}>
           Sesi {sessionIndex + 1}/{sessionTotal}
         </Text>
         <View style={{ flexDirection: "row" }}>
           <Text style={{ ...Fonts.black17Bold, flex: 1 }}>{props.title}</Text>
           <View>
-            {!delay ? (
+            {!delay && (
               <CountDown
                 key={"Count 1"}
                 until={sessionDuration}
@@ -82,52 +123,120 @@ const SoalContent = (props) => {
                 }}
                 showSeparator={true}
                 onFinish={() => {
+                  setDelay(true);
                   var status = "not_done";
                   if (answers.length === questions.length) {
                     status = "done";
-                  }
-                  if (sessionIndex + 1 !== sessionTotal) {
-                    setDelay(true);
-                    setDelayTime(0);
-                    dispatch(setNumber(1));
-                    const sesIndex = sessionIndex + 1;
-                    setSessionIndex(sesIndex);
-                    setQuestions(sessions[sesIndex].questions);
-                    dispatch(setFinalAnswer(answers));
-                    setAnswers([]);
+                    if (sessionIndex + 1 !== sessionTotal) {
+                      dispatch(
+                        setSaveScore({
+                          answers: [...saveScore.answers, answers],
+                          rawData: [
+                            ...saveScore.rawData,
+                            {
+                              questions: sessions[sessionIndex].questions,
+                              session_configs:
+                                sessions[sessionIndex].session_configs,
+                              total: sessions[sessionIndex].total,
+                            },
+                          ],
+                          status: status,
+                        })
+                      );
+                      dispatch(setNumber(1));
+                      const sesIndex = sessionIndex + 1;
+                      setSessionIndex(sesIndex);
+                      setQuestions(sessions[sesIndex].questions);
+                      setSessionTitle(sessions[sesIndex].title);
+                      setAnswers([]);
+                      console.log(saveScore, "<<save score");
+                    } else {
+                      dispatch(
+                        setSaveScore({
+                          answers: [...saveScore.answers, answers],
+                          rawData: [
+                            ...saveScore.rawData,
+                            {
+                              questions: sessions[sessionIndex].questions,
+                              session_configs:
+                                sessions[sessionIndex].session_configs,
+                              total: sessions[sessionIndex].total,
+                            },
+                          ],
+                          status: status,
+                        })
+                      );
+                      setFinish(true);
+                      dispatch(saveAnswer());
+                    }
                   } else {
-                    setFinish(true);
-                    dispatch(setFinalAnswer(answers));
-                    dispatch(saveAnswer(status));
+                    let jawabanKosong = answers;
+                    for (let i = answers.length; i < questions.length; i++) {
+                      jawabanKosong.push({
+                        duration: -1,
+                        user_answer: [-1],
+                      });
+                    }
+                    if (sessionIndex + 1 !== sessionTotal) {
+                      dispatch(
+                        setSaveScore({
+                          answers: [...saveScore.answers, jawabanKosong],
+                          rawData: [
+                            ...saveScore.rawData,
+                            {
+                              questions: sessions[sessionIndex].questions,
+                              session_configs:
+                                sessions[sessionIndex].session_configs,
+                              total: sessions[sessionIndex].total,
+                            },
+                          ],
+                          status: status,
+                        })
+                      );
+                      dispatch(setNumber(1));
+                      const sesIndex = sessionIndex + 1;
+                      setSessionIndex(sesIndex);
+                      setQuestions(sessions[sesIndex].questions);
+                      setSessionTitle(sessions[sesIndex].title);
+                      setAnswers([]);
+                      console.log(
+                        JSON.stringify(jawabanKosong),
+                        "<<save score"
+                      );
+                      console.log(jawabanKosong.length, "jawaban kosong");
+                    } else {
+                      dispatch(
+                        setSaveScore({
+                          answers: [...saveScore.answers, answers],
+                          rawData: [
+                            ...saveScore.rawData,
+                            {
+                              questions: sessions[sessionIndex].questions,
+                              session_configs:
+                                sessions[sessionIndex].session_configs,
+                              total: sessions[sessionIndex].total,
+                            },
+                          ],
+                          status: status,
+                        })
+                      );
+                      setFinish(true);
+                      dispatch(saveAnswer());
+                    }
                   }
-                }}
-                size={14}
-                timeToShow={["M", "S"]}
-                timeLabels={{ m: null, s: null }}
-                style={{ ...Fonts.blackRegular }}
-                onChange={(t) => {}}
-                running={!finish && !delay}
-              />
-            ) : (
-              <CountDown
-                key={"Count 2"}
-                until={sessionWaitingDuration}
-                digitStyle={{
-                  backgroundColor: "transparent",
-                }}
-                showSeparator={true}
-                onFinish={() => {
-                  setDelay(false);
-                  setDelayTime(0);
+
+                  setTimeout(() => {
+                    setDelay(false);
+                  }, 5000);
                 }}
                 size={14}
                 timeToShow={["M", "S"]}
                 timeLabels={{ m: null, s: null }}
                 style={{ ...Fonts.blackRegular }}
                 onChange={(t) => {
-                  setDelayTime(t);
+                  setDuration(t);
                 }}
-                running={true}
+                running={!finish && !delay}
               />
             )}
           </View>
@@ -155,11 +264,13 @@ const SoalContent = (props) => {
           Sabar ya, sesi selanjutnya sedang dipersiapkan
         </Text>
 
-        <Progress.Bar
-          progress={1 - delayTime / sessionWaitingDuration}
-          width={200}
-          color={Colors.primaryColor}
-        />
+        <View
+          style={{
+            marginTop: 10,
+          }}
+        >
+          <ActivityIndicator color={Colors.primaryColor} size={50} />
+        </View>
       </View>
     );
   };
@@ -184,6 +295,13 @@ const SoalContent = (props) => {
         <Text style={{ color: "grey", textAlign: "center" }}>
           Tunggu sebentar ya, hasil pengiriman akan segera muncul
         </Text>
+        <View
+          style={{
+            marginTop: 10,
+          }}
+        >
+          <ActivityIndicator color={Colors.primaryColor} size={50} />
+        </View>
       </View>
     );
   };
@@ -205,35 +323,66 @@ const SoalContent = (props) => {
             source={require("../../../../assets/Images/soal/ondone.png")}
           />
           <Text style={{ marginTop: 30, fontWeight: "bold" }}>
-            Jawaban Kamu Berhasil Dikirim
+            {finish && save.loading
+              ? "Jawaban sedang dikirim"
+              : "Jawaban Kamu Berhasil Dikirim"}
           </Text>
           <Text style={{ color: "grey", textAlign: "center" }}>
-            Kamu bisa cek skor kamu dengan klik tombol dibawah ini.
+            {finish && save.loading
+              ? "Tunggu sebentar ya, hasil pengiriman akan segera muncul"
+              : "Kamu bisa cek skor kamu dengan klik tombol dibawah ini."}
           </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            backgroundColor: "white",
-            paddingHorizontal: 25,
-            paddingVertical: 25,
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
-            elevation: 30,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <DefaultPrimaryButton
-              text="Cek Skor Kamu"
-              onPress={() => {
-                navigation.popToTop();
-                navigation.navigate("ScoreScreen", {
-                  idMateri: quizId,
-                });
+          {finish && save.loading && (
+            <View
+              style={{
+                marginTop: 10,
               }}
-            />
-          </View>
+            >
+              <ActivityIndicator color={Colors.primaryColor} size={50} />
+            </View>
+          )}
         </View>
+
+        {finish && !save.loading && (
+          <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: "white",
+              paddingHorizontal: 25,
+              paddingVertical: 25,
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+              elevation: 30,
+            }}
+          >
+            <View style={{ flex: 1 }}>
+              <DefaultPrimaryButton
+                text="Cek Skor Kamu"
+                onPress={() => {
+                  navigation.popToTop();
+                  if (type !== "tryout") {
+                    navigation.navigate("ScoreScreen", {
+                      related_to: {
+                        product_type: related_to.key,
+                        product_id: related_to.key_id,
+                        quiz_id: related_to.bab_id,
+                      },
+                    });
+                  } else {
+                    navigation.navigate("TryoutScoreScreen", {
+                      fromSoal: true,
+                      related_to: {
+                        product_type: related_to.key,
+                        product_id: related_to.key_id,
+                        quiz_id: related_to.bab_id,
+                      },
+                    });
+                  }
+                }}
+              />
+            </View>
+          </View>
+        )}
       </View>
     );
   };
@@ -242,7 +391,8 @@ const SoalContent = (props) => {
     function onSelectAnswer(answer) {
       let currentAnswer = answers;
       const tes = {
-        duration: 6,
+        duration:
+          bukaSoal === 0 ? sessionDuration - duration : bukaSoal - duration,
         user_answer: answer,
       };
       currentAnswer[number - 1] = tes;
@@ -250,6 +400,7 @@ const SoalContent = (props) => {
       console.log("-----> Current Answer");
       console.log(currentAnswer);
     }
+
     switch (questions[number - 1].tipe) {
       case "PBS":
         return (
@@ -262,6 +413,7 @@ const SoalContent = (props) => {
             }
             onSelect={(answer) => {
               onSelectAnswer(answer);
+              setNotAnswer(false);
               console.log(answers);
             }}
           />
@@ -303,10 +455,9 @@ const SoalContent = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-      {!finish && headerComponent()}
-      {finish && save.loading && loadingSendComponent()}
-      {finish && save.data !== null && finishComponent()}
-      {delay && sessionWaitComponent()}
+      {!finish && !delay && headerComponent()}
+      {finish && finishComponent()}
+      {delay && !finish && sessionWaitComponent()}
       {!delay && !finish && (
         <View style={{ flex: 1 }}>
           <View
@@ -338,8 +489,116 @@ const SoalContent = (props) => {
             </ScrollView>
           </View>
           <NavigasiSoal
+            blockTime={blockTime}
             itemLength={questions.length}
             currentIndex={number - 1}
+            sesi={sessionIndex}
+            totalSesi={sessionTotal}
+            type={type}
+            onSesiEnd={() => {
+              setDelay(true);
+              var status = "not_done";
+              if (answers.length === questions.length) {
+                status = "done";
+                if (sessionIndex + 1 !== sessionTotal) {
+                  dispatch(
+                    setSaveScore({
+                      answers: [...saveScore.answers, answers],
+                      rawData: [
+                        ...saveScore.rawData,
+                        {
+                          questions: sessions[sessionIndex].questions,
+                          session_configs:
+                            sessions[sessionIndex].session_configs,
+                          total: sessions[sessionIndex].total,
+                        },
+                      ],
+                      status: status,
+                    })
+                  );
+                  dispatch(setNumber(1));
+                  const sesIndex = sessionIndex + 1;
+                  setSessionIndex(sesIndex);
+                  setQuestions(sessions[sesIndex].questions);
+                  setSessionTitle(sessions[sesIndex].title);
+                  setAnswers([]);
+                  console.log(saveScore, "<<save score");
+                } else {
+                  dispatch(
+                    setSaveScore({
+                      answers: [...saveScore.answers, answers],
+                      rawData: [
+                        ...saveScore.rawData,
+                        {
+                          questions: sessions[sessionIndex].questions,
+                          session_configs:
+                            sessions[sessionIndex].session_configs,
+                          total: sessions[sessionIndex].total,
+                        },
+                      ],
+                      status: status,
+                    })
+                  );
+                  setFinish(true);
+                  dispatch(saveAnswer());
+                }
+              } else {
+                let jawabanKosong = answers;
+                for (let i = answers.length; i < questions.length; i++) {
+                  jawabanKosong.push({
+                    duration: -1,
+                    user_answer: [-1],
+                  });
+                }
+                if (sessionIndex + 1 !== sessionTotal) {
+                  dispatch(
+                    setSaveScore({
+                      answers: [...saveScore.answers, jawabanKosong],
+                      rawData: [
+                        ...saveScore.rawData,
+                        {
+                          questions: sessions[sessionIndex].questions,
+                          session_configs:
+                            sessions[sessionIndex].session_configs,
+                          total: sessions[sessionIndex].total,
+                        },
+                      ],
+                      status: status,
+                    })
+                  );
+                  dispatch(setNumber(1));
+                  const sesIndex = sessionIndex + 1;
+                  setSessionIndex(sesIndex);
+                  setQuestions(sessions[sesIndex].questions);
+                  setSessionTitle(sessions[sesIndex].title);
+                  setAnswers([]);
+                  console.log(JSON.stringify(jawabanKosong), "<<save score");
+                  console.log(jawabanKosong.length, "jawaban kosong");
+                } else {
+                  dispatch(
+                    setSaveScore({
+                      answers: [...saveScore.answers, answers],
+                      rawData: [
+                        ...saveScore.rawData,
+                        {
+                          questions: sessions[sessionIndex].questions,
+                          session_configs:
+                            sessions[sessionIndex].session_configs,
+                          total: sessions[sessionIndex].total,
+                        },
+                      ],
+                      status: status,
+                    })
+                  );
+                  setFinish(true);
+                  dispatch(saveAnswer());
+                }
+              }
+
+              setTimeout(() => {
+                setDelay(false);
+              }, 5000);
+            }}
             onChange={(index) => dispatch(setNumber(index + 1))}
             onFinish={() => console.log("Selesai")}
           />

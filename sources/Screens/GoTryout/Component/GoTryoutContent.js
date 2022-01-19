@@ -13,6 +13,8 @@ const GoTryoutContent = (props) => {
   useEffect(() => {
     dispatch(getGoTryout(props.status));
   }, [props.status]);
+
+  console.log(tryoutData.data);
   return (
     <View style={{ flex: 1 }}>
       {tryoutData.loading ? (

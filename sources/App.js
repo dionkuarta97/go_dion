@@ -42,6 +42,9 @@ import GantiPasswordScreen from "./Screens/Profile/GantiPasswordScreen";
 import GoTryoutScreen from "./Screens/GoTryout/GoTryoutScreen";
 import BoardingScreen from "./Screens/Boarding/BoardingScreen";
 import OneSignal from "react-native-onesignal";
+import TryoutScoreScreen from "./Screens/GoTryout/TryoutScoreScreen";
+import PilihProdiScreen from "./Screens/Profile/PilihProdiScreen";
+import LihatProdiScreen from "./Screens/Profile/LihatProdiScreen";
 
 const Stack = createStackNavigator();
 
@@ -166,6 +169,18 @@ export default App = () => {
             <Stack.Screen name="ScoreScreen" component={ScoreScreen} />
             <Stack.Screen name="ScoreListScreen" component={ScoreListScreen} />
             <Stack.Screen name="BoardingScreen" component={BoardingScreen} />
+            <Stack.Screen
+              name="TryoutScoreScreen"
+              component={TryoutScoreScreen}
+            />
+            <Stack.Screen
+              name="PilihProdiScreen"
+              component={PilihProdiScreen}
+            />
+            <Stack.Screen
+              name="LihatProdiScreen"
+              component={LihatProdiScreen}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

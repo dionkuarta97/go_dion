@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Dimensions, ScrollView } from "react-native";
+import { Text, View, Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CompStyles from "../../../../Theme/styles/globalStyles";
 import { formatQuestion } from "../../Utils/formatQuestion";
@@ -12,9 +12,8 @@ const PertanyaanPBS = (props) => {
   useEffect(() => {
     if (props.answer === null) setSelectedAnswer(-1);
     else setSelectedAnswer(props.answer);
+    console.log("pbs");
   }, [question]);
-
-  console.log(question.jawaban, "jawaban");
 
   const renderOption = (answer, index) => {
     return (
@@ -41,7 +40,7 @@ const PertanyaanPBS = (props) => {
           <Text style={{ marginRight: 10 }}>{options[index]}.</Text>
           <AutoHeightWebView
             style={{
-              width: Dimensions.get("window").width - 80,
+              width: Dimensions.get("window").width / 1.6,
             }}
             customStyle={`
               body {
@@ -49,7 +48,6 @@ const PertanyaanPBS = (props) => {
                 overflow-y: hidden;
               }
             `}
-            onSizeUpdated={(size) => console.log(size.height)}
             files={[
               {
                 href: "cssfileaddress",
@@ -77,7 +75,7 @@ const PertanyaanPBS = (props) => {
       >
         <AutoHeightWebView
           style={{
-            width: Dimensions.get("window").width - 80,
+            width: Dimensions.get("window").width / 1.3,
             marginTop: 10,
             marginBottom: 35,
           }}
@@ -87,7 +85,6 @@ const PertanyaanPBS = (props) => {
               overflow-y: hidden;
             }
           `}
-          onSizeUpdated={(size) => console.log(size.height)}
           files={[
             {
               href: "cssfileaddress",

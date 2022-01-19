@@ -1,11 +1,30 @@
 import { urlQuests } from "../../Services/ApiUrl";
-import { defaultDoneState, defaultErrorState, defaultFailedState, defaultInitState } from "../helper";
-import { SET_FINAL_ANSWER, SET_NUMBER, SET_SAVE_ANSWER, SET_SOAL, SET_SOAL_URL } from "./soalTypes";
+import {
+  defaultDoneState,
+  defaultErrorState,
+  defaultFailedState,
+  defaultInitState,
+} from "../helper";
+import {
+  SET_FINAL_ANSWER,
+  SET_NUMBER,
+  SET_SAVE_ANSWER,
+  SET_SAVE_SCORE,
+  SET_SOAL,
+  SET_SOAL_URL,
+} from "./soalTypes";
 
 export function setSoalUrl(url) {
   return {
     type: SET_SOAL_URL,
     payload: url,
+  };
+}
+
+export function setSaveScore(payload) {
+  return {
+    type: SET_SAVE_SCORE,
+    payload,
   };
 }
 
@@ -72,15 +91,12 @@ export function saveAnswer(status) {
   return async (dispatch, getState) => {
     dispatch(setSaveAnswer(defaultInitState));
     try {
-      const bodyParams = JSON.stringify({
+      const { saveScore } = getState().soalReducer;
+      const bodyParams = {
+        ...saveScore,
         related_to: getState().soalReducer.soal.data.related_to,
-        rawData: getState().soalReducer.soal.data.sessions,
-        answers: getState().soalReducer.answers,
-        status: status,
-      });
-      console.log("=== Save Answers ===");
-      console.log(JSON.parse(bodyParams));
-      console.log("=== Save Answers: eof ===");
+      };
+      console.log(JSON.stringify(bodyParams, null, 2), "<<<rawData");
       const urlBase = getState().initReducer.baseUrl;
       fetch(urlBase + urlQuests + "/save", {
         method: "POST",
@@ -88,7 +104,7 @@ export function saveAnswer(status) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getState().authReducer.token}`,
         },
-        body: bodyParams,
+        body: JSON.stringify(bodyParams),
       })
         .then((response) => {
           console.log(response);
@@ -97,7 +113,9 @@ export function saveAnswer(status) {
         .then((json) => {
           console.log(json);
           if (json.status) {
-            dispatch(setSaveAnswer(defaultDoneState(json.data)));
+            setTimeout(() => {
+              dispatch(setSaveAnswer(defaultDoneState(json.data)));
+            }, 4000);
           } else dispatch(setSaveAnswer(defaultFailedState(json.message)));
         })
         .catch((err) => {
