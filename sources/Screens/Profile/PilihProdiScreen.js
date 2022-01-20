@@ -175,7 +175,7 @@ const PilihProdiScreen = (props) => {
                 onPress={() => {
                   Alert.alert(
                     "Peringatan",
-                    "Untuk sementara pemilihan prodi tidak dapat di robah. Apakah anda sudah yakin dengan pilihan sekarang ?",
+                    "Saat ini pilihan prodi tidak dapat diubah. Kamu yakin dengan pilihan kamu?",
                     [
                       { text: "Cancel", onPress: () => {} },
                       {
