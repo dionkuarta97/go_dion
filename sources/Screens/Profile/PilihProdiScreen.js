@@ -7,7 +7,10 @@ import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import OnTapTextInput from "../../Components/CustomTextInput/OnTapTextInput";
 import NewModalLoading from "../../Components/Modal/NewLoadingModal";
-import { getUpdateProfile } from "../../Redux/Profile/profileActions";
+import {
+  getUpdateProfile,
+  setUpdateProfile,
+} from "../../Redux/Profile/profileActions";
 import Fonts from "../../Theme/Fonts";
 import SelectJurusan from "./Component/SelectJurusan";
 import SelectJurusanDua from "./Component/SelectJurusanDua";
@@ -42,6 +45,7 @@ const PilihProdiScreen = (props) => {
     if (update.data) {
       navigation.popToTop();
       navigation.navigate("ProfileScreen");
+      dispatch(setUpdateProfile({ data: null, loading: false, error: null }));
     }
   }, [update.data]);
   useEffect(() => {
@@ -53,7 +57,6 @@ const PilihProdiScreen = (props) => {
       }
     }
   }, [update.loading]);
-  console.log(showModal);
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
@@ -172,7 +175,7 @@ const PilihProdiScreen = (props) => {
                 onPress={() => {
                   Alert.alert(
                     "Peringatan",
-                    "Untuk Sementara Pemilihan Prodi Tidak dapat di Ubah. Apakah anda sudah yakin dengan pilihan sekarang ?",
+                    "Untuk sementara pemilihan prodi tidak dapat di robah. Apakah anda sudah yakin dengan pilihan sekarang ?",
                     [
                       { text: "Cancel", onPress: () => {} },
                       {

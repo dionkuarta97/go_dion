@@ -84,23 +84,45 @@ const NavigasiSoal = (props) => {
       {index === props.itemLength - 1 && (
         <>
           {props.blockTime ? (
-            <View style={{ flex: 2 }}>
-              <TouchableOpacity
-                style={styles.nextButton}
-                onPress={() => {
-                  Alert.alert(
-                    "Informasi",
-                    "anda sedang mengerjakan tryout dengan sistem blocking time, anda harus menunggu waktu sesi anda berakhir untuk lanjut ke soal berikutnya, anda bisa mereview kembali jawaban anda, Terimakasih :)"
-                  );
-                }}
-              >
-                <Ionicons
-                  name="md-information-circle-outline"
-                  size={15}
-                  color="black"
-                />
-              </TouchableOpacity>
-            </View>
+            <>
+              {props.sesi + 1 !== props.totalSesi ? (
+                <View style={{ flex: 2 }}>
+                  <TouchableOpacity
+                    style={styles.nextButton}
+                    onPress={() => {
+                      Alert.alert(
+                        "Informasi",
+                        "Kamu harus menunggu waktu sesi ini berakhir untuk melanjutkan ke soal berikutnya.\nKamu bisa mereview kembali jawaban kamu."
+                      );
+                    }}
+                  >
+                    <Ionicons
+                      name="md-information-circle-outline"
+                      size={15}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View style={{ flex: 2 }}>
+                  <TouchableOpacity
+                    style={styles.nextButton}
+                    onPress={() => {
+                      Alert.alert(
+                        "Informasi",
+                        "Kamu harus menunggu waktu sesi ini berakhir.\nKamu bisa mereview kembali jawaban kamu."
+                      );
+                    }}
+                  >
+                    <Ionicons
+                      name="md-information-circle-outline"
+                      size={15}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </>
           ) : (
             <>
               {props.sesi + 1 !== props.totalSesi ? (

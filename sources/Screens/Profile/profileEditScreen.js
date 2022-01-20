@@ -185,6 +185,7 @@ const ProfileEditScreen = (props) => {
 
   useEffect(() => {
     if (update.data) {
+      dispatch(setUpdateProfile({ data: null, loading: false, error: null }));
       navigation.goBack();
     }
   }, [update.data]);
