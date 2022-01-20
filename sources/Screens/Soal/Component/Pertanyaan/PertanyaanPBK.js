@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, ScrollView, Dimensions } from "react-native";
+import { Text, View, Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import HTMLView from "react-native-htmlview";
 import CompStyles from "../../../../Theme/styles/globalStyles";
 import { formatQuestion } from "../../Utils/formatQuestion";
 import AutoHeightWebView from "react-native-autoheight-webview";
+
 const options = ["A", "B", "C", "D", "E", "F"];
+
 const PertanyaanPBK = (props) => {
   const question = props.question;
 
   const [selectedAnswer, setSelectedAnswer] = useState([]);
 
   useEffect(() => {
+    console.log("pbk");
     if (props.answer === null) {
       const initAnswer = [...Array(question.jawaban.length).keys()].map(
         (val) => -1
@@ -76,7 +78,6 @@ const PertanyaanPBK = (props) => {
                 overflow-y: hidden;
               }
             `}
-            onSizeUpdated={(size) => console.log(size.height)}
             files={[
               {
                 href: "cssfileaddress",
@@ -114,7 +115,6 @@ const PertanyaanPBK = (props) => {
               overflow-y: hidden;
             }
           `}
-          onSizeUpdated={(size) => console.log(size.height)}
           files={[
             {
               href: "cssfileaddress",

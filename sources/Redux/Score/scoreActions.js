@@ -1,5 +1,10 @@
-import { urlListScore } from "../../Services/ApiUrl";
-import { defaultDoneState, defaultErrorState, defaultFailedState, defaultInitState } from "../helper";
+import { urlBaseScoring, urlListScore } from "../../Services/ApiUrl";
+import {
+  defaultDoneState,
+  defaultErrorState,
+  defaultFailedState,
+  defaultInitState,
+} from "../helper";
 import { SET_LIST_SCORE, SET_SCORE } from "./scoreType";
 
 export function setScore(data) {
@@ -9,7 +14,7 @@ export function setScore(data) {
   };
 }
 
-export function getScore(idMateri) {
+export function getScore(payload) {
   console.log("get score...");
   return async (dispatch, getState) => {
     dispatch(setScore(defaultInitState));
@@ -18,13 +23,21 @@ export function getScore(idMateri) {
 
       const urlBase = getState().initReducer.baseUrl;
 
-      console.log(urlBase + urlListScore);
-
-      fetch(urlBase + urlListScore + "/" + idMateri, {
-        method: "GET",
+      console.log(urlBase + urlBaseScoring + "/scoring/myscore/related");
+      console.log(
+        JSON.stringify({
+          related_to: payload,
+        })
+      );
+      fetch(urlBase + urlBaseScoring + "/scoring/myscore/related", {
+        method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${getState().authReducer.token}`,
         },
+        body: JSON.stringify({
+          related_to: payload,
+        }),
       })
         .then((response) => response.json())
         .then((json) => {
@@ -34,9 +47,11 @@ export function getScore(idMateri) {
           } else dispatch(setScore(defaultFailedState(json.message)));
         })
         .catch((err) => {
+          console.log(err);
           dispatch(setScore(defaultErrorState));
         });
     } catch (err) {
+      console.log(err);
       dispatch(setScore(defaultErrorState));
     }
   };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../../../Theme/Colors";
@@ -9,7 +9,21 @@ import { useNavigation } from "@react-navigation/core";
 const GoTryoutCard = (props) => {
   const navigation = useNavigation();
   const { data, tryoutId } = props;
-
+  const [time, setTime] = useState(0);
+  const [soal, setSoal] = useState(0);
+  const waktu = () => {
+    let temp = 0;
+    let temp2 = 0;
+    for (const key in data.includes) {
+      temp += data.includes[key]["total_time"];
+      temp2 += data.includes[key]["total_question"];
+    }
+    setTime(temp);
+    setSoal(temp2);
+  };
+  useEffect(() => {
+    waktu();
+  }, []);
   return (
     <TouchableOpacity
       onPress={() => {
@@ -39,6 +53,10 @@ const GoTryoutCard = (props) => {
           <Text style={{ ...Fonts.black17Bold }}>{data.title}</Text>
           <Text style={{ ...Fonts.black15Regular }}>{data.desc}</Text>
           <Text style={{ ...Fonts.black15Regular }}>{data.level}</Text>
+          <Text style={{ ...Fonts.black17Bold }}>
+            TPS ( {soal} Soal -{" "}
+            {time < 60 ? time + " Detik" : time / 60 + " Menit"} )
+          </Text>
         </View>
 
         <View style={{ justifyContent: "center" }}>

@@ -1,6 +1,17 @@
-import { SET_ALL_PRODUK, SET_GROUPED_PRODUK, SET_INCLUDES_PRODUK, SET_PURCHASED_PRODUK, SET_TOTAL_PURCHASED_PRODUK, SET_SEARCH_PRODUCT_TITLE } from "./produkTypes";
+import {
+  SET_ALL_PRODUK,
+  SET_GROUPED_PRODUK,
+  SET_INCLUDES_PRODUK,
+  SET_PURCHASED_PRODUK,
+  SET_TOTAL_PURCHASED_PRODUK,
+  SET_SEARCH_PRODUCT_TITLE,
+  SET_LOADING,
+  SET_LOADING_DUA,
+} from "./produkTypes";
 
 const initialState = {
+  loading: false,
+  loadingDua: false,
   groupedProduk: {
     loading: false,
     error: null,
@@ -64,6 +75,16 @@ export function produkReducer(state = initialState, action) {
       return {
         ...state,
         resultSearchProduct: action.payload,
+      };
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case SET_LOADING_DUA:
+      return {
+        ...state,
+        loadingDua: action.payload,
       };
     default:
       return state;

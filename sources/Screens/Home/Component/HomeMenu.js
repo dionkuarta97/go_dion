@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View, VirtualizedList } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  VirtualizedList,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getHomeMenu } from "../../../Redux/Home/homeActions";
@@ -28,14 +36,20 @@ const HomeMenu = () => {
         if (isLogin) {
           navigation.navigate("GoBelajarScreen");
         } else {
-          Alert.alert("Tidak Bisa Masuk", "Anda belum punya akun untuk mengakses menu ini");
+          Alert.alert(
+            "Tidak Bisa Masuk",
+            "Kamu harus login terlebih dahulu untuk mengakses menu ini"
+          );
         }
         break;
       case 2:
         if (isLogin) {
           navigation.navigate("GoTryoutScreen");
         } else {
-          Alert.alert("Tidak Bisa Masuk", "Anda belum punya akun untuk mengakses menu ini");
+          Alert.alert(
+            "Tidak Bisa Masuk",
+            "Kamu harus login terlebih dahulu untuk mengakses menu ini"
+          );
         }
         break;
       default:
@@ -45,7 +59,10 @@ const HomeMenu = () => {
 
   const menuComponent = (item) => {
     return (
-      <TouchableOpacity style={{ marginHorizontal: 15 }} onPress={() => onPressItem(item.idx)}>
+      <TouchableOpacity
+        style={{ marginHorizontal: 15 }}
+        onPress={() => onPressItem(item.idx)}
+      >
         <View
           style={{
             justifyContent: "center",
@@ -88,7 +105,13 @@ const HomeMenu = () => {
           <Text>Loading.. </Text>
         </View>
       ) : (
-        <FlatList horizontal={true} showsHorizontalScrollIndicator={false} keyExtractor={(item) => `homemenu${item._id}`} data={homeMenuState.data} renderItem={({ item }) => menuComponent(item)} />
+        <FlatList
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => `homemenu${item._id}`}
+          data={homeMenuState.data}
+          renderItem={({ item }) => menuComponent(item)}
+        />
       )}
     </View>
   );

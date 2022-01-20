@@ -1,5 +1,15 @@
 import React, { useEffect } from "react";
-import { ActivityIndicator, FlatList, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import SliverAppBar from "../../Components/sliverAppBar";
@@ -18,11 +28,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPurchasedproduk } from "../../Redux/Produk/produkActions";
 import CompStyles from "../../Theme/styles/globalStyles";
 import NumberFormat from "react-number-format";
+import NoData from "../../Components/NoData";
 
 const ProductPurchasedScreen = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const purchasedProduk = useSelector((state) => state.produkReducer.purchasedProduk);
+  const purchasedProduk = useSelector(
+    (state) => state.produkReducer.purchasedProduk
+  );
 
   const section_id = props.route.params.id;
 
@@ -126,7 +139,11 @@ const ProductPurchasedScreen = (props) => {
                         }}
                       >
                         <NumberFormat
-                          value={item.price_discount !== 0 ? item.price_discount : item.price}
+                          value={
+                            item.price_discount !== 0
+                              ? item.price_discount
+                              : item.price
+                          }
                           displayType={"text"}
                           thousandSeparator="."
                           decimalSeparator=","
@@ -178,7 +195,7 @@ const ProductPurchasedScreen = (props) => {
                 alignItems: "center",
               }}
             >
-              <Text>Produk Kosong</Text>
+              <NoData msg="anda belum membeli produk" />
             </View>
           ))}
       </View>

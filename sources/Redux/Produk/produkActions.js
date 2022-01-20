@@ -12,12 +12,21 @@ import {
   SET_PURCHASED_PRODUK,
   SET_TOTAL_PURCHASED_PRODUK,
   SET_SEARCH_PRODUCT_TITLE,
+  SET_LOADING,
+  SET_LOADING_DUA,
 } from "./produkTypes";
 
 export function setGroupedProduk(state) {
   return {
     type: SET_GROUPED_PRODUK,
     payload: state,
+  };
+}
+
+export function setLoadingDua(payload) {
+  return {
+    type: SET_LOADING_DUA,
+    payload,
   };
 }
 
@@ -56,12 +65,24 @@ export function setAllProduk(state) {
   };
 }
 
+export function setLoading(payload) {
+  return {
+    type: SET_LOADING,
+    payload,
+  };
+}
+
 export function getAllProduk(section_id, page) {
   return async (dispatch, getState) => {
+    console.log("ini jalan");
+    if (page === 1) {
+      dispatch(setAllProduk(defaultInitState));
+    } else dispatch(setLoading(true));
     try {
       const urlBase = getState().initReducer.baseUrl;
       const product = getState().produkReducer.allProduk.data;
-      console.log(product, "<<<product");
+      console.log(product);
+      console.log(urlBase + urlGroupedProduk + `/${section_id}?page=${page}`);
       fetch(urlBase + urlGroupedProduk + `/${section_id}?page=${page}`, {
         method: "GET",
         headers: {
@@ -70,25 +91,42 @@ export function getAllProduk(section_id, page) {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json.data, "daat");
+          console.log(json, "json");
           if (json.status) {
+            if (page > 1) dispatch(setLoadingDua(true));
             if (page === 1) {
               dispatch(setAllProduk(defaultDoneState(json.data)));
+              dispatch(setLoading(false));
             } else if (json.data !== null) {
-              console.log("masuk sini");
               dispatch(
                 setAllProduk(defaultDoneState([...product, ...json.data]))
               );
+            } else {
+              dispatch(setLoading(false));
             }
           } else dispatch(setAllProduk(defaultDoneState(product)));
+          dispatch(setLoading(false));
+          setTimeout(() => {
+            dispatch(setLoading(false));
+            dispatch(setLoadingDua(false));
+          }, 2000);
         })
         .catch((err) => {
           console.log(err);
           dispatch(setAllProduk(defaultErrorState));
+          setTimeout(() => {
+            dispatch(setLoading(false));
+            dispatch(setLoadingDua(false));
+          }, 1000);
         });
     } catch (err) {
       console.log(err);
+      setTimeout(() => {
+        dispatch(setLoading(false));
+        dispatch(setLoadingDua(false));
+      }, 1000);
       dispatch(setAllProduk(defaultErrorState));
+      setLoading(false);
     }
   };
 }

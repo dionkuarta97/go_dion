@@ -4,3 +4,5 @@ export const SET_TOTAL_PURCHASED_PRODUK = "set total purchased produk";
 export const SET_PURCHASED_PRODUK = "set purchased produk";
 export const SET_INCLUDES_PRODUK = "set includes produk";
 export const SET_SEARCH_PRODUCT_TITLE = "set search product by title";
+export const SET_LOADING = "set laoding";
+export const SET_LOADING_DUA = "set laoding dua";

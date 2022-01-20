@@ -19,6 +19,7 @@ export const urlWilayah = urlBaseMasterdata + "/master/wilayah";
 export const urlProvinsi = urlWilayah + "/provinsi";
 export const urlCommon = urlBaseMasterdata + "/master/common";
 export const urlKelas = urlBaseMasterdata + "/grades";
+export const urlUniversitas = urlBaseMasterdata + "/master/common/universitas";
 
 /*** PROFILE URL */
 export const urlMe = urlBaseMasterdata + "/auth/me";
