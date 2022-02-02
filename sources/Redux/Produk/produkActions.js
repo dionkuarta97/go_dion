@@ -14,6 +14,7 @@ import {
   SET_SEARCH_PRODUCT_TITLE,
   SET_LOADING,
   SET_LOADING_DUA,
+  SET_TOTAL_DATA,
 } from "./produkTypes";
 
 export function setGroupedProduk(state) {
@@ -23,6 +24,12 @@ export function setGroupedProduk(state) {
   };
 }
 
+export function setTotalData(payload) {
+  return {
+    type: SET_TOTAL_DATA,
+    payload,
+  };
+}
 export function setLoadingDua(payload) {
   return {
     type: SET_LOADING_DUA,
@@ -91,7 +98,7 @@ export function getAllProduk(section_id, page) {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json, "json");
+          dispatch(setTotalData(json.includes.total));
           if (json.status) {
             if (page > 1) dispatch(setLoadingDua(true));
             if (page === 1) {

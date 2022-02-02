@@ -14,6 +14,7 @@ import {
 import { defaultInitState } from "../../../Redux/helper";
 import { setMe, setProfile } from "../../../Redux/Profile/profileActions";
 import VersionText from "../../../Components/VersionText";
+import { Box } from "native-base";
 
 const LainnyaContent = () => {
   const isLogin = useSelector((state) => state.authReducer.isLogin);
@@ -50,6 +51,12 @@ const LainnyaContent = () => {
   };
   return (
     <View style={{ flex: 1, paddingVertical: Sizes.fixPadding * 2 }}>
+      {!isLogin && (
+        <Box mt={4} alignItems={"center"}>
+          <Text style={{ fontSize: 15 }}>Login terlebih dahulu</Text>
+          <Text style={{ fontSize: 15 }}>Untuk melihat halaman ini</Text>
+        </Box>
+      )}
       {isLogin &&
         renderTile("Profil", "person", () => {
           if (isLogin) {

@@ -22,6 +22,7 @@ import LainnyaScreen from "../Lainnya/lainnyaScreen";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import OneSignal from "react-native-onesignal";
 import NoData from "../../Components/NoData";
+import LaporanScreen from "../Laporan/LaporanScreen";
 
 const bottomNavMenu = [
   { title: "Home", icon: "home" },
@@ -81,11 +82,11 @@ export default MainScreen = (props) => {
             <PurchaseScreen />
           ) : currentIndex == 4 ? (
             <LainnyaScreen />
+          ) : currentIndex == 2 ? (
+            <LaporanScreen />
           ) : (
             <SafeAreaView style={{ flex: 1 }}>
-              <DefaultAppBar
-                title={currentIndex == 2 ? "Laporan" : "Leaderboard"}
-              />
+              <DefaultAppBar title={"Leaderboard"} />
               <View
                 style={{
                   flex: 1,
@@ -102,7 +103,10 @@ export default MainScreen = (props) => {
                   source={require("../../../assets/Images/helper/underdev.png")}
                 />
 
-                <Text>Under Development</Text>
+                <Text style={{ fontSize: 15 }}>Data ini akan muncul</Text>
+                <Text style={{ fontSize: 15 }}>
+                  setelah kamu melakukan tryout
+                </Text>
               </View>
             </SafeAreaView>
           )}
@@ -143,8 +147,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: Sizes.fixPadding * 2.0,
-    elevation: 1.0,
-    borderTopColor: "gray",
-    borderTopWidth: 0.2,
+    elevation: 4,
+    borderTopEndRadius: 15,
+    borderTopStartRadius: 15,
   },
 });

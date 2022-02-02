@@ -56,7 +56,7 @@ const TryoutCard = (props) => {
                 if (!profile.program_studi) {
                   Alert.alert(
                     "Peringatan",
-                    "Tipe soal ini adalah SBNPTN, untuk mengerjakan soal ini anda perlu memilih prodi, silahkan pilih prodi terlebih dahulu",
+                    "Tipe soal ini adalah SBMPTN, untuk mengerjakan soal ini anda perlu memilih prodi, silahkan pilih prodi terlebih dahulu",
                     [
                       { text: "Cancel", onPress: () => {} },
                       {

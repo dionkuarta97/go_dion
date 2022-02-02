@@ -114,7 +114,7 @@ const PurchaseContent = (props) => {
           />
         </View>
       ) : (
-        <EmptyIndicator />
+        <EmptyIndicator msg="Data pembelian kamu akan muncul disini" />
       )}
     </View>
   );

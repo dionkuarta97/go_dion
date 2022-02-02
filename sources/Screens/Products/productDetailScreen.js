@@ -1,5 +1,14 @@
 import React from "react";
-import { Text, View, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, Image, Dimensions } from "react-native";
+import {
+  Text,
+  View,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
 import SliverAppBar from "../../Components/sliverAppBar";
@@ -110,7 +119,14 @@ const ProductDetailScreen = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <SliverAppBar
-        leftItem={<MaterialIcons name="arrow-back-ios" size={24} color={Colors.primaryColor} onPress={() => navigation.goBack()} />}
+        leftItem={
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={24}
+            color={Colors.primaryColor}
+            onPress={() => navigation.goBack()}
+          />
+        }
         rightItem={
           !cart.some((val) => val._id === item._id) ? (
             <TouchableOpacity
@@ -122,7 +138,11 @@ const ProductDetailScreen = (props) => {
                 justifyContent: "center",
               }}
             >
-              <MaterialIcons name={"add"} size={24} color={Colors.primaryColor} />
+              <MaterialIcons
+                name={"add"}
+                size={24}
+                color={Colors.primaryColor}
+              />
               <Text
                 style={{
                   ...Fonts.primaryColor16Regular,
@@ -140,7 +160,11 @@ const ProductDetailScreen = (props) => {
                 justifyContent: "center",
               }}
             >
-              <MaterialIcons name={"done"} size={24} color={Colors.primaryColor} />
+              <MaterialIcons
+                name={"done"}
+                size={24}
+                color={Colors.primaryColor}
+              />
               <Text
                 style={{
                   ...Fonts.primaryColor16Regular,
@@ -160,7 +184,10 @@ const ProductDetailScreen = (props) => {
         isImageBlur={true}
         src={{ uri: item.thumbnail }}
       >
-        <ProductDetailContent item={item} onCart={cart.some((val) => val._id === item._id)} />
+        <ProductDetailContent
+          item={item}
+          onCart={cart.some((val) => val._id === item._id)}
+        />
         <StatusBar backgroundColor={Colors.blackColor} />
       </SliverAppBar>
     </SafeAreaView>
