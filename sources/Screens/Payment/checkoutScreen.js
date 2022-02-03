@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import NumberFormat from "react-number-format";
 
@@ -12,7 +20,12 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/core";
 import { useDispatch, useSelector } from "react-redux";
 import PaymentMethodCard from "./Component/PaymentMethodCard";
-import { getPaymentProcess, setPaymentMethod, setPaymentProcess, setSelectedPaymentMethod } from "../../Redux/Payment/paymentActions";
+import {
+  getPaymentProcess,
+  setPaymentMethod,
+  setPaymentProcess,
+  setSelectedPaymentMethod,
+} from "../../Redux/Payment/paymentActions";
 import LoadingModal from "../../Components/Modal/LoadingModal";
 import { clearCart } from "../../Redux/Cart/cartActions";
 import DefaultModal from "../../Components/Modal/DefaultModal";
@@ -22,8 +35,13 @@ const CheckoutScreen = () => {
   const navigation = useNavigation();
 
   const cart = useSelector((state) => state.cartReducer.cart);
-  const paymentProcess = useSelector((state) => state.paymentReducer.paymentProcess);
+  const paymentProcess = useSelector(
+    (state) => state.paymentReducer.paymentProcess
+  );
 
+  const selectedPaymentMethod = useSelector(
+    (state) => state.paymentReducer.selectedPaymentMethod
+  );
   useEffect(() => {
     dispatch(setSelectedPaymentMethod(null));
     dispatch(setPaymentProcess({ loading: false, error: null, data: null }));
@@ -66,7 +84,9 @@ const CheckoutScreen = () => {
             ...styles.card,
           }}
         >
-          <ScrollView style={{ flex: 1 }}>{cart.map((val) => renderItem(val))}</ScrollView>
+          <ScrollView style={{ flex: 1 }}>
+            {cart.map((val) => renderItem(val))}
+          </ScrollView>
 
           <View
             style={{
@@ -85,7 +105,11 @@ const CheckoutScreen = () => {
               Total
             </Text>
             <NumberFormat
-              value={cart.reduce((total, x) => total + (x.price_discount > 0 ? x.price_discount : x.price), 0)}
+              value={cart.reduce(
+                (total, x) =>
+                  total + (x.price_discount > 0 ? x.price_discount : x.price),
+                0
+              )}
               displayType={"text"}
               thousandSeparator="."
               decimalSeparator=","
@@ -108,7 +132,15 @@ const CheckoutScreen = () => {
         <DefaultPrimaryButton
           text="Lanjutkan Pembayaran"
           onPress={() => {
-            dispatch(getPaymentProcess());
+            console.log(selectedPaymentMethod, "<<<<");
+            if (selectedPaymentMethod === null) {
+              Alert.alert(
+                "Informasi",
+                "Silahkan memilih metode pembayaran terlebih dahulu"
+              );
+            } else {
+              dispatch(getPaymentProcess());
+            }
           }}
         />
 

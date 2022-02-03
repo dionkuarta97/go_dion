@@ -1,6 +1,13 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useLayoutEffect } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import ProductCard from "../../../Components/ProductCard";
 
 import Fonts from "../../../Theme/Fonts";
@@ -20,7 +27,9 @@ const products = [
 const ProductContent = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const groupedProduk = useSelector((state) => state.produkReducer.groupedProduk);
+  const groupedProduk = useSelector(
+    (state) => state.produkReducer.groupedProduk
+  );
 
   console.log(groupedProduk);
   useLayoutEffect(() => {
@@ -45,7 +54,6 @@ const ProductContent = () => {
           {title !== "Buku Sakti" && (
             <Text style={{ ...Fonts.orangeColor14Bold }}>Lihat Semua</Text>
           )}
-
         </TouchableOpacity>
       </View>
     );
@@ -53,13 +61,29 @@ const ProductContent = () => {
 
   return (
     <View style={{ paddingVertical: Sizes.fixPadding }}>
-      {groupedProduk.loading && <ActivityIndicator color={Colors.orangeColor} size={30} />}
+      {groupedProduk.loading && (
+        <View
+          style={{
+            alignItems: "center",
+            marginTop: 50,
+          }}
+        >
+          <ActivityIndicator color={Colors.orangeColor} size={50} />
+        </View>
+      )}
       {groupedProduk.error !== null && <Text>{groupedProduk.error}</Text>}
       {groupedProduk.data !== null &&
         groupedProduk.data.map((val, index) => {
           return (
             <View key={`groupedproduk-${val._id}`}>
-              {sectionHeader(val._id, val.data[0]?.category === "materi" ? "Paket Belajar" : val.data[0]?.category === "tryout" ? "Paket Tryout" : "Buku Sakti")}
+              {sectionHeader(
+                val._id,
+                val.data[0]?.category === "materi"
+                  ? "Paket Belajar"
+                  : val.data[0]?.category === "tryout"
+                  ? "Paket Tryout"
+                  : "Buku Sakti"
+              )}
               {val.data[0]?.category !== "busak" ? (
                 <>
                   {val.data.length !== 0 ? (
@@ -67,7 +91,9 @@ const ProductContent = () => {
                       keyExtractor={(item, index) => `${item._id}`}
                       horizontal={true}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item }) => <ProductCard data={item} section={val.section} />}
+                      renderItem={({ item }) => (
+                        <ProductCard data={item} section={val.section} />
+                      )}
                       data={val.data}
                       contentContainerStyle={styles.contentContainer}
                     />
@@ -82,7 +108,6 @@ const ProductContent = () => {
                     >
                       <Text>Produk Kosong</Text>
                     </View>
-
                   )}
                 </>
               ) : (
