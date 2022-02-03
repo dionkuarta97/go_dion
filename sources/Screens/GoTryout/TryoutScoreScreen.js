@@ -6,6 +6,7 @@ import {
   ScrollView,
   Text,
   View,
+  StyleSheet,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import ActionButtonHome from "../../Components/ActionButton/ActionButtonHome";
@@ -39,19 +40,7 @@ const TryoutScoreScreen = (props) => {
       />
       {scores ? (
         <>
-          <View
-            style={{
-              height: Dimensions.get("screen").height / 6,
-              backgroundColor: Colors.whiteColor,
-              borderWidth: 2,
-              borderTopColor: Colors.whiteColor,
-              borderColor: Colors.ligthGreyColor,
-              borderBottomEndRadius: 25,
-              borderBottomStartRadius: 25,
-              padding: 40,
-              overflow: "hidden",
-            }}
-          >
+          <View style={style.score}>
             <View
               style={{
                 flexDirection: "row",
@@ -59,7 +48,7 @@ const TryoutScoreScreen = (props) => {
             >
               <Text
                 style={{
-                  ...Fonts.black20Bold,
+                  ...Fonts.black19Regular,
                   width: Dimensions.get("screen").width / 2,
                 }}
               >
@@ -68,7 +57,7 @@ const TryoutScoreScreen = (props) => {
 
               <Text
                 style={{
-                  ...Fonts.black20Bold,
+                  ...Fonts.black19Regular,
                   marginRight: Dimensions.get("screen").width / 8,
                 }}
               >
@@ -76,7 +65,7 @@ const TryoutScoreScreen = (props) => {
               </Text>
               <Text
                 style={{
-                  ...Fonts.black20Bold,
+                  ...Fonts.black19Regular,
                 }}
               >
                 {scores.total_session}
@@ -89,7 +78,7 @@ const TryoutScoreScreen = (props) => {
             >
               <Text
                 style={{
-                  ...Fonts.black20Bold,
+                  ...Fonts.black19Regular,
                   width: Dimensions.get("screen").width / 2,
                 }}
               >
@@ -98,7 +87,7 @@ const TryoutScoreScreen = (props) => {
 
               <Text
                 style={{
-                  ...Fonts.black20Bold,
+                  ...Fonts.black19Regular,
                   marginRight: Dimensions.get("screen").width / 8,
                 }}
               >
@@ -106,7 +95,7 @@ const TryoutScoreScreen = (props) => {
               </Text>
               <Text
                 style={{
-                  ...Fonts.black20Bold,
+                  ...Fonts.black19Regular,
                 }}
               >
                 {scores.total_session_final_score}
@@ -120,7 +109,7 @@ const TryoutScoreScreen = (props) => {
             >
               <Text
                 style={{
-                  ...Fonts.black20Bold,
+                  ...Fonts.black19Regular,
                   width: Dimensions.get("screen").width / 2,
                 }}
               >
@@ -129,7 +118,7 @@ const TryoutScoreScreen = (props) => {
 
               <Text
                 style={{
-                  ...Fonts.black20Bold,
+                  ...Fonts.black19Regular,
                   marginRight: Dimensions.get("screen").width / 8,
                 }}
               >
@@ -137,7 +126,7 @@ const TryoutScoreScreen = (props) => {
               </Text>
               <Text
                 style={{
-                  ...Fonts.black20Bold,
+                  ...Fonts.black19Regular,
                 }}
               >
                 {scores.total_session_score.toFixed(2)}
@@ -169,8 +158,10 @@ const TryoutScoreScreen = (props) => {
                   header={
                     <>
                       <View style={{ alignItems: "center", marginBottom: 5 }}>
-                        <Text style={{ ...Fonts.black20Bold, marginBottom: 5 }}>
-                          Session {idx + 1}
+                        <Text
+                          style={{ ...Fonts.black19Regular, marginBottom: 5 }}
+                        >
+                          {el.title}
                         </Text>
                         <Text style={{ color: "grey" }}>Total Score</Text>
                         <Text
@@ -233,19 +224,7 @@ const TryoutScoreScreen = (props) => {
                 </View>
               ) : (
                 <>
-                  <View
-                    style={{
-                      height: Dimensions.get("screen").height / 6,
-                      backgroundColor: Colors.whiteColor,
-                      borderWidth: 2,
-                      borderTopColor: Colors.whiteColor,
-                      borderColor: Colors.ligthGreyColor,
-                      borderBottomEndRadius: 25,
-                      borderBottomStartRadius: 25,
-                      padding: 40,
-                      overflow: "hidden",
-                    }}
-                  >
+                  <View style={style.score}>
                     <View
                       style={{
                         flexDirection: "row",
@@ -253,7 +232,7 @@ const TryoutScoreScreen = (props) => {
                     >
                       <Text
                         style={{
-                          ...Fonts.black20Bold,
+                          ...Fonts.black19Regular,
                           width: Dimensions.get("screen").width / 2,
                         }}
                       >
@@ -262,7 +241,7 @@ const TryoutScoreScreen = (props) => {
 
                       <Text
                         style={{
-                          ...Fonts.black20Bold,
+                          ...Fonts.black19Regular,
                           marginRight: Dimensions.get("screen").width / 8,
                         }}
                       >
@@ -270,7 +249,7 @@ const TryoutScoreScreen = (props) => {
                       </Text>
                       <Text
                         style={{
-                          ...Fonts.black20Bold,
+                          ...Fonts.black19Regular,
                         }}
                       >
                         {score.data?.sessions.total_session}
@@ -283,7 +262,7 @@ const TryoutScoreScreen = (props) => {
                     >
                       <Text
                         style={{
-                          ...Fonts.black20Bold,
+                          ...Fonts.black19Regular,
                           width: Dimensions.get("screen").width / 2,
                         }}
                       >
@@ -292,7 +271,7 @@ const TryoutScoreScreen = (props) => {
 
                       <Text
                         style={{
-                          ...Fonts.black20Bold,
+                          ...Fonts.black19Regular,
                           marginRight: Dimensions.get("screen").width / 8,
                         }}
                       >
@@ -300,7 +279,7 @@ const TryoutScoreScreen = (props) => {
                       </Text>
                       <Text
                         style={{
-                          ...Fonts.black20Bold,
+                          ...Fonts.black19Regular,
                         }}
                       >
                         {score.data?.sessions.total_session_final_score}
@@ -314,7 +293,7 @@ const TryoutScoreScreen = (props) => {
                     >
                       <Text
                         style={{
-                          ...Fonts.black20Bold,
+                          ...Fonts.black19Regular,
                           width: Dimensions.get("screen").width / 2,
                         }}
                       >
@@ -323,7 +302,7 @@ const TryoutScoreScreen = (props) => {
 
                       <Text
                         style={{
-                          ...Fonts.black20Bold,
+                          ...Fonts.black19Regular,
                           marginRight: Dimensions.get("screen").width / 8,
                         }}
                       >
@@ -331,7 +310,7 @@ const TryoutScoreScreen = (props) => {
                       </Text>
                       <Text
                         style={{
-                          ...Fonts.black20Bold,
+                          ...Fonts.black19Regular,
                         }}
                       >
                         {score.data?.sessions.total_session_score.toFixed(2)}
@@ -370,11 +349,11 @@ const TryoutScoreScreen = (props) => {
                               >
                                 <Text
                                   style={{
-                                    ...Fonts.black20Bold,
+                                    ...Fonts.black19Regular,
                                     marginBottom: 5,
                                   }}
                                 >
-                                  Session {idx + 1}
+                                  {el.title}
                                 </Text>
                                 <Text style={{ color: "grey" }}>
                                   Total Score
@@ -410,3 +389,15 @@ const TryoutScoreScreen = (props) => {
 };
 
 export default TryoutScoreScreen;
+
+const style = StyleSheet.create({
+  score: {
+    backgroundColor: Colors.whiteColor,
+    paddingHorizontal: 40,
+    paddingVertical: 20,
+    overflow: "hidden",
+    elevation: 4,
+    borderBottomEndRadius: 15,
+    borderBottomStartRadius: 15,
+  },
+});

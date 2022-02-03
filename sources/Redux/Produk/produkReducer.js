@@ -7,6 +7,7 @@ import {
   SET_SEARCH_PRODUCT_TITLE,
   SET_LOADING,
   SET_LOADING_DUA,
+  SET_TOTAL_DATA,
 } from "./produkTypes";
 
 const initialState = {
@@ -42,6 +43,7 @@ const initialState = {
     error: null,
     data: null,
   },
+  totalData: null,
 };
 
 export function produkReducer(state = initialState, action) {
@@ -86,6 +88,8 @@ export function produkReducer(state = initialState, action) {
         ...state,
         loadingDua: action.payload,
       };
+    case SET_TOTAL_DATA:
+      return { ...state, totalData: action.payload };
     default:
       return state;
   }

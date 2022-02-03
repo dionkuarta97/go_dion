@@ -208,11 +208,11 @@ export default ProductPurchasedScreen;
 const styles = StyleSheet.create({
   purchasedCircle: {
     position: "absolute",
-    width: 25,
-    height: 25,
+    width: 20,
+    height: 20,
     backgroundColor: "green",
-    top: 10,
-    right: 10,
+    top: 5,
+    right: 5,
     borderRadius: 13,
     justifyContent: "center",
     alignItems: "center",

@@ -17,6 +17,7 @@ import { soalReducer } from "./Soal/soalReducer";
 import { scoreReducer } from "./Score/scoreReducer";
 import { initReducer } from "./Init/initReducer";
 import tryoutReducer from "./Tryout/tryoutReducer";
+import { laporanReducer } from "./Laporan/laporanReducer";
 
 const persistConfig = {
   key: "root",
@@ -38,8 +39,12 @@ const rootReducer = combineReducers({
   scoreReducer: scoreReducer,
   versionReducer: versionReducer,
   tryoutReducer: tryoutReducer,
+  laporanReducer: laporanReducer,
 });
 
-export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+export const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 export const persistor = persistStore(store);

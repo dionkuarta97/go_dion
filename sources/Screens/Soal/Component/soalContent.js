@@ -134,6 +134,7 @@ const SoalContent = (props) => {
                           rawData: [
                             ...saveScore.rawData,
                             {
+                              title: sessionTitle,
                               questions: sessions[sessionIndex].questions,
                               session_configs:
                                 sessions[sessionIndex].session_configs,
@@ -157,6 +158,7 @@ const SoalContent = (props) => {
                           rawData: [
                             ...saveScore.rawData,
                             {
+                              title: sessionTitle,
                               questions: sessions[sessionIndex].questions,
                               session_configs:
                                 sessions[sessionIndex].session_configs,
@@ -184,6 +186,7 @@ const SoalContent = (props) => {
                           rawData: [
                             ...saveScore.rawData,
                             {
+                              title: sessionTitle,
                               questions: sessions[sessionIndex].questions,
                               session_configs:
                                 sessions[sessionIndex].session_configs,
@@ -211,6 +214,7 @@ const SoalContent = (props) => {
                           rawData: [
                             ...saveScore.rawData,
                             {
+                              title: sessionTitle,
                               questions: sessions[sessionIndex].questions,
                               session_configs:
                                 sessions[sessionIndex].session_configs,
@@ -507,6 +511,7 @@ const SoalContent = (props) => {
                       rawData: [
                         ...saveScore.rawData,
                         {
+                          title: sessionTitle,
                           questions: sessions[sessionIndex].questions,
                           session_configs:
                             sessions[sessionIndex].session_configs,
@@ -530,6 +535,7 @@ const SoalContent = (props) => {
                       rawData: [
                         ...saveScore.rawData,
                         {
+                          title: sessionTitle,
                           questions: sessions[sessionIndex].questions,
                           session_configs:
                             sessions[sessionIndex].session_configs,
@@ -557,6 +563,7 @@ const SoalContent = (props) => {
                       rawData: [
                         ...saveScore.rawData,
                         {
+                          title: sessionTitle,
                           questions: sessions[sessionIndex].questions,
                           session_configs:
                             sessions[sessionIndex].session_configs,
@@ -581,6 +588,7 @@ const SoalContent = (props) => {
                       rawData: [
                         ...saveScore.rawData,
                         {
+                          title: sessionTitle,
                           questions: sessions[sessionIndex].questions,
                           session_configs:
                             sessions[sessionIndex].session_configs,

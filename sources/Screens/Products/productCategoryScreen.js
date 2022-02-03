@@ -44,7 +44,7 @@ const ProductCategoryScreen = (props) => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const navigation = useNavigation();
-  const { allProduk, loading, loadingDua } = useSelector(
+  const { allProduk, loading, loadingDua, totalData } = useSelector(
     (state) => state.produkReducer
   );
   const section_id = props.route.params.id;
@@ -53,8 +53,6 @@ const ProductCategoryScreen = (props) => {
   useEffect(() => {
     dispatch(getAllProduk(section_id, page));
   }, []);
-  console.log(allProduk.data?.length);
-  // console.log(JSON.stringify(allProduk.data, null, 2));
   function handleInfinityScroll(e) {
     let mHeight = e.nativeEvent.layoutMeasurement.height;
     let cSize = e.nativeEvent.contentSize.height;
@@ -65,8 +63,6 @@ const ProductCategoryScreen = (props) => {
     }
     return false;
   }
-
-  console.log(loading);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -97,10 +93,12 @@ const ProductCategoryScreen = (props) => {
             (allProduk.data.length !== 0 ? (
               <FlatList
                 onScroll={(e) => {
-                  if (handleInfinityScroll(e)) {
-                    if (!loading) {
-                      setPage(page + 1);
-                      dispatch(getAllProduk(section_id, page + 1));
+                  if (allProduk.data?.length !== totalData) {
+                    if (handleInfinityScroll(e)) {
+                      if (!loading) {
+                        setPage(page + 1);
+                        dispatch(getAllProduk(section_id, page + 1));
+                      }
                     }
                   }
                 }}

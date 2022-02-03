@@ -1,129 +1,124 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import {
-    ActivityIndicator,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import {MaterialIcons} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import Sizes from "../../Theme/Sizes";
 import ExpandableTile from "../../Components/Tile/ExpendableTile";
-import {TouchableOpacity} from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import Fonts from "../../Theme/Fonts";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
-    getPaymentMethod,
-    setSelectedPaymentMethod,
+  getPaymentMethod,
+  setSelectedPaymentMethod,
 } from "../../Redux/Payment/paymentActions";
 import Colors from "../../Theme/Colors";
-import {useNavigation} from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/core";
 
 const PaymentMethodScreen = () => {
-    const dispatch = useDispatch();
-    const navigation = useNavigation();
-    const paymentMethod = useSelector(
-        (state) => state.paymentReducer.paymentMethod
-    );
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const paymentMethod = useSelector(
+    (state) => state.paymentReducer.paymentMethod
+  );
 
-    useEffect(() => {
-        dispatch(getPaymentMethod());
-    }, []);
+  useEffect(() => {
+    dispatch(getPaymentMethod());
+  }, []);
 
-    console.log(paymentMethod);
-    const renderHeader = ({title, icon}) => {
-        return (
-            <View style={styles.itemHeader}>
-                <MaterialIcons
-                    name={icon}
-                    size={22}
-                    color="black"
-                    style={{marginRight: Sizes.fixPadding}}
-                />
-
-                <Text style={{flex: 1, ...Fonts.black15Bold}}>{title}</Text>
-            </View>
-        );
-    };
-
-    const renderSubItem = (subItem) => {
-        return (
-            <TouchableOpacity
-                key={subItem.name}
-                onPress={() => {
-                    dispatch(setSelectedPaymentMethod(subItem));
-                    navigation.goBack();
-                }}
-            >
-                <View style={styles.subItem}>
-                    <Text style={{flex: 1}}>{subItem.title}</Text>
-                    <Text style={{...Fonts.gray14Regular}}>Pilih</Text>
-                </View>
-            </TouchableOpacity>
-        );
-    };
+  const renderHeader = ({ title, icon }) => {
     return (
-        <SafeAreaView style={{flex: 1}}>
-            <DefaultAppBar title="Metode Pembayaran" backEnabled={true} />
-            {paymentMethod.loading && (
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
-                    <ActivityIndicator color={Colors.orangeColor} size={30} />
-                </View>
-            )}
-            {paymentMethod.data !== null && (
-                <ScrollView
-                    style={{paddingVertical: Sizes.fixPadding * 2, flex: 1}}
-                >
-                    {paymentMethod.data.map((val) => {
-                        const providers = val.providers;
-                        return (
-                            <ExpandableTile
-                                key={val._id}
-                                header={renderHeader({
-                                    title: val.title,
-                                    icon: "money",
-                                })}
-                                tile
-                            >
-                                {providers.map((subItem) =>
-                                    renderSubItem(subItem)
-                                )}
-                            </ExpandableTile>
-                        );
-                    })}
-                </ScrollView>
-            )}
-        </SafeAreaView>
+      <View style={styles.itemHeader}>
+        <MaterialIcons
+          name={icon}
+          size={22}
+          color="black"
+          style={{ marginRight: Sizes.fixPadding }}
+        />
+
+        <Text style={{ flex: 1, ...Fonts.black15Bold }}>{title}</Text>
+      </View>
     );
+  };
+
+  const renderSubItem = (subItem) => {
+    return (
+      <TouchableOpacity
+        key={subItem.name}
+        onPress={() => {
+          dispatch(setSelectedPaymentMethod(subItem));
+          navigation.goBack();
+        }}
+      >
+        <View style={styles.subItem}>
+          <Text style={{ flex: 1 }}>{subItem.title}</Text>
+          <Text style={{ ...Fonts.gray14Regular }}>Pilih</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <DefaultAppBar title="Metode Pembayaran" backEnabled={true} />
+      {paymentMethod.loading && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ActivityIndicator color={Colors.orangeColor} size={30} />
+        </View>
+      )}
+      {paymentMethod.data !== null && (
+        <ScrollView style={{ paddingVertical: Sizes.fixPadding * 2, flex: 1 }}>
+          {paymentMethod.data.map((val) => {
+            const providers = val.providers;
+            return (
+              <ExpandableTile
+                key={val._id}
+                header={renderHeader({
+                  title: val.title,
+                  icon: "money",
+                })}
+                tile
+              >
+                {providers.map((subItem) => renderSubItem(subItem))}
+              </ExpandableTile>
+            );
+          })}
+        </ScrollView>
+      )}
+    </SafeAreaView>
+  );
 };
 
 export default PaymentMethodScreen;
 
 const styles = StyleSheet.create({
-    itemHeader: {
-        flexDirection: "row",
-        backgroundColor: "white",
-        paddingVertical: Sizes.fixPadding * 2,
-        paddingHorizontal: Sizes.fixPadding * 2,
-        justifyContent: "center",
-        alignItems: "center",
-        borderWidth: 1,
-        borderColor: "lightgrey",
-    },
-    subItem: {
-        flexDirection: "row",
-        backgroundColor: "white",
-        marginLeft: 20,
-        padding: Sizes.fixPadding,
-        borderTopWidth: 1,
-        borderTopColor: "lightgrey",
-    },
+  itemHeader: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    paddingVertical: Sizes.fixPadding * 2,
+    paddingHorizontal: Sizes.fixPadding * 2,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "lightgrey",
+  },
+  subItem: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    marginLeft: 20,
+    padding: Sizes.fixPadding,
+    borderTopWidth: 1,
+    borderTopColor: "lightgrey",
+  },
 });
