@@ -1,6 +1,6 @@
-import { Box, HStack, Text, View } from "native-base";
+import { Box, HStack, Text, useToast, View } from "native-base";
 import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
+import { Dimensions, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   VictoryChart,
@@ -14,9 +14,14 @@ import { getDetailTryout } from "../../../Redux/Laporan/LaporanAction";
 
 import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../../Theme/Colors";
+import { useNavigation } from "@react-navigation/native";
+import checkInternet from "../../../Services/CheckInternet";
+import ToastErrorContent from "../../../Components/ToastErrorContent";
 
 export default function ProgressTryoutContent(props) {
   const { _id, type } = props;
+  const toast = useToast();
+  const navigation = useNavigation();
   const { detailTryout } = useSelector((state) => state.laporanReducer);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -25,7 +30,28 @@ export default function ProgressTryoutContent(props) {
   const [maxima, setMaxima] = useState();
 
   useEffect(() => {
-    dispatch(getDetailTryout({ _id, type }));
+    checkInternet().then((data) => {
+      if (data) {
+        dispatch(getDetailTryout({ _id, type }));
+      } else {
+        toast.show({
+          placement: "top",
+          duration: null,
+          width: Dimensions.get("screen").width / 1.3,
+          render: () => {
+            return (
+              <ToastErrorContent
+                content="Kamu tidak terhubung ke internet"
+                onPress={() => {
+                  toast.closeAll();
+                  navigation.goBack();
+                }}
+              />
+            );
+          },
+        });
+      }
+    });
   }, []);
   useEffect(() => {
     if (detailTryout.data !== null) {
@@ -133,7 +159,7 @@ export default function ProgressTryoutContent(props) {
               />
             </VictoryChart>
           )}
-          {detailTryout.data !== null && (
+          {detailTryout.data !== null && type === "uas" && (
             <Box
               bg={"amber.50"}
               mb={2}
@@ -142,21 +168,12 @@ export default function ProgressTryoutContent(props) {
               borderWidth={1}
               borderColor={"amber.400"}
             >
-              {type === "uas" ? (
-                <Text>
-                  <Text bold color={"amber.400"}>
-                    {detailTryout.data.score}
-                  </Text>
-                  <Text color={"light.400"}>/100</Text>
+              <Text>
+                <Text bold color={"amber.400"}>
+                  {detailTryout.data.score}
                 </Text>
-              ) : (
-                <Text>
-                  <Text bold color={"amber.400"}>
-                    {detailTryout.data.score1}
-                  </Text>
-                  <Text color={"light.400"}>/1000</Text>
-                </Text>
-              )}
+                <Text color={"light.400"}>/100</Text>
+              </Text>
             </Box>
           )}
         </Box>

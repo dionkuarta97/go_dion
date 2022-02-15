@@ -1,3 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
+import { useToast } from "native-base";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -14,20 +16,50 @@ import ActionButtonHome from "../../Components/ActionButton/ActionButtonHome";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import ExpandableTile from "../../Components/Tile/ExpendableTile";
+import ToastErrorContent from "../../Components/ToastErrorContent";
 import { getScore } from "../../Redux/Score/scoreActions";
+import checkInternet from "../../Services/CheckInternet";
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import TryoutScoreContent from "./Component/TryoutScoreContent";
 
 const TryoutScoreScreen = (props) => {
   const dispatch = useDispatch();
+  const toast = useToast();
+  const navigation = useNavigation();
   const { scores, related_to, fromSoal } = props.route.params;
 
   const score = useSelector((state) => state.scoreReducer.score);
   console.log(JSON.stringify(score, null, 2));
   useEffect(() => {
     if (scores) {
-      dispatch(getScore(related_to));
+      checkInternet().then((data) => {
+        if (data) {
+          dispatch(getScore(related_to));
+        } else {
+          toast.show({
+            placement: "top",
+            duration: null,
+            width: Dimensions.get("screen").width / 1.3,
+            render: () => {
+              return (
+                <ToastErrorContent
+                  content="Kamu tidak terhubung ke internet"
+                  onPress={() => {
+                    toast.closeAll();
+                    if (fromSoal) {
+                      navigation.popToTop();
+                      navigation.navigate("MainScreen");
+                    } else {
+                      navigation.goBack();
+                    }
+                  }}
+                />
+              );
+            },
+          });
+        }
+      });
     }
   }, []);
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TouchableOpacity, Alert } from "react-native";
+import { Text, View, TouchableOpacity, Alert, Dimensions } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
@@ -22,19 +22,27 @@ import LoadingModal from "../../../Components/Modal/LoadingModal";
 import DefaultModal from "../../../Components/Modal/DefaultModal";
 import { getRegister, setRegister } from "../../../Redux/Auth/authActions";
 import { useNavigation } from "@react-navigation/core";
+import { useToast } from "native-base";
+import ToastErrorContent from "../../../Components/ToastErrorContent";
+import checkInternet from "../../../Services/CheckInternet";
 
 const RegisterContent = ({ sendedEmail }) => {
   const [classBottomSheetVisible, setClassBottomSheetVisible] = useState(false);
   const [roleBottomeSheetVisible, setRoleBottomeSheetVisible] = useState(false);
-  const [provinceBottomSheetVisible, setProvinceBottomSheetVisible] = useState(false);
+  const [provinceBottomSheetVisible, setProvinceBottomSheetVisible] =
+    useState(false);
   const [cityBottomSheetVisible, setCityBottomSheetVisible] = useState(false);
-  const [schoolProvinceBottomSheetVisible, setSchoolProvinceBottomSheetVisible] = useState(false);
-  const [schoolCityBottomSheetVisible, setSchoolCityBottomSheetVisible] = useState(false);
-  const [schoolNameBottomSheetVisible, setSchoolNameBottomSheetVisible] = useState(false);
+  const [
+    schoolProvinceBottomSheetVisible,
+    setSchoolProvinceBottomSheetVisible,
+  ] = useState(false);
+  const [schoolCityBottomSheetVisible, setSchoolCityBottomSheetVisible] =
+    useState(false);
+  const [schoolNameBottomSheetVisible, setSchoolNameBottomSheetVisible] =
+    useState(false);
 
   //Start: State for Form
   const [email, setEmail] = useState(sendedEmail);
-  console.log(email);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -59,11 +67,12 @@ const RegisterContent = ({ sendedEmail }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const register = useSelector((state) => state.authReducer.register);
-
+  const toast = useToast();
   useEffect(() => {
     dispatch(setRegister({ loading: false, data: null, error: null }));
   }, []);
 
+  console.log(JSON.stringify(register, null, 2));
   const emailValidate = (text) => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
     if (reg.test(text) === false) {
@@ -73,10 +82,26 @@ const RegisterContent = ({ sendedEmail }) => {
     }
   };
 
+  useEffect(() => {
+    if (register.error) {
+      toast.show({
+        placement: "top",
+        duration: 3000,
+        width: Dimensions.get("screen").width / 1.3,
+        render: () => {
+          return <ToastErrorContent content={register.error} />;
+        },
+      });
+    }
+  }, [register]);
+
   function passwordValidation(text) {
-    if (text.length < 8) return "Password Harus Lebih Dari 8 Karakter, Mengandung Huruf Besar, Huruf Kecil & Angka";
-    if (!text.match(new RegExp("[A-Z]"))) return "Password Harus Mengandung Huruf Besar, Huruf Kecil & Angka";
-    if (!text.match(new RegExp("[a-z]"))) return "Password Harus Mengandung Huruf Kecil & Angka";
+    if (text.length < 8)
+      return "Password Harus Lebih Dari 8 Karakter, Mengandung Huruf Besar, Huruf Kecil & Angka";
+    if (!text.match(new RegExp("[A-Z]")))
+      return "Password Harus Mengandung Huruf Besar, Huruf Kecil & Angka";
+    if (!text.match(new RegExp("[a-z]")))
+      return "Password Harus Mengandung Huruf Kecil & Angka";
     if (text.search(/[0-9]/) < 0) {
       return "Password Harus Mengandung Angka";
     }
@@ -100,13 +125,21 @@ const RegisterContent = ({ sendedEmail }) => {
       <View>
         <Text style={{ ...Fonts.black20Bold }}>Account Form</Text>
 
-        <DefaultTextInput placeholder="Email" value={email} onChangeText={setEmail} />
+        <DefaultTextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+        />
 
         <DefaultTextInput placeholder="Full Name" onChangeText={setName} />
 
         <DefaultTextInput placeholder="Phone Number" onChangeText={setPhone} />
 
-        <OnTapTextInput placeholder="Role" value={role} onTap={() => setRoleBottomeSheetVisible(true)} />
+        <OnTapTextInput
+          placeholder="Role"
+          value={role}
+          onTap={() => setRoleBottomeSheetVisible(true)}
+        />
 
         {roleBottomeSheetVisible && (
           <RoleBottomSheet
@@ -138,9 +171,20 @@ const RegisterContent = ({ sendedEmail }) => {
         )}
 
         <PasswordTextInput placeholder="Password" onChangeText={setPassword} />
-        {passwordValidation(password) != null && <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>{passwordValidation(password)}</Text>}
-        <PasswordTextInput placeholder="Password Repeat" onChangeText={setRepeatPassword} />
-        {password !== repeatPassword && <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>Password tidak sama</Text>}
+        {passwordValidation(password) != null && (
+          <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+            {passwordValidation(password)}
+          </Text>
+        )}
+        <PasswordTextInput
+          placeholder="Password Repeat"
+          onChangeText={setRepeatPassword}
+        />
+        {password !== repeatPassword && (
+          <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+            Password tidak sama
+          </Text>
+        )}
       </View>
 
       <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
@@ -174,7 +218,9 @@ const RegisterContent = ({ sendedEmail }) => {
         />
         {cityBottomSheetVisible && (
           <CityBottomSheet
-            idProvinsi={province !== null ? province.idprovinsi.toString() : null}
+            idProvinsi={
+              province !== null ? province.idprovinsi.toString() : null
+            }
             onClose={() => setCityBottomSheetVisible(false)}
             onSelect={(value) => {
               setCityBottomSheetVisible(false);
@@ -215,7 +261,11 @@ const RegisterContent = ({ sendedEmail }) => {
         />
         {schoolCityBottomSheetVisible && (
           <CityBottomSheet
-            idProvinsi={schoolProvince !== null ? schoolProvince.idprovinsi.toString() : null}
+            idProvinsi={
+              schoolProvince !== null
+                ? schoolProvince.idprovinsi.toString()
+                : null
+            }
             onClose={() => setSchoolCityBottomSheetVisible(false)}
             onSelect={(value) => {
               setSchoolCityBottomSheetVisible(false);
@@ -233,7 +283,9 @@ const RegisterContent = ({ sendedEmail }) => {
         />
         {schoolNameBottomSheetVisible && (
           <SchoolBottomSheet
-            idkabkota={schoolCity !== null ? schoolCity.idkabkota.toString() : null}
+            idkabkota={
+              schoolCity !== null ? schoolCity.idkabkota.toString() : null
+            }
             onClose={() => setSchoolNameBottomSheetVisible(false)}
             onSelect={(value) => {
               setSchoolNameBottomSheetVisible(false);
@@ -248,9 +300,15 @@ const RegisterContent = ({ sendedEmail }) => {
 
         <DefaultTextInput placeholder="Wali Name" onChangeText={setWaliName} />
 
-        <DefaultTextInput placeholder="Wali Phone Number" onChangeText={setWaliPhone} />
+        <DefaultTextInput
+          placeholder="Wali Phone Number"
+          onChangeText={setWaliPhone}
+        />
 
-        <DefaultTextInput placeholder="Wali Email" onChangeText={setWaliEmail} />
+        <DefaultTextInput
+          placeholder="Wali Email"
+          onChangeText={setWaliEmail}
+        />
       </View>
 
       <View style={{ flexDirection: "row" }}>
@@ -258,45 +316,118 @@ const RegisterContent = ({ sendedEmail }) => {
           <DefaultPrimaryButton
             text="Submit"
             onPress={() => {
-              const bodyParams = JSON.stringify({
-                email: email,
-                full_name: name,
-                kelas: kelas,
-                role: role,
-                phone: phone,
-                provinsi: province !== null ? province.provinsi : "",
-                kota: city !== null ? city.kabkota : "",
-                alamat: address,
-                provinsi_sekolah: schoolProvince !== null ? schoolProvince.provinsi : "",
-                kota_sekolah: schoolCity !== null ? schoolCity.kabkota : "",
-                sekolah: schoolName,
-                password: password,
-                nama_wali: waliName,
-                email_wali: waliEmail,
-                phone_wali: waliPhone,
-              });
-              console.log("Submit");
-              console.log(bodyParams);
-              if (waliEmail) {
-                if (emailValidate(waliEmail) !== null) {
-                  Alert.alert(emailValidate(waliEmail));
-                }
-              }
-              if (phoneNumberValidation(phone) !== null) {
-                Alert.alert(phoneNumberValidation(phone));
-              } else if (emailValidate(email) !== null) {
-                Alert.alert(emailValidate(email));
-              } else if (passwordValidation(password) !== null) {
-                Alert.alert(passwordValidation(password));
-              } else if (waliPhone) {
-                if (phoneNumberValidation(waliPhone) !== null) {
-                  Alert.alert(phoneNumberValidation(waliPhone));
+              checkInternet().then((connection) => {
+                if (connection) {
+                  const bodyParams = JSON.stringify({
+                    email: email,
+                    full_name: name,
+                    kelas: kelas,
+                    role: role,
+                    phone: phone,
+                    provinsi: province !== null ? province.provinsi : "",
+                    kota: city !== null ? city.kabkota : "",
+                    alamat: address,
+                    provinsi_sekolah:
+                      schoolProvince !== null ? schoolProvince.provinsi : "",
+                    kota_sekolah: schoolCity !== null ? schoolCity.kabkota : "",
+                    sekolah: schoolName,
+                    password: password,
+                    nama_wali: waliName,
+                    email_wali: waliEmail,
+                    phone_wali: waliPhone,
+                  });
+                  if (waliEmail) {
+                    if (emailValidate(waliEmail) !== null) {
+                      toast.show({
+                        placement: "top",
+                        duration: 3000,
+                        width: Dimensions.get("screen").width / 1.3,
+                        render: () => {
+                          return (
+                            <ToastErrorContent
+                              content={emailValidate(waliEmail)}
+                            />
+                          );
+                        },
+                      });
+                    }
+                  }
+                  if (phoneNumberValidation(phone) !== null) {
+                    toast.show({
+                      placement: "top",
+                      duration: 3000,
+                      width: Dimensions.get("screen").width / 1.3,
+                      render: () => {
+                        return (
+                          <ToastErrorContent
+                            content={phoneNumberValidation(phone)}
+                          />
+                        );
+                      },
+                    });
+                  } else if (emailValidate(email) !== null) {
+                    toast.show({
+                      placement: "top",
+                      duration: 3000,
+                      width: Dimensions.get("screen").width / 1.3,
+                      render: () => {
+                        return (
+                          <ToastErrorContent content={emailValidate(email)} />
+                        );
+                      },
+                    });
+                  } else if (passwordValidation(password) !== null) {
+                    toast.show({
+                      placement: "top",
+                      duration: 3000,
+                      width: Dimensions.get("screen").width / 1.3,
+                      render: () => {
+                        return (
+                          <ToastErrorContent
+                            content={passwordValidation(password)}
+                          />
+                        );
+                      },
+                    });
+                  } else if (waliPhone) {
+                    if (phoneNumberValidation(waliPhone) !== null) {
+                      toast.show({
+                        placement: "top",
+                        duration: 3000,
+                        width: Dimensions.get("screen").width / 1.3,
+                        render: () => {
+                          return (
+                            <ToastErrorContent
+                              content={phoneNumberValidation(waliPhone)}
+                            />
+                          );
+                        },
+                      });
+                    } else {
+                      dispatch(getRegister(bodyParams));
+                    }
+                  } else {
+                    dispatch(getRegister(bodyParams));
+                  }
                 } else {
-                  dispatch(getRegister(bodyParams));
+                  toast.show({
+                    placement: "top",
+                    duration: null,
+                    width: Dimensions.get("screen").width / 1.3,
+                    render: () => {
+                      return (
+                        <ToastErrorContent
+                          content="Kamu tidak terhubung ke internet"
+                          onPress={() => {
+                            toast.closeAll();
+                            navigation.goBack();
+                          }}
+                        />
+                      );
+                    },
+                  });
                 }
-              } else {
-                dispatch(getRegister(bodyParams));
-              }
+              });
             }}
           />
         </View>
@@ -305,7 +436,10 @@ const RegisterContent = ({ sendedEmail }) => {
       {register.loading && <LoadingModal />}
       {register.data !== null && (
         <DefaultModal>
-          <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>Berhasil Regitrasi, Cek email kamu untuk memverifikasi pembuatan akun.</Text>
+          <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>
+            Berhasil Regitrasi, Cek email kamu untuk memverifikasi pembuatan
+            akun.
+          </Text>
           <DefaultPrimaryButton
             text="Kembali ke Halaman Login"
             onPress={() => {

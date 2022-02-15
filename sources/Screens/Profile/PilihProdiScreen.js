@@ -1,16 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
+import { useToast } from "native-base";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text, Alert } from "react-native";
+import { SafeAreaView, View, Text, Alert, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import OnTapTextInput from "../../Components/CustomTextInput/OnTapTextInput";
 import NewModalLoading from "../../Components/Modal/NewLoadingModal";
+import ToastErrorContent from "../../Components/ToastErrorContent";
 import {
   getUpdateProfile,
   setUpdateProfile,
 } from "../../Redux/Profile/profileActions";
+import checkInternet from "../../Services/CheckInternet";
 import Fonts from "../../Theme/Fonts";
 import SelectJurusan from "./Component/SelectJurusan";
 import SelectJurusanDua from "./Component/SelectJurusanDua";
@@ -19,6 +22,7 @@ import SelectUniversitasDua from "./Component/SelectUniversitasDua";
 
 const PilihProdiScreen = (props) => {
   const navigation = useNavigation();
+  const toast = useToast();
   const { profile } = props.route.params;
   const dispatch = useDispatch();
   const update = useSelector((state) => state.profileReducer.updateProfile);
@@ -173,21 +177,42 @@ const PilihProdiScreen = (props) => {
               <DefaultPrimaryButton
                 text="SIMPAN PILIHAN"
                 onPress={() => {
-                  Alert.alert(
-                    "Peringatan",
-                    "Saat ini pilihan prodi tidak dapat diubah. Kamu yakin dengan pilihan kamu?",
-                    [
-                      { text: "Cancel", onPress: () => {} },
-                      {
-                        text: "Yakin",
-                        onPress: () => {
-                          let program_studi = [pilihanSatu, pilihanDua];
-                          let data = { ...profile, program_studi };
-                          dispatch(getUpdateProfile(JSON.stringify(data)));
+                  checkInternet().then((data) => {
+                    if (data) {
+                      Alert.alert(
+                        "Peringatan",
+                        "Saat ini pilihan prodi tidak dapat diubah. Kamu yakin dengan pilihan kamu?",
+                        [
+                          { text: "Cancel", onPress: () => {} },
+                          {
+                            text: "Yakin",
+                            onPress: () => {
+                              let program_studi = [pilihanSatu, pilihanDua];
+                              let data = { ...profile, program_studi };
+                              dispatch(getUpdateProfile(JSON.stringify(data)));
+                            },
+                          },
+                        ]
+                      );
+                    } else {
+                      toast.show({
+                        placement: "top",
+                        duration: null,
+                        width: Dimensions.get("screen").width / 1.3,
+                        render: () => {
+                          return (
+                            <ToastErrorContent
+                              content="Kamu tidak terhubung ke interet"
+                              onPress={() => {
+                                toast.closeAll();
+                                navigation.goBack();
+                              }}
+                            />
+                          );
                         },
-                      },
-                    ]
-                  );
+                      });
+                    }
+                  });
                 }}
               />
             </View>

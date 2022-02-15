@@ -1,5 +1,10 @@
 import { urlHomeMenu } from "../../Services/ApiUrl";
-import { defaultDoneState, defaultErrorState, defaultFailedState, defaultInitState } from "../helper";
+import {
+  defaultDoneState,
+  defaultErrorState,
+  defaultFailedState,
+  defaultInitState,
+} from "../helper";
 import { SET_HOME_MENU, SET_SLIDER_IMAGES } from "./homeTypes";
 
 export function getSliderImages() {

@@ -24,6 +24,8 @@ target 'goonlinemobileUI' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
+
   post_install do |installer|
     react_native_post_install(installer)
 

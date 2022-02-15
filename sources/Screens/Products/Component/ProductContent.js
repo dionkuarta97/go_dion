@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/core";
 import React, { useLayoutEffect } from "react";
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   StyleSheet,
   Text,
@@ -16,6 +17,9 @@ import Colors from "../../../Theme/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroupedProduk } from "../../../Redux/Produk/produkActions";
 import NoData from "../../../Components/NoData";
+import checkInternet from "../../../Services/CheckInternet";
+import { Center, useToast } from "native-base";
+import ToastErrorContent from "../../../Components/ToastErrorContent";
 
 const products = [
   { id: 1, title: "a" },
@@ -25,18 +29,39 @@ const products = [
 ];
 
 const ProductContent = () => {
+  const toast = useToast();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const groupedProduk = useSelector(
     (state) => state.produkReducer.groupedProduk
   );
 
-  console.log(groupedProduk);
   useLayoutEffect(() => {
-    dispatch(getGroupedProduk());
+    checkInternet().then((data) => {
+      if (data) {
+        dispatch(getGroupedProduk());
+      } else {
+        toast.show({
+          placement: "top",
+          duration: null,
+          width: Dimensions.get("screen").width / 1.3,
+          render: ({ id }) => {
+            return (
+              <>
+                <ToastErrorContent
+                  content="Kamu tidak terhubung ke internet"
+                  onPress={() => {
+                    toast.closeAll();
+                    navigation.goBack();
+                  }}
+                />
+              </>
+            );
+          },
+        });
+      }
+    });
   }, []);
-
-  console.log(groupedProduk);
 
   const sectionHeader = (id, title) => {
     return (
@@ -51,7 +76,7 @@ const ProductContent = () => {
             })
           }
         >
-          {title !== "Buku Sakti" && (
+          {title !== "Buku Sakti" && title !== "Paket Belajar" && (
             <Text style={{ ...Fonts.orangeColor14Bold }}>Lihat Semua</Text>
           )}
         </TouchableOpacity>
@@ -71,20 +96,24 @@ const ProductContent = () => {
           <ActivityIndicator color={Colors.orangeColor} size={50} />
         </View>
       )}
-      {groupedProduk.error !== null && <Text>{groupedProduk.error}</Text>}
+      {groupedProduk.error !== null && (
+        <Center>
+          <Text style={{ color: "red" }}>{groupedProduk.error}</Text>
+        </Center>
+      )}
       {groupedProduk.data !== null &&
         groupedProduk.data.map((val, index) => {
           return (
             <View key={`groupedproduk-${val._id}`}>
               {sectionHeader(
                 val._id,
-                val.data[0]?.category === "materi"
+                index === 0
                   ? "Paket Belajar"
-                  : val.data[0]?.category === "tryout"
+                  : index === 1
                   ? "Paket Tryout"
                   : "Buku Sakti"
               )}
-              {val.data[0]?.category !== "busak" ? (
+              {val.data[0]?.category !== "busak" && val.data.length !== 0 ? (
                 <>
                   {val.data.length !== 0 ? (
                     <FlatList

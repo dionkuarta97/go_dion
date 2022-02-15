@@ -26,8 +26,6 @@ const ProductDetailContent = (props) => {
   const item = props.item;
   const onCart = props.onCart;
 
-  console.log(item);
-
   const titleText = (title) => {
     return (
       <Text style={{ ...Fonts.black17Bold, marginBottom: Sizes.fixPadding }}>

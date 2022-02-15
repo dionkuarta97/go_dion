@@ -14,6 +14,7 @@ import {
   Alert,
   StyleSheet,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
@@ -42,11 +43,14 @@ import {
   setCheckPassword,
 } from "../../Redux/Auth/authActions";
 import NewModalLoading from "../../Components/Modal/NewLoadingModal";
+import { useToast } from "native-base";
+import checkInternet from "../../Services/CheckInternet";
+import ToastErrorContent from "../../Components/ToastErrorContent";
 
 const ProfileEditScreen = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
+  const toast = useToast();
   const profile = props.route.params.profile;
   const update = useSelector((state) => state.profileReducer.updateProfile);
   const { checkPassword } = useSelector((state) => state.authReducer);
@@ -136,9 +140,30 @@ const ProfileEditScreen = (props) => {
   }
 
   const handlePress = () => {
-    dispatch(
-      getCheckPassword({ username: profile.email, password: oldPassword })
-    );
+    checkInternet().then((data) => {
+      if (data) {
+        dispatch(
+          getCheckPassword({ username: profile.email, password: oldPassword })
+        );
+      } else {
+        toast.show({
+          placement: "top",
+          duration: null,
+          width: Dimensions.get("screen").width / 1.3,
+          render: () => {
+            return (
+              <ToastErrorContent
+                content="Kamu tidak terhubung ke internet"
+                onPress={() => {
+                  toast.closeAll();
+                  navigation.goBack();
+                }}
+              />
+            );
+          },
+        });
+      }
+    });
   };
 
   const emailValidate = (text) => {
@@ -198,60 +223,84 @@ const ProfileEditScreen = (props) => {
         rightItem={
           <TouchableOpacity
             onPress={() => {
-              let data = {
-                email: email,
-                full_name: name,
-                kelas: kelas,
-                role: role,
-                phone: phone,
-                provinsi: province !== null ? province.provinsi : "",
-                kota: city !== null ? city.kabkota : "",
-                alamat: address,
-                provinsi_sekolah:
-                  schoolProvince !== null ? schoolProvince.provinsi : "",
-                kota_sekolah: schoolCity !== null ? schoolCity.kabkota : "",
-                sekolah: schoolName,
-                nama_wali: waliName,
-                email_wali: waliEmail,
-                phone_wali: waliPhone,
-                program_studi: profile.program_studi,
-              };
-              if (newPassword !== "") data["password"] = newPassword;
-              const bodyParams = JSON.stringify(data);
-              console.log(bodyParams);
-              if (waliEmail) {
-                if (emailValidate(waliEmail) !== null) {
-                  Alert.alert(emailValidate());
-                }
-              }
-              if (newPassword) {
-                if (passwordValidation(newPassword) !== null) {
-                  Alert.alert("WARNING", "Format Password Anda Salah");
-                }
-                if (newPassword !== reNewPassword) {
-                  Alert.alert("WARNING", "Password Tidak Sama");
-                }
-              }
+              checkInternet().then((data) => {
+                if (data) {
+                  let data = {
+                    email: email,
+                    full_name: name,
+                    kelas: kelas,
+                    role: role,
+                    phone: phone,
+                    provinsi: province !== null ? province.provinsi : "",
+                    kota: city !== null ? city.kabkota : "",
+                    alamat: address,
+                    provinsi_sekolah:
+                      schoolProvince !== null ? schoolProvince.provinsi : "",
+                    kota_sekolah: schoolCity !== null ? schoolCity.kabkota : "",
+                    sekolah: schoolName,
+                    nama_wali: waliName,
+                    email_wali: waliEmail,
+                    phone_wali: waliPhone,
+                    program_studi: profile.program_studi,
+                  };
+                  if (newPassword !== "") data["password"] = newPassword;
+                  const bodyParams = JSON.stringify(data);
+                  console.log(bodyParams);
+                  if (waliEmail) {
+                    if (emailValidate(waliEmail) !== null) {
+                      Alert.alert(emailValidate());
+                    }
+                  }
+                  if (newPassword) {
+                    if (passwordValidation(newPassword) !== null) {
+                      Alert.alert("WARNING", "Format Password Anda Salah");
+                    }
+                    if (newPassword !== reNewPassword) {
+                      Alert.alert("WARNING", "Password Tidak Sama");
+                    }
+                  }
 
-              if (city.idkabkota === null) {
-                Alert.alert("WARNING", "Alamat Kab/Kota Tidak Boleh Kosong");
-              } else if (schoolCity.idkabkota === null) {
-                Alert.alert("WARNING", "Alamat Sekolah Tidak Boleh Kosong");
-              } else if (schoolName === "--PILIH SEKOLAH--") {
-                Alert.alert("WARNING", "Nama Sekolah Tidak Boleh Kosong");
-              } else if (phoneNumberValidation(phone) !== null) {
-                Alert.alert(phoneNumberValidation(phone));
-              } else if (emailValidate(email) !== null) {
-                Alert.alert(emailValidate(email));
-              } else if (waliPhone) {
-                if (phoneNumberValidation(waliPhone) !== null) {
-                  Alert.alert(phoneNumberValidation(waliPhone));
+                  if (city.idkabkota === null) {
+                    Alert.alert(
+                      "WARNING",
+                      "Alamat Kab/Kota Tidak Boleh Kosong"
+                    );
+                  } else if (schoolCity.idkabkota === null) {
+                    Alert.alert("WARNING", "Alamat Sekolah Tidak Boleh Kosong");
+                  } else if (schoolName === "--PILIH SEKOLAH--") {
+                    Alert.alert("WARNING", "Nama Sekolah Tidak Boleh Kosong");
+                  } else if (phoneNumberValidation(phone) !== null) {
+                    Alert.alert(phoneNumberValidation(phone));
+                  } else if (emailValidate(email) !== null) {
+                    Alert.alert(emailValidate(email));
+                  } else if (waliPhone) {
+                    if (phoneNumberValidation(waliPhone) !== null) {
+                      Alert.alert(phoneNumberValidation(waliPhone));
+                    } else {
+                      dispatch(getUpdateProfile(bodyParams));
+                    }
+                  } else {
+                    dispatch(getUpdateProfile(bodyParams));
+                  }
                 } else {
-                  dispatch(getUpdateProfile(bodyParams));
+                  toast.show({
+                    placement: "top",
+                    duration: null,
+                    width: Dimensions.get("screen").width / 1.3,
+                    render: () => {
+                      return (
+                        <ToastErrorContent
+                          content="Kamu tidak terhubung ke internet"
+                          onPress={() => {
+                            toast.closeAll();
+                            navigation.goBack();
+                          }}
+                        />
+                      );
+                    },
+                  });
                 }
-              } else {
-                dispatch(getUpdateProfile(bodyParams));
-              }
+              });
             }}
           >
             <MaterialIcons name="save" size={28} color="black" />

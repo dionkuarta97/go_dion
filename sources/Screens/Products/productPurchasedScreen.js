@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   Image,
   SafeAreaView,
@@ -29,8 +30,12 @@ import { getPurchasedproduk } from "../../Redux/Produk/produkActions";
 import CompStyles from "../../Theme/styles/globalStyles";
 import NumberFormat from "react-number-format";
 import NoData from "../../Components/NoData";
+import { useToast } from "native-base";
+import checkInternet from "../../Services/CheckInternet";
+import ToastErrorContent from "../../Components/ToastErrorContent";
 
 const ProductPurchasedScreen = (props) => {
+  const toast = useToast();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const purchasedProduk = useSelector(
@@ -40,7 +45,28 @@ const ProductPurchasedScreen = (props) => {
   const section_id = props.route.params.id;
 
   useEffect(() => {
-    dispatch(getPurchasedproduk(section_id));
+    checkInternet().then((connection) => {
+      if (connection) {
+        dispatch(getPurchasedproduk(section_id));
+      } else {
+        toast.show({
+          placement: "top",
+          duration: null,
+          width: Dimensions.get("screen").width / 1.3,
+          render: () => {
+            return (
+              <ToastErrorContent
+                content="Kamu tidak terhubung ke internet"
+                onPress={() => {
+                  toast.closeAll();
+                  navigation.goBack();
+                }}
+              />
+            );
+          },
+        });
+      }
+    });
   }, []);
 
   return (
