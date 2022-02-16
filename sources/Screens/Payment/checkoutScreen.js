@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import {
   Alert,
+  Dimensions,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -29,8 +30,12 @@ import {
 import LoadingModal from "../../Components/Modal/LoadingModal";
 import { clearCart } from "../../Redux/Cart/cartActions";
 import DefaultModal from "../../Components/Modal/DefaultModal";
+import { useToast } from "native-base";
+import checkInternet from "../../Services/CheckInternet";
+import ToastErrorContent from "../../Components/ToastErrorContent";
 
 const CheckoutScreen = () => {
+  const toast = useToast();
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -132,14 +137,35 @@ const CheckoutScreen = () => {
         <DefaultPrimaryButton
           text="Lanjutkan Pembayaran"
           onPress={() => {
-            console.log(selectedPaymentMethod, "<<<<");
+            console.log(JSON.stringify(selectedPaymentMethod, null, 2), "<<<<");
             if (selectedPaymentMethod === null) {
               Alert.alert(
                 "Informasi",
                 "Silahkan memilih metode pembayaran terlebih dahulu"
               );
             } else {
-              dispatch(getPaymentProcess());
+              checkInternet().then((data) => {
+                if (data) {
+                  dispatch(getPaymentProcess());
+                } else {
+                  toast.show({
+                    placement: "top",
+                    duration: null,
+                    width: Dimensions.get("screen").width / 1.3,
+                    render: () => {
+                      return (
+                        <ToastErrorContent
+                          content="Kami tidak terhubung ke internet"
+                          onPress={() => {
+                            toast.closeAll();
+                            navigation.goBack();
+                          }}
+                        />
+                      );
+                    },
+                  });
+                }
+              });
             }
           }}
         />

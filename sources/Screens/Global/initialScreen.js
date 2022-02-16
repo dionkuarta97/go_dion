@@ -1,5 +1,13 @@
 import React, { useEffect, useLayoutEffect } from "react";
-import { View, StyleSheet, Text, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Alert,
+  Dimensions,
+  BackHandler,
+} from "react-native";
 import * as Font from "expo-font";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,11 +17,15 @@ import {
 } from "../../Redux/Auth/authActions";
 import { setProfile } from "../../Redux/Profile/profileActions";
 import { getVersion } from "../../Redux/Version/versionActions";
-
+import checkInternet from "../../Services/CheckInternet";
+import { Box, Button, Center, HStack, useToast } from "native-base";
+import { FontAwesome } from "@expo/vector-icons";
+import ToastErrorContent from "../../Components/ToastErrorContent";
 export default InitialScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const login = useSelector((state) => state.authReducer.login);
   const baseUrl = useSelector((state) => state.initReducer.baseUrl);
+  const toast = useToast();
 
   const _loadFontsAsync = async () => {
     await Font.loadAsync({
@@ -21,14 +33,34 @@ export default InitialScreen = ({ navigation }) => {
       SignikaNegative_Regular: require("../../../assets/Fonts/SignikaNegative-Regular.ttf"),
     });
 
-    console.log(baseUrl);
-
     //TODO:Navigate to Splashscreen
-    setTimeout(() => {
-      // navigation.replace("MainScreen");
-      if (baseUrl !== null) navigation.replace("MainScreen");
-      else navigation.replace("BaseurlScreen");
-    }, 2000);
+    checkInternet().then((connection) => {
+      if (connection) {
+        dispatch(getVersion());
+        setTimeout(() => {
+          // navigation.replace("MainScreen");
+          if (baseUrl !== null) navigation.replace("MainScreen");
+          else navigation.replace("BaseurlScreen");
+        }, 2000);
+      } else {
+        toast.show({
+          placement: "top",
+          width: Dimensions.get("screen").width / 1.3,
+          duration: null,
+          render: (props) => {
+            return (
+              <ToastErrorContent
+                content="Kamu Tidak Tersambung Ke Internet"
+                onPress={() => {
+                  toast.closeAll();
+                  BackHandler.exitApp();
+                }}
+              />
+            );
+          },
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -39,8 +71,6 @@ export default InitialScreen = ({ navigation }) => {
       dispatch(setProfile(login.data.user));
       dispatch(setToken(login.data.token));
     }
-
-    dispatch(getVersion());
 
     // dispatch(setToken(null));
     // dispatch(setLoginStatus(false));

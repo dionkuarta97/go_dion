@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { ActivityIndicator, SafeAreaView, StatusBar, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  StatusBar,
+  Text,
+  View,
+} from "react-native";
 import * as Clipboard from "expo-clipboard";
 import NumberFormat from "react-number-format";
 
@@ -18,7 +24,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 const PaymentScreen = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const paymentDetail = useSelector((state) => state.paymentReducer.paymentDetail);
+  const paymentDetail = useSelector(
+    (state) => state.paymentReducer.paymentDetail
+  );
   const orderId = props.route.params.orderId;
 
   useEffect(() => {
@@ -40,7 +48,7 @@ const PaymentScreen = (props) => {
   const getVaBank = (vadetail) => {
     return vadetail[0].bank.toUpperCase();
   };
-  console.log(paymentDetail);
+  console.log(JSON.stringify(paymentDetail, null, 2));
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
@@ -95,14 +103,26 @@ const PaymentScreen = (props) => {
                     PENDING
                   </Text>
                   <Text>ID Order</Text>
-                  <Text style={{ ...Fonts.black15Regular }}>{paymentDetail.data.order_id}</Text>
+                  <Text style={{ ...Fonts.black15Regular }}>
+                    {paymentDetail.data.order_id}
+                  </Text>
 
-                  <Text style={{ marginTop: Sizes.fixPadding }}>Payment Method</Text>
-                  <Text style={{ ...Fonts.black15Regular }}>{paymentDetail.data.payment_type}</Text>
+                  <Text style={{ marginTop: Sizes.fixPadding }}>
+                    Payment Method
+                  </Text>
+                  <Text style={{ ...Fonts.black15Regular }}>
+                    {paymentDetail.data.payment_type}
+                  </Text>
+                  <Text style={{ marginTop: Sizes.fixPadding }}>Bank</Text>
+                  <Text style={{ ...Fonts.black15Regular }}>
+                    {paymentDetail.data.provider.toUpperCase()}
+                  </Text>
 
                   {paymentDetail.data.payment_type === "bank_transfer" && (
                     <View>
-                      <Text style={{ marginTop: Sizes.fixPadding }}>Virtual Account</Text>
+                      <Text style={{ marginTop: Sizes.fixPadding }}>
+                        Virtual Account
+                      </Text>
                       <View
                         style={{
                           flexDirection: "row",
@@ -117,7 +137,13 @@ const PaymentScreen = (props) => {
                         >
                           {getVaNumber(paymentDetail.data.payment_detail)}
                         </Text>
-                        <TouchableOpacity onPress={() => Clipboard.setString(getVaNumber(paymentDetail.data.payment_detail))}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            Clipboard.setString(
+                              getVaNumber(paymentDetail.data.payment_detail)
+                            )
+                          }
+                        >
                           <View
                             style={{
                               paddingVertical: Sizes.fixPadding / 2,
@@ -133,21 +159,108 @@ const PaymentScreen = (props) => {
                     </View>
                   )}
 
-                  <Text style={{ marginTop: Sizes.fixPadding }}>Total Amount</Text>
+                  {paymentDetail.data.payment_type === "echannel" && (
+                    <View>
+                      <Text style={{ marginTop: Sizes.fixPadding }}>
+                        Bill Code
+                      </Text>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...Fonts.black17Bold,
+                            flex: 1,
+                          }}
+                        >
+                          {paymentDetail.data.payment_detail.biller_code}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() =>
+                            Clipboard.setString(
+                              paymentDetail.data.payment_detail.biller_code
+                            )
+                          }
+                        >
+                          <View
+                            style={{
+                              paddingVertical: Sizes.fixPadding / 2,
+                              paddingHorizontal: Sizes.fixPadding,
+                              backgroundColor: Colors.primaryColor,
+                              borderRadius: 5,
+                            }}
+                          >
+                            <Text>Copy</Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                      <Text style={{ marginTop: Sizes.fixPadding }}>
+                        Bill Key
+                      </Text>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...Fonts.black17Bold,
+                            flex: 1,
+                          }}
+                        >
+                          {paymentDetail.data.payment_detail.bill_key}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() =>
+                            Clipboard.setString(
+                              paymentDetail.data.payment_detail.bill_key
+                            )
+                          }
+                        >
+                          <View
+                            style={{
+                              paddingVertical: Sizes.fixPadding / 2,
+                              paddingHorizontal: Sizes.fixPadding,
+                              backgroundColor: Colors.primaryColor,
+                              borderRadius: 5,
+                            }}
+                          >
+                            <Text>Copy</Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  )}
+
+                  <Text style={{ marginTop: Sizes.fixPadding }}>
+                    Total Amount
+                  </Text>
                   <NumberFormat
-                    value={paymentDetail.data.payment_detail.gross_amount.split(".")[0]}
+                    value={
+                      paymentDetail.data.payment_detail.gross_amount.split(
+                        "."
+                      )[0]
+                    }
                     displayType={"text"}
                     thousandSeparator="."
                     decimalSeparator=","
                     prefix={"IDR "}
-                    renderText={(value, props) => <Text style={{ ...Fonts.black17Bold }}>{value}</Text>}
+                    renderText={(value, props) => (
+                      <Text style={{ ...Fonts.black17Bold }}>{value}</Text>
+                    )}
                   />
                 </View>
               </>
             )}
             <View>
               <View style={{ ...CompStyles.defaultCard }}>
-                <Text style={{ alignSelf: "center", ...Fonts.black20Bold }}>Detail Order</Text>
+                <Text style={{ alignSelf: "center", ...Fonts.black20Bold }}>
+                  Detail Order
+                </Text>
                 <View
                   style={{
                     marginEnd: 8,
@@ -170,9 +283,15 @@ const PaymentScreen = (props) => {
                         {idx + 1}. {val.title}
                       </Text>
                       <View style={{ flexDirection: "row" }}>
-                        <Text style={{ marginEnd: "auto", marginStart: 15 }}>Harga :</Text>
+                        <Text style={{ marginEnd: "auto", marginStart: 15 }}>
+                          Harga :
+                        </Text>
                         <NumberFormat
-                          value={val.price_discount !== 0 ? val.price_discount : val.price}
+                          value={
+                            val.price_discount !== 0
+                              ? val.price_discount
+                              : val.price
+                          }
                           displayType={"text"}
                           thousandSeparator="."
                           decimalSeparator=","

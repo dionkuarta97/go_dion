@@ -8,16 +8,20 @@ import { useNavigation } from "@react-navigation/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getMe } from "../../../Redux/Profile/profileActions";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
+import checkInternet from "../../../Services/CheckInternet";
 
 const ProfileContent = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const profile = useSelector((state) => state.profileReducer.profile);
-  console.log(profile.kelas);
 
   useEffect(() => {
-    dispatch(getMe());
+    checkInternet().then((data) => {
+      if (data) {
+        dispatch(getMe());
+      }
+    });
   }, []);
 
   const renderInfoTile = (lable, value, icon) => {

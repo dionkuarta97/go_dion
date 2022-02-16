@@ -1,6 +1,12 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
@@ -16,8 +22,12 @@ import {
 } from "../../../Redux/Auth/authActions";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
 import DefaultModal from "../../../Components/Modal/DefaultModal";
+import { useToast } from "native-base";
+import checkInternet from "../../../Services/CheckInternet";
+import ToastErrorContent from "../../../Components/ToastErrorContent";
 
 const LoginContent = () => {
+  const toast = useToast();
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -103,13 +113,34 @@ const LoginContent = () => {
       <DefaultPrimaryButton
         text="Sign In"
         onPress={() => {
-          dispatch(
-            getLogin({
-              username: usernameText,
-              password: passwordText,
-              playerId,
-            })
-          );
+          checkInternet().then((connection) => {
+            if (connection) {
+              dispatch(
+                getLogin({
+                  username: usernameText,
+                  password: passwordText,
+                  playerId,
+                })
+              );
+            } else {
+              toast.show({
+                placement: "top",
+                duration: null,
+                width: Dimensions.get("screen").width / 1.3,
+                render: () => {
+                  return (
+                    <ToastErrorContent
+                      content="Kamu tidak terhubung ke internet"
+                      onPress={() => {
+                        toast.closeAll();
+                        navigation.goBack();
+                      }}
+                    />
+                  );
+                },
+              });
+            }
+          });
         }}
       />
       {registerText()}

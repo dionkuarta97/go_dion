@@ -30,6 +30,9 @@ import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import CompStyles from "../../Theme/styles/globalStyles";
 import NumberFormat from "react-number-format";
 import EmptyIndicator from "../../Components/Indicator/EmptyIndicator";
+import { useToast } from "native-base";
+import checkInternet from "../../Services/CheckInternet";
+import ToastErrorContent from "../../Components/ToastErrorContent";
 
 const products = [
   { id: 1, title: "a" },
@@ -41,6 +44,7 @@ const products = [
 ];
 
 const ProductCategoryScreen = (props) => {
+  const toast = useToast();
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const navigation = useNavigation();
@@ -51,14 +55,34 @@ const ProductCategoryScreen = (props) => {
   const title = props.route.params.title;
 
   useEffect(() => {
-    dispatch(getAllProduk(section_id, page));
+    checkInternet().then((connection) => {
+      if (connection) {
+        dispatch(getAllProduk(section_id, page));
+      } else {
+        toast.show({
+          placement: "top",
+          duration: null,
+          width: Dimensions.get("screen").width / 1.3,
+          render: ({ id }) => {
+            return (
+              <ToastErrorContent
+                content="Kamu tidak terhubung ke internet"
+                onPress={() => {
+                  toast.close(id);
+                  navigation.goBack();
+                }}
+              />
+            );
+          },
+        });
+      }
+    });
   }, []);
   function handleInfinityScroll(e) {
     let mHeight = e.nativeEvent.layoutMeasurement.height;
     let cSize = e.nativeEvent.contentSize.height;
     let Y = e.nativeEvent.contentOffset.y;
     if (Math.ceil(mHeight + Y) >= cSize) {
-      console.log("masuk atas");
       return true;
     }
     return false;

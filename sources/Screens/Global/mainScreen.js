@@ -23,6 +23,8 @@ import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import OneSignal from "react-native-onesignal";
 import NoData from "../../Components/NoData";
 import LaporanScreen from "../Laporan/LaporanScreen";
+import { useToast } from "native-base";
+import ToastErrorContent from "../../Components/ToastErrorContent";
 
 const bottomNavMenu = [
   { title: "Home", icon: "home" },
@@ -36,6 +38,21 @@ export default MainScreen = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { firstLogin } = useSelector((state) => state.authReducer);
   const { checkVersion } = useSelector((state) => state.versionReducer);
+  const toast = useToast();
+  useEffect(() => {
+    if (checkVersion.error) {
+      toast.show({
+        placement: "top",
+        duration: 4000,
+        width: Dimensions.get("screen").width / 1.3,
+        render: () => {
+          return (
+            <ToastErrorContent content="Terjadi kesalahan saat memproses data" />
+          );
+        },
+      });
+    }
+  }, [checkVersion]);
 
   const bottomTabBarItem = ({ index, icon, title }) => {
     return (

@@ -18,15 +18,43 @@ import DefaultBottomSheet from "../../../Components/BottomSheet/DefaultBottomShe
 import { useDispatch, useSelector } from "react-redux";
 import { getUniversitas } from "../../../Redux/Data/dataActions";
 import Colors from "../../../Theme/Colors";
+import { useToast } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import checkInternet from "../../../Services/CheckInternet";
+import ToastErrorContent from "../../../Components/ToastErrorContent";
 
 const SelectUniversitasDua = (props) => {
   const dispatch = useDispatch();
+  const toast = useToast();
+  const navigation = useNavigation();
   const { listUniversitas } = useSelector((state) => state.dataReducer);
   const { onClose, onSelect } = props;
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    dispatch(getUniversitas());
+    checkInternet().then((data) => {
+      if (data) {
+        dispatch(getUniversitas());
+      } else {
+        props.onClose();
+        toast.show({
+          placement: "top",
+          width: Dimensions.get("screen").width / 1.3,
+          duration: null,
+          render: () => {
+            return (
+              <ToastErrorContent
+                content="Kamu tidak terhubung ke internet"
+                onPress={() => {
+                  toast.closeAll();
+                  navigation.goBack();
+                }}
+              />
+            );
+          },
+        });
+      }
+    });
   }, []);
   return (
     <>

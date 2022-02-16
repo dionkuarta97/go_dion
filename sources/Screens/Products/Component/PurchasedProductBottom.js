@@ -8,15 +8,22 @@ import Fonts from "../../../Theme/Fonts";
 import { useDispatch, useSelector } from "react-redux";
 import { getTotalPurchasedProduk } from "../../../Redux/Produk/produkActions";
 import { useNavigation } from "@react-navigation/core";
+import checkInternet from "../../../Services/CheckInternet";
 
 const PurchasedProductBottom = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const section_id = props.sectionId;
-  const totalPurchasedProduk = useSelector((state) => state.produkReducer.totalPurchasedProduk);
+  const totalPurchasedProduk = useSelector(
+    (state) => state.produkReducer.totalPurchasedProduk
+  );
 
   useEffect(() => {
-    dispatch(getTotalPurchasedProduk(section_id));
+    checkInternet().then((connection) => {
+      if (connection) {
+        dispatch(getTotalPurchasedProduk(section_id));
+      }
+    });
   }, []);
 
   return (
@@ -30,7 +37,11 @@ const PurchasedProductBottom = (props) => {
       }}
     >
       {totalPurchasedProduk.loading && <Text>Loading...</Text>}
-      {totalPurchasedProduk.data !== null && <Text style={{ ...Fonts.black15Regular, flex: 1 }}>Anda telah membeli {totalPurchasedProduk.data} product</Text>}
+      {totalPurchasedProduk.data !== null && (
+        <Text style={{ ...Fonts.black15Regular, flex: 1 }}>
+          Anda telah membeli {totalPurchasedProduk.data} product
+        </Text>
+      )}
 
       <MaterialIcons
         name="arrow-forward-ios"

@@ -1,3 +1,4 @@
+import { defaultErrorState } from "../helper";
 import { SET_CHECK_VERSION } from "./versionTypes";
 
 export function setCheckVersion(payload) {
@@ -32,7 +33,7 @@ export function getVersion() {
         disptach(setCheckVersion({ upToDate: false, message: result.message }));
       }
     } catch (error) {
-      console.log(error);
+      disptach(setCheckVersion(defaultErrorState));
     }
   };
 }

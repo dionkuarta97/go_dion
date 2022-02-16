@@ -20,15 +20,42 @@ import DefaultBottomSheet from "./DefaultBottomSheet";
 import { FlatGrid } from "react-native-super-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { getListGrades } from "../../Redux/Data/dataActions";
+import { Box, useToast } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import checkInternet from "../../Services/CheckInternet";
+import ToastErrorContent from "../ToastErrorContent";
 
 const KelasBottomSheet = (props) => {
   const dispatch = useDispatch();
+  const toast = useToast();
+  const navigation = useNavigation();
   const listGrades = useSelector((state) => state.dataReducer.listGrades);
   const [idx, setIdx] = useState(0);
-  console.log(JSON.stringify(listGrades, null, 2));
 
   useLayoutEffect(() => {
-    dispatch(getListGrades());
+    checkInternet().then((data) => {
+      if (data) {
+        dispatch(getListGrades());
+      } else {
+        props.onClose();
+        toast.show({
+          placement: "top",
+          duration: null,
+          width: Dimensions.get("screen").width / 1.3,
+          render: () => {
+            return (
+              <ToastErrorContent
+                content="Kamu tidak terhubung ke internet"
+                onPress={() => {
+                  toast.closeAll();
+                  navigation.goBack();
+                }}
+              />
+            );
+          },
+        });
+      }
+    });
   }, []);
   return (
     <DefaultBottomSheet
@@ -50,6 +77,7 @@ const KelasBottomSheet = (props) => {
             return (
               <TouchableOpacity onPress={() => setIdx(index)}>
                 <Text
+                  key={index}
                   style={{
                     borderWidth: 2,
                     paddingHorizontal: 20,
@@ -69,13 +97,17 @@ const KelasBottomSheet = (props) => {
       </View>
       {listGrades.data !== null && (
         <FlatGrid
+          key={idx}
           data={listGrades.data[idx].grade}
-          renderItem={({ item, idx }) => {
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity onPress={() => props.onSelect(item)}>
-                <View style={styles.tile}>
+                <Box
+                  bg={item.substring(3, 10) === "IPA" ? "red.300" : "amber.400"}
+                  borderRadius={5}
+                >
                   <Text style={{ alignSelf: "center" }}>{`Kelas ${item}`}</Text>
-                </View>
+                </Box>
               </TouchableOpacity>
             );
           }}

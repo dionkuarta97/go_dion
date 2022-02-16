@@ -1,6 +1,13 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import CountDown from "react-native-countdown-component";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
@@ -20,9 +27,13 @@ import PertanyaanPBK from "./Pertanyaan/PertanyaanPBK";
 import PertanyaanPBS from "./Pertanyaan/PertanyaanPBS";
 import PertanyaanPBT from "./Pertanyaan/PertanyaanPBT";
 import Colors from "../../../Theme/Colors";
+import { useToast } from "native-base";
+import checkInternet from "../../../Services/CheckInternet";
+import ToastErrorContent from "../../../Components/ToastErrorContent";
 
 const SoalContent = (props) => {
   const { blockTime } = props;
+  const toast = useToast();
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -168,8 +179,31 @@ const SoalContent = (props) => {
                           status: status,
                         })
                       );
-                      setFinish(true);
-                      dispatch(saveAnswer());
+
+                      checkInternet().then((data) => {
+                        if (data) {
+                          setFinish(true);
+                          dispatch(saveAnswer());
+                        } else {
+                          toast.show({
+                            placement: "top",
+                            duration: null,
+                            width: Dimensions.get("screen").width / 1.3,
+                            render: () => {
+                              return (
+                                <ToastErrorContent
+                                  content="Kamu tidak terhubung ke internet"
+                                  onPress={() => {
+                                    toast.closeAll();
+                                    navigation.popToTop();
+                                    navigation.navigate("MainScreen");
+                                  }}
+                                />
+                              );
+                            },
+                          });
+                        }
+                      });
                     }
                   } else {
                     let jawabanKosong = answers;
@@ -224,8 +258,30 @@ const SoalContent = (props) => {
                           status: status,
                         })
                       );
-                      setFinish(true);
-                      dispatch(saveAnswer());
+                      checkInternet().then((data) => {
+                        if (data) {
+                          setFinish(true);
+                          dispatch(saveAnswer());
+                        } else {
+                          toast.show({
+                            placement: "top",
+                            duration: null,
+                            width: Dimensions.get("screen").width / 1.3,
+                            render: () => {
+                              return (
+                                <ToastErrorContent
+                                  content="Kamu tidak terhubung ke internet"
+                                  onPress={() => {
+                                    toast.closeAll();
+                                    navigation.popToTop();
+                                    navigation.navigate("MainScreen");
+                                  }}
+                                />
+                              );
+                            },
+                          });
+                        }
+                      });
                     }
                   }
 
@@ -545,8 +601,30 @@ const SoalContent = (props) => {
                       status: status,
                     })
                   );
-                  setFinish(true);
-                  dispatch(saveAnswer());
+                  checkInternet().then((data) => {
+                    if (data) {
+                      setFinish(true);
+                      dispatch(saveAnswer());
+                    } else {
+                      toast.show({
+                        placement: "top",
+                        duration: null,
+                        width: Dimensions.get("screen").width / 1.3,
+                        render: () => {
+                          return (
+                            <ToastErrorContent
+                              content="Kamu tidak terhubung ke internet"
+                              onPress={() => {
+                                toast.closeAll();
+                                navigation.popToTop();
+                                navigation.navigate("MainScreen");
+                              }}
+                            />
+                          );
+                        },
+                      });
+                    }
+                  });
                 }
               } else {
                 let jawabanKosong = answers;
@@ -598,8 +676,30 @@ const SoalContent = (props) => {
                       status: status,
                     })
                   );
-                  setFinish(true);
-                  dispatch(saveAnswer());
+                  checkInternet().then((data) => {
+                    if (data) {
+                      setFinish(true);
+                      dispatch(saveAnswer());
+                    } else {
+                      toast.show({
+                        placement: "top",
+                        duration: null,
+                        width: Dimensions.get("screen").width / 1.3,
+                        render: () => {
+                          return (
+                            <ToastErrorContent
+                              content="Kamu tidak terhubung ke internet"
+                              onPress={() => {
+                                toast.closeAll();
+                                navigation.popToTop();
+                                navigation.navigate("MainScreen");
+                              }}
+                            />
+                          );
+                        },
+                      });
+                    }
+                  });
                 }
               }
 

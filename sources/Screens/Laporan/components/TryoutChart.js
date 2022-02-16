@@ -10,12 +10,13 @@ import { Rect, Text as TextSVG, Svg } from "react-native-svg";
 const screenWidth = Dimensions.get("window").width;
 
 const chartConfig = {
-  backgroundGradientFrom: "black",
-  backgroundGradientFromOpacity: 0.1,
+  backgroundColor: "transparent",
   backgroundGradientTo: "white",
-  backgroundGradientToOpacity: 0.8,
+  backgroundGradientFromOpacity: 0,
+  backgroundGradientFrom: "white",
+  backgroundGradientToOpacity: 0,
   color: (opacity = 1) => `rgba(0,  0, 0, ${opacity})`,
-  strokeWidth: 4, // optional, default 3
+  // optional, default 3
   useShadowColorFromDataset: false, // optional
 };
 
@@ -47,8 +48,6 @@ const TryoutChart = (props) => {
         setTooltipPos({ ...tooltipPos, visible: false });
       }, 1000);
   }, [tooltipPos]);
-
-  console.log(prodi);
 
   return (
     <>
@@ -118,6 +117,7 @@ const TryoutChart = (props) => {
             <ScrollView horizontal={true}>
               <LineChart
                 style={{ borderRadius: 15 }}
+                yLabelsOffset={10}
                 formatXLabel={(value) => value.replace("TOBK ", "")}
                 data={
                   type === "uas"
@@ -128,6 +128,18 @@ const TryoutChart = (props) => {
                             data: [...chartTryout.data.datasets],
                             strokeWidth: 2,
                             color: (opacity = 1) => `rgba(0,102,0, ${opacity})`, // optional
+                          },
+                          {
+                            data: [0],
+                            color: () => "transparent",
+                            strokeWidth: 0,
+                            withDots: false,
+                          },
+                          {
+                            data: [100],
+                            color: () => "transparent",
+                            strokeWidth: 0,
+                            withDots: false,
                           },
                         ],
                       }
@@ -145,6 +157,18 @@ const TryoutChart = (props) => {
                             strokeWidth: 2,
                             color: (opacity = 1) => `rgba(255,0,0,${opacity})`, // optional
                           },
+                          {
+                            data: [0],
+                            color: () => "transparent",
+                            strokeWidth: 0,
+                            withDots: false,
+                          },
+                          {
+                            data: [1000],
+                            color: () => "transparent",
+                            strokeWidth: 0,
+                            withDots: false,
+                          },
                         ],
                       }
                     : {
@@ -160,6 +184,18 @@ const TryoutChart = (props) => {
                             strokeWidth: 2,
                             color: (opacity = 1) =>
                               `rgba(252, 165, 3, ${opacity})`, // optional
+                          },
+                          {
+                            data: [0],
+                            color: () => "transparent",
+                            strokeWidth: 0,
+                            withDots: false,
+                          },
+                          {
+                            data: [1000],
+                            color: () => "transparent",
+                            strokeWidth: 0,
+                            withDots: false,
                           },
                         ],
                       }

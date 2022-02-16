@@ -2,22 +2,60 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import { Dimensions, Modal, ScrollView, Text, View, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput, FlatList } from "react-native";
+import {
+  Dimensions,
+  Modal,
+  ScrollView,
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  TextInput,
+  FlatList,
+} from "react-native";
 import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import DefaultBottomSheet from "./DefaultBottomSheet";
 import { useDispatch, useSelector } from "react-redux";
 import { getListCity } from "../../Redux/Data/dataActions";
+import { useToast } from "native-base";
+import checkInternet from "../../Services/CheckInternet";
+import { useNavigation } from "@react-navigation/native";
+import ToastErrorContent from "../ToastErrorContent";
 
 const CityBottomSheet = (props) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const toast = useToast();
   const listCity = useSelector((state) => state.dataReducer.listCity);
 
   const [search, setSearch] = useState("");
-  console.log(listCity);
   useLayoutEffect(() => {
-    dispatch(getListCity(props.idProvinsi));
+    checkInternet().then((data) => {
+      if (data) {
+        dispatch(getListCity(props.idProvinsi));
+      } else {
+        props.onClose();
+        toast.show({
+          placement: "top",
+          duration: null,
+          width: Dimensions.get("screen").width / 1.3,
+          render: () => {
+            return (
+              <ToastErrorContent
+                content="Kamu tidak terhubung ke internet"
+                onPress={() => {
+                  toast.closeAll();
+                  navigation.goBack();
+                }}
+              />
+            );
+          },
+        });
+      }
+    });
   }, []);
 
   return (
@@ -40,10 +78,15 @@ const CityBottomSheet = (props) => {
         <FlatList
           style={{ marginBottom: 140 }}
           keyExtractor={(item, index) => item.idkabkota + ""}
-          data={listCity.data.filter((value) => value.kabkota.toLowerCase().includes(search.toLowerCase()))}
+          data={listCity.data.filter((value) =>
+            value.kabkota.toLowerCase().includes(search.toLowerCase())
+          )}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity key={`kabkota-${item.idkabkota}`} onPress={() => props.onSelect(item)}>
+              <TouchableOpacity
+                key={`kabkota-${item.idkabkota}`}
+                onPress={() => props.onSelect(item)}
+              >
                 <View style={styles.tile}>
                   <Text style={{ flex: 1 }}>{item.kabkota}</Text>
                   <View
@@ -51,7 +94,11 @@ const CityBottomSheet = (props) => {
                       paddingHorizontal: Sizes.fixPadding / 2,
                     }}
                   >
-                    <MaterialIcons name="keyboard-arrow-right" size={30} color={Colors.orangeColor} />
+                    <MaterialIcons
+                      name="keyboard-arrow-right"
+                      size={30}
+                      color={Colors.orangeColor}
+                    />
                   </View>
                 </View>
               </TouchableOpacity>

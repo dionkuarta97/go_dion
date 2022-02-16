@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   StyleSheet,
   Text,
@@ -20,14 +21,20 @@ import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import CompStyles from "../../../Theme/styles/globalStyles";
 import EmptyIndicator from "../../../Components/Indicator/EmptyIndicator";
-
+import checkInternet from "../../../Services/CheckInternet";
+import { useToast } from "native-base";
 const PurchaseContent = (props) => {
+  const toast = useToast();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const paymentList = useSelector((state) => state.paymentReducer.paymentList);
 
   useEffect(() => {
-    dispatch(getPaymentList(props.status));
+    checkInternet().then((connection) => {
+      if (connection) {
+        dispatch(getPaymentList(props.status));
+      }
+    });
   }, [props.status]);
 
   const renderItem = (item) => {

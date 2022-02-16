@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import {
   ActivityIndicator,
+  Dimensions,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -20,8 +21,12 @@ import {
 } from "../../Redux/Payment/paymentActions";
 import Colors from "../../Theme/Colors";
 import { useNavigation } from "@react-navigation/core";
+import checkInternet from "../../Services/CheckInternet";
+import { useToast } from "native-base";
+import ToastErrorContent from "../../Components/ToastErrorContent";
 
 const PaymentMethodScreen = () => {
+  const toast = useToast();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const paymentMethod = useSelector(
@@ -29,8 +34,32 @@ const PaymentMethodScreen = () => {
   );
 
   useEffect(() => {
-    dispatch(getPaymentMethod());
+    checkInternet().then((connection) => {
+      if (connection) {
+        dispatch(getPaymentMethod());
+        console.log(connection);
+      } else {
+        toast.show({
+          placement: "top",
+          duration: null,
+          width: Dimensions.get("screen").width / 1.3,
+          render: () => {
+            return (
+              <ToastErrorContent
+                content="Kamu tidak terhubung ke internet"
+                onPress={() => {
+                  toast.closeAll();
+                  navigation.goBack();
+                }}
+              />
+            );
+          },
+        });
+      }
+    });
   }, []);
+
+  console.log(paymentMethod);
 
   const renderHeader = ({ title, icon }) => {
     return (
