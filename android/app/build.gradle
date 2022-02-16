@@ -147,8 +147,8 @@ android {
         applicationId 'com.goonline.app'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "0.1.51"
+        versionCode 9
+        versionName "0.1.52"
     }
     splits {
         abi {
