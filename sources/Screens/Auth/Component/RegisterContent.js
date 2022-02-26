@@ -133,7 +133,11 @@ const RegisterContent = ({ sendedEmail }) => {
 
         <DefaultTextInput placeholder="Full Name" onChangeText={setName} />
 
-        <DefaultTextInput placeholder="Phone Number" onChangeText={setPhone} />
+        <DefaultTextInput
+          keyboardType="numeric"
+          placeholder="Phone Number"
+          onChangeText={setPhone}
+        />
 
         <OnTapTextInput
           placeholder="Role"
@@ -302,6 +306,7 @@ const RegisterContent = ({ sendedEmail }) => {
 
         <DefaultTextInput
           placeholder="Wali Phone Number"
+          keyboardType="numeric"
           onChangeText={setWaliPhone}
         />
 

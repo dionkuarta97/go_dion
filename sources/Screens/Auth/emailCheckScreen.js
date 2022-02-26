@@ -1,6 +1,6 @@
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation, useFocusEffect } from "@react-navigation/core";
 import { useToast } from "native-base";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -26,9 +26,19 @@ const EmailCheckScreen = () => {
   const [email, setEmail] = useState("");
   const checkEmail = useSelector((state) => state.authReducer.checkEmail);
 
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(setEmailCheck({ loading: false, data: null, error: null }));
+    }, [])
+  );
+
   useEffect(() => {
-    dispatch(setEmailCheck({ loading: false, data: null, error: null }));
-  }, []);
+    if (checkEmail.data !== null) {
+      navigation.navigate("RegisterScreen", {
+        email: email,
+      });
+    }
+  }, [checkEmail]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -43,6 +53,7 @@ const EmailCheckScreen = () => {
               backgroundColor: "white",
               borderRadius: 5,
             }}
+            keyboardType="phone-pad"
             onChangeText={setEmail}
             value={email}
             placeholder="ketikkan email kamu"
@@ -88,7 +99,7 @@ const EmailCheckScreen = () => {
         )}
       </View>
 
-      {checkEmail.data !== null && (
+      {/* {checkEmail.data !== null && (
         <View
           style={{
             flex: 1,
@@ -113,7 +124,7 @@ const EmailCheckScreen = () => {
             />
           </View>
         </View>
-      )}
+      )} */}
     </SafeAreaView>
   );
 };

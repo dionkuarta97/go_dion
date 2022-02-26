@@ -2,14 +2,17 @@ import { useNavigation } from "@react-navigation/native";
 import { useToast } from "native-base";
 import React, { useEffect } from "react";
 import { View, Text, SafeAreaView, Dimensions } from "react-native";
+import { useDispatch } from "react-redux";
 
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultTabBar from "../../Components/DefaultTabBar";
 import ToastErrorContent from "../../Components/ToastErrorContent";
+import { getMe } from "../../Redux/Profile/profileActions";
 import checkInternet from "../../Services/CheckInternet";
 import GoTryoutContent from "./Component/GoTryoutContent";
 
 const GoTryoutScreen = () => {
+  const dispatch = useDispatch();
   const toast = useToast();
   const navigation = useNavigation();
   useEffect(() => {
@@ -31,6 +34,8 @@ const GoTryoutScreen = () => {
             );
           },
         });
+      } else {
+        dispatch(getMe());
       }
     });
   }, []);

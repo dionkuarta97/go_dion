@@ -724,6 +724,8 @@ PODS:
     - React-Core
   - react-native-get-random-values (1.7.2):
     - React-Core
+  - react-native-netinfo (6.0.0):
+    - React-Core
   - react-native-onesignal (4.3.3):
     - OneSignalXCFramework (= 3.9.1)
     - React (< 1.0.0, >= 0.13.0)
@@ -894,6 +896,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
@@ -1014,6 +1017,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-blob-util"
   react-native-get-random-values:
     :path: "../node_modules/react-native-get-random-values"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-onesignal:
     :path: "../node_modules/react-native-onesignal"
   react-native-pager-view:
@@ -1125,6 +1130,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
   react-native-blob-util: d2919a2243cba497cd5713f72faeec283c69fde4
   react-native-get-random-values: 30b3f74ca34e30e2e480de48e4add2706a40ac8f
+  react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-onesignal: 9a543af01c2359b7567919cd3b1490051c553e21
   react-native-pager-view: b90963d848e777def6714ab7fd40d02fa797e930
   react-native-pdf: a6a5a3f0bdf340eb2eed6c96034424d2cc3f84b0
@@ -1154,6 +1160,6 @@ SPEC CHECKSUMS:
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
 
-PODFILE CHECKSUM: f14e2ba51543166326f0c9637f0af38c5b39884f
+PODFILE CHECKSUM: 25a91aaa57a1309348c9b45ceb855806691c04c5
 
 COCOAPODS: 1.11.2

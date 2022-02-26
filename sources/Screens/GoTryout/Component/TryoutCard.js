@@ -23,9 +23,7 @@ const TryoutCard = (props) => {
   const toast = useToast();
   const navigation = useNavigation();
   const { detail, tryoutId } = props;
-  console.log(JSON.stringify(detail, null, 2));
   const profile = useSelector((state) => state.profileReducer.profile);
-
   return (
     <>
       {detail.quiz ? (
@@ -75,7 +73,9 @@ const TryoutCard = (props) => {
                           {
                             text: "Pilih Prodi",
                             onPress: () => {
-                              navigation.navigate("ProfileScreen");
+                              navigation.navigate("ProfileScreen", {
+                                from: "tryout",
+                              });
                             },
                           },
                         ]

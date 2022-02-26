@@ -1,3 +1,4 @@
+import { ScrollView } from "native-base";
 import React from "react";
 import { SafeAreaView, Text, View } from "react-native";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
@@ -10,6 +11,20 @@ const LihatProdiScreen = (props) => {
       <SafeAreaView style={{ flex: 1 }}>
         <DefaultAppBar title="Lihat Prodi" backEnabled={true} />
         <View
+          style={{
+            paddingHorizontal: 20,
+            paddingTop: 20,
+          }}
+        >
+          <Text
+            style={{
+              color: "red",
+            }}
+          >
+            * Saat ini pilihan prodi tidak dapat diubah
+          </Text>
+        </View>
+        <ScrollView
           style={{
             padding: 20,
           }}
@@ -65,7 +80,7 @@ const LihatProdiScreen = (props) => {
               {prodi[1].passing_grade}
             </Text>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </>
   );

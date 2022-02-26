@@ -19,7 +19,7 @@ import { getListCity, getListProvince } from "../../Redux/Data/dataActions";
 import { useToast } from "native-base";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
-const ProfileScreen = () => {
+const ProfileScreen = (props) => {
   const navigation = useNavigation();
   const toast = useToast();
   const dispatch = useDispatch();
@@ -56,6 +56,7 @@ const ProfileScreen = () => {
       }
     });
   }, []);
+  console.log(JSON.stringify(profile, null, 2));
   useEffect(() => {
     checkInternet().then((data) => {
       if (data) {
@@ -123,7 +124,7 @@ const ProfileScreen = () => {
           toolbarMaxHeight={230}
           src={require("../../../assets/Images/appbar_bg.png")}
         >
-          <ProfileContent />
+          <ProfileContent from={props.route.params?.from} />
           <StatusBar backgroundColor={Colors.primaryColor} />
         </SliverAppBar>
       )}

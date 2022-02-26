@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -25,6 +25,7 @@ import NoData from "../../Components/NoData";
 import LaporanScreen from "../Laporan/LaporanScreen";
 import { useToast } from "native-base";
 import ToastErrorContent from "../../Components/ToastErrorContent";
+import { useFocusEffect } from "@react-navigation/native";
 
 const bottomNavMenu = [
   { title: "Home", icon: "home" },
@@ -53,6 +54,12 @@ export default MainScreen = (props) => {
       });
     }
   }, [checkVersion]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setCurrentIndex(0);
+    }, [])
+  );
 
   const bottomTabBarItem = ({ index, icon, title }) => {
     return (

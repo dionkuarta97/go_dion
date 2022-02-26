@@ -47,8 +47,14 @@ const PilihProdiScreen = (props) => {
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     if (update.data) {
-      navigation.popToTop();
-      navigation.navigate("ProfileScreen");
+      if (props.route.params.from !== undefined) {
+        navigation.popToTop();
+        navigation.navigate("GoTryoutScreen");
+      } else {
+        navigation.popToTop();
+        navigation.navigate("ProfileScreen");
+      }
+
       dispatch(setUpdateProfile({ data: null, loading: false, error: null }));
     }
   }, [update.data]);
@@ -65,6 +71,20 @@ const PilihProdiScreen = (props) => {
     <>
       <SafeAreaView style={{ flex: 1 }}>
         <DefaultAppBar title="Pilih Prodi" backEnabled={true} />
+        <View
+          style={{
+            paddingHorizontal: 20,
+            paddingTop: 20,
+          }}
+        >
+          <Text
+            style={{
+              color: "red",
+            }}
+          >
+            * Saat ini pilihan prodi tidak dapat diubah
+          </Text>
+        </View>
         <ScrollView>
           <View
             style={{
