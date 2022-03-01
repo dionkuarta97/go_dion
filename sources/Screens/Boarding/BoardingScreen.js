@@ -9,6 +9,7 @@ import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import { setFirstLogin } from "../../Redux/Auth/authActions";
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 
 const win = Dimensions.get("window");
 const BoardingScreen = () => {

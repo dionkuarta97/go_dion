@@ -10,7 +10,7 @@ import { getMe } from "../../../Redux/Profile/profileActions";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import checkInternet from "../../../Services/CheckInternet";
 
-const ProfileContent = () => {
+const ProfileContent = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -81,6 +81,7 @@ const ProfileContent = () => {
               } else {
                 navigation.navigate("PilihProdiScreen", {
                   profile,
+                  from: props.from,
                 });
               }
             }

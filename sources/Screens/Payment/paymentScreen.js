@@ -20,6 +20,7 @@ import CompStyles from "../../Theme/styles/globalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { getPaymentDetail } from "../../Redux/Payment/paymentActions";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Button } from "native-base";
 
 const PaymentScreen = (props) => {
   const dispatch = useDispatch();
@@ -331,6 +332,27 @@ const PaymentScreen = (props) => {
                         />
                       </View>
                     )}
+                    <View
+                      style={{
+                        padding: 10,
+                      }}
+                    >
+                      <Button
+                        marginTop={10}
+                        colorScheme="yellow"
+                        onPress={() => {
+                          navigation.navigate("MainScreen", { idx: 0 });
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: "whitesmoke",
+                          }}
+                        >
+                          Kembali Ke Home
+                        </Text>
+                      </Button>
+                    </View>
                   </View>
                 ))}
               </View>

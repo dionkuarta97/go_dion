@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>app.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>buildNumber</key>
+			<string>1</string>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>C7612C5F35838CB7872BF3464B2E76B285F2F8F5</string>
+				<key>dateExpires</key>
+				<string>18/02/23</string>
+				<key>type</key>
+				<string>Apple Development</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>buildNumber</key>
+					<string>1</string>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>C7612C5F35838CB7872BF3464B2E76B285F2F8F5</string>
+						<key>dateExpires</key>
+						<string>18/02/23</string>
+						<key>type</key>
+						<string>Apple Development</string>
+					</dict>
+					<key>name</key>
+					<string>OneSignal.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>NQ9NH6526Q</string>
+						<key>name</key>
+						<string>PT. PENDIDIKAN GANESHA OPERATION</string>
+					</dict>
+					<key>versionNumber</key>
+					<string>1.0</string>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>NQ9NH6526Q.com.goonline.app</string>
+				<key>aps-environment</key>
+				<string>development</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>NQ9NH6526Q</string>
+				<key>get-task-allow</key>
+				<true/>
+			</dict>
+			<key>name</key>
+			<string>app.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>b27741b3-0000-4ba8-90c6-5bb6dc1d168d</string>
+				<key>dateExpires</key>
+				<string>18/02/23</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: com.goonline.app</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>NQ9NH6526Q</string>
+				<key>name</key>
+				<string>PT. PENDIDIKAN GANESHA OPERATION</string>
+			</dict>
+			<key>versionNumber</key>
+			<string>0.1.52</string>
+		</dict>
+	</array>
+</dict>
+</plist>
