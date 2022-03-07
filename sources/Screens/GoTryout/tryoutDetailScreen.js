@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaView } from "react-native";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
-
+import CountDown from "react-native-countdown-component";
 import TryoutCard from "./Component/TryoutCard";
 
 const TryoutDetailScreen = (props) => {
