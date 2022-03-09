@@ -53,7 +53,6 @@ const EmailCheckScreen = () => {
               backgroundColor: "white",
               borderRadius: 5,
             }}
-            keyboardType="phone-pad"
             onChangeText={setEmail}
             value={email}
             placeholder="ketikkan email kamu"
