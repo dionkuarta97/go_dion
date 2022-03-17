@@ -22,6 +22,7 @@ import Colors from "../../Theme/Colors";
 import { useNavigation } from "@react-navigation/core";
 import ProductDetailContent from "./Component/ProductDetailContent";
 import { addToCart } from "../../Redux/Cart/cartActions";
+import { Box } from "native-base";
 
 const { width } = Dimensions.get("screen");
 
@@ -120,12 +121,21 @@ const ProductDetailScreen = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <SliverAppBar
         leftItem={
-          <MaterialIcons
-            name="arrow-back-ios"
-            size={24}
-            color={Colors.primaryColor}
-            onPress={() => navigation.goBack()}
-          />
+          <Box
+            style={{
+              paddingLeft: 5,
+              paddingVertical: 3,
+              borderRadius: 10,
+              backgroundColor: "rgba(245,158,11, 0.5)",
+            }}
+          >
+            <MaterialIcons
+              name="arrow-back-ios"
+              size={24}
+              color={Colors.blackColor}
+              onPress={() => navigation.goBack()}
+            />
+          </Box>
         }
         rightItem={
           !cart.some((val) => val._id === item._id) ? (
@@ -136,16 +146,16 @@ const ProductDetailScreen = (props) => {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
+                paddingHorizontal: 5,
+                paddingVertical: 3,
+                borderRadius: 10,
+                backgroundColor: "rgba(245,158,11, 0.5)",
               }}
             >
-              <MaterialIcons
-                name={"add"}
-                size={24}
-                color={Colors.primaryColor}
-              />
+              <MaterialIcons name={"add"} size={24} color={Colors.blackColor} />
               <Text
                 style={{
-                  ...Fonts.primaryColor16Regular,
+                  ...Fonts.black17Regular,
                   marginLeft: Sizes.fixPadding - 5.0,
                 }}
               >

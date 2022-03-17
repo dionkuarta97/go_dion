@@ -140,7 +140,7 @@ const ProductContent = () => {
                   )}
                 </>
               ) : (
-                <NoData img="noimage" msg="Comming Soon" />
+                <NoData img="noimage" msg="Coming Soon" />
               )}
             </View>
           );
