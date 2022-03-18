@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./Redux/store";
@@ -47,6 +47,7 @@ import PilihProdiScreen from "./Screens/Profile/PilihProdiScreen";
 import LihatProdiScreen from "./Screens/Profile/LihatProdiScreen";
 import { LaporanTryoutScreen } from "./Screens/Laporan/LaporanTryoutScreen";
 import ProgressTryout from "./Screens/Laporan/ProgressTryout";
+import TestVideo from "./Screens/Home/Component/TestVideo";
 
 const Stack = createStackNavigator();
 
@@ -198,6 +199,7 @@ export default App = () => {
                 component={LaporanTryoutScreen}
               />
               <Stack.Screen name="ProgressTryout" component={ProgressTryout} />
+              <Stack.Screen name="TestVideo" component={TestVideo} />
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>

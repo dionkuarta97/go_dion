@@ -20,7 +20,7 @@ import CompStyles from "../../Theme/styles/globalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { getPaymentDetail } from "../../Redux/Payment/paymentActions";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Button } from "native-base";
+import { Button, HStack, ScrollView } from "native-base";
 
 const PaymentScreen = (props) => {
   const dispatch = useDispatch();
@@ -29,6 +29,19 @@ const PaymentScreen = (props) => {
     (state) => state.paymentReducer.paymentDetail
   );
   const orderId = props.route.params.orderId;
+
+  const totalHarga = (arr) => {
+    let temp = 0;
+    for (const i in arr) {
+      if (arr[i].price_discount > 0) {
+        temp += arr[i].price_discount;
+      } else {
+        temp += arr[i].price;
+      }
+    }
+
+    return temp;
+  };
 
   useEffect(() => {
     dispatch(getPaymentDetail(orderId));
@@ -54,7 +67,7 @@ const PaymentScreen = (props) => {
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
       <DefaultAppBar title="Pembayaran" backEnabled={true} />
-      <View style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
+      <ScrollView style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
         {paymentDetail.loading && (
           <View>
             <ActivityIndicator color={Colors.orangeColor} size={30} />
@@ -332,34 +345,62 @@ const PaymentScreen = (props) => {
                         />
                       </View>
                     )}
-                    <View
-                      style={{
-                        padding: 10,
-                      }}
-                    >
-                      <Button
-                        marginTop={10}
-                        colorScheme="yellow"
-                        onPress={() => {
-                          navigation.navigate("MainScreen", { idx: 0 });
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: "whitesmoke",
-                          }}
-                        >
-                          Kembali Ke Home
-                        </Text>
-                      </Button>
-                    </View>
                   </View>
                 ))}
+                <HStack
+                  style={{
+                    marginTop: 8,
+                    paddingHorizontal: 10,
+                  }}
+                >
+                  <Text style={{ marginEnd: "auto" }}>Service Fee:</Text>
+                  <NumberFormat
+                    value={
+                      paymentDetail.data.payment_detail.gross_amount.split(
+                        "."
+                      )[0] - totalHarga(paymentDetail.data?.products)
+                    }
+                    displayType={"text"}
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    prefix={"IDR "}
+                    renderText={(value, props) => (
+                      <Text
+                        style={{
+                          ...Fonts.black17Bold,
+                        }}
+                      >
+                        {value}
+                      </Text>
+                    )}
+                  />
+                </HStack>
+              </View>
+              <View
+                style={{
+                  padding: 10,
+                }}
+              >
+                <Button
+                  marginTop={10}
+                  colorScheme="yellow"
+                  onPress={() => {
+                    navigation.navigate("MainScreen", { idx: 0 });
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "whitesmoke",
+                    }}
+                  >
+                    Kembali Ke Home
+                  </Text>
+                </Button>
               </View>
             </View>
           </>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

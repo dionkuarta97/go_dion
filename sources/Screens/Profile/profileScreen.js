@@ -16,7 +16,7 @@ import { useNavigation } from "@react-navigation/core";
 import { useDispatch, useSelector } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { getListCity, getListProvince } from "../../Redux/Data/dataActions";
-import { useToast } from "native-base";
+import { Box, useToast } from "native-base";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
 const ProfileScreen = (props) => {
@@ -73,12 +73,21 @@ const ProfileScreen = (props) => {
       ) : (
         <SliverAppBar
           leftItem={
-            <MaterialIcons
-              name="arrow-back-ios"
-              size={24}
-              color={Colors.blackColor}
-              onPress={() => navigation.goBack()}
-            />
+            <Box
+              style={{
+                paddingLeft: 5,
+                paddingVertical: 3,
+                borderRadius: 10,
+                backgroundColor: "rgba(245,158,11, 0.5)",
+              }}
+            >
+              <MaterialIcons
+                name="arrow-back-ios"
+                size={24}
+                color={Colors.blackColor}
+                onPress={() => navigation.goBack()}
+              />
+            </Box>
           }
           rightItem={
             <View style={{ flexDirection: "row" }}>

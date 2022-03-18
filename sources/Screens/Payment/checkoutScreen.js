@@ -30,7 +30,7 @@ import {
 import LoadingModal from "../../Components/Modal/LoadingModal";
 import { clearCart } from "../../Redux/Cart/cartActions";
 import DefaultModal from "../../Components/Modal/DefaultModal";
-import { useToast } from "native-base";
+import { HStack, useToast } from "native-base";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
 
@@ -51,6 +51,8 @@ const CheckoutScreen = () => {
     dispatch(setSelectedPaymentMethod(null));
     dispatch(setPaymentProcess({ loading: false, error: null, data: null }));
   }, []);
+
+  console.log(JSON.stringify(selectedPaymentMethod?.service_fee.key, null, 2));
 
   const renderItem = (item) => {
     return (
@@ -92,6 +94,45 @@ const CheckoutScreen = () => {
           <ScrollView style={{ flex: 1 }}>
             {cart.map((val) => renderItem(val))}
           </ScrollView>
+          {selectedPaymentMethod !== null && (
+            <HStack style={{ paddingHorizontal: Sizes.fixPadding / 2 }}>
+              <Text
+                style={{
+                  marginEnd: "auto",
+                }}
+              >
+                Service Fee
+              </Text>
+              <NumberFormat
+                value={cart.reduce(
+                  (total, x) =>
+                    selectedPaymentMethod?.service_fee.key === "var"
+                      ? total +
+                        (x.price_discount > 0
+                          ? x.price_discount
+                          : x.price *
+                            (selectedPaymentMethod?.service_fee.value / 100))
+                      : selectedPaymentMethod?.service_fee.value,
+                  0
+                )}
+                displayType={"text"}
+                thousandSeparator="."
+                decimalSeparator=","
+                prefix={"IDR "}
+                renderText={(value, props) => (
+                  <>
+                    <Text
+                      style={{
+                        ...Fonts.black17Regular,
+                      }}
+                    >
+                      {value}
+                    </Text>
+                  </>
+                )}
+              />
+            </HStack>
+          )}
 
           <View
             style={{
@@ -112,7 +153,20 @@ const CheckoutScreen = () => {
             <NumberFormat
               value={cart.reduce(
                 (total, x) =>
-                  total + (x.price_discount > 0 ? x.price_discount : x.price),
+                  selectedPaymentMethod === null
+                    ? total +
+                      (x.price_discount > 0 ? x.price_discount : x.price)
+                    : selectedPaymentMethod?.service_fee.key === "var"
+                    ? total +
+                      (x.price_discount > 0 ? x.price_discount : x.price) +
+                      (total +
+                        (x.price_discount > 0
+                          ? x.price_discount
+                          : x.price *
+                            (selectedPaymentMethod?.service_fee.value / 100)))
+                    : total +
+                      (x.price_discount > 0 ? x.price_discount : x.price) +
+                      selectedPaymentMethod?.service_fee.value,
                 0
               )}
               displayType={"text"}
@@ -120,13 +174,15 @@ const CheckoutScreen = () => {
               decimalSeparator=","
               prefix={"IDR "}
               renderText={(value, props) => (
-                <Text
-                  style={{
-                    ...Fonts.black17Regular,
-                  }}
-                >
-                  {value}
-                </Text>
+                <>
+                  <Text
+                    style={{
+                      ...Fonts.black17Regular,
+                    }}
+                  >
+                    {value}
+                  </Text>
+                </>
               )}
             />
           </View>

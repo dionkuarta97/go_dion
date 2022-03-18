@@ -59,8 +59,6 @@ const PaymentMethodScreen = () => {
     });
   }, []);
 
-  console.log(paymentMethod);
-
   const renderHeader = ({ title, icon }) => {
     return (
       <View style={styles.itemHeader}>
@@ -77,6 +75,7 @@ const PaymentMethodScreen = () => {
   };
 
   const renderSubItem = (subItem) => {
+    console.log(JSON.stringify(subItem, null, 2));
     return (
       <TouchableOpacity
         key={subItem.name}

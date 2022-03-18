@@ -87,7 +87,7 @@ const RegisterContent = ({ sendedEmail }) => {
       toast.show({
         placement: "top",
         duration: 3000,
-        width: Dimensions.get("screen").width / 1.3,
+        width: Dimensions.get("screen").width / 1.2,
         render: () => {
           return <ToastErrorContent content={register.error} />;
         },
@@ -341,79 +341,8 @@ const RegisterContent = ({ sendedEmail }) => {
                     email_wali: waliEmail,
                     phone_wali: waliPhone,
                   });
-                  if (waliEmail) {
-                    if (emailValidate(waliEmail) !== null) {
-                      toast.show({
-                        placement: "top",
-                        duration: 3000,
-                        width: Dimensions.get("screen").width / 1.3,
-                        render: () => {
-                          return (
-                            <ToastErrorContent
-                              content={emailValidate(waliEmail)}
-                            />
-                          );
-                        },
-                      });
-                    }
-                  }
-                  if (phoneNumberValidation(phone) !== null) {
-                    toast.show({
-                      placement: "top",
-                      duration: 3000,
-                      width: Dimensions.get("screen").width / 1.3,
-                      render: () => {
-                        return (
-                          <ToastErrorContent
-                            content={phoneNumberValidation(phone)}
-                          />
-                        );
-                      },
-                    });
-                  } else if (emailValidate(email) !== null) {
-                    toast.show({
-                      placement: "top",
-                      duration: 3000,
-                      width: Dimensions.get("screen").width / 1.3,
-                      render: () => {
-                        return (
-                          <ToastErrorContent content={emailValidate(email)} />
-                        );
-                      },
-                    });
-                  } else if (passwordValidation(password) !== null) {
-                    toast.show({
-                      placement: "top",
-                      duration: 3000,
-                      width: Dimensions.get("screen").width / 1.3,
-                      render: () => {
-                        return (
-                          <ToastErrorContent
-                            content={passwordValidation(password)}
-                          />
-                        );
-                      },
-                    });
-                  } else if (waliPhone) {
-                    if (phoneNumberValidation(waliPhone) !== null) {
-                      toast.show({
-                        placement: "top",
-                        duration: 3000,
-                        width: Dimensions.get("screen").width / 1.3,
-                        render: () => {
-                          return (
-                            <ToastErrorContent
-                              content={phoneNumberValidation(waliPhone)}
-                            />
-                          );
-                        },
-                      });
-                    } else {
-                      dispatch(getRegister(bodyParams));
-                    }
-                  } else {
-                    dispatch(getRegister(bodyParams));
-                  }
+
+                  dispatch(getRegister(bodyParams));
                 } else {
                   toast.show({
                     placement: "top",
