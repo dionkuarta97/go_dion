@@ -213,7 +213,20 @@ const ProfileEditScreen = (props) => {
       dispatch(setUpdateProfile({ data: null, loading: false, error: null }));
       navigation.goBack();
     }
-  }, [update.data]);
+    if (update.error === "Terjadi kesalahan saat memproses data") {
+      Alert.alert("Error", "Terjadi kesalahan saat memproses data", [
+        {
+          text: "OKE",
+          onPress: () => {
+            dispatch(
+              setUpdateProfile({ data: null, loading: false, error: null })
+            );
+            navigation.goBack();
+          },
+        },
+      ]);
+    }
+  }, [update]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -436,7 +449,11 @@ const ProfileEditScreen = (props) => {
               }}
             />
           )}
-          <DefaultTextInput placeholder="Address" onChangeText={setAddress} />
+          <DefaultTextInput
+            placeholder="Address"
+            value={address}
+            onChangeText={setAddress}
+          />
 
           <Text
             style={{

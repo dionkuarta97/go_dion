@@ -126,13 +126,13 @@ const ProductDetailScreen = (props) => {
               paddingLeft: 5,
               paddingVertical: 3,
               borderRadius: 10,
-              backgroundColor: "rgba(245,158,11, 0.5)",
+              backgroundColor: "rgba(0,0,0, 0.3)",
             }}
           >
             <MaterialIcons
               name="arrow-back-ios"
               size={24}
-              color={Colors.blackColor}
+              color={Colors.whiteColor}
               onPress={() => navigation.goBack()}
             />
           </Box>
@@ -149,13 +149,13 @@ const ProductDetailScreen = (props) => {
                 paddingHorizontal: 5,
                 paddingVertical: 3,
                 borderRadius: 10,
-                backgroundColor: "rgba(245,158,11, 0.5)",
+                backgroundColor: "rgba(0,0,0, 0.3)",
               }}
             >
-              <MaterialIcons name={"add"} size={24} color={Colors.blackColor} />
+              <MaterialIcons name={"add"} size={24} color={Colors.whiteColor} />
               <Text
                 style={{
-                  ...Fonts.black17Regular,
+                  ...Fonts.white16Bold,
                   marginLeft: Sizes.fixPadding - 5.0,
                 }}
               >
@@ -168,16 +168,20 @@ const ProductDetailScreen = (props) => {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
+                paddingHorizontal: 5,
+                paddingVertical: 3,
+                borderRadius: 10,
+                backgroundColor: "rgba(0,0,0, 0.3)",
               }}
             >
               <MaterialIcons
                 name={"done"}
                 size={24}
-                color={Colors.primaryColor}
+                color={Colors.whiteColor}
               />
               <Text
                 style={{
-                  ...Fonts.primaryColor16Regular,
+                  ...Fonts.white16Bold,
                   marginLeft: Sizes.fixPadding - 5.0,
                 }}
               >
