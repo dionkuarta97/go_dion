@@ -67,6 +67,18 @@ const PilihProdiScreen = (props) => {
       }
     }
   }, [update.loading]);
+
+  useEffect(() => {
+    if (pilihanSatu.universitas !== null) {
+      setPilihanSatu({ ...pilihanSatu, jurusan: null, passing_grade: null });
+    }
+  }, [pilihanSatu.universitas]);
+  useEffect(() => {
+    if (pilihanDua.universitas !== null) {
+      setPilihanDua({ ...pilihanDua, jurusan: null, passing_grade: null });
+    }
+  }, [pilihanDua.universitas]);
+  console.log(JSON.stringify(update));
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>

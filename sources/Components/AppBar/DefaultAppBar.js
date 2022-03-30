@@ -27,7 +27,7 @@ const DefaultAppBar = (props) => {
               paddingLeft: 5,
               paddingVertical: 3,
               borderRadius: 10,
-              backgroundColor: "rgba(245,158,11, 0.5)",
+              backgroundColor: "rgba(245,158,11, 0)",
             }}
           >
             <MaterialIcons
