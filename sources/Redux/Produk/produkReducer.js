@@ -8,6 +8,7 @@ import {
   SET_LOADING,
   SET_LOADING_DUA,
   SET_TOTAL_DATA,
+  SET_REDEEM_CODE,
 } from "./produkTypes";
 
 const initialState = {
@@ -39,6 +40,11 @@ const initialState = {
     data: null,
   },
   resultSearchProduct: {
+    loading: false,
+    error: null,
+    data: null,
+  },
+  redeemCode: {
     loading: false,
     error: null,
     data: null,
@@ -90,6 +96,8 @@ export function produkReducer(state = initialState, action) {
       };
     case SET_TOTAL_DATA:
       return { ...state, totalData: action.payload };
+    case SET_REDEEM_CODE:
+      return { ...state, redeemCode: action.payload };
     default:
       return state;
   }
