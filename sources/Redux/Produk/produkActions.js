@@ -15,7 +15,46 @@ import {
   SET_LOADING,
   SET_LOADING_DUA,
   SET_TOTAL_DATA,
+  SET_REDEEM_CODE,
 } from "./produkTypes";
+
+export const setRedeemCode = (payload) => {
+  return {
+    type: SET_REDEEM_CODE,
+    payload,
+  };
+};
+
+export const getRedeemCode = (payload) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      dispatch(setRedeemCode(defaultInitState));
+      const urlBase = getState().initReducer.baseUrl;
+      console.log(urlBase + "/masterdata/v1/redeems/code");
+      fetch(urlBase + "/masterdata/v1/redeems/code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().authReducer.token}`,
+        },
+        body: payload,
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json, "jsssadas");
+          if (json.status) {
+            dispatch(setRedeemCode(defaultDoneState(json.message)));
+          } else {
+            dispatch(setRedeemCode(defaultFailedState(json.message)));
+          }
+        })
+        .catch((err) => {
+          console.log(err, "errr");
+          dispatch(setRedeemCode(defaultErrorState));
+        });
+    });
+  };
+};
 
 export function setGroupedProduk(state) {
   return {
