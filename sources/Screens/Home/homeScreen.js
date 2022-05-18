@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -10,6 +10,9 @@ import {
   Alert,
   Dimensions,
   ActivityIndicator,
+  Keyboard,
+  Platform,
+  KeyboardEvent,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import SliverAppBar from "../../Components/sliverAppBar";
@@ -17,6 +20,7 @@ import HomeContent from "./Component/HomeContent";
 import { useNavigation } from "@react-navigation/core";
 import { FontAwesome5 } from "@expo/vector-icons";
 
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Fonts from "../../Theme/Fonts";
 import Colors from "../../Theme/Colors";
 import ActionButtonCart from "../../Components/ActionButton/ActionButtonCart";
@@ -29,11 +33,44 @@ import {
   Input,
   Icon,
   Button,
+  KeyboardAvoidingView,
 } from "native-base";
 import gift from "../../../assets/Images/helper/gift.png";
 import error from "../../../assets/Images/helper/error.png";
 import success from "../../../assets/Images/helper/success.png";
 import { getRedeemCode, setRedeemCode } from "../../Redux/Produk/produkActions";
+const useKeyboardBottomInset = () => {
+  const [bottom, setBottom] = React.useState(0);
+  const subscriptions = React.useRef([]);
+
+  React.useEffect(() => {
+    function onKeyboardChange(e) {
+      if (
+        e.startCoordinates &&
+        e.endCoordinates.screenY < e.startCoordinates.screenY
+      )
+        setBottom(e.endCoordinates.height);
+      else setBottom(0);
+    }
+
+    if (Platform.OS === "ios") {
+      subscriptions.current = [
+        Keyboard.addListener("keyboardWillChangeFrame", onKeyboardChange),
+      ];
+    } else {
+      subscriptions.current = [
+        Keyboard.addListener("keyboardDidHide", onKeyboardChange),
+        Keyboard.addListener("keyboardDidShow", onKeyboardChange),
+      ];
+    }
+    return () => {
+      subscriptions.current.forEach((subscription) => {
+        subscription.remove();
+      });
+    };
+  }, [setBottom, subscriptions]);
+  return bottom;
+};
 const HomeScreen = (props) => {
   const isLogin = useSelector((state) => state.authReducer.isLogin);
   const profile = useSelector((state) => state.profileReducer.profile);
@@ -43,8 +80,37 @@ const HomeScreen = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const redeemCode = useSelector((state) => state.produkReducer.redeemCode);
+  const bottomInset = useKeyboardBottomInset();
+  const [show, setSHow] = useState(false);
+  const [bottom, setBottom] = useState(0);
+  console.log(show);
 
-  console.log(JSON.stringify(redeemCode, null, 2), "wkwkwk");
+  useEffect(() => {
+    const onKeyboardHide = () => {
+      if (show) {
+        setSHow(false);
+        setBottom(0);
+      }
+      return true;
+    };
+    const onKeyboardShow = (e) => {
+      setBottom(e.endCoordinates.height);
+      return true;
+    };
+    const keyboardHide = Keyboard.addListener(
+      "keyboardDidHide",
+      onKeyboardHide
+    );
+    const keyboardShow = Keyboard.addListener(
+      "keyboardDidShow",
+      onKeyboardShow
+    );
+
+    return () => {
+      keyboardHide.remove();
+      keyboardShow.remove();
+    };
+  }, [show]);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <SliverAppBar
@@ -71,6 +137,7 @@ const HomeScreen = (props) => {
               </TouchableOpacity>
             )}
             <View style={{ width: 15 }} />
+
             <Box
               style={{
                 marginRight: 10,
@@ -85,16 +152,20 @@ const HomeScreen = (props) => {
                     );
                   } else {
                     onOpen();
+                    setBottom(0);
                   }
                 }}
               >
                 <FontAwesome5 name="gift" size={24} color="black" />
               </TouchableOpacity>
+
               <Actionsheet
+                bottom={Platform.OS === "ios" ? bottom : 0}
                 isOpen={isOpen}
                 onClose={() => {
                   setCode("");
                   setErrorCode(false);
+                  setBottom(0);
                   dispatch(
                     setRedeemCode({ data: null, error: null, loading: false })
                   );
@@ -127,7 +198,6 @@ const HomeScreen = (props) => {
                           <Box
                             style={{
                               marginTop: 20,
-                              marginBottom: 100,
                               padding: 20,
                             }}
                           >
@@ -139,6 +209,27 @@ const HomeScreen = (props) => {
                               {redeemCode.error}
                             </Text>
                           </Box>
+                          <Button
+                            bg={"amber.400"}
+                            onPress={() => {
+                              setCode("");
+                              setErrorCode(false);
+                              setBottom(0);
+                              dispatch(
+                                setRedeemCode({
+                                  data: null,
+                                  error: null,
+                                  loading: false,
+                                })
+                              );
+                            }}
+                            style={{
+                              width: Dimensions.get("screen").width / 1.4,
+                              marginBottom: 100,
+                            }}
+                          >
+                            Coba Lagi
+                          </Button>
                         </>
                       ) : redeemCode.data ? (
                         <>
@@ -179,8 +270,12 @@ const HomeScreen = (props) => {
                           />
 
                           <Input
-                            onChangeText={(val) => setCode(val)}
-                            style={{}}
+                            onChangeText={(val) => {
+                              setCode(val);
+                            }}
+                            onTouchEndCapture={() => {
+                              setSHow(true);
+                            }}
                             w={{
                               base: "75%",
                               md: "25%",
@@ -220,6 +315,7 @@ const HomeScreen = (props) => {
                                     )
                                   );
                                 }
+                                setBottom(0);
                               }}
                               style={{
                                 width: Dimensions.get("screen").width / 1.4,
@@ -235,7 +331,6 @@ const HomeScreen = (props) => {
                 </Actionsheet.Content>
               </Actionsheet>
             </Box>
-
             <ActionButtonCart />
           </View>
         }

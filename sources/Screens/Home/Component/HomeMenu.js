@@ -82,7 +82,7 @@ const HomeMenu = () => {
         break;
       case 1:
         if (isLogin) {
-          navigation.navigate("TestVideo");
+          navigation.navigate("GoBelajarScreen");
         } else {
           Alert.alert(
             "Tidak Bisa Masuk",

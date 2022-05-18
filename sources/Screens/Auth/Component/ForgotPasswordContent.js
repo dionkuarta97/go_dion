@@ -49,7 +49,12 @@ const ForgotPasswordContent = () => {
               untuk informasi password
             </Text>
           </View>
-          <DefaultTextInput placeholder="email kamu" onChangeText={setEmail} />
+          <DefaultTextInput
+            keyboardType="email-address"
+            autoCapitalize="none"
+            placeholder="email kamu"
+            onChangeText={setEmail}
+          />
 
           {forgotPassword.error !== null && (
             <Text style={{ color: "red", opacity: 0.8 }}>

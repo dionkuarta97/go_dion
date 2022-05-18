@@ -8,6 +8,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  BackHandler,
+  Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -25,7 +27,7 @@ import NoData from "../../Components/NoData";
 import LaporanScreen from "../Laporan/LaporanScreen";
 import { useToast } from "native-base";
 import ToastErrorContent from "../../Components/ToastErrorContent";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 
 const bottomNavMenu = [
   { title: "Home", icon: "home" },
@@ -40,6 +42,33 @@ export default MainScreen = (props) => {
   const { firstLogin } = useSelector((state) => state.authReducer);
   const { checkVersion } = useSelector((state) => state.versionReducer);
   const toast = useToast();
+  const route = useRoute();
+
+  useFocusEffect(
+    useCallback(() => {
+      if (route.name === "MainScreen") {
+        const backAction = () => {
+          Alert.alert("Perhatian", "Kamu akan keluar dari aplikasi. Yakin??", [
+            {
+              text: "Tidak",
+              onPress: () => null,
+              style: "cancel",
+            },
+            { text: "Iya", onPress: () => BackHandler.exitApp() },
+          ]);
+          return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+
+        return () => backHandler.remove();
+      }
+    }, [])
+  );
+
   useEffect(() => {
     if (checkVersion.error) {
       toast.show({

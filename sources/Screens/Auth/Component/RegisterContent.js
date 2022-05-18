@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TouchableOpacity, Alert, Dimensions } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
-
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
@@ -97,7 +105,7 @@ const RegisterContent = ({ sendedEmail }) => {
 
   function passwordValidation(text) {
     if (text.length < 8)
-      return "Password Harus Lebih Dari 8 Karakter, Mengandung Huruf Besar, Huruf Kecil & Angka";
+      return "Password Minimal harus 8 karakter, Mengandung Huruf Besar, Huruf Kecil & Angka";
     if (!text.match(new RegExp("[A-Z]")))
       return "Password Harus Mengandung Huruf Besar, Huruf Kecil & Angka";
     if (!text.match(new RegExp("[a-z]")))
@@ -116,274 +124,284 @@ const RegisterContent = ({ sendedEmail }) => {
   }
 
   return (
-    <View
-      style={{
-        paddingVertical: Sizes.fixPadding * 7.0,
-        paddingHorizontal: Sizes.fixPadding * 2.0,
-      }}
-    >
-      <View>
-        <Text style={{ ...Fonts.black20Bold }}>Account Form</Text>
+    <KeyboardAwareScrollView>
+      <View
+        style={{
+          paddingVertical: Sizes.fixPadding * 7.0,
+          paddingHorizontal: Sizes.fixPadding * 2.0,
+        }}
+      >
+        <View>
+          <Text style={{ ...Fonts.black20Bold }}>Account Form</Text>
 
-        <DefaultTextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-        />
+          <DefaultTextInput
+            placeholder="Email"
+            disable={false}
+            value={email}
+            onChangeText={setEmail}
+          />
 
-        <DefaultTextInput placeholder="Full Name" onChangeText={setName} />
+          <DefaultTextInput placeholder="Full Name" onChangeText={setName} />
 
-        <DefaultTextInput
-          keyboardType="numeric"
-          placeholder="Phone Number"
-          onChangeText={setPhone}
-        />
+          <DefaultTextInput
+            keyboardType="numeric"
+            placeholder="Phone Number"
+            onChangeText={setPhone}
+          />
 
-        <OnTapTextInput
-          placeholder="Role"
-          value={role}
-          onTap={() => setRoleBottomeSheetVisible(true)}
-        />
+          <OnTapTextInput
+            placeholder="Role"
+            value={role}
+            onTap={() => setRoleBottomeSheetVisible(true)}
+          />
 
-        {roleBottomeSheetVisible && (
-          <RoleBottomSheet
-            onClose={() => setRoleBottomeSheetVisible(false)}
-            onSelect={(val) => {
-              setRole(val);
-              setRoleBottomeSheetVisible(false);
+          {roleBottomeSheetVisible && (
+            <RoleBottomSheet
+              onClose={() => setRoleBottomeSheetVisible(false)}
+              onSelect={(val) => {
+                setRole(val);
+                setRoleBottomeSheetVisible(false);
+              }}
+            />
+          )}
+
+          <OnTapTextInput
+            placeholder="Class Level"
+            value={kelas}
+            onTap={() => {
+              console.log("Tap Kelas");
+              setClassBottomSheetVisible(true);
             }}
           />
-        )}
 
-        <OnTapTextInput
-          placeholder="Class Level"
-          value={kelas}
-          onTap={() => {
-            console.log("Tap Kelas");
-            setClassBottomSheetVisible(true);
-          }}
-        />
+          {classBottomSheetVisible && (
+            <KelasBottomSheet
+              onClose={() => setClassBottomSheetVisible(false)}
+              onSelect={(val) => {
+                setKelas(val);
+                setClassBottomSheetVisible(false);
+              }}
+            />
+          )}
 
-        {classBottomSheetVisible && (
-          <KelasBottomSheet
-            onClose={() => setClassBottomSheetVisible(false)}
-            onSelect={(val) => {
-              setKelas(val);
-              setClassBottomSheetVisible(false);
+          <PasswordTextInput
+            placeholder="Password"
+            onChangeText={setPassword}
+          />
+          {passwordValidation(password) != null && (
+            <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+              {passwordValidation(password)}
+            </Text>
+          )}
+          <PasswordTextInput
+            placeholder="Password Repeat"
+            onChangeText={setRepeatPassword}
+          />
+          {password !== repeatPassword && (
+            <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+              Password tidak sama
+            </Text>
+          )}
+        </View>
+
+        <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
+          <Text style={{ ...Fonts.black20Bold }}>Address Form</Text>
+
+          <OnTapTextInput
+            placeholder="Province"
+            value={province !== null ? province.provinsi : ""}
+            onTap={() => {
+              console.log("Tap Kelas");
+              setProvinceBottomSheetVisible(true);
             }}
           />
-        )}
+          {provinceBottomSheetVisible && (
+            <ProvinceBottomSheet
+              onClose={() => setProvinceBottomSheetVisible(false)}
+              onSelect={(value) => {
+                setProvinceBottomSheetVisible(false);
+                setProvince(value);
+              }}
+            />
+          )}
 
-        <PasswordTextInput placeholder="Password" onChangeText={setPassword} />
-        {passwordValidation(password) != null && (
-          <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
-            {passwordValidation(password)}
-          </Text>
-        )}
-        <PasswordTextInput
-          placeholder="Password Repeat"
-          onChangeText={setRepeatPassword}
-        />
-        {password !== repeatPassword && (
-          <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
-            Password tidak sama
-          </Text>
-        )}
-      </View>
-
-      <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
-        <Text style={{ ...Fonts.black20Bold }}>Address Form</Text>
-
-        <OnTapTextInput
-          placeholder="Province"
-          value={province !== null ? province.provinsi : ""}
-          onTap={() => {
-            console.log("Tap Kelas");
-            setProvinceBottomSheetVisible(true);
-          }}
-        />
-        {provinceBottomSheetVisible && (
-          <ProvinceBottomSheet
-            onClose={() => setProvinceBottomSheetVisible(false)}
-            onSelect={(value) => {
-              setProvinceBottomSheetVisible(false);
-              setProvince(value);
+          <OnTapTextInput
+            placeholder="City"
+            value={city !== null ? city.kabkota : ""}
+            onTap={() => {
+              console.log("Tap Kelas");
+              setCityBottomSheetVisible(true);
             }}
           />
-        )}
+          {cityBottomSheetVisible && (
+            <CityBottomSheet
+              idProvinsi={
+                province !== null ? province.idprovinsi.toString() : null
+              }
+              onClose={() => setCityBottomSheetVisible(false)}
+              onSelect={(value) => {
+                setCityBottomSheetVisible(false);
+                setCity(value);
+              }}
+            />
+          )}
 
-        <OnTapTextInput
-          placeholder="City"
-          value={city !== null ? city.kabkota : ""}
-          onTap={() => {
-            console.log("Tap Kelas");
-            setCityBottomSheetVisible(true);
-          }}
-        />
-        {cityBottomSheetVisible && (
-          <CityBottomSheet
-            idProvinsi={
-              province !== null ? province.idprovinsi.toString() : null
-            }
-            onClose={() => setCityBottomSheetVisible(false)}
-            onSelect={(value) => {
-              setCityBottomSheetVisible(false);
-              setCity(value);
+          <DefaultTextInput placeholder="Address" onChangeText={setAddress} />
+        </View>
+
+        <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
+          <Text style={{ ...Fonts.black20Bold }}>School Form</Text>
+
+          <OnTapTextInput
+            placeholder="School Province"
+            value={schoolProvince !== null ? schoolProvince.provinsi : ""}
+            onTap={() => {
+              setSchoolProvinceBottomSheetVisible(true);
             }}
           />
-        )}
+          {schoolProvinceBottomSheetVisible && (
+            <ProvinceBottomSheet
+              onClose={() => setSchoolProvinceBottomSheetVisible(false)}
+              onSelect={(value) => {
+                setSchoolProvinceBottomSheetVisible(false);
+                setSchoolProvince(value);
+              }}
+            />
+          )}
 
-        <DefaultTextInput placeholder="Address" onChangeText={setAddress} />
-      </View>
-
-      <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
-        <Text style={{ ...Fonts.black20Bold }}>School Form</Text>
-
-        <OnTapTextInput
-          placeholder="School Province"
-          value={schoolProvince !== null ? schoolProvince.provinsi : ""}
-          onTap={() => {
-            setSchoolProvinceBottomSheetVisible(true);
-          }}
-        />
-        {schoolProvinceBottomSheetVisible && (
-          <ProvinceBottomSheet
-            onClose={() => setSchoolProvinceBottomSheetVisible(false)}
-            onSelect={(value) => {
-              setSchoolProvinceBottomSheetVisible(false);
-              setSchoolProvince(value);
+          <OnTapTextInput
+            placeholder="School City"
+            value={schoolCity !== null ? schoolCity.kabkota : ""}
+            onTap={() => {
+              setSchoolCityBottomSheetVisible(true);
             }}
           />
-        )}
+          {schoolCityBottomSheetVisible && (
+            <CityBottomSheet
+              idProvinsi={
+                schoolProvince !== null
+                  ? schoolProvince.idprovinsi.toString()
+                  : null
+              }
+              onClose={() => setSchoolCityBottomSheetVisible(false)}
+              onSelect={(value) => {
+                setSchoolCityBottomSheetVisible(false);
+                setSchoolCity(value);
+              }}
+            />
+          )}
 
-        <OnTapTextInput
-          placeholder="School City"
-          value={schoolCity !== null ? schoolCity.kabkota : ""}
-          onTap={() => {
-            setSchoolCityBottomSheetVisible(true);
-          }}
-        />
-        {schoolCityBottomSheetVisible && (
-          <CityBottomSheet
-            idProvinsi={
-              schoolProvince !== null
-                ? schoolProvince.idprovinsi.toString()
-                : null
-            }
-            onClose={() => setSchoolCityBottomSheetVisible(false)}
-            onSelect={(value) => {
-              setSchoolCityBottomSheetVisible(false);
-              setSchoolCity(value);
+          <OnTapTextInput
+            placeholder="School Name"
+            value={schoolName}
+            onTap={() => {
+              setSchoolNameBottomSheetVisible(true);
             }}
           />
-        )}
+          {schoolNameBottomSheetVisible && (
+            <SchoolBottomSheet
+              idkabkota={
+                schoolCity !== null ? schoolCity.idkabkota.toString() : null
+              }
+              onClose={() => setSchoolNameBottomSheetVisible(false)}
+              onSelect={(value) => {
+                setSchoolNameBottomSheetVisible(false);
+                setSchoolName(value);
+              }}
+            />
+          )}
+        </View>
 
-        <OnTapTextInput
-          placeholder="School Name"
-          value={schoolName}
-          onTap={() => {
-            setSchoolNameBottomSheetVisible(true);
-          }}
-        />
-        {schoolNameBottomSheetVisible && (
-          <SchoolBottomSheet
-            idkabkota={
-              schoolCity !== null ? schoolCity.idkabkota.toString() : null
-            }
-            onClose={() => setSchoolNameBottomSheetVisible(false)}
-            onSelect={(value) => {
-              setSchoolNameBottomSheetVisible(false);
-              setSchoolName(value);
-            }}
+        <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
+          <Text style={{ ...Fonts.black20Bold }}>Wali Info Form</Text>
+
+          <DefaultTextInput
+            placeholder="Wali Name"
+            onChangeText={setWaliName}
           />
-        )}
-      </View>
 
-      <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
-        <Text style={{ ...Fonts.black20Bold }}>Wali Info Form</Text>
+          <DefaultTextInput
+            placeholder="Wali Phone Number"
+            keyboardType="numeric"
+            onChangeText={setWaliPhone}
+          />
 
-        <DefaultTextInput placeholder="Wali Name" onChangeText={setWaliName} />
-
-        <DefaultTextInput
-          placeholder="Wali Phone Number"
-          keyboardType="numeric"
-          onChangeText={setWaliPhone}
-        />
-
-        <DefaultTextInput
-          placeholder="Wali Email"
-          onChangeText={setWaliEmail}
-        />
-      </View>
-
-      <View style={{ flexDirection: "row" }}>
-        <View style={{ flex: 1 }}>
-          <DefaultPrimaryButton
-            text="Submit"
-            onPress={() => {
-              checkInternet().then((connection) => {
-                if (connection) {
-                  const bodyParams = JSON.stringify({
-                    email: email,
-                    full_name: name,
-                    kelas: kelas,
-                    role: role,
-                    phone: phone,
-                    provinsi: province !== null ? province.provinsi : "",
-                    kota: city !== null ? city.kabkota : "",
-                    alamat: address,
-                    provinsi_sekolah:
-                      schoolProvince !== null ? schoolProvince.provinsi : "",
-                    kota_sekolah: schoolCity !== null ? schoolCity.kabkota : "",
-                    sekolah: schoolName,
-                    password: password,
-                    nama_wali: waliName,
-                    email_wali: waliEmail,
-                    phone_wali: waliPhone,
-                  });
-
-                  dispatch(getRegister(bodyParams));
-                } else {
-                  toast.show({
-                    placement: "top",
-                    duration: null,
-                    width: Dimensions.get("screen").width / 1.3,
-                    render: () => {
-                      return (
-                        <ToastErrorContent
-                          content="Kamu tidak terhubung ke internet"
-                          onPress={() => {
-                            toast.closeAll();
-                            navigation.goBack();
-                          }}
-                        />
-                      );
-                    },
-                  });
-                }
-              });
-            }}
+          <DefaultTextInput
+            placeholder="Wali Email"
+            onChangeText={setWaliEmail}
           />
         </View>
-      </View>
 
-      {register.loading && <LoadingModal />}
-      {register.data !== null && (
-        <DefaultModal>
-          <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>
-            Berhasil Regitrasi, Cek email kamu untuk memverifikasi pembuatan
-            akun.
-          </Text>
-          <DefaultPrimaryButton
-            text="Kembali ke Halaman Login"
-            onPress={() => {
-              navigation.goBack();
-              navigation.goBack();
-            }}
-          />
-        </DefaultModal>
-      )}
-    </View>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <DefaultPrimaryButton
+              text="Submit"
+              onPress={() => {
+                checkInternet().then((connection) => {
+                  if (connection) {
+                    const bodyParams = JSON.stringify({
+                      email: email,
+                      full_name: name,
+                      kelas: kelas,
+                      role: role,
+                      phone: phone,
+                      provinsi: province !== null ? province.provinsi : "",
+                      kota: city !== null ? city.kabkota : "",
+                      alamat: address,
+                      provinsi_sekolah:
+                        schoolProvince !== null ? schoolProvince.provinsi : "",
+                      kota_sekolah:
+                        schoolCity !== null ? schoolCity.kabkota : "",
+                      sekolah: schoolName,
+                      password: password,
+                      nama_wali: waliName,
+                      email_wali: waliEmail,
+                      phone_wali: waliPhone,
+                    });
+
+                    dispatch(getRegister(bodyParams));
+                  } else {
+                    toast.show({
+                      placement: "top",
+                      duration: null,
+                      width: Dimensions.get("screen").width / 1.3,
+                      render: () => {
+                        return (
+                          <ToastErrorContent
+                            content="Kamu tidak terhubung ke internet"
+                            onPress={() => {
+                              toast.closeAll();
+                              navigation.goBack();
+                            }}
+                          />
+                        );
+                      },
+                    });
+                  }
+                });
+              }}
+            />
+          </View>
+        </View>
+
+        {register.loading && <LoadingModal />}
+        {register.data !== null && (
+          <DefaultModal>
+            <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>
+              Berhasil Regitrasi, Cek email kamu untuk memverifikasi pembuatan
+              akun.
+            </Text>
+            <DefaultPrimaryButton
+              text="Kembali ke Halaman Login"
+              onPress={() => {
+                navigation.goBack();
+                navigation.goBack();
+              }}
+            />
+          </DefaultModal>
+        )}
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 

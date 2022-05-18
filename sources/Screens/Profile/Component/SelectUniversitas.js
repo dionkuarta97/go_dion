@@ -88,8 +88,9 @@ const SelectUniversitas = (props) => {
         ) : (
           <FlatList
             style={{
-              marginBottom: 20,
-              height: Dimensions.get("screen").height / 3,
+              marginBottom: 50,
+              maxHeight: Dimensions.get("screen").height / 2.2,
+              minHeight: Dimensions.get("screen").height / 2.2,
             }}
             keyExtractor={(item, index) => item.id + "univ"}
             data={listUniversitas.data?.filter((value) =>

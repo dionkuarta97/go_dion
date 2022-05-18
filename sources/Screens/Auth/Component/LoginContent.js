@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  KeyboardAvoidingView,
 } from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
@@ -20,6 +21,7 @@ import {
   setLoginData,
   setLoginStatus,
 } from "../../../Redux/Auth/authActions";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
 import DefaultModal from "../../../Components/Modal/DefaultModal";
 import { useToast } from "native-base";
@@ -89,63 +91,67 @@ const LoginContent = () => {
   };
 
   return (
-    <View
-      style={{
-        paddingVertical: Sizes.fixPadding * 7.0,
-        paddingHorizontal: Sizes.fixPadding * 2.0,
-      }}
-    >
-      {login.loading && <LoadingModal />}
-
-      <DefaultTextInput
-        placeholder="Email"
-        onChangeText={(value) => setUsernameText(value)}
-      />
-      <PasswordTextInput
-        placeholder="Password"
-        onChangeText={(value) => setPasswordText(value)}
-      />
-
-      {login.error !== null && (
-        <Text style={{ color: "red" }}>{login.error}</Text>
-      )}
-
-      <DefaultPrimaryButton
-        text="Sign In"
-        onPress={() => {
-          checkInternet().then((connection) => {
-            if (connection) {
-              dispatch(
-                getLogin({
-                  username: usernameText,
-                  password: passwordText,
-                  playerId,
-                })
-              );
-            } else {
-              toast.show({
-                placement: "top",
-                duration: null,
-                width: Dimensions.get("screen").width / 1.3,
-                render: () => {
-                  return (
-                    <ToastErrorContent
-                      content="Kamu tidak terhubung ke internet"
-                      onPress={() => {
-                        toast.closeAll();
-                        navigation.goBack();
-                      }}
-                    />
-                  );
-                },
-              });
-            }
-          });
+    <KeyboardAwareScrollView>
+      <View
+        style={{
+          paddingVertical: Sizes.fixPadding * 7.0,
+          paddingHorizontal: Sizes.fixPadding * 2.0,
         }}
-      />
-      {registerText()}
-      {forgetPasswordText()}
-    </View>
+      >
+        {login.loading && <LoadingModal />}
+
+        <DefaultTextInput
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          onChangeText={(value) => setUsernameText(value)}
+        />
+        <PasswordTextInput
+          placeholder="Password"
+          onChangeText={(value) => setPasswordText(value)}
+        />
+
+        {login.error !== null && (
+          <Text style={{ color: "red" }}>{login.error}</Text>
+        )}
+
+        <DefaultPrimaryButton
+          text="Sign In"
+          onPress={() => {
+            checkInternet().then((connection) => {
+              if (connection) {
+                dispatch(
+                  getLogin({
+                    username: usernameText,
+                    password: passwordText,
+                    playerId,
+                  })
+                );
+              } else {
+                toast.show({
+                  placement: "top",
+                  duration: null,
+                  width: Dimensions.get("screen").width / 1.3,
+                  render: () => {
+                    return (
+                      <ToastErrorContent
+                        content="Kamu tidak terhubung ke internet"
+                        onPress={() => {
+                          toast.closeAll();
+                          navigation.goBack();
+                        }}
+                      />
+                    );
+                  },
+                });
+              }
+            });
+          }}
+        />
+        {registerText()}
+        {forgetPasswordText()}
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
