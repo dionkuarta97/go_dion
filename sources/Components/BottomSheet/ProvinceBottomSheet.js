@@ -76,7 +76,11 @@ const ProvinceBottomSheet = (props) => {
       {listProvince.loading && <ActivityIndicator color={Colors.orangeColor} />}
       {listProvince.data !== null && (
         <FlatList
-          style={{ marginBottom: 50 }}
+          style={{
+            marginBottom: 50,
+            maxHeight: Dimensions.get("screen").height / 2.2,
+            minHeight: Dimensions.get("screen").height / 2.2,
+          }}
           keyExtractor={(item, index) => item.idprovinsi + ""}
           data={listProvince.data.filter((value) =>
             value.provinsi.toLowerCase().includes(search.toLowerCase())

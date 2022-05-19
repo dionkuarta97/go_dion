@@ -23,6 +23,8 @@ const GoBelajarScreen = () => {
     dispatch(getMateri());
   }, []);
 
+  console.log(JSON.stringify(materi, null, 2));
+
   const renderItem = (item) => {
     return (
       <TouchableOpacity
@@ -33,7 +35,15 @@ const GoBelajarScreen = () => {
           })
         }
       >
-        <View style={{ ...CompStyles.defaultCard, marginBottom: 0, marginTop: 8, marginEnd: 10, marginStart: 10 }}>
+        <View
+          style={{
+            ...CompStyles.defaultCard,
+            marginBottom: 0,
+            marginTop: 8,
+            marginEnd: 10,
+            marginStart: 10,
+          }}
+        >
           <View style={{ flexDirection: "row" }}>
             <View
               style={{
@@ -88,7 +98,17 @@ const GoBelajarScreen = () => {
       >
         {materi.loading && <LoadingIndicator />}
         {materi.data !== null ? (
-          <View style={{ flex: 1 }}>{materi.data.length > 0 ? <FlatList data={materi.data} keyExtractor={(item) => item._id} renderItem={({ item, index }) => renderItem(item)} /> : <EmptyIndicator />}</View>
+          <View style={{ flex: 1 }}>
+            {materi.data.length > 0 ? (
+              <FlatList
+                data={materi.data}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item, index }) => renderItem(item)}
+              />
+            ) : (
+              <EmptyIndicator />
+            )}
+          </View>
         ) : (
           !materi.loading && <NoMateri />
         )}

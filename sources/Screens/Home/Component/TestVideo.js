@@ -3,43 +3,19 @@ import React, { useEffect, useRef, useState } from "react";
 
 import * as ScreenOrientation from "expo-screen-orientation";
 
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
 
 import { useNavigation } from "@react-navigation/core";
-
+import { WebView } from "react-native-webview";
 import { Video } from "expo-av";
-const TestVideo = () => {
-  const [inFullscreen, setInFullsreen] = useState(false);
-  const refVideo = useRef(null);
-
-  const navigation = useNavigation();
-  const refVideo2 = useRef(null);
-  const [inFullscreen2, setInFullsreen2] = useState(false);
-  const refScrollView = useRef(null);
-  const [auto, setAuto] = useState(
-    "https://videodelivery.net/e70c304f701e6edd557ed928a5dd827a/manifest/video.m3u8"
-  );
-  const [resolution, setResolution] = useState(null);
-  const onFullscreenUpdate = async ({ fullscreenUpdate }) => {
-    switch (fullscreenUpdate) {
-      case Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT:
-        await ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.LANDSCAPE
-        );
-        // await ScreenOrientation.unlockAsync();
-        break;
-      case Video.FULLSCREEN_UPDATE_PLAYER_WILL_DISMISS:
-        // await ScreenOrientation.unlockAsync();
-
-        await ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.PORTRAIT
-        );
-        break;
-    }
-  };
-
+import DefaultAppBar from "../../../Components/AppBar/DefaultAppBar";
+const TestVideo = ({ route }) => {
+  const [tes, setTes] = useState(0);
+  const params = route.params;
+  const [tesDua, setTesDua] = useState(0);
+  console.log(params);
   async function getHLSStream(reso) {
-    const url = `https://videodelivery.net/e70c304f701e6edd557ed928a5dd827a`;
+    const url = `https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401`;
     const res = await fetch(`${url}/manifest/video.m3u8`);
 
     const streamText = await res.text();
@@ -48,50 +24,83 @@ const TestVideo = () => {
     if (reso === 1080) {
       setResolution(1080);
       setAuto(
-        "https://videodelivery.net/e70c304f701e6edd557ed928a5dd827a/manifest/" +
+        "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
           playList[5]
       );
     } else if (reso === 720) {
       setResolution(720);
       setAuto(
-        "https://videodelivery.net/e70c304f701e6edd557ed928a5dd827a/manifest/" +
+        "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
           playList[7]
       );
     } else if (reso === 540) {
       setResolution(540);
       setAuto(
-        "https://videodelivery.net/e70c304f701e6edd557ed928a5dd827a/manifest/" +
+        "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
           playList[9]
       );
     } else if (reso === 360) {
       setResolution(360);
       setAuto(
-        "https://videodelivery.net/e70c304f701e6edd557ed928a5dd827a/manifest/" +
+        "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
           playList[11]
       );
     }
   }
 
   useEffect(() => {
-    setResolution(null);
-    setAuto(
-      "https://videodelivery.net/e70c304f701e6edd557ed928a5dd827a/manifest/video.m3u8"
-    );
+    setTes(0);
+    setTesDua(0);
   }, []);
 
-  console.log(auto);
+  useEffect(async () => {
+    if (tesDua > 0) {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.LANDSCAPE
+      );
+    } else {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT
+      );
+    }
+  }, [tesDua]);
+
+  console.log(tes, "tes");
+  console.log(tesDua, "tesDua");
+
   return (
     <>
-      <Center>
-        <Box
-          style={{
-            marginVertical: 30,
+      <SafeAreaView style={{ flex: 1 }}>
+        <DefaultAppBar title="Video Materi" backEnabled={true} />
+        <WebView
+          source={{
+            uri: params.video,
           }}
-        >
-          <Heading>Testing Video</Heading>
-        </Box>
-      </Center>
-      <View>
+          androidLayerType={"hardware"}
+          allowsFullscreenVideo={true}
+          mediaPlaybackRequiresUserAction
+          useNativeResumeAndPauseLifecycleEvents
+          javaScriptEnabled
+          allowsInlineMediaPlayback
+          useWebKit={true}
+          originWhitelist={["*"]}
+          automaticallyAdjustContentInsets
+          onLayout={async (e) => {
+            console.log(e.nativeEvent.layout);
+            if (tes === 0) {
+              setTes(e.nativeEvent.layout.height);
+            }
+
+            if (tes < e.nativeEvent.layout.height && tes !== 0) {
+              setTesDua(e.nativeEvent.layout.height);
+            }
+
+            if (tes === e.nativeEvent.layout.height) {
+              setTesDua(0);
+            }
+          }}
+        />
+        {/* <View>
         <Video
           style={styles.videoFrame}
           useNativeControls
@@ -99,6 +108,7 @@ const TestVideo = () => {
             uri: `${auto}`,
           }}
           isLooping={true}
+          shouldPlay
           resizeMode="contain"
           onFullscreenUpdate={onFullscreenUpdate}
         />
@@ -112,7 +122,7 @@ const TestVideo = () => {
             onPress={() => {
               setResolution(null);
               setAuto(
-                "https://videodelivery.net/e70c304f701e6edd557ed928a5dd827a/manifest/video.m3u8"
+                "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/video.m3u8"
               );
             }}
           >
@@ -154,7 +164,8 @@ const TestVideo = () => {
             Back
           </Button>
         </VStack>
-      </Center>
+      </Center> */}
+      </SafeAreaView>
     </>
   );
 };

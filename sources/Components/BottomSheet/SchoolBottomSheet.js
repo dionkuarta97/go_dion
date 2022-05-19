@@ -76,7 +76,11 @@ const SchoolBottomSheet = (props) => {
       {listSekolah.loading && <ActivityIndicator color={Colors.orangeColor} />}
       {listSekolah.data !== null && (
         <FlatList
-          style={{ marginBottom: 140 }}
+          style={{
+            marginBottom: 50,
+            maxHeight: Dimensions.get("screen").height / 2.2,
+            minHeight: Dimensions.get("screen").height / 2.2,
+          }}
           keyExtractor={(item, index) => index + ""}
           data={listSekolah.data.filter((value) =>
             value.namasekolah.toLowerCase().includes(search.toLowerCase())

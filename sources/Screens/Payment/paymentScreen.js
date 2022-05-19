@@ -250,6 +250,49 @@ const PaymentScreen = (props) => {
                     </View>
                   )}
 
+                  {paymentDetail.data.payment_type === "cstore" && (
+                    <>
+                      <View>
+                        <Text style={{ marginTop: Sizes.fixPadding }}>
+                          Payment Code
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...Fonts.black17Bold,
+                              flex: 1,
+                            }}
+                          >
+                            {paymentDetail.data.payment_detail.payment_code}
+                          </Text>
+                          <TouchableOpacity
+                            onPress={() =>
+                              Clipboard.setString(
+                                paymentDetail.data.payment_detail.payment_code
+                              )
+                            }
+                          >
+                            <View
+                              style={{
+                                paddingVertical: Sizes.fixPadding / 2,
+                                paddingHorizontal: Sizes.fixPadding,
+                                backgroundColor: Colors.primaryColor,
+                                borderRadius: 5,
+                              }}
+                            >
+                              <Text>Copy</Text>
+                            </View>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </>
+                  )}
+
                   <Text style={{ marginTop: Sizes.fixPadding }}>
                     Total Amount
                   </Text>

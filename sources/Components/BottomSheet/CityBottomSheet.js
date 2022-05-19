@@ -76,7 +76,11 @@ const CityBottomSheet = (props) => {
       {listCity.loading && <ActivityIndicator color={Colors.orangeColor} />}
       {listCity.data !== null && (
         <FlatList
-          style={{ marginBottom: 140 }}
+          style={{
+            marginBottom: 50,
+            maxHeight: Dimensions.get("screen").height / 2.2,
+            minHeight: Dimensions.get("screen").height / 2.2,
+          }}
           keyExtractor={(item, index) => item.idkabkota + ""}
           data={listCity.data.filter((value) =>
             value.kabkota.toLowerCase().includes(search.toLowerCase())

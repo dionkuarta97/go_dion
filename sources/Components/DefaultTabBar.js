@@ -35,7 +35,11 @@ const DefaultTabBar = (props) => {
             width: Dimensions.get("window").width / routes.length,
           }}
           style={{ backgroundColor: Colors.whiteColor }}
-          renderLabel={({ route, focused, color }) => <Text style={{ ...Fonts.black15Bold, alignSelf: "center" }}>{route.title}</Text>}
+          renderLabel={({ route, focused, color }) => (
+            <Text style={{ ...Fonts.black15Bold, alignSelf: "center" }}>
+              {route.title}
+            </Text>
+          )}
         />
       )}
     />

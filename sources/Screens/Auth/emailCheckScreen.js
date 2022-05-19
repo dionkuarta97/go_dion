@@ -9,6 +9,8 @@ import {
   Text,
   TextInput,
   View,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
@@ -53,7 +55,9 @@ const EmailCheckScreen = () => {
               backgroundColor: "white",
               borderRadius: 5,
             }}
+            keyboardType="email-address"
             onChangeText={setEmail}
+            autoCapitalize="none"
             value={email}
             placeholder="ketikkan email kamu"
           />
