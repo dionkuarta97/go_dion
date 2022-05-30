@@ -50,12 +50,13 @@ const TryoutCard = (props) => {
                       {
                         text: "yakin",
                         onPress: () => {
-                          dispatch(
-                            setSoalUrl(
-                              urlQuests +
-                                `/tryout/${tryoutId}/bab/${detail._id}`
-                            )
-                          );
+                          // dispatch(
+                          //   setSoalUrl(
+                          //     urlQuests +
+                          //       `/tryout/${tryoutId}/bab/${detail._id}`
+                          //   )
+                          // );
+                          console.log(tryoutId, detail._id);
                           navigation.navigate("SoalScreen", {
                             title: detail.title,
                             blockTime: detail.blocking_time,

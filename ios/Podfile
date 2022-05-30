@@ -43,3 +43,7 @@ target 'goonlinemobileUI' do
   end
 
 end
+
+target 'oneSignalService' do
+  pod 'OneSignalXCFramework', '>= 3.0', '< 4.0'
+end

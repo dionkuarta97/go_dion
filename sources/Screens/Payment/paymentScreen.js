@@ -5,6 +5,7 @@ import {
   StatusBar,
   Text,
   View,
+  Linking,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import NumberFormat from "react-number-format";
@@ -29,7 +30,9 @@ const PaymentScreen = (props) => {
     (state) => state.paymentReducer.paymentDetail
   );
   const orderId = props.route.params.orderId;
-
+  const OpenWEB = (url) => {
+    Linking.openURL(url);
+  };
   const totalHarga = (arr) => {
     let temp = 0;
     for (const i in arr) {
@@ -62,6 +65,7 @@ const PaymentScreen = (props) => {
   const getVaBank = (vadetail) => {
     return vadetail[0].bank.toUpperCase();
   };
+
   console.log(JSON.stringify(paymentDetail, null, 2));
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -293,6 +297,28 @@ const PaymentScreen = (props) => {
                     </>
                   )}
 
+                  {paymentDetail.data.payment_type === "gopay" && (
+                    <>
+                      <View
+                        style={{
+                          paddingVertical: 10,
+                          paddingHorizontal: 20,
+                        }}
+                      >
+                        <Button
+                          colorScheme="green"
+                          onPress={() => {
+                            OpenWEB(
+                              paymentDetail.data.payment_detail.actions[1].url
+                            );
+                          }}
+                        >
+                          Lanjutkan Pembayaran
+                        </Button>
+                      </View>
+                    </>
+                  )}
+
                   <Text style={{ marginTop: Sizes.fixPadding }}>
                     Total Amount
                   </Text>
@@ -422,22 +448,19 @@ const PaymentScreen = (props) => {
               <View
                 style={{
                   padding: 10,
+                  marginBottom: 100,
                 }}
               >
                 <Button
                   marginTop={10}
-                  colorScheme="yellow"
+                  colorScheme="amber"
                   onPress={() => {
-                    navigation.navigate("MainScreen", { idx: 0 });
+                    navigation.navigate("MainScreen", {
+                      from: "pembayaran",
+                    });
                   }}
                 >
-                  <Text
-                    style={{
-                      color: "whitesmoke",
-                    }}
-                  >
-                    Kembali Ke Home
-                  </Text>
+                  Kembali Ke Home
                 </Button>
               </View>
             </View>

@@ -8,12 +8,16 @@ export function setCheckVersion(payload) {
   };
 }
 
-export function getVersion() {
+export function getVersion(os) {
   return async (disptach, getState) => {
     try {
+      console.log(os);
       const body = JSON.stringify({
-        os: "android",
-        version: getState().versionReducer.androidCode,
+        os: os,
+        version:
+          os === "ios"
+            ? getState().versionReducer.iosCode
+            : getState().versionReducer.androidCode,
       });
       const response = await fetch(
         "https://apionline.gobimbelonline.net" + "/masterdata/v1/version/check",

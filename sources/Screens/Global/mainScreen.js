@@ -28,6 +28,7 @@ import LaporanScreen from "../Laporan/LaporanScreen";
 import { useToast } from "native-base";
 import ToastErrorContent from "../../Components/ToastErrorContent";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
+import LeaderboardScreen from "../Leaderboard/LeaderboardScreen";
 
 const bottomNavMenu = [
   { title: "Home", icon: "home" },
@@ -43,7 +44,7 @@ export default MainScreen = (props) => {
   const { checkVersion } = useSelector((state) => state.versionReducer);
   const toast = useToast();
   const route = useRoute();
-
+  const { params } = props.route;
   useFocusEffect(
     useCallback(() => {
       if (route.name === "MainScreen") {
@@ -86,9 +87,14 @@ export default MainScreen = (props) => {
 
   useFocusEffect(
     useCallback(() => {
-      setCurrentIndex(0);
-    }, [])
+      if (params?.from === "pembayaran") {
+        setCurrentIndex(0);
+        delete params.from;
+      }
+    }, [params])
   );
+
+  console.log(JSON.stringify(checkVersion, null, 2));
 
   const bottomTabBarItem = ({ index, icon, title }) => {
     return (
@@ -138,30 +144,7 @@ export default MainScreen = (props) => {
           ) : currentIndex == 2 ? (
             <LaporanScreen />
           ) : (
-            <SafeAreaView style={{ flex: 1 }}>
-              <DefaultAppBar title={"Leaderboard"} />
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "white",
-                }}
-              >
-                <Image
-                  style={{
-                    width: Dimensions.get("screen").width / 2,
-                    height: Dimensions.get("screen").width / 2,
-                  }}
-                  source={require("../../../assets/Images/helper/underdev.png")}
-                />
-
-                <Text style={{ fontSize: 15 }}>Data ini akan muncul</Text>
-                <Text style={{ fontSize: 15 }}>
-                  setelah kamu melakukan tryout
-                </Text>
-              </View>
-            </SafeAreaView>
+            <LeaderboardScreen />
           )}
 
           <View style={styles.bottomTabBarStyle}>

@@ -18,6 +18,7 @@ import { scoreReducer } from "./Score/scoreReducer";
 import { initReducer } from "./Init/initReducer";
 import tryoutReducer from "./Tryout/tryoutReducer";
 import { laporanReducer } from "./Laporan/laporanReducer";
+import leaderboardReducer from "./Leaderboard/leaderboardReducer";
 
 const persistConfig = {
   key: "root",
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   versionReducer: versionReducer,
   tryoutReducer: tryoutReducer,
   laporanReducer: laporanReducer,
+  leaderboardReducer: leaderboardReducer,
 });
 
 export const store = createStore(

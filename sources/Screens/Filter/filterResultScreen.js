@@ -185,7 +185,7 @@ const ThirdRoute = () => {
   }
   return (
     <View style={{ flex: 1, marginTop: 15 }}>
-      <NoData msg="Comming Soon" />
+      <NoData msg="Coming Soon" />
     </View>
   );
 };

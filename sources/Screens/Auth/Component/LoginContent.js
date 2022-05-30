@@ -52,6 +52,7 @@ const LoginContent = () => {
   const getPlayerId = async () => {
     const deviceState = await OneSignal.getDeviceState();
     setPlayerId(deviceState.userId);
+    console.log(JSON.stringify(deviceState.userId, null, 2), "dsadas");
   };
   useEffect(() => {
     getPlayerId();

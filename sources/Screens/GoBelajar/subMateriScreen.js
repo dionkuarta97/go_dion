@@ -1,12 +1,22 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useEffect } from "react";
-import { Text, View, SafeAreaView, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  Text,
+  View,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { useDispatch, useSelector } from "react-redux";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import ExpandableTile from "../../Components/Tile/ExpendableTile";
-import { getMateriDetail, setMateriQuiz } from "../../Redux/Materi/materiActions";
+import {
+  getMateriDetail,
+  setMateriQuiz,
+} from "../../Redux/Materi/materiActions";
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
@@ -42,7 +52,11 @@ const SubMateriScreen = (props) => {
           }}
         >
           <Text style={{ ...Fonts.black15Regular, flex: 1 }}>{title}</Text>
-          <MaterialIcons name="keyboard-arrow-right" size={30} color={Colors.orangeColor} />
+          <MaterialIcons
+            name="keyboard-arrow-right"
+            size={30}
+            color={Colors.orangeColor}
+          />
         </View>
       </TouchableOpacity>
     );
@@ -50,7 +64,10 @@ const SubMateriScreen = (props) => {
 
   const renderItem = (item) => {
     return (
-      <View style={{ ...CompStyles.defaultCard, marginBottom: 0, marginTop: 8 }} key={item._id}>
+      <View
+        style={{ ...CompStyles.defaultCard, marginBottom: 0, marginTop: 8 }}
+        key={item._id}
+      >
         <ExpandableTile
           header={
             <View style={{ flexDirection: "row" }}>
@@ -97,11 +114,11 @@ const SubMateriScreen = (props) => {
                 ebooks: item.pdf,
               })
             )}
-          {item.quiz &&
+          {/* {item.quiz &&
             renderSubItem("Quiz", () => {
               dispatch(setSoalUrl(urlQuests + `/materi/${materiId}/bab/${item._id}`));
               navigation.navigate("SoalScreen", { title: item.title });
-            })}
+            })} */}
         </ExpandableTile>
       </View>
     );

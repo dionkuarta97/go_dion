@@ -48,6 +48,8 @@ import LihatProdiScreen from "./Screens/Profile/LihatProdiScreen";
 import { LaporanTryoutScreen } from "./Screens/Laporan/LaporanTryoutScreen";
 import ProgressTryout from "./Screens/Laporan/ProgressTryout";
 import TestVideo from "./Screens/Home/Component/TestVideo";
+import LeaderboardScreen from "./Screens/Leaderboard/LeaderboardScreen";
+import MyPosition from "./Screens/Leaderboard/MyPosition";
 
 const Stack = createStackNavigator();
 
@@ -200,6 +202,11 @@ export default App = () => {
               />
               <Stack.Screen name="ProgressTryout" component={ProgressTryout} />
               <Stack.Screen name="TestVideo" component={TestVideo} />
+              <Stack.Screen
+                name="LeaderboardScreen"
+                component={LeaderboardScreen}
+              />
+              <Stack.Screen name="MyPosition" component={MyPosition} />
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>

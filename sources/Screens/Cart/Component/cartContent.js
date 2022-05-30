@@ -10,6 +10,7 @@ import ProductCardHorizontal from "../../../Components/Card/ProductCardHorizonta
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import { getPurchasedproduk } from "../../../Redux/Produk/produkActions";
+import { getPaymentList } from "../../../Redux/Payment/paymentActions";
 
 const CartContent = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,6 @@ const CartContent = () => {
   const purchasedProduk = useSelector(
     (state) => state.produkReducer.purchasedProduk
   );
-  console.log(JSON.stringify(purchasedProduk, null, 2));
 
   const checker = (id, arr) => {
     for (const key in arr) {

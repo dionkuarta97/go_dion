@@ -7,6 +7,7 @@ import {
   Alert,
   Dimensions,
   BackHandler,
+  Platform,
 } from "react-native";
 import * as Font from "expo-font";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,7 +37,7 @@ export default InitialScreen = ({ navigation }) => {
     //TODO:Navigate to Splashscreen
     checkInternet().then((connection) => {
       if (connection) {
-        dispatch(getVersion());
+        dispatch(getVersion(Platform.OS));
         setTimeout(() => {
           // navigation.replace("MainScreen");
           if (baseUrl !== null) navigation.replace("MainScreen");
