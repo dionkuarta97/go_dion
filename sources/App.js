@@ -50,6 +50,7 @@ import ProgressTryout from "./Screens/Laporan/ProgressTryout";
 import TestVideo from "./Screens/Home/Component/TestVideo";
 import LeaderboardScreen from "./Screens/Leaderboard/LeaderboardScreen";
 import MyPosition from "./Screens/Leaderboard/MyPosition";
+import { Platform, Linking } from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -60,8 +61,12 @@ export default App = () => {
     },
   };
 
-  const linking = {
+  const linkingAndroid = {
     prefixes: ["https://goapp/"],
+    config,
+  };
+  const linkingIos = {
+    prefixes: ["https://dionkasih.online", "goonline://"],
     config,
   };
 
@@ -71,13 +76,20 @@ export default App = () => {
     OneSignal.setNotificationOpenedHandler((notification) => {
       console.log("OneSignal: notification opened:", notification);
     });
+    if (Platform.OS === "ios") {
+      OneSignal.promptForPushNotificationsWithUserResponse((response) => {
+        console.log("Prompt response:", response);
+      });
+    }
   }, []);
 
   return (
     <NativeBaseProvider>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <NavigationContainer linking={linking}>
+          <NavigationContainer
+            linking={Platform.OS === "android" ? linkingAndroid : linkingIos}
+          >
             <Stack.Navigator
               initialRouteName="InitialScreen"
               screenOptions={{

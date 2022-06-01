@@ -34,6 +34,8 @@ const SoalScreen = ({ route }) => {
     return () => backHandler.remove();
   }, []);
 
+  console.log(JSON.stringify(soal, null, 2));
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar
