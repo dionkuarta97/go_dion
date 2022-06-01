@@ -127,7 +127,7 @@ export function getAllProduk(section_id, page) {
     try {
       const urlBase = getState().initReducer.baseUrl;
       const product = getState().produkReducer.allProduk.data;
-      console.log(product);
+      console.log(product, "ini product");
       console.log(urlBase + urlGroupedProduk + `/${section_id}?page=${page}`);
       fetch(urlBase + urlGroupedProduk + `/${section_id}?page=${page}`, {
         method: "GET",

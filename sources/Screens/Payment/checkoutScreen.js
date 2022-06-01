@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -22,6 +21,7 @@ import { useNavigation } from "@react-navigation/core";
 import { useDispatch, useSelector } from "react-redux";
 import PaymentMethodCard from "./Component/PaymentMethodCard";
 import {
+  getPaymentList,
   getPaymentProcess,
   setPaymentMethod,
   setPaymentProcess,
@@ -30,16 +30,28 @@ import {
 import LoadingModal from "../../Components/Modal/LoadingModal";
 import { clearCart } from "../../Redux/Cart/cartActions";
 import DefaultModal from "../../Components/Modal/DefaultModal";
-import { HStack, useToast } from "native-base";
+import {
+  HStack,
+  useToast,
+  useDisclose,
+  Button,
+  Actionsheet,
+  Box,
+  Center,
+  Heading,
+  Text,
+} from "native-base";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
 
 const CheckoutScreen = () => {
+  const { isOpen, onOpen, onClose } = useDisclose();
   const toast = useToast();
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const cart = useSelector((state) => state.cartReducer.cart);
+
   const paymentProcess = useSelector(
     (state) => state.paymentReducer.paymentProcess
   );
@@ -47,12 +59,27 @@ const CheckoutScreen = () => {
   const selectedPaymentMethod = useSelector(
     (state) => state.paymentReducer.selectedPaymentMethod
   );
+  const paymentList = useSelector((state) => state.paymentReducer.paymentList);
+
+  const totalHarga = (arr) => {
+    let temp = 0;
+    for (const key in arr) {
+      if (arr[key]["price_discount"] > 0) {
+        temp += arr[key]["price_discount"];
+      } else {
+        temp += arr[key]["price"];
+      }
+    }
+    return temp;
+  };
+
   useEffect(() => {
     dispatch(setSelectedPaymentMethod(null));
     dispatch(setPaymentProcess({ loading: false, error: null, data: null }));
+    dispatch(getPaymentList("pending"));
   }, []);
 
-  console.log(JSON.stringify(selectedPaymentMethod?.service_fee.key, null, 2));
+  console.log(JSON.stringify(cart, null, 2));
 
   const renderItem = (item) => {
     return (
@@ -151,24 +178,15 @@ const CheckoutScreen = () => {
               Total
             </Text>
             <NumberFormat
-              value={cart.reduce(
-                (total, x) =>
-                  selectedPaymentMethod === null
-                    ? total +
-                      (x.price_discount > 0 ? x.price_discount : x.price)
-                    : selectedPaymentMethod?.service_fee.key === "var"
-                    ? total +
-                      (x.price_discount > 0 ? x.price_discount : x.price) +
-                      (total +
-                        (x.price_discount > 0
-                          ? x.price_discount
-                          : x.price *
-                            (selectedPaymentMethod?.service_fee.value / 100)))
-                    : total +
-                      (x.price_discount > 0 ? x.price_discount : x.price) +
-                      selectedPaymentMethod?.service_fee.value,
-                0
-              )}
+              value={
+                selectedPaymentMethod === null
+                  ? totalHarga(cart)
+                  : selectedPaymentMethod?.service_fee.key === "var"
+                  ? totalHarga(cart) +
+                    totalHarga(cart) *
+                      (selectedPaymentMethod?.service_fee.value / 100)
+                  : totalHarga(cart) + selectedPaymentMethod?.service_fee.value
+              }
               displayType={"text"}
               thousandSeparator="."
               decimalSeparator=","
@@ -193,40 +211,44 @@ const CheckoutScreen = () => {
         <DefaultPrimaryButton
           text="Lanjutkan Pembayaran"
           onPress={() => {
-            console.log(JSON.stringify(selectedPaymentMethod, null, 2), "<<<<");
             if (selectedPaymentMethod === null) {
               Alert.alert(
                 "Informasi",
                 "Silahkan memilih metode pembayaran terlebih dahulu"
               );
             } else {
-              checkInternet().then((data) => {
-                if (data) {
-                  dispatch(getPaymentProcess());
-                } else {
-                  toast.show({
-                    placement: "top",
-                    duration: null,
-                    width: Dimensions.get("screen").width / 1.3,
-                    render: () => {
-                      return (
-                        <ToastErrorContent
-                          content="Kami tidak terhubung ke internet"
-                          onPress={() => {
-                            toast.closeAll();
-                            navigation.goBack();
-                          }}
-                        />
-                      );
-                    },
-                  });
-                }
-              });
+              if (paymentList.data) {
+                onOpen(true);
+              } else {
+                checkInternet().then((data) => {
+                  if (data) {
+                    dispatch(getPaymentProcess(true));
+                  } else {
+                    toast.show({
+                      placement: "top",
+                      duration: null,
+                      width: Dimensions.get("screen").width / 1.3,
+                      render: () => {
+                        return (
+                          <ToastErrorContent
+                            content="Kamu tidak terhubung ke internet"
+                            onPress={() => {
+                              toast.closeAll();
+                              navigation.goBack();
+                            }}
+                          />
+                        );
+                      },
+                    });
+                  }
+                });
+              }
             }
           }}
         />
 
         {paymentProcess.loading && <LoadingModal />}
+
         {paymentProcess.data !== null && (
           <DefaultModal>
             <Text>Berhasil melakukan checkout</Text>
@@ -243,6 +265,225 @@ const CheckoutScreen = () => {
           </DefaultModal>
         )}
       </View>
+
+      <Actionsheet isOpen={isOpen} onClose={onClose}>
+        <Actionsheet.Content>
+          <Box w="100%" h={60} px={4} justifyContent="center">
+            <Center>
+              <Text bold fontSize={18}>
+                Ada transaksi belum di bayar
+              </Text>
+            </Center>
+          </Box>
+          <Box paddingX={3} marginBottom={5}>
+            <Text color={"gray.500"}>
+              Mau bayar sekaligus dengan transaksi sebelumnya? Jika tidak, maka
+              tranksaksimu sebelumnya akan dibatalkan
+            </Text>
+          </Box>
+          <Box
+            bg={"gray.300"}
+            paddingX={3}
+            paddingY={1}
+            borderRadius={5}
+            marginBottom={5}
+            width={Dimensions.get("screen").width / 1.2}
+          >
+            <HStack>
+              <Box
+                marginRight={"auto"}
+                maxWidth={Dimensions.get("screen").width / 2.7}
+              >
+                <Text>Transaksi saat ini</Text>
+              </Box>
+
+              <NumberFormat
+                value={
+                  selectedPaymentMethod === null
+                    ? totalHarga(cart)
+                    : selectedPaymentMethod?.service_fee.key === "var"
+                    ? totalHarga(cart) +
+                      totalHarga(cart) *
+                        (selectedPaymentMethod?.service_fee.value / 100)
+                    : totalHarga(cart) +
+                      selectedPaymentMethod?.service_fee.value
+                }
+                displayType={"text"}
+                thousandSeparator="."
+                decimalSeparator=","
+                prefix={"IDR "}
+                renderText={(value, props) => (
+                  <>
+                    <Text
+                      style={{
+                        ...Fonts.black17Regular,
+                      }}
+                    >
+                      {value}
+                    </Text>
+                  </>
+                )}
+              />
+            </HStack>
+            <HStack marginTop={1}>
+              <Box
+                marginRight={"auto"}
+                maxWidth={Dimensions.get("screen").width / 2.7}
+              >
+                <Text>Transaksi sebelumnya</Text>
+              </Box>
+              <NumberFormat
+                value={
+                  paymentList.data
+                    ? paymentList.data[0].payment_detail.gross_amount.split(
+                        "."
+                      )[0]
+                    : 0
+                }
+                displayType={"text"}
+                thousandSeparator="."
+                decimalSeparator=","
+                prefix={"IDR "}
+                renderText={(value, props) => (
+                  <>
+                    <Text
+                      style={{
+                        ...Fonts.black17Regular,
+                      }}
+                    >
+                      {value}
+                    </Text>
+                  </>
+                )}
+              />
+            </HStack>
+            <HStack marginTop={3}>
+              <Box
+                marginRight={"auto"}
+                maxWidth={Dimensions.get("screen").width / 2.7}
+              >
+                <Text bold>Total gabungan bayaran</Text>
+              </Box>
+              <NumberFormat
+                value={
+                  paymentList.data !== null
+                    ? selectedPaymentMethod === null
+                      ? totalHarga(cart) +
+                        Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        )
+                      : selectedPaymentMethod?.service_fee.key === "var"
+                      ? totalHarga(cart) +
+                        totalHarga(cart) *
+                          (selectedPaymentMethod?.service_fee.value / 100) +
+                        Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        )
+                      : totalHarga(cart) +
+                        selectedPaymentMethod?.service_fee.value +
+                        Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        )
+                    : 0
+                }
+                displayType={"text"}
+                thousandSeparator="."
+                decimalSeparator=","
+                prefix={"IDR "}
+                renderText={(value, props) => (
+                  <>
+                    <Text
+                      style={{
+                        ...Fonts.black17Regular,
+                      }}
+                    >
+                      {value}
+                    </Text>
+                  </>
+                )}
+              />
+            </HStack>
+          </Box>
+          <Box paddingX={3} marginTop={5} marginBottom={2}>
+            <Text color={"red.500"}>
+              * Jika ada product yang sama pada transaksi saat ini dengan
+              transaksi sebelumnya, maka product yang sama pada transaksi
+              sebelumnya akan di hapus secara otomatis
+            </Text>
+          </Box>
+          <Button
+            colorScheme="amber"
+            width={Dimensions.get("screen").width / 1.2}
+            marginY={2}
+            onPress={() => {
+              checkInternet().then((data) => {
+                if (data) {
+                  dispatch(getPaymentProcess(true));
+                } else {
+                  toast.show({
+                    placement: "top",
+                    duration: null,
+                    width: Dimensions.get("screen").width / 1.3,
+                    render: () => {
+                      return (
+                        <ToastErrorContent
+                          content="Kamu tidak terhubung ke internet"
+                          onPress={() => {
+                            toast.closeAll();
+                            navigation.goBack();
+                          }}
+                        />
+                      );
+                    },
+                  });
+                }
+              });
+              onClose(true);
+            }}
+          >
+            Bayar sekaligus
+          </Button>
+          <Button
+            colorScheme="amber"
+            variant={"outline"}
+            width={Dimensions.get("screen").width / 1.2}
+            marginBottom={3}
+            onPress={() => {
+              checkInternet().then((data) => {
+                if (data) {
+                  dispatch(getPaymentProcess(false));
+                } else {
+                  toast.show({
+                    placement: "top",
+                    duration: null,
+                    width: Dimensions.get("screen").width / 1.3,
+                    render: () => {
+                      return (
+                        <ToastErrorContent
+                          content="Kamu tidak terhubung ke internet"
+                          onPress={() => {
+                            toast.closeAll();
+                            navigation.goBack();
+                          }}
+                        />
+                      );
+                    },
+                  });
+                }
+              });
+              onClose(true);
+            }}
+          >
+            Bayar transaksi ini saja
+          </Button>
+        </Actionsheet.Content>
+      </Actionsheet>
     </SafeAreaView>
   );
 };

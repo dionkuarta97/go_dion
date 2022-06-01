@@ -83,7 +83,6 @@ const HomeScreen = (props) => {
   const bottomInset = useKeyboardBottomInset();
   const [show, setSHow] = useState(false);
   const [bottom, setBottom] = useState(0);
-  console.log(show);
 
   useEffect(() => {
     const onKeyboardHide = () => {

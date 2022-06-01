@@ -69,7 +69,7 @@ const LaporanScreen = () => {
             }}
           >
             <NoData
-              msg="Data ini akan muncul setelah kamu login"
+              msg="Halaman ini akan muncul setelah kamu login"
               img="noimage"
             />
           </View>

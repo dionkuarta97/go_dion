@@ -92,7 +92,6 @@ const ProductDetailContent = (props) => {
               text="Beli Sekarang"
               onPress={() => {
                 dispatch(addToCart(item));
-                navigation.popToTop();
                 navigation.navigate("CartScreen");
               }}
             />
@@ -102,7 +101,6 @@ const ProductDetailContent = (props) => {
             <DefaultPrimaryButton
               text="Sudah ada di keranjang"
               onPress={() => {
-                navigation.popToTop();
                 navigation.navigate("CartScreen");
               }}
             />
