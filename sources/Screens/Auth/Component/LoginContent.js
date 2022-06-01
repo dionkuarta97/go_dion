@@ -18,6 +18,7 @@ import Colors from "../../../Theme/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getLogin,
+  setEmailCheck,
   setLoginData,
   setLoginStatus,
 } from "../../../Redux/Auth/authActions";
@@ -59,7 +60,12 @@ const LoginContent = () => {
   }, []);
   const registerText = () => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("EmailCheckScreen")}>
+      <TouchableOpacity
+        onPress={() => {
+          dispatch(setEmailCheck({ loading: false, data: null, error: null }));
+          navigation.navigate("EmailCheckScreen");
+        }}
+      >
         <Text
           style={{
             ...Fonts.gray18Bold,

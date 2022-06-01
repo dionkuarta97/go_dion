@@ -159,7 +159,9 @@ const LeaderboardContent = () => {
               marginRight={Dimensions.get("screen").width / 13}
               bold
             >
-              {leaderboard.data?.my_position}
+              {leaderboard.data?.my_position !== 0
+                ? leaderboard.data?.my_position
+                : "N/A"}
             </Text>
             <Image
               marginRight={Dimensions.get("screen").width / 15}
@@ -178,7 +180,9 @@ const LeaderboardContent = () => {
             </Box>
 
             <Text color={"white"} bold>
-              {leaderboard.data?.my_point}
+              {leaderboard.data?.my_point !== 0
+                ? leaderboard.data?.my_point
+                : "N/A"}
             </Text>
           </HStack>
         </View>

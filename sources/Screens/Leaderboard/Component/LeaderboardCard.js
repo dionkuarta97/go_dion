@@ -57,7 +57,6 @@ const LeaderboardCard = (props) => {
                 <Text>{data.sekolah}</Text>
               </Center>
             </VStack>
-            ;
           </Modal.Body>
           <Modal.Footer>
             <Button.Group space={2}>

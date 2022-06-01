@@ -94,6 +94,7 @@ export const getLeaderboard = (params, leaderboard) => {
           let data = {
             my_position: json.data.my_position,
             total_data: json.data.total_data,
+            my_point: json.data.my_point,
             rankings: rankings,
           };
           //   console.log(JSON.stringify(rankings, null, 2));

@@ -216,7 +216,7 @@ export function setForgotPassword(state) {
   };
 }
 
-export function getForgotPassword(email) {
+export function getForgotPassword(email, os) {
   return async (dispatch, getState) => {
     dispatch(setForgotPassword(defaultInitState));
     try {
@@ -225,7 +225,7 @@ export function getForgotPassword(email) {
       fetch(urlBase + urlForgotPassword, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email }),
+        body: JSON.stringify({ email: email, os: os }),
       })
         .then((response) => response.json())
         .then((json) => {

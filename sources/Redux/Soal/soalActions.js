@@ -49,7 +49,7 @@ export function getSoal() {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
+          console.log(JSON.stringify(json, null, 2), "<<<<<JSON");
           if (json.status) {
             dispatch(setSoal(defaultDoneState(json.data)));
           } else dispatch(setSoal(defaultFailedState(json.message)));

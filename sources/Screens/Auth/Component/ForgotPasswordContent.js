@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useEffect, useState } from "react";
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions, Text, View, Platform } from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import { Fontisto } from "@expo/vector-icons";
@@ -26,12 +26,14 @@ const ForgotPasswordContent = () => {
     (state) => state.authReducer.forgotPassword
   );
 
+  const [email, setEmail] = useState("");
+
   useEffect(() => {
     dispatch(setForgotPassword({ loading: false, error: null, data: null }));
     setEmail("");
   }, []);
 
-  const [email, setEmail] = useState("");
+  console.log(JSON.stringify(forgotPassword, null, 2));
 
   return (
     <View
@@ -67,7 +69,7 @@ const ForgotPasswordContent = () => {
             onPress={() => {
               checkInternet().then((connenction) => {
                 if (connenction) {
-                  dispatch(getForgotPassword(email));
+                  dispatch(getForgotPassword(email, Platform.OS));
                 } else {
                   toast.show({
                     placement: "top",
