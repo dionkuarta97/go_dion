@@ -73,8 +73,6 @@ const HomeMenu = () => {
     }
   }, [homeMenuState]);
 
-  console.log(homeMenuState);
-
   const onPressItem = (idx) => {
     switch (idx) {
       case 0:
@@ -122,8 +120,8 @@ const HomeMenu = () => {
               <Image
                 source={{ uri: item.image }}
                 style={{
-                  width: 65,
-                  height: 65,
+                  width: Dimensions.get("screen").width / 8.2,
+                  height: Dimensions.get("screen").width / 8.2,
                   tintColor: Colors.orangeColor,
                 }}
               />
@@ -147,7 +145,7 @@ const HomeMenu = () => {
       style={{
         alignItems: "center",
         justifyContent: "center",
-        marginVertical: 20,
+        marginVertical: 10,
       }}
     >
       {homeMenuState.loading && homeMenuState.error == null ? (
@@ -157,6 +155,7 @@ const HomeMenu = () => {
       ) : (
         <FlatList
           horizontal={true}
+          scrollEnabled={false}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => `homemenu${item._id}`}
           data={homeMenuState.data}
@@ -171,8 +170,8 @@ export default HomeMenu;
 
 const styles = StyleSheet.create({
   menu: {
-    height: 120,
-    width: 120,
+    height: Dimensions.get("screen").width / 4.8,
+    width: Dimensions.get("screen").width / 4.8,
     elevation: 3,
     backgroundColor: Colors.whiteColor,
     borderRadius: 60,

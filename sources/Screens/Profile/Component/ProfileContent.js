@@ -1,28 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Alert, Image, Text, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/core";
-import { useDispatch, useSelector } from "react-redux";
-import { getMe } from "../../../Redux/Profile/profileActions";
+import { useSelector } from "react-redux";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
-import checkInternet from "../../../Services/CheckInternet";
+
+import { Button } from "native-base";
+import ImageView from "react-native-image-viewing";
+
+import defaultImage from "../../../../assets/Images/user_profile/no-user.jpg";
+
+const DEFAULT_IMAGE = Image.resolveAssetSource(defaultImage).uri;
 
 const ProfileContent = (props) => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
+  const [visible, setIsVisible] = useState(false);
   const profile = useSelector((state) => state.profileReducer.profile);
 
-  useEffect(() => {
-    checkInternet().then((data) => {
-      if (data) {
-        dispatch(getMe());
-      }
-    });
-  }, []);
+  console.log(JSON.stringify(profile, null, 2));
 
   const renderInfoTile = (lable, value, icon) => {
     return (
@@ -58,14 +57,61 @@ const ProfileContent = (props) => {
         alignItems: "center",
       }}
     >
-      {/* <Image
-                style={{width: 120, height: 120, borderRadius: 60}}
-                source={require("../../../../assets/Images/user_profile/user_2.jpg")}
-                resizeMode="contain"
-            /> */}
+      <TouchableOpacity
+        onPress={() => {
+          console.log("oke");
+          setIsVisible(true);
+        }}
+      >
+        <Image
+          style={{
+            height: 80.0,
+            width: 80.0,
+            borderRadius: 100.0,
+          }}
+          source={{
+            uri:
+              profile !== null && profile.avatar !== null
+                ? profile.avatar
+                : DEFAULT_IMAGE,
+          }}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+      <ImageView
+        images={[
+          {
+            uri:
+              profile !== null && profile.avatar !== null
+                ? profile.avatar
+                : DEFAULT_IMAGE,
+          },
+        ]}
+        imageIndex={0}
+        visible={visible}
+        onRequestClose={() => setIsVisible(false)}
+      />
 
+      <Text style={{ ...Fonts.black19Bold, marginTop: Sizes.fixPadding }}>
+        {profile.full_name}
+      </Text>
+      <Button
+        marginTop={4}
+        colorScheme={"amber"}
+        onPress={() =>
+          navigation.navigate("GantiFotoScreen", {
+            poto:
+              profile !== null && profile.avatar !== null
+                ? profile.avatar
+                : DEFAULT_IMAGE,
+          })
+        }
+      >
+        Ganti Foto
+      </Button>
       <View
         style={{
+          marginTop: 50,
           width: 300,
         }}
       >
@@ -89,10 +135,6 @@ const ProfileContent = (props) => {
           text={profile.program_studi ? "LIHAT PRODI" : "PILIH PRODI"}
         />
       </View>
-
-      <Text style={{ ...Fonts.black19Bold, marginTop: Sizes.fixPadding }}>
-        {profile.full_name}
-      </Text>
 
       <View
         style={{

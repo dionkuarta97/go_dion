@@ -1,9 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Fonts from "../../Theme/Fonts";
+import { StyleSheet, View } from "react-native";
 import Colors from "../../Theme/Colors";
 import Sizes from "../../Theme/Sizes";
-
+import { Text } from "native-base";
 import PropTypes from "prop-types";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
@@ -42,13 +41,7 @@ const DefaultAppBar = (props) => {
             />
           </Box>
         )}
-        <Text
-          style={{
-            ...Fonts.black19Bold,
-            marginLeft: Sizes.fixPadding,
-            paddingVertical: 3,
-          }}
-        >
+        <Text bold marginY={1} marginLeft={2} fontSize={16}>
           {props.title}
         </Text>
       </View>
@@ -63,6 +56,7 @@ DefaultAppBar.propTypes = propTypes;
 
 const styles = StyleSheet.create({
   appBar: {
+    zIndex: 1000,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.primaryColor,

@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   TextInput,
   FlatList,
+  Platform,
 } from "react-native";
 import DefaultBottomSheet from "../../../Components/BottomSheet/DefaultBottomSheet";
 import { useDispatch, useSelector } from "react-redux";
@@ -89,8 +90,14 @@ const SelectJurusanDua = (props) => {
           <FlatList
             style={{
               marginBottom: 50,
-              maxHeight: Dimensions.get("screen").height / 2.2,
-              minHeight: Dimensions.get("screen").height / 2.2,
+              maxHeight:
+                Platform.OS === "ios"
+                  ? Dimensions.get("screen").height / 2.2
+                  : Dimensions.get("screen").height / 4,
+              minHeight:
+                Platform.OS === "ios"
+                  ? Dimensions.get("screen").height / 2.2
+                  : Dimensions.get("screen").height / 4,
             }}
             keyExtractor={(item, index) => item.id + "univ"}
             data={listJurusan.data?.filter((value) =>

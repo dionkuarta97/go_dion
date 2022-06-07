@@ -3,13 +3,14 @@ import { SafeAreaView, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import NoData from "../../Components/NoData";
-import LeaderboardContent from "./Component/LeaderboardContent";
+import GantiFotoContent from "./Component/GantiFotoContent";
 
-const LeaderboardScreen = () => {
+const GantiFotoScreen = ({ route }) => {
+  const { params } = route;
   const { isLogin } = useSelector((state) => state.authReducer);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar backEnabled={true} title={"Pengerjaan Soal"} />
+      <DefaultAppBar backEnabled={true} title={"Ganti Foto"} />
       {!isLogin ? (
         <View
           style={{
@@ -23,10 +24,10 @@ const LeaderboardScreen = () => {
           />
         </View>
       ) : (
-        <LeaderboardContent />
+        <GantiFotoContent poto={params.poto} />
       )}
     </SafeAreaView>
   );
 };
 
-export default LeaderboardScreen;
+export default GantiFotoScreen;

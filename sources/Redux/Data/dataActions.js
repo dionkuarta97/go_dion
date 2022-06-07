@@ -88,11 +88,11 @@ export function setListSekolah(state) {
   };
 }
 
-export function getListSekolah(idkabkota) {
+export function getListSekolah(idkabkota, kelas) {
   const url =
-    idkabkota !== null
-      ? urlCommon + `/${idkabkota}/sekolah?limit=-1`
-      : urlCommon + "/sekolah?limit=-1";
+    idkabkota !== null && kelas !== null
+      ? urlCommon + `/sekolah?jenjang=${kelas}&kota_id=${idkabkota}&limit=-1`
+      : urlCommon + "/sekolah?limit=20";
 
   return async (dispatch, getState) => {
     dispatch(setListSekolah(defaultInitState));

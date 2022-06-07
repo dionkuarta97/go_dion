@@ -295,11 +295,28 @@ const RegisterContent = ({ sendedEmail }) => {
             placeholder="School Name"
             value={schoolName}
             onTap={() => {
-              setSchoolNameBottomSheetVisible(true);
+              if (kelas === "") {
+                toast.show({
+                  title: "Peringatan",
+                  status: "danger",
+                  description: "Silahkan pilih kelas terlebih dahulu",
+                  placement: "top",
+                  width: Dimensions.get("screen").width / 1.3,
+                });
+              } else {
+                setSchoolNameBottomSheetVisible(true);
+              }
             }}
           />
           {schoolNameBottomSheetVisible && (
             <SchoolBottomSheet
+              kelas={
+                Number(kelas.split(" ")[0] > 0 && kelas.split(" ")[0] < 7)
+                  ? "SD"
+                  : kelas.split(" ")[0] > 9
+                  ? "SMA"
+                  : "SMP"
+              }
               idkabkota={
                 schoolCity !== null ? schoolCity.idkabkota.toString() : null
               }

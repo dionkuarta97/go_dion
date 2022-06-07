@@ -27,7 +27,7 @@ import TryoutDetailScreen from "./Screens/GoTryout/tryoutDetailScreen";
 import SoalScreen from "./Screens/Soal/soalScreen";
 import EmailCheckScreen from "./Screens/Auth/emailCheckScreen";
 import ProductPurchasedScreen from "./Screens/Products/productPurchasedScreen";
-import initialScreen from "./Screens/Global/initialScreen";
+import InitialScreen from "./Screens/Global/initialScreen";
 import MateriVideoScreen from "./Screens/GoBelajar/materiVideoScreen";
 import MateriEbookScreen from "./Screens/GoBelajar/materiEbookScreen";
 import NewPasswordScreen from "./Screens/Auth/newPasswordScreen";
@@ -50,7 +50,12 @@ import ProgressTryout from "./Screens/Laporan/ProgressTryout";
 import TestVideo from "./Screens/Home/Component/TestVideo";
 import LeaderboardScreen from "./Screens/Leaderboard/LeaderboardScreen";
 import MyPosition from "./Screens/Leaderboard/MyPosition";
-import { Platform, Linking } from "react-native";
+import { Platform } from "react-native";
+import PilihLeaderboardScreen from "./Screens/Leaderboard/PilihLeaderboardScreen";
+import LeaderTryoutScreen from "./Screens/Leaderboard/LeaderTryoutScreen";
+import GantiFotoScreen from "./Screens/Profile/GantiFotoScreen";
+import TryoutLeaderScreen from "./Screens/Leaderboard/TryoutLeaderScreen";
+import PositionTryoutScreen from "./Screens/Leaderboard/PositionTryoutScreen";
 
 const Stack = createStackNavigator();
 
@@ -60,7 +65,6 @@ export default App = () => {
       NewPasswordScreen: "newpassword/:email/:token/:date/:expdate",
     },
   };
-
   const linkingAndroid = {
     prefixes: ["https://goapp/"],
     config,
@@ -96,7 +100,7 @@ export default App = () => {
                 headerShown: false,
               }}
             >
-              <Stack.Screen name="InitialScreen" component={initialScreen} />
+              <Stack.Screen name="InitialScreen" component={InitialScreen} />
               <Stack.Screen name="LoginScreen" component={LoginScreen} />
               <Stack.Screen
                 name="EmailCheckScreen"
@@ -218,7 +222,27 @@ export default App = () => {
                 name="LeaderboardScreen"
                 component={LeaderboardScreen}
               />
+              <Stack.Screen
+                name="PilihLeaderboardScreen"
+                component={PilihLeaderboardScreen}
+              />
+              <Stack.Screen
+                name="LeaderTryoutScreen"
+                component={LeaderTryoutScreen}
+              />
               <Stack.Screen name="MyPosition" component={MyPosition} />
+              <Stack.Screen
+                name="TryoutLeaderScreen"
+                component={TryoutLeaderScreen}
+              />
+              <Stack.Screen
+                name="GantiFotoScreen"
+                component={GantiFotoScreen}
+              />
+              <Stack.Screen
+                name="PositionTryoutScreen"
+                component={PositionTryoutScreen}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>

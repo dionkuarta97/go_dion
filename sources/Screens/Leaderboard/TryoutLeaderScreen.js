@@ -1,19 +1,22 @@
-import React from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback } from "react";
 import { SafeAreaView, Text, View } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import NoData from "../../Components/NoData";
-import LeaderboardContent from "./Component/LeaderboardContent";
+import TryoutLeaderContent from "./Component/TryoutLeaderContent";
 
-const LeaderboardScreen = () => {
+const TryoutLeaderScreen = ({ route }) => {
+  const { params } = route;
   const { isLogin } = useSelector((state) => state.authReducer);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar backEnabled={true} title={"Pengerjaan Soal"} />
+      <DefaultAppBar backEnabled={true} title={params.title} />
       {!isLogin ? (
         <View
           style={{
-            justifyContent: "center",
+            justifyScreen: "center",
             flex: 1,
           }}
         >
@@ -23,10 +26,10 @@ const LeaderboardScreen = () => {
           />
         </View>
       ) : (
-        <LeaderboardContent />
+        <TryoutLeaderContent id={params.id} tahun={params.tahun.split("/")} />
       )}
     </SafeAreaView>
   );
 };
 
-export default LeaderboardScreen;
+export default TryoutLeaderScreen;

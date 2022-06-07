@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -12,15 +12,13 @@ import {
   ActivityIndicator,
   Keyboard,
   Platform,
-  KeyboardEvent,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import SliverAppBar from "../../Components/sliverAppBar";
 import HomeContent from "./Component/HomeContent";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation, useFocusEffect } from "@react-navigation/core";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Fonts from "../../Theme/Fonts";
 import Colors from "../../Theme/Colors";
 import ActionButtonCart from "../../Components/ActionButton/ActionButtonCart";
@@ -33,12 +31,15 @@ import {
   Input,
   Icon,
   Button,
-  KeyboardAvoidingView,
 } from "native-base";
 import gift from "../../../assets/Images/helper/gift.png";
 import error from "../../../assets/Images/helper/error.png";
 import success from "../../../assets/Images/helper/success.png";
 import { getRedeemCode, setRedeemCode } from "../../Redux/Produk/produkActions";
+import defaultImage from "../../../assets/Images/user_profile/no-user.jpg";
+import { getMe } from "../../Redux/Profile/profileActions";
+
+const DEFAULT_IMAGE = Image.resolveAssetSource(defaultImage).uri;
 const useKeyboardBottomInset = () => {
   const [bottom, setBottom] = React.useState(0);
   const subscriptions = React.useRef([]);
@@ -110,6 +111,7 @@ const HomeScreen = (props) => {
       keyboardShow.remove();
     };
   }, [show]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <SliverAppBar
@@ -269,6 +271,7 @@ const HomeScreen = (props) => {
                           />
 
                           <Input
+                            autoCapitalize="characters"
                             onChangeText={(val) => {
                               setCode(val);
                             }}
@@ -330,7 +333,7 @@ const HomeScreen = (props) => {
                 </Actionsheet.Content>
               </Actionsheet>
             </Box>
-            <ActionButtonCart />
+            <ActionButtonCart from={"home"} />
           </View>
         }
         element={
@@ -356,9 +359,14 @@ const HomeScreen = (props) => {
                   style={{
                     height: 80.0,
                     width: 80.0,
-                    borderRadius: 40.0,
+                    borderRadius: 100.0,
                   }}
-                  source={require("../../../assets/Images/user_profile/no-user.jpg")}
+                  source={{
+                    uri:
+                      profile !== null && profile.avatar !== null
+                        ? profile.avatar
+                        : DEFAULT_IMAGE,
+                  }}
                   resizeMode="contain"
                 />
               </TouchableOpacity>

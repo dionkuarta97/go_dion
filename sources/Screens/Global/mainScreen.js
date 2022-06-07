@@ -29,6 +29,7 @@ import { useToast } from "native-base";
 import ToastErrorContent from "../../Components/ToastErrorContent";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import LeaderboardScreen from "../Leaderboard/LeaderboardScreen";
+import PilihLeaderboardScreen from "../Leaderboard/PilihLeaderboardScreen";
 
 const bottomNavMenu = [
   { title: "Home", icon: "home" },
@@ -40,8 +41,8 @@ const bottomNavMenu = [
 
 export default MainScreen = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { firstLogin } = useSelector((state) => state.authReducer);
   const { checkVersion } = useSelector((state) => state.versionReducer);
+
   const toast = useToast();
   const route = useRoute();
   const { params } = props.route;
@@ -90,11 +91,12 @@ export default MainScreen = (props) => {
       if (params?.from === "pembayaran") {
         setCurrentIndex(0);
         delete params.from;
+      } else if (params?.from === "gantiFoto") {
+        setCurrentIndex(4);
+        delete params.from;
       }
     }, [params])
   );
-
-  console.log(JSON.stringify(checkVersion, null, 2));
 
   const bottomTabBarItem = ({ index, icon, title }) => {
     return (
@@ -144,7 +146,7 @@ export default MainScreen = (props) => {
           ) : currentIndex == 2 ? (
             <LaporanScreen />
           ) : (
-            <LeaderboardScreen />
+            <PilihLeaderboardScreen />
           )}
 
           <View style={styles.bottomTabBarStyle}>

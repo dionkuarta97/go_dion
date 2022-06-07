@@ -26,8 +26,6 @@ export function getMe() {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
-
           if (json.status) {
             dispatch(setMe(defaultDoneState(json.data.user)));
             dispatch(setProfile(json.data.profile));

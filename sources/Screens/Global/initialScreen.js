@@ -1,30 +1,26 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   StyleSheet,
   Text,
   Image,
-  Alert,
   Dimensions,
   BackHandler,
   Platform,
 } from "react-native";
 import * as Font from "expo-font";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setLoginData,
-  setLoginStatus,
-  setToken,
-} from "../../Redux/Auth/authActions";
-import { setProfile } from "../../Redux/Profile/profileActions";
+import { setToken } from "../../Redux/Auth/authActions";
+import { getMe, setProfile } from "../../Redux/Profile/profileActions";
 import { getVersion } from "../../Redux/Version/versionActions";
 import checkInternet from "../../Services/CheckInternet";
-import { Box, Button, Center, HStack, useToast } from "native-base";
-import { FontAwesome } from "@expo/vector-icons";
+import { useToast } from "native-base";
+
 import ToastErrorContent from "../../Components/ToastErrorContent";
 export default InitialScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const login = useSelector((state) => state.authReducer.login);
+  const { firstLogin } = useSelector((state) => state.authReducer);
   const baseUrl = useSelector((state) => state.initReducer.baseUrl);
   const toast = useToast();
 
@@ -40,8 +36,8 @@ export default InitialScreen = ({ navigation }) => {
         dispatch(getVersion(Platform.OS));
         setTimeout(() => {
           // navigation.replace("MainScreen");
-          if (baseUrl !== null) navigation.replace("MainScreen");
-          else navigation.replace("BaseurlScreen");
+          if (!firstLogin) navigation.replace("MainScreen");
+          else navigation.replace("BoardingScreen");
         }, 2000);
       } else {
         toast.show({
@@ -68,8 +64,8 @@ export default InitialScreen = ({ navigation }) => {
     _loadFontsAsync();
 
     if (login.data !== null) {
-      console.log("Load ");
-      dispatch(setProfile(login.data.user));
+      console.log("Load kepanggil");
+      dispatch(getMe());
       dispatch(setToken(login.data.token));
     }
 
