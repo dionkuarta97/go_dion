@@ -65,9 +65,13 @@ const ProfileContent = (props) => {
       >
         <Image
           style={{
-            height: 80.0,
-            width: 80.0,
-            borderRadius: 100.0,
+            height: 150.0,
+            width: 150.0,
+            borderRadius: 200.0,
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.8,
+            shadowRadius: 2,
           }}
           source={{
             uri:
@@ -91,12 +95,14 @@ const ProfileContent = (props) => {
         visible={visible}
         onRequestClose={() => setIsVisible(false)}
       />
-
-      <Text style={{ ...Fonts.black19Bold, marginTop: Sizes.fixPadding }}>
-        {profile.full_name}
-      </Text>
       <Button
-        marginTop={4}
+        shadow={3}
+        style={{
+          position: "absolute",
+          top: 133,
+          right: 130,
+          borderRadius: 100,
+        }}
         colorScheme={"amber"}
         onPress={() =>
           navigation.navigate("GantiFotoScreen", {
@@ -107,11 +113,21 @@ const ProfileContent = (props) => {
           })
         }
       >
-        Ganti Foto
+        <MaterialIcons
+          style={{ margin: 1 }}
+          name="enhance-photo-translate"
+          size={35}
+          color="black"
+        />
       </Button>
+
+      <Text style={{ ...Fonts.black19Bold, marginTop: 30 }}>
+        {profile.full_name}
+      </Text>
+
       <View
         style={{
-          marginTop: 50,
+          marginTop: 20,
           width: 300,
         }}
       >

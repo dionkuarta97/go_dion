@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from "react-native";
 import Divider from "../../../Components/Divider";
 
@@ -16,15 +17,140 @@ import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButto
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 import { addToCart } from "../../../Redux/Cart/cartActions";
+import RNIap, {
+  purchaseErrorListener,
+  purchaseUpdatedListener,
+  type ProductPurchase,
+  type PurchaseError,
+} from "react-native-iap";
+import { getPaymentApple } from "../../../Redux/Payment/paymentActions";
+import DefaultModal from "../../../Components/Modal/DefaultModal";
+import LoadingModal from "../../../Components/Modal/LoadingModal";
 
 const { width } = Dimensions.get("screen");
 
 const ProductDetailContent = (props) => {
+  const [sukses, setSukses] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
 
   const item = props.item;
   const onCart = props.onCart;
+  const itemSkus = Platform.select({
+    ios: [item.details.apple_id],
+    android: ["com.example.coins100"],
+  });
+
+  useEffect(async () => {
+    if (Platform.OS === "ios") {
+      if (!item.purchased) {
+        setLoading(true);
+        try {
+          const products = await RNIap.getProducts(itemSkus);
+          if (products) {
+            setLoading(false);
+          }
+          console.log(JSON.stringify(products, null, 2));
+        } catch (err) {
+          console.warn(err);
+        }
+
+        RNIap.initConnection().then(() => {
+          // we make sure that "ghost" pending payment are removed
+          // (ghost = failed pending payment that are still marked as pending in Google's native Vending module cache)
+          RNIap.flushFailedPurchasesCachedAsPendingAndroid()
+            .catch(() => {
+              // exception can happen here if:
+              // - there are pending purchases that are still pending (we can't consume a pending purchase)
+              // in any case, you might not want to do anything special with the error
+            })
+            .then(() => {
+              purchaseUpdateSubscription = purchaseUpdatedListener(
+                (purchase) => {
+                  console.log("purchaseUpdatedListener", purchase);
+                  const receipt = purchase.transactionReceipt;
+                  if (receipt) {
+                    dispatch(getPaymentApple(item))
+                      .then(async (json) => {
+                        setLoading(false);
+                        await RNIap.finishTransactionIOS(
+                          purchase.transactionId
+                        );
+                      })
+                      .catch((err) => {
+                        setLoading(false);
+                        console.log(err);
+                      });
+                  }
+                }
+              );
+              purchaseErrorSubscription = purchaseErrorListener((error) => {
+                console.warn("purchaseErrorListener", error);
+              });
+            });
+        });
+      }
+    }
+    return () => {
+      if (purchaseUpdateSubscription) {
+        purchaseUpdateSubscription.remove();
+        purchaseUpdateSubscription = null;
+      }
+      if (purchaseErrorSubscription) {
+        purchaseErrorSubscription.remove();
+        purchaseErrorSubscription = null;
+      }
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   if (Platform.OS === "ios") {
+  //     if (sukses) {
+  //
+  //     }
+  //   }
+  // }, [sukses]);
+
+  const requestPurchase = async () => {
+    try {
+      setLoading(true);
+      await RNIap.requestPurchase(item.details.apple_id, false)
+        .then(async (res) => {
+          console.log("baru beli");
+          const recipt = res.transactionReceipt;
+          console.log(res);
+          if (recipt) {
+            const receiptBody = {
+              "receipt-data": recipt,
+              password: "f72a4af2242a467395a3bb582c099e69",
+            };
+            console.log(recipt);
+            const validate = await RNIap.validateReceiptIos(receiptBody, true);
+            if (validate) {
+              dispatch(getPaymentApple(item))
+                .then(async (json) => {
+                  setSukses(validate);
+                  setLoading(false);
+                  console.log("dsanjlkdakjsdjask");
+                  await RNIap.finishTransaction(res, false);
+                })
+                .catch(async (err) => {
+                  setLoading(false);
+                  console.log(err);
+                  await RNIap.finishTransaction(res, false);
+                });
+            }
+          }
+        })
+        .catch(() => {
+          setLoading(false);
+        });
+    } catch (err) {
+      setLoading(false);
+      console.warn(err);
+    }
+  };
 
   const titleText = (title) => {
     return (
@@ -58,55 +184,75 @@ const ProductDetailContent = (props) => {
         backgroundColor: "white",
       }}
     >
-      <ScrollView
-        nestedScrollEnabled={true}
-        showsVerticalScrollIndicator={false}
-      >
-        {titleText("Detail Produk")}
-        <View style={styles.content}>
-          {infoTile("Informasi", item.desc)}
-          {infoTile("Kategori", item.details.category)}
-          {infoTile("Level", item.details.level)}
-          {infoTile("Wilayah", item.details.wilayah)}
+      {sukses && (
+        <DefaultModal>
+          <Text>Berhasil melakukan pembayaran</Text>
+          <DefaultPrimaryButton
+            text="Kembali ke Home"
+            onPress={() => {
+              navigation.popToTop();
+              navigation.navigate("MainScreen");
+            }}
+          />
+        </DefaultModal>
+      )}
+      {Platform.OS === "ios" && loading ? (
+        <LoadingModal />
+      ) : (
+        <ScrollView
+          nestedScrollEnabled={true}
+          showsVerticalScrollIndicator={false}
+        >
+          {titleText("Detail Produk")}
+          <View style={styles.content}>
+            {infoTile("Informasi", item.desc)}
+            {infoTile("Kategori", item.details.category)}
+            {infoTile("Level", item.details.level)}
+            {infoTile("Wilayah", item.details.wilayah)}
 
-          {item.purchased && (
-            <DefaultPrimaryButton
-              text={
-                item.category === "tryout"
-                  ? "Lihat Tryout mu"
-                  : "Lanjutkan Belajar mu"
-              }
-              onPress={() => {
-                if (item.category === "tryout") {
-                  navigation.navigate("GoTryoutScreen");
-                } else {
-                  navigation.navigate("ProductIncludeScreen", {
-                    produkId: item._id,
-                  });
+            {item.purchased && (
+              <DefaultPrimaryButton
+                text={
+                  item.category === "tryout"
+                    ? "Lihat Tryout mu"
+                    : "Lanjutkan Belajar mu"
                 }
-              }}
-            />
-          )}
-          {!item.purchased && !onCart && (
-            <DefaultPrimaryButton
-              text="Beli Sekarang"
-              onPress={() => {
-                dispatch(addToCart(item));
-                navigation.navigate("CartScreen");
-              }}
-            />
-          )}
+                onPress={() => {
+                  if (item.category === "tryout") {
+                    navigation.navigate("GoTryoutScreen");
+                  } else {
+                    navigation.navigate("ProductIncludeScreen", {
+                      produkId: item._id,
+                    });
+                  }
+                }}
+              />
+            )}
+            {!item.purchased && !onCart && (
+              <DefaultPrimaryButton
+                text="Beli Sekarang"
+                onPress={() => {
+                  if (Platform.OS === "ios") {
+                    requestPurchase();
+                  } else {
+                    dispatch(addToCart(item));
+                    navigation.navigate("CartScreen");
+                  }
+                }}
+              />
+            )}
 
-          {!item.purchased && onCart && (
-            <DefaultPrimaryButton
-              text="Sudah ada di keranjang"
-              onPress={() => {
-                navigation.navigate("CartScreen");
-              }}
-            />
-          )}
-        </View>
-      </ScrollView>
+            {!item.purchased && onCart && (
+              <DefaultPrimaryButton
+                text="Sudah ada di keranjang"
+                onPress={() => {
+                  navigation.navigate("CartScreen");
+                }}
+              />
+            )}
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };

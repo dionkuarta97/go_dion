@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -35,7 +36,7 @@ const ProductDetailScreen = (props) => {
 
   const cart = useSelector((state) => state.cartReducer.cart);
 
-  console.log(item);
+  console.log(JSON.stringify(item, null, 2));
 
   const productInfo = () => {
     return (
@@ -138,57 +139,63 @@ const ProductDetailScreen = (props) => {
           </Box>
         }
         rightItem={
-          !cart.some((val) => val._id === item._id) ? (
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => dispatch(addToCart(item))}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingHorizontal: 5,
-                paddingVertical: 3,
-                borderRadius: 10,
-                backgroundColor: "rgba(0,0,0, 0.3)",
-              }}
-            >
-              <MaterialIcons name={"add"} size={24} color={Colors.whiteColor} />
-              <Text
+          Platform.OS === "android" ? (
+            !cart.some((val) => val._id === item._id) ? (
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => dispatch(addToCart(item))}
                 style={{
-                  ...Fonts.white16Bold,
-                  marginLeft: Sizes.fixPadding - 5.0,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingHorizontal: 5,
+                  paddingVertical: 3,
+                  borderRadius: 10,
+                  backgroundColor: "rgba(0,0,0, 0.3)",
                 }}
               >
-                Keranjang
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingHorizontal: 5,
-                paddingVertical: 3,
-                borderRadius: 10,
-                backgroundColor: "rgba(0,0,0, 0.3)",
-              }}
-            >
-              <MaterialIcons
-                name={"done"}
-                size={24}
-                color={Colors.whiteColor}
-              />
-              <Text
+                <MaterialIcons
+                  name={"add"}
+                  size={24}
+                  color={Colors.whiteColor}
+                />
+                <Text
+                  style={{
+                    ...Fonts.white16Bold,
+                    marginLeft: Sizes.fixPadding - 5.0,
+                  }}
+                >
+                  Keranjang
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <View
                 style={{
-                  ...Fonts.white16Bold,
-                  marginLeft: Sizes.fixPadding - 5.0,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingHorizontal: 5,
+                  paddingVertical: 3,
+                  borderRadius: 10,
+                  backgroundColor: "rgba(0,0,0, 0.3)",
                 }}
               >
-                Sudah ditambahkan
-              </Text>
-            </View>
-          )
+                <MaterialIcons
+                  name={"done"}
+                  size={24}
+                  color={Colors.whiteColor}
+                />
+                <Text
+                  style={{
+                    ...Fonts.white16Bold,
+                    marginLeft: Sizes.fixPadding - 5.0,
+                  }}
+                >
+                  Sudah ditambahkan
+                </Text>
+              </View>
+            )
+          ) : null
         }
         element={productInfo()}
         borderBottomRadius={20}

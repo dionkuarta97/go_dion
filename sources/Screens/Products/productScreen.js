@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, StatusBar, Text, View } from "react-native";
+import { SafeAreaView, StatusBar, Text, View, Platform } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import SliverAppBar from "../../Components/sliverAppBar";
 import { useNavigation } from "@react-navigation/core";
@@ -37,7 +37,7 @@ const ProductScreen = () => {
           <View style={{ flexDirection: "row" }}>
             <ActionButtonFilter />
             <View style={{ width: 15 }} />
-            <ActionButtonCart />
+            {Platform.OS === "android" && <ActionButtonCart />}
           </View>
         }
         element={

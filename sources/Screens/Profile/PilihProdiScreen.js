@@ -213,11 +213,11 @@ const PilihProdiScreen = (props) => {
                     if (data) {
                       Alert.alert(
                         "Peringatan",
-                        "Saat ini pilihan prodi tidak dapat diubah. Kamu yakin dengan pilihan kamu?",
+                        "Setelah menentukan prodi, kamu tidak dapat menggantinya lagi. Pastikan memilih prodimu dengan benar",
                         [
-                          { text: "Cancel", onPress: () => {} },
+                          { text: "Batal", onPress: () => {} },
                           {
-                            text: "Yakin",
+                            text: "Benar",
                             onPress: () => {
                               let program_studi = [pilihanSatu, pilihanDua];
                               let data = { ...profile, program_studi };

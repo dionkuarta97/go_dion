@@ -47,13 +47,17 @@ export const setMyPosition = (payload) => {
   };
 };
 
-export const getMyPosition = (type) => {
+export const getMyPosition = (type, tahun) => {
   return async (dispatch, getState) => {
     try {
       dispatch(setMyPosition(defaultInitState));
       const urlBase = getState().initReducer.baseUrl;
       const response = await fetch(
-        urlBase + "/scoring/v1/report/leaderboards/my-rank/" + type,
+        urlBase +
+          "/scoring/v1/report/leaderboards/my-rank/" +
+          type +
+          "?tahun=" +
+          tahun,
         {
           method: "GET",
           headers: {

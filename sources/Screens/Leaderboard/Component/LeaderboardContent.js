@@ -44,25 +44,42 @@ const LeaderboardContent = () => {
     setPage(1);
     let now = new Date();
     let tahun = now.getFullYear();
-    if (now.getMonth() >= 0 && now.getMonth() < 6) {
-      setTahunAwal(Number(tahun - 1));
-      setTahunAkhir(Number(tahun));
-      dispatch(
-        getLeaderboard({
-          type:
-            select === "Nasional"
-              ? "national"
-              : select === "Kota"
-              ? "region"
-              : "school",
-          page: 1,
-          limit: 20,
-          tahun: Number(tahun - 1) + "/" + Number(tahun),
-        })
-      );
+
+    if (tahunAwal === 0 && tahunAkhir === 0) {
+      if (now.getMonth() >= 0 && now.getMonth() < 6) {
+        setTahunAwal(Number(tahun - 1));
+        setTahunAkhir(Number(tahun));
+        dispatch(
+          getLeaderboard({
+            type:
+              select === "Nasional"
+                ? "national"
+                : select === "Kota"
+                ? "region"
+                : "school",
+            page: 1,
+            limit: 20,
+            tahun: Number(tahun - 1) + "/" + Number(tahun),
+          })
+        );
+      } else {
+        setTahunAwal(Number(tahun));
+        setTahunAkhir(Number(tahun + 1));
+        dispatch(
+          getLeaderboard({
+            type:
+              select === "Nasional"
+                ? "national"
+                : select === "Kota"
+                ? "region"
+                : "school",
+            page: 1,
+            limit: 20,
+            tahun: Number(tahun) + "/" + Number(tahun + 1),
+          })
+        );
+      }
     } else {
-      setTahunAwal(Number(tahun));
-      setTahunAkhir(Number(tahun + 1));
       dispatch(
         getLeaderboard({
           type:
@@ -73,7 +90,7 @@ const LeaderboardContent = () => {
               : "school",
           page: 1,
           limit: 20,
-          tahun: Number(tahun) + "/" + Number(tahun + 1),
+          tahun: tahunAwal + "/" + tahunAkhir,
         })
       );
     }
@@ -309,7 +326,10 @@ const LeaderboardContent = () => {
                         width: Dimensions.get("screen").width / 1.3,
                       });
                     } else {
-                      navigation.navigate("MyPosition", { select });
+                      navigation.navigate("MyPosition", {
+                        select,
+                        tahun: tahunAwal + "/" + tahunAkhir,
+                      });
                     }
                   }}
                 >

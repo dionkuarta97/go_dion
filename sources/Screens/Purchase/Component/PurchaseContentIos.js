@@ -23,7 +23,7 @@ import CompStyles from "../../../Theme/styles/globalStyles";
 import EmptyIndicator from "../../../Components/Indicator/EmptyIndicator";
 import checkInternet from "../../../Services/CheckInternet";
 import { useToast } from "native-base";
-const PurchaseContent = (props) => {
+const PurchaseContentIos = (props) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -32,10 +32,10 @@ const PurchaseContent = (props) => {
   useEffect(() => {
     checkInternet().then((connection) => {
       if (connection) {
-        dispatch(getPaymentList(props.status));
+        dispatch(getPaymentList("done"));
       }
     });
-  }, [props.status]);
+  }, []);
 
   console.log(JSON.stringify(paymentList, 2, null));
 
@@ -133,7 +133,7 @@ const PurchaseContent = (props) => {
   );
 };
 
-export default PurchaseContent;
+export default PurchaseContentIos;
 
 const styles = StyleSheet.create({
   status: {

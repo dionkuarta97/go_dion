@@ -144,21 +144,23 @@ const HomeScreen = (props) => {
                 marginRight: 10,
               }}
             >
-              <TouchableOpacity
-                onPress={() => {
-                  if (!isLogin) {
-                    Alert.alert(
-                      "Tidak Bisa Masuk",
-                      "Kamu harus login terlebih dahulu untuk mengakses menu ini"
-                    );
-                  } else {
-                    onOpen();
-                    setBottom(0);
-                  }
-                }}
-              >
-                <FontAwesome5 name="gift" size={24} color="black" />
-              </TouchableOpacity>
+              {Platform.OS === "android" && (
+                <TouchableOpacity
+                  onPress={() => {
+                    if (!isLogin) {
+                      Alert.alert(
+                        "Tidak Bisa Masuk",
+                        "Kamu harus login terlebih dahulu untuk mengakses menu ini"
+                      );
+                    } else {
+                      onOpen();
+                      setBottom(0);
+                    }
+                  }}
+                >
+                  <FontAwesome5 name="gift" size={24} color="black" />
+                </TouchableOpacity>
+              )}
 
               <Actionsheet
                 bottom={Platform.OS === "ios" ? bottom : 0}
@@ -333,7 +335,7 @@ const HomeScreen = (props) => {
                 </Actionsheet.Content>
               </Actionsheet>
             </Box>
-            <ActionButtonCart from={"home"} />
+            {Platform.OS === "android" && <ActionButtonCart from={"home"} />}
           </View>
         }
         element={

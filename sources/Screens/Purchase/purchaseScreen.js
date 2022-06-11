@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Dimensions, SafeAreaView, BackHandler } from "react-native";
+import { Dimensions, SafeAreaView, Platform } from "react-native";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultTabBar from "../../Components/DefaultTabBar";
 import { useFocusEffect } from "@react-navigation/native";
@@ -8,6 +8,7 @@ import PurchaseContent from "./Component/purchaseContent";
 import checkInternet from "../../Services/CheckInternet";
 import { useToast } from "native-base";
 import ToastErrorContent from "../../Components/ToastErrorContent";
+import PurchaseContentIos from "./Component/PurchaseContentIos";
 
 const PurchaseScreen = () => {
   const toast = useToast();
@@ -39,18 +40,23 @@ const PurchaseScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar backEnabled={false} title="Pembelian" />
-      <DefaultTabBar
-        routes={[
-          { key: "item1", title: "Pending" },
-          { key: "item2", title: "Success" },
-          { key: "item3", title: "Expired" },
-        ]}
-        screen={[
-          <PurchaseContent status="pending" />,
-          <PurchaseContent status="done" />,
-          <PurchaseContent status="expire" />,
-        ]}
-      />
+      {Platform.OS === "android" ? (
+        <DefaultTabBar
+          routes={[
+            { key: "item1", title: "Pending" },
+            { key: "item2", title: "Success" },
+            { key: "item3", title: "Expired" },
+          ]}
+          screen={[
+            <PurchaseContent status="pending" />,
+            <PurchaseContent status="done" />,
+            <PurchaseContent status="expire" />,
+          ]}
+        />
+      ) : (
+        <PurchaseContentIos />
+      )}
+
       {/* <View style={{flex: 1}}>
                 <PurchaseContent />
             </View> */}

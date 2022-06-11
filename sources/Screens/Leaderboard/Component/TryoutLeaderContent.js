@@ -43,23 +43,40 @@ const TryoutLeaderContent = (props) => {
   const toast = useToast();
 
   useEffect(() => {
-    setTahunAwal(tahun[0]);
-    setTahunAkhir(tahun[1]);
     setPage(1);
-    dispatch(
-      getTryoutLeader({
-        type:
-          select === "Nasional"
-            ? "national"
-            : select === "Kota"
-            ? "region"
-            : "school",
-        page: 1,
-        limit: 20,
-        tahun: tahun[0] + "/" + tahun[1],
-        id: id,
-      })
-    );
+    if (tahunAwal === 0 && tahunAkhir === 0) {
+      setTahunAwal(tahun[0]);
+      setTahunAkhir(tahun[1]);
+      dispatch(
+        getTryoutLeader({
+          type:
+            select === "Nasional"
+              ? "national"
+              : select === "Kota"
+              ? "region"
+              : "school",
+          page: 1,
+          limit: 20,
+          tahun: tahun[0] + "/" + tahun[1],
+          id: id,
+        })
+      );
+    } else {
+      dispatch(
+        getTryoutLeader({
+          type:
+            select === "Nasional"
+              ? "national"
+              : select === "Kota"
+              ? "region"
+              : "school",
+          page: 1,
+          limit: 20,
+          tahun: tahunAwal + "/" + tahunAkhir,
+          id: id,
+        })
+      );
+    }
   }, [select]);
 
   const onChangeTahunAwal = (str) => {

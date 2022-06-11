@@ -39,9 +39,7 @@ const GantiFotoContent = (props) => {
 
   useEffect(() => {
     if (!loading && success) {
-      navigation.navigate("MainScreen", {
-        from: "gantiFoto",
-      });
+      navigation.navigate("ProfileScreen");
     }
   }, [loading]);
 
@@ -57,9 +55,9 @@ const GantiFotoContent = (props) => {
             <Image
               style={{
                 marginTop: 50,
-                height: 150.0,
-                width: 150.0,
-                borderRadius: 150.0,
+                height: 200.0,
+                width: 200.0,
+                borderRadius: 200.0,
               }}
               source={{ uri: !poto ? bawaan : poto.uri }}
               resizeMode="contain"
@@ -76,41 +74,47 @@ const GantiFotoContent = (props) => {
             onRequestClose={() => setIsVisible(false)}
           />
           <VStack marginTop={10} space={2}>
-            <Button colorScheme="success" onPress={handleChoosePhoto}>
+            <Button
+              colorScheme="success"
+              width={150}
+              onPress={handleChoosePhoto}
+            >
               Pilih Foto
             </Button>
-            <Button
-              variant={"solid"}
-              isDisabled={!image ? true : false}
-              colorScheme="amber"
-              onPress={() => {
-                const date = new Date();
-                const data = new FormData();
+            {image && (
+              <Button
+                width={150}
+                variant={"solid"}
+                colorScheme="amber"
+                onPress={() => {
+                  const date = new Date();
+                  const data = new FormData();
 
-                data.append("avatar", {
-                  uri:
-                    Platform.OS === "ios"
-                      ? `file:///${image.path}`
-                      : image.path,
-                  type: image.mime,
-                  name: date + ".jpg",
-                });
-
-                setLoading(true);
-                dispatch(uploadFoto(data))
-                  .then((data) => {
-                    setSuccess(data);
-                    console.log(JSON.stringify(data, null, 2));
-                    setLoading(false);
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                    setError(err.message);
+                  data.append("avatar", {
+                    uri:
+                      Platform.OS === "ios"
+                        ? `file:///${image.path}`
+                        : image.path,
+                    type: image.mime,
+                    name: date + ".jpg",
                   });
-              }}
-            >
-              Simpan Foto
-            </Button>
+
+                  setLoading(true);
+                  dispatch(uploadFoto(data))
+                    .then((data) => {
+                      setSuccess(data);
+                      console.log(JSON.stringify(data, null, 2));
+                      setLoading(false);
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                      setError(err.message);
+                    });
+                }}
+              >
+                Simpan Foto
+              </Button>
+            )}
           </VStack>
         </>
       )}

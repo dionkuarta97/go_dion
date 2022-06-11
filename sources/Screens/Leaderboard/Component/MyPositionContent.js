@@ -19,6 +19,7 @@ import Colors from "../../../Theme/Colors";
 import { useNavigation } from "@react-navigation/native";
 const MyPositionContent = (props) => {
   const temp = props.select;
+  const { tahun } = props;
   const dispatch = useDispatch();
   const { leaderboard, myPosition } = useSelector(
     (state) => state.leaderboardReducer
@@ -34,12 +35,13 @@ const MyPositionContent = (props) => {
           ? "national"
           : select === "Kota"
           ? "region"
-          : "school"
+          : "school",
+        tahun
       )
     );
   }, [select]);
 
-  console.log(JSON.stringify(myPosition, null, 2));
+  console.log(JSON.stringify(tahun, null, 2));
 
   return (
     <>

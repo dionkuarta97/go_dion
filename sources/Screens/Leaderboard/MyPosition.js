@@ -6,10 +6,11 @@ import MyPositionContent from "./Component/MyPositionContent";
 
 const MyPosition = ({ route }) => {
   const { params } = route;
+  console.log(params);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar title={"Posisi Saya"} backEnabled={true} />
-      <MyPositionContent select={params.select} />
+      <MyPositionContent select={params.select} tahun={params.tahun} />
     </SafeAreaView>
   );
 };

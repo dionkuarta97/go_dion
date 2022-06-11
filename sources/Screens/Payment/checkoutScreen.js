@@ -79,7 +79,7 @@ const CheckoutScreen = () => {
     dispatch(getPaymentList("pending"));
   }, []);
 
-  console.log(JSON.stringify(cart, null, 2));
+  console.log(JSON.stringify(selectedPaymentMethod, null, 2));
 
   const renderItem = (item) => {
     return (

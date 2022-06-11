@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -11,77 +11,139 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  TextInput,
+  FlatList,
+  Platform,
 } from "react-native";
 import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
+import DefaultBottomSheet from "./DefaultBottomSheet";
+import { useDispatch, useSelector } from "react-redux";
+import { getListCity } from "../../Redux/Data/dataActions";
+import { useToast } from "native-base";
+import checkInternet from "../../Services/CheckInternet";
+import { useNavigation } from "@react-navigation/native";
+import ToastErrorContent from "../ToastErrorContent";
 
-const DefaultBottomSheet = (props) => {
+const CityBottomSheet = (props) => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const toast = useToast();
+  const listCity = useSelector((state) => state.dataReducer.listCity);
+
+  const [search, setSearch] = useState("");
+  useLayoutEffect(() => {
+    checkInternet().then((data) => {
+      if (data) {
+        dispatch(getListCity(props.idProvinsi));
+      } else {
+        props.onClose();
+        toast.show({
+          placement: "top",
+          duration: null,
+          width: Dimensions.get("screen").width / 1.3,
+          render: () => {
+            return (
+              <ToastErrorContent
+                content="Kamu tidak terhubung ke internet"
+                onPress={() => {
+                  toast.closeAll();
+                  navigation.goBack();
+                }}
+              />
+            );
+          },
+        });
+      }
+    });
+  }, []);
+
   return (
-    <Modal transparent={true} animationType="slide">
-      <View style={styles.container}>
-        <View style={styles.dimBackground} />
-        <View style={styles.dialog}>
-          <View style={styles.contentHeader}>
-            <Text style={{ flex: 1, ...Fonts.black17Bold }}>{props.title}</Text>
-            <TouchableOpacity onPress={() => props.onClose()}>
-              <View style={styles.closeContainer}>
-                <MaterialIcons name="close" size={20} color="grey" />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={{ padding: Sizes.fixPadding * 2 }}>
-            {props.children}
-          </View>
+    <DefaultBottomSheet title="City" onClose={() => props.onClose()}>
+      <View style={styles.search}>
+        <TextInput
+          placeholder="Search"
+          style={{
+            flex: 1,
+            paddingVertical: Sizes.fixPadding,
+          }}
+          onChangeText={setSearch}
+        />
+        <View style={{ paddingHorizontal: Sizes.fixPadding }}>
+          <MaterialIcons name="search" size={24} color="grey" />
         </View>
       </View>
-    </Modal>
+      {listCity.loading && <ActivityIndicator color={Colors.orangeColor} />}
+      {listCity.data !== null && (
+        <FlatList
+          style={{
+            marginBottom: 50,
+            maxHeight:
+              Platform.OS === "ios"
+                ? Dimensions.get("screen").height / 2.2
+                : Dimensions.get("screen").height / 4,
+            minHeight:
+              Platform.OS === "ios"
+                ? Dimensions.get("screen").height / 2.2
+                : Dimensions.get("screen").height / 4,
+          }}
+          keyExtractor={(item, index) => item.idkabkota + ""}
+          data={listCity.data.filter((value) =>
+            value.kabkota.toLowerCase().includes(search.toLowerCase())
+          )}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity
+                key={`kabkota-${item.idkabkota}`}
+                onPress={() => props.onSelect(item)}
+              >
+                <View style={styles.tile}>
+                  <Text style={{ flex: 1 }}>{item.kabkota}</Text>
+                  <View
+                    style={{
+                      paddingHorizontal: Sizes.fixPadding / 2,
+                    }}
+                  >
+                    <MaterialIcons
+                      name="keyboard-arrow-right"
+                      size={30}
+                      color={Colors.orangeColor}
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      )}
+    </DefaultBottomSheet>
   );
 };
 
-DefaultBottomSheet.propTypes = {
-  children: PropTypes.node,
-  title: PropTypes.string.isRequired,
+CityBottomSheet.propTypes = {
+  idProvinsi: PropTypes.string,
   onClose: PropTypes.func,
+  onSelect: PropTypes.func,
 };
 
-export default DefaultBottomSheet;
+export default CityBottomSheet;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-
-    position: "relative",
-  },
-  dimBackground: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    backgroundColor: "black",
-    opacity: 0.3,
-  },
-  dialog: {
-    position: "absolute",
-    bottom: 0,
-    width: Dimensions.get("screen").width,
-    maxHeight: Dimensions.get("screen").height * 0.8,
-    backgroundColor: "white",
-    borderTopLeftRadius: Sizes.fixPadding,
-    borderTopRightRadius: Sizes.fixPadding,
-  },
-  contentHeader: {
+  search: {
     flexDirection: "row",
-    padding: Sizes.fixPadding * 2,
-    alignItems: "center",
-    borderBottomColor: "grey",
-    borderBottomWidth: 1,
-  },
-  closeContainer: {
-    borderRadius: 100,
-    width: 30,
-    height: 30,
+    paddingHorizontal: Sizes.fixPadding * 2,
     backgroundColor: "whitesmoke",
+    borderRadius: Sizes.fixPadding,
     justifyContent: "center",
     alignItems: "center",
+  },
+  tile: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: Sizes.fixPadding * 1.5,
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgrey",
   },
 });

@@ -293,6 +293,42 @@ const PaymentScreen = (props) => {
                             </View>
                           </TouchableOpacity>
                         </View>
+                        <Text style={{ marginTop: Sizes.fixPadding }}>
+                          Merchant Id
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...Fonts.black17Bold,
+                              flex: 1,
+                            }}
+                          >
+                            {paymentDetail.data.payment_detail.merchant_id}
+                          </Text>
+                          <TouchableOpacity
+                            onPress={() =>
+                              Clipboard.setString(
+                                paymentDetail.data.payment_detail.merchant_id
+                              )
+                            }
+                          >
+                            <View
+                              style={{
+                                paddingVertical: Sizes.fixPadding / 2,
+                                paddingHorizontal: Sizes.fixPadding,
+                                backgroundColor: Colors.primaryColor,
+                                borderRadius: 5,
+                              }}
+                            >
+                              <Text>Copy</Text>
+                            </View>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </>
                   )}
@@ -324,9 +360,12 @@ const PaymentScreen = (props) => {
                   </Text>
                   <NumberFormat
                     value={
-                      paymentDetail.data.payment_detail.gross_amount.split(
-                        "."
-                      )[0]
+                      typeof paymentDetail.data.payment_detail.gross_amount ===
+                      "string"
+                        ? paymentDetail.data.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        : paymentDetail.data.payment_detail.gross_amount
                     }
                     displayType={"text"}
                     thousandSeparator="."
@@ -425,9 +464,13 @@ const PaymentScreen = (props) => {
                   <Text style={{ marginEnd: "auto" }}>Service Fee:</Text>
                   <NumberFormat
                     value={
-                      paymentDetail.data.payment_detail.gross_amount.split(
-                        "."
-                      )[0] - totalHarga(paymentDetail.data?.products)
+                      typeof paymentDetail.data.payment_detail.gross_amount ===
+                      "string"
+                        ? paymentDetail.data.payment_detail.gross_amount.split(
+                            "."
+                          )[0] - totalHarga(paymentDetail.data?.products)
+                        : paymentDetail.data.payment_detail.gross_amount -
+                          totalHarga(paymentDetail.data?.products)
                     }
                     displayType={"text"}
                     thousandSeparator="."

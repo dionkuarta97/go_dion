@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Platform,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
@@ -77,18 +78,21 @@ const PaymentMethodScreen = () => {
   const renderSubItem = (subItem) => {
     console.log(JSON.stringify(subItem, null, 2));
     return (
-      <TouchableOpacity
-        key={subItem.name}
-        onPress={() => {
-          dispatch(setSelectedPaymentMethod(subItem));
-          navigation.goBack();
-        }}
-      >
-        <View style={styles.subItem}>
-          <Text style={{ flex: 1 }}>{subItem.title}</Text>
-          <Text style={{ ...Fonts.gray14Regular }}>Pilih</Text>
-        </View>
-      </TouchableOpacity>
+      subItem.method !== "apple_pay" &&
+      subItem.method !== "cstore" && (
+        <TouchableOpacity
+          key={subItem.name}
+          onPress={() => {
+            dispatch(setSelectedPaymentMethod(subItem));
+            navigation.goBack();
+          }}
+        >
+          <View style={styles.subItem}>
+            <Text style={{ flex: 1 }}>{subItem.title}</Text>
+            <Text style={{ ...Fonts.gray14Regular }}>Pilih</Text>
+          </View>
+        </TouchableOpacity>
+      )
     );
   };
   return (
