@@ -520,6 +520,13 @@ const ProfileEditScreen = (props) => {
             />
             {schoolNameBottomSheetVisible && (
               <SchoolBottomSheet
+                kelas={
+                  Number(kelas.split(" ")[0] > 0 && kelas.split(" ")[0] < 7)
+                    ? "SD"
+                    : kelas.split(" ")[0] > 9
+                    ? "SMA"
+                    : "SMP"
+                }
                 idkabkota={
                   schoolCity !== null && schoolCity?.idkabkota !== null
                     ? schoolCity?.idkabkota

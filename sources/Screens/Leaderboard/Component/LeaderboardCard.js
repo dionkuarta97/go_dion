@@ -4,16 +4,21 @@ import {
   HStack,
   Text,
   Box,
-  Image,
   Modal,
   Button,
   Center,
   View,
   VStack,
 } from "native-base";
-import { Dimensions } from "react-native";
+import { Dimensions, ActivityIndicator } from "react-native";
+import { Image } from "react-native";
+import ImageView from "react-native-image-viewing";
+import defaultImage from "../../../../assets/Images/user_profile/no-user.jpg";
+import Colors from "../../../Theme/Colors";
+const DEFAULT_IMAGE = Image.resolveAssetSource(defaultImage).uri;
 const LeaderboardCard = (props) => {
-  const { data, from, position } = props;
+  const [visible, setIsVisible] = useState(false);
+  const { data, from, position, length, idx, loading } = props;
   const [showModal, setShowModal] = useState(false);
   const checkMyPostion = (satu, dua) => {
     if (satu === dua) {
@@ -21,6 +26,17 @@ const LeaderboardCard = (props) => {
     }
     return false;
   };
+
+  const singkatNama = (str) => {
+    if (str !== undefined) {
+      if (str.length > 13) {
+        return str.substr(0, 13) + "...";
+      }
+    }
+
+    return str;
+  };
+
   return (
     <>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -29,13 +45,26 @@ const LeaderboardCard = (props) => {
           <Modal.Header>Detail</Modal.Header>
           <Modal.Body>
             <Center>
-              <Image
-                size={50}
-                borderRadius={500}
-                source={{
-                  uri: "https://corbetonreadymix.com/wp-content/uploads/2021/09/2-1.jpg",
-                }}
-                alt="Alternate Text"
+              <TouchableOpacity onPress={() => setIsVisible(true)}>
+                <Image
+                  style={{
+                    height: 80.0,
+                    width: 80.0,
+                    borderRadius: 100.0,
+                  }}
+                  source={{ uri: data.avatar ? data.avatar : DEFAULT_IMAGE }}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <ImageView
+                images={[
+                  {
+                    uri: data.avatar ? data.avatar : DEFAULT_IMAGE,
+                  },
+                ]}
+                imageIndex={0}
+                visible={visible}
+                onRequestClose={() => setIsVisible(false)}
               />
               <Box paddingX={5}>
                 <Text textAlign={"center"}>{data.name}</Text>
@@ -100,25 +129,45 @@ const LeaderboardCard = (props) => {
               {data.position}
             </Text>
             <Image
-              marginRight={Dimensions.get("screen").width / 15}
-              size={50}
-              borderRadius={500}
-              source={{
-                uri: "https://corbetonreadymix.com/wp-content/uploads/2021/09/2-1.jpg",
+              style={{
+                marginRight: Dimensions.get("screen").width / 15,
+                height: 50.0,
+                width: 50.0,
+                borderRadius: 100.0,
               }}
-              alt="Alternate Text"
+              source={{ uri: data.avatar ? data.avatar : DEFAULT_IMAGE }}
+              resizeMode="contain"
             />
             <Box
               marginRight={"auto"}
-              maxWidth={Dimensions.get("screen").width / 3}
+              maxWidth={Dimensions.get("screen").width / 2.8}
             >
-              <Text>{data.name}</Text>
+              <Text>{singkatNama(data.name)}</Text>
             </Box>
 
-            <Text bold>{data.point}</Text>
+            <Text bold>
+              {Number(data.point)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            </Text>
           </HStack>
         </Box>
       </TouchableOpacity>
+      {length - 1 === idx && (
+        <View
+          style={{
+            maxHeight: 120,
+            minHeight: 120,
+            marginBottom: 200,
+            paddingTop: 20,
+            width: Dimensions.get("screen").width,
+          }}
+        >
+          {loading && (
+            <ActivityIndicator color={Colors.orangeColor} size={30} />
+          )}
+        </View>
+      )}
     </>
   );
 };

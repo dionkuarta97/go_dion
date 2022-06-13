@@ -4,12 +4,13 @@ import { useSelector } from "react-redux";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import NoData from "../../Components/NoData";
 import LeaderboardContent from "./Component/LeaderboardContent";
+import LeaderTryoutContent from "./Component/LeaderTryoutContent";
 
-const LeaderboardScreen = () => {
+const LeaderTryoutScreen = () => {
   const { isLogin } = useSelector((state) => state.authReducer);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar backEnabled={true} title={"Pengerjaan Soal"} />
+      <DefaultAppBar backEnabled={true} title={"Tryout"} />
       {!isLogin ? (
         <View
           style={{
@@ -23,10 +24,10 @@ const LeaderboardScreen = () => {
           />
         </View>
       ) : (
-        <LeaderboardContent />
+        <LeaderTryoutContent />
       )}
     </SafeAreaView>
   );
 };
 
-export default LeaderboardScreen;
+export default LeaderTryoutScreen;

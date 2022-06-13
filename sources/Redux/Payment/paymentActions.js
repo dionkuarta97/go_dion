@@ -110,6 +110,35 @@ export function getPaymentProcess(merge) {
   };
 }
 
+export const getPaymentApple = (product) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      const urlBase = getState().initReducer.baseUrl;
+      const bodyParams = JSON.stringify({
+        provider: "apple",
+        payment_type: "apple_pay",
+        products: [product],
+      });
+      console.log(bodyParams);
+      fetch(urlBase + urlPaymentProcess, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().authReducer.token}`,
+        },
+        body: bodyParams,
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          resolve(json);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  };
+};
+
 export function setCurrentPayment(data) {
   return {
     type: SET_CURRENT_PAYMENT,

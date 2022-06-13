@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
 } from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
@@ -14,17 +13,15 @@ import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextI
 import OneSignal from "react-native-onesignal";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
-import Colors from "../../../Theme/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getLogin,
   setEmailCheck,
+  setForgotPassword,
   setLoginData,
-  setLoginStatus,
 } from "../../../Redux/Auth/authActions";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
-import DefaultModal from "../../../Components/Modal/DefaultModal";
 import { useToast } from "native-base";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
@@ -83,7 +80,12 @@ const LoginContent = () => {
   const forgetPasswordText = () => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("ForgotPasswordScreen")}
+        onPress={() => {
+          navigation.navigate("ForgotPasswordScreen");
+          dispatch(
+            setForgotPassword({ loading: false, error: null, data: null })
+          );
+        }}
       >
         <Text
           style={{

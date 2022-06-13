@@ -9,19 +9,16 @@ import {
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getLeaderboard,
-  getMyPosition,
-} from "../../../Redux/Leaderboard/leaderboardAction";
+import { getPositionTryout } from "../../../Redux/Leaderboard/leaderboardAction";
 import LeaderboardCard from "./LeaderboardCard";
 import { Dimensions, ActivityIndicator, TouchableOpacity } from "react-native";
 import Colors from "../../../Theme/Colors";
 import { useNavigation } from "@react-navigation/native";
-const MyPositionContent = (props) => {
+const PositionTryoutContent = (props) => {
   const temp = props.select;
-  const { tahun } = props;
+  const { id, tahun } = props;
   const dispatch = useDispatch();
-  const { leaderboard, myPosition } = useSelector(
+  const { leaderboard, positionTryout } = useSelector(
     (state) => state.leaderboardReducer
   );
   const navigation = useNavigation();
@@ -30,18 +27,18 @@ const MyPositionContent = (props) => {
   useEffect(() => {
     setPage(1);
     dispatch(
-      getMyPosition(
+      getPositionTryout(
         select === "Nasional"
           ? "national"
           : select === "Kota"
           ? "region"
           : "school",
-        tahun
+        { id, tahun }
       )
     );
   }, [select]);
 
-  console.log(JSON.stringify(tahun, null, 2));
+  console.log(JSON.stringify(positionTryout, null, 2));
 
   return (
     <>
@@ -90,18 +87,18 @@ const MyPositionContent = (props) => {
             Tingkat {select}
           </Text>
         </HStack>
-        {myPosition.loading && (
+        {positionTryout.loading && (
           <View padding={5}>
             <ActivityIndicator color={Colors.orangeColor} size={30} />
           </View>
         )}
         <ScrollView marginBottom={Dimensions.get("screen").height / 30}>
-          {myPosition.data?.rankings.map((el) => (
+          {positionTryout.data?.rankings.map((el) => (
             <LeaderboardCard
               from={true}
               data={el}
               key={el.position}
-              position={myPosition.data?.my_position}
+              position={positionTryout.data?.my_position}
             />
           ))}
         </ScrollView>
@@ -110,4 +107,4 @@ const MyPositionContent = (props) => {
   );
 };
 
-export default MyPositionContent;
+export default PositionTryoutContent;

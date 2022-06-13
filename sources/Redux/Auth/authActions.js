@@ -11,7 +11,7 @@ import {
   defaultFailedState,
   defaultInitState,
 } from "../helper";
-import { setProfile } from "../Profile/profileActions";
+import { getMe, setProfile } from "../Profile/profileActions";
 import {
   SET_EMAIL_CHECK,
   SET_FORGOT_PASSWORD,
@@ -42,6 +42,8 @@ export function getLogin({ username, password, playerId }) {
     const urlBase = getState().initReducer.baseUrl;
 
     dispatch(setLoginData(defaultInitState));
+    dispatch(setProfile(null));
+    dispatch(setToken(null));
     try {
       fetch(urlBase + urlLogin, {
         method: "POST",
@@ -246,3 +248,27 @@ export function getForgotPassword(email, os) {
 export function hitOneSignal(payload) {
   return async(dispatch, getState);
 }
+
+export const uploadFoto = (data) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      const urlBase = getState().initReducer.baseUrl;
+      fetch(urlBase + "/masterdata/v1/auth/me/avatar", {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${getState().authReducer.token}`,
+          "Content-Type": "multipart/form-data; ",
+        },
+        body: data,
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          dispatch(getMe());
+          resolve(json);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  };
+};

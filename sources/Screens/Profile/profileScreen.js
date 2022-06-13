@@ -56,7 +56,7 @@ const ProfileScreen = (props) => {
       }
     });
   }, []);
-  console.log(JSON.stringify(profile, null, 2));
+
   useEffect(() => {
     checkInternet().then((data) => {
       if (data) {

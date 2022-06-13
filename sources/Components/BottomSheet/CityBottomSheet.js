@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   TextInput,
   FlatList,
+  Platform,
 } from "react-native";
 import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
@@ -78,8 +79,14 @@ const CityBottomSheet = (props) => {
         <FlatList
           style={{
             marginBottom: 50,
-            maxHeight: Dimensions.get("screen").height / 2.2,
-            minHeight: Dimensions.get("screen").height / 2.2,
+            maxHeight:
+              Platform.OS === "ios"
+                ? Dimensions.get("screen").height / 2.2
+                : Dimensions.get("screen").height / 4,
+            minHeight:
+              Platform.OS === "ios"
+                ? Dimensions.get("screen").height / 2.2
+                : Dimensions.get("screen").height / 4,
           }}
           keyExtractor={(item, index) => item.idkabkota + ""}
           data={listCity.data.filter((value) =>

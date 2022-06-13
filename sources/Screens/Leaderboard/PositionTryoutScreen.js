@@ -3,16 +3,20 @@ import { SafeAreaView, Text, View } from "react-native";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import LeaderboardContent from "./Component/LeaderboardContent";
 import MyPositionContent from "./Component/MyPositionContent";
+import PositionTryoutContent from "./Component/PositionTryoutContent";
 
-const MyPosition = ({ route }) => {
+const PositionTryoutScreen = ({ route }) => {
   const { params } = route;
-  console.log(params);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar title={"Posisi Saya"} backEnabled={true} />
-      <MyPositionContent select={params.select} tahun={params.tahun} />
+      <PositionTryoutContent
+        tahun={params.tahun}
+        id={params.id}
+        select={params.select}
+      />
     </SafeAreaView>
   );
 };
 
-export default MyPosition;
+export default PositionTryoutScreen;
