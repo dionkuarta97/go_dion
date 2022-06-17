@@ -248,10 +248,7 @@ const TryoutLeaderContent = (props) => {
                 {tryoutLeader.data?.rankings.length === 0 ? (
                   <Center>
                     <View marginTop={10}>
-                      <NoData
-                        msg="Leaderboard tidak di temukan"
-                        img="noimage"
-                      />
+                      <NoData msg="Belum Ada Data" img="noimage" />
                     </View>
                   </Center>
                 ) : (
@@ -305,29 +302,31 @@ const TryoutLeaderContent = (props) => {
                     <Text color={"white"} bold>
                       {singkatNama(tryoutLeader.data?.user.full_name)}
                     </Text>
-                    <Button
-                      size={"xs"}
-                      bg={"white"}
-                      onPress={() => {
-                        if (tryoutLeader.data?.my_position === 0) {
-                          toast.show({
-                            title: "Maaf",
-                            status: "warning",
-                            description: "Kamu belum pernah mengerjakan soal",
-                            placement: "top",
-                            width: Dimensions.get("screen").width / 1.3,
-                          });
-                        } else {
-                          navigation.navigate("PositionTryoutScreen", {
-                            select,
-                            id,
-                            tahun: tahunAwal + "/" + tahunAkhir,
-                          });
-                        }
-                      }}
-                    >
-                      Liha Posisi Saya
-                    </Button>
+                    {tryoutLeader.data?.my_position > 0 && (
+                      <Button
+                        size={"xs"}
+                        bg={"white"}
+                        onPress={() => {
+                          if (tryoutLeader.data?.my_position === 0) {
+                            toast.show({
+                              title: "Maaf",
+                              status: "warning",
+                              description: "Kamu belum pernah mengerjakan soal",
+                              placement: "top",
+                              width: Dimensions.get("screen").width / 1.3,
+                            });
+                          } else {
+                            navigation.navigate("PositionTryoutScreen", {
+                              select,
+                              id,
+                              tahun: tahunAwal + "/" + tahunAkhir,
+                            });
+                          }
+                        }}
+                      >
+                        Liha Posisi Saya
+                      </Button>
+                    )}
                   </VStack>
                 </Box>
 

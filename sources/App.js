@@ -50,7 +50,7 @@ import ProgressTryout from "./Screens/Laporan/ProgressTryout";
 import TestVideo from "./Screens/Home/Component/TestVideo";
 import LeaderboardScreen from "./Screens/Leaderboard/LeaderboardScreen";
 import MyPosition from "./Screens/Leaderboard/MyPosition";
-import { Platform } from "react-native";
+import { Platform, StatusBar, View } from "react-native";
 import PilihLeaderboardScreen from "./Screens/Leaderboard/PilihLeaderboardScreen";
 import LeaderTryoutScreen from "./Screens/Leaderboard/LeaderTryoutScreen";
 import GantiFotoScreen from "./Screens/Profile/GantiFotoScreen";
@@ -58,6 +58,8 @@ import TryoutLeaderScreen from "./Screens/Leaderboard/TryoutLeaderScreen";
 import PositionTryoutScreen from "./Screens/Leaderboard/PositionTryoutScreen";
 
 const Stack = createStackNavigator();
+const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 50 : StatusBar.currentHeight;
+const HEADER_HEIGHT = Platform.OS === "ios" ? 44 : 56;
 
 export default App = () => {
   const config = {
@@ -91,6 +93,18 @@ export default App = () => {
     <NativeBaseProvider>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
+          {Platform.OS === "ios" && (
+            <View
+              style={{ height: STATUS_BAR_HEIGHT, backgroundColor: "#FFC226" }}
+            >
+              <StatusBar
+                translucent
+                backgroundColor="#FFC226"
+                barStyle="dark-content"
+              />
+            </View>
+          )}
+
           <NavigationContainer
             linking={Platform.OS === "android" ? linkingAndroid : linkingIos}
           >

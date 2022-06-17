@@ -75,8 +75,9 @@ const PaymentMethodScreen = () => {
     );
   };
 
+  console.log(JSON.stringify(paymentMethod, null, 2));
+
   const renderSubItem = (subItem) => {
-    console.log(JSON.stringify(subItem, null, 2));
     return (
       subItem.method !== "apple_pay" &&
       subItem.method !== "cstore" && (
@@ -113,18 +114,23 @@ const PaymentMethodScreen = () => {
         <ScrollView style={{ paddingVertical: Sizes.fixPadding * 2, flex: 1 }}>
           {paymentMethod.data.map((val) => {
             const providers = val.providers;
-            return (
-              <ExpandableTile
-                key={val._id}
-                header={renderHeader({
-                  title: val.title,
-                  icon: "money",
-                })}
-                tile
-              >
-                {providers.map((subItem) => renderSubItem(subItem))}
-              </ExpandableTile>
-            );
+            if (
+              val.title !== "Other Methods" &&
+              val.title !== "Convenience Store"
+            ) {
+              return (
+                <ExpandableTile
+                  key={val._id}
+                  header={renderHeader({
+                    title: val.title,
+                    icon: "money",
+                  })}
+                  tile
+                >
+                  {providers.map((subItem) => renderSubItem(subItem))}
+                </ExpandableTile>
+              );
+            }
           })}
         </ScrollView>
       )}

@@ -133,7 +133,7 @@ const HomeScreen = (props) => {
                     letterSpacing: 1.2,
                   }}
                 >
-                  Login
+                  Masuk
                 </Text>
               </TouchableOpacity>
             )}
@@ -347,7 +347,7 @@ const HomeScreen = (props) => {
             }}
           >
             <View style={{ flex: 1 }}>
-              <Text>Hello,</Text>
+              <Text>Halo,</Text>
               <Text style={Fonts.black25Bold}>
                 {isLogin && profile !== null ? profile.full_name : "Guest"}
               </Text>

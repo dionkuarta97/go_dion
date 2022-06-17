@@ -71,7 +71,7 @@ const LoginContent = () => {
             marginBottom: Sizes.fixPadding,
           }}
         >
-          Sign Up
+          Daftar Sekarang
         </Text>
       </TouchableOpacity>
     );
@@ -93,7 +93,7 @@ const LoginContent = () => {
             textAlign: "center",
           }}
         >
-          Forgot your password?
+          Lupa Password?
         </Text>
       </TouchableOpacity>
     );

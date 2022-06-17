@@ -33,7 +33,7 @@ const LoginScreen = (props) => {
             onPress={() => navigation.goBack()}
           />
         }
-        element={<Text style={{ ...Fonts.black25Bold }}>Login</Text>}
+        element={<Text style={{ ...Fonts.black25Bold }}>Masuk</Text>}
         toolbarColor={Colors.primaryColor}
         toolBarMinHeight={40}
         toolbarMaxHeight={230}

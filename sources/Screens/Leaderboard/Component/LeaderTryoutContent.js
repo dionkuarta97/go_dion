@@ -18,9 +18,7 @@ const LeaderTryoutContent = () => {
 
   return (
     <>
-      <View paddingX={5} paddingTop={5}>
-        <Text bold>Daftar tryout yang sudah kamu kerjakan</Text>
-      </View>
+      <View paddingX={5} paddingTop={5}></View>
       <View
         flex={1}
         style={{

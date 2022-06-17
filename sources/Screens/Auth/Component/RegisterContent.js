@@ -132,7 +132,7 @@ const RegisterContent = ({ sendedEmail }) => {
         }}
       >
         <View>
-          <Text style={{ ...Fonts.black20Bold }}>Account Form</Text>
+          <Text style={{ ...Fonts.black20Bold }}>Informasi Pendaftar</Text>
 
           <DefaultTextInput
             placeholder="Email"
@@ -141,16 +141,16 @@ const RegisterContent = ({ sendedEmail }) => {
             onChangeText={setEmail}
           />
 
-          <DefaultTextInput placeholder="Full Name" onChangeText={setName} />
+          <DefaultTextInput placeholder="Nama Lengkap" onChangeText={setName} />
 
           <DefaultTextInput
             keyboardType="numeric"
-            placeholder="Phone Number"
+            placeholder="Nomor Telepon/HP"
             onChangeText={setPhone}
           />
 
           <OnTapTextInput
-            placeholder="Role"
+            placeholder="Peran"
             value={role}
             onTap={() => setRoleBottomeSheetVisible(true)}
           />
@@ -166,7 +166,7 @@ const RegisterContent = ({ sendedEmail }) => {
           )}
 
           <OnTapTextInput
-            placeholder="Class Level"
+            placeholder="Tingkatan Kelas"
             value={kelas}
             onTap={() => {
               console.log("Tap Kelas");
@@ -179,6 +179,7 @@ const RegisterContent = ({ sendedEmail }) => {
               onClose={() => setClassBottomSheetVisible(false)}
               onSelect={(val) => {
                 setKelas(val);
+                setSchoolName("--PILIH SEKOLAH--");
                 setClassBottomSheetVisible(false);
               }}
             />
@@ -194,7 +195,7 @@ const RegisterContent = ({ sendedEmail }) => {
             </Text>
           )}
           <PasswordTextInput
-            placeholder="Password Repeat"
+            placeholder="Password (Ulangi)"
             onChangeText={setRepeatPassword}
           />
           {password !== repeatPassword && (
@@ -205,10 +206,10 @@ const RegisterContent = ({ sendedEmail }) => {
         </View>
 
         <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
-          <Text style={{ ...Fonts.black20Bold }}>Address Form</Text>
+          <Text style={{ ...Fonts.black20Bold }}>Informasi Alamat</Text>
 
           <OnTapTextInput
-            placeholder="Province"
+            placeholder="Propinsi"
             value={province !== null ? province.provinsi : ""}
             onTap={() => {
               console.log("Tap Kelas");
@@ -226,7 +227,7 @@ const RegisterContent = ({ sendedEmail }) => {
           )}
 
           <OnTapTextInput
-            placeholder="City"
+            placeholder="Kab/Kota"
             value={city !== null ? city.kabkota : ""}
             onTap={() => {
               console.log("Tap Kelas");
@@ -246,14 +247,14 @@ const RegisterContent = ({ sendedEmail }) => {
             />
           )}
 
-          <DefaultTextInput placeholder="Address" onChangeText={setAddress} />
+          <DefaultTextInput placeholder="Alamat" onChangeText={setAddress} />
         </View>
 
         <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
-          <Text style={{ ...Fonts.black20Bold }}>School Form</Text>
+          <Text style={{ ...Fonts.black20Bold }}>Alamat Sekolah</Text>
 
           <OnTapTextInput
-            placeholder="School Province"
+            placeholder="Propinsi"
             value={schoolProvince !== null ? schoolProvince.provinsi : ""}
             onTap={() => {
               setSchoolProvinceBottomSheetVisible(true);
@@ -270,7 +271,7 @@ const RegisterContent = ({ sendedEmail }) => {
           )}
 
           <OnTapTextInput
-            placeholder="School City"
+            placeholder="Kab/Kota"
             value={schoolCity !== null ? schoolCity.kabkota : ""}
             onTap={() => {
               setSchoolCityBottomSheetVisible(true);
@@ -292,7 +293,7 @@ const RegisterContent = ({ sendedEmail }) => {
           )}
 
           <OnTapTextInput
-            placeholder="School Name"
+            placeholder="Nama Sekolah"
             value={schoolName}
             onTap={() => {
               if (kelas === "") {
@@ -330,21 +331,21 @@ const RegisterContent = ({ sendedEmail }) => {
         </View>
 
         <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
-          <Text style={{ ...Fonts.black20Bold }}>Wali Info Form</Text>
+          <Text style={{ ...Fonts.black20Bold }}>Informasi Wali </Text>
 
           <DefaultTextInput
-            placeholder="Wali Name"
+            placeholder="Nama Wali"
             onChangeText={setWaliName}
           />
 
           <DefaultTextInput
-            placeholder="Wali Phone Number"
+            placeholder="Nomor Telepon/HP Wali"
             keyboardType="numeric"
             onChangeText={setWaliPhone}
           />
 
           <DefaultTextInput
-            placeholder="Wali Email"
+            placeholder="Email Wali"
             onChangeText={setWaliEmail}
           />
         </View>
@@ -352,7 +353,7 @@ const RegisterContent = ({ sendedEmail }) => {
         <View style={{ flexDirection: "row" }}>
           <View style={{ flex: 1 }}>
             <DefaultPrimaryButton
-              text="Submit"
+              text="Daftar"
               onPress={() => {
                 checkInternet().then((connection) => {
                   if (connection) {
