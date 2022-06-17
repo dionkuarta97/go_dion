@@ -38,7 +38,7 @@ const ProductDetailContent = (props) => {
   const item = props.item;
   const onCart = props.onCart;
   const itemSkus = Platform.select({
-    ios: [item.details.apple_id],
+    ios: ["com.goonline.app." + item._id],
     android: ["com.example.coins100"],
   });
 
@@ -74,9 +74,7 @@ const ProductDetailContent = (props) => {
                     dispatch(getPaymentApple(item))
                       .then(async (json) => {
                         setLoading(false);
-                        await RNIap.finishTransactionIOS(
-                          purchase.transactionId
-                        );
+                        await RNIap.finishTransaction(purchase, true);
                       })
                       .catch((err) => {
                         setLoading(false);
@@ -115,7 +113,7 @@ const ProductDetailContent = (props) => {
   const requestPurchase = async () => {
     try {
       setLoading(true);
-      await RNIap.requestPurchase(item.details.apple_id, false)
+      await RNIap.requestPurchase("com.goonline.app." + item._id, false)
         .then(async (res) => {
           console.log("baru beli");
           const recipt = res.transactionReceipt;
@@ -133,12 +131,12 @@ const ProductDetailContent = (props) => {
                   setSukses(validate);
                   setLoading(false);
                   console.log("dsanjlkdakjsdjask");
-                  await RNIap.finishTransaction(res, false);
+                  await RNIap.finishTransaction(res, true);
                 })
                 .catch(async (err) => {
                   setLoading(false);
                   console.log(err);
-                  await RNIap.finishTransaction(res, false);
+                  await RNIap.finishTransaction(res, true);
                 });
             }
           }

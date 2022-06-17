@@ -5,15 +5,22 @@ import NoImage2 from "../../assets/Images/helper/noimage2.png";
 import NoImage from "../../assets/Images/helper/noimage.png";
 import Fonts from "../Theme/Fonts";
 
-
-const win = Dimensions.get('window')
+const win = Dimensions.get("window");
 const NoData = (props) => {
-  const { msg, img } = props;
+  const { msg, img, button } = props;
   return (
     <>
-      <View style={{ justifyContent: "center", flex: 1 }}>
+      <View style={{ justifyContent: "center", flex: 1, alignItems: "center" }}>
         <Image
-          source={!img ? NoMateriImage : img === "NoImage2" ? NoImage2 : img === "noimage" ? NoImage : ""}
+          source={
+            !img
+              ? NoMateriImage
+              : img === "NoImage2"
+              ? NoImage2
+              : img === "noimage"
+              ? NoImage
+              : ""
+          }
           style={{
             width: win.width / 1.6,
             height: win.width / 1.9,
@@ -21,7 +28,18 @@ const NoData = (props) => {
             marginBottom: 15,
           }}
         />
-        <Text style={{ padding: 13, alignSelf: "center", textAlign: "center", ...Fonts.black17Regular }}>{msg}</Text>
+        <Text
+          style={{
+            padding: 13,
+            alignSelf: "center",
+            textAlign: "center",
+            ...Fonts.black17Regular,
+          }}
+        >
+          {msg}
+        </Text>
+
+        {button && button}
       </View>
     </>
   );

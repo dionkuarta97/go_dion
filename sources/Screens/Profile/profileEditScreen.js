@@ -395,6 +395,7 @@ const ProfileEditScreen = (props) => {
                 onSelect={(val) => {
                   setKelas(val);
                   console.log(val);
+                  setSchoolName("--PILIH SEKOLAH--");
                   setClassBottomSheetVisible(false);
                 }}
               />

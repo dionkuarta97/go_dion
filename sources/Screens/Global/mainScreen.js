@@ -25,9 +25,13 @@ import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import OneSignal from "react-native-onesignal";
 import NoData from "../../Components/NoData";
 import LaporanScreen from "../Laporan/LaporanScreen";
-import { useToast } from "native-base";
+import { Button, useToast } from "native-base";
 import ToastErrorContent from "../../Components/ToastErrorContent";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import LeaderboardScreen from "../Leaderboard/LeaderboardScreen";
 import PilihLeaderboardScreen from "../Leaderboard/PilihLeaderboardScreen";
 
@@ -46,6 +50,7 @@ export default MainScreen = (props) => {
   const toast = useToast();
   const route = useRoute();
   const { params } = props.route;
+  const navigation = useNavigation();
   useFocusEffect(
     useCallback(() => {
       if (route.name === "MainScreen") {
@@ -166,8 +171,24 @@ export default MainScreen = (props) => {
           </View>
           <StatusBar backgroundColor={Colors.primaryColor} />
         </View>
-      ) : (
+      ) : checkVersion.message ? (
         <NoData msg={checkVersion.message} />
+      ) : (
+        <>
+          <NoData
+            msg={
+              "Telah terjadi kesalahan, silahkan coba lagi beberapa saat lagi"
+            }
+            button={
+              <Button
+                width={150}
+                onPress={() => navigation.navigate("InitialScreen")}
+              >
+                Coba Sekarang
+              </Button>
+            }
+          />
+        </>
       )}
     </>
   );

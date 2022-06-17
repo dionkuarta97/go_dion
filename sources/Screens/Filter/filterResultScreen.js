@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   SafeAreaView,
@@ -7,6 +7,7 @@ import {
   View,
   useWindowDimensions,
   Dimensions,
+  Platform,
 } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
@@ -190,11 +191,17 @@ const ThirdRoute = () => {
   );
 };
 
-const renderScene = SceneMap({
-  first: FirstRoute,
-  second: SecondRoute,
-  third: ThirdRoute,
-});
+const renderScene =
+  Platform.OS === "android"
+    ? SceneMap({
+        first: FirstRoute,
+        second: SecondRoute,
+        third: ThirdRoute,
+      })
+    : SceneMap({
+        first: FirstRoute,
+        second: SecondRoute,
+      });
 
 const FilterResultScreen = (props) => {
   const { route } = props;
@@ -203,11 +210,18 @@ const FilterResultScreen = (props) => {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
-  const [routes, setRoutes] = useState([
-    { key: "first", title: "Paket Belajar" },
-    { key: "second", title: "Paket Tryout" },
-    { key: "third", title: "Buku Sakti" },
-  ]);
+  const [routes, setRoutes] = useState(
+    Platform.OS === "android"
+      ? [
+          { key: "first", title: "Paket Belajar" },
+          { key: "second", title: "Paket Tryout" },
+          { key: "third", title: "Buku Sakti" },
+        ]
+      : [
+          { key: "first", title: "Paket Belajar" },
+          { key: "second", title: "Paket Tryout" },
+        ]
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

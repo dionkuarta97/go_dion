@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Dimensions,
   FlatList,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -76,8 +77,18 @@ const ProductContent = () => {
             })
           }
         >
-          {title !== "Buku Sakti" && title !== "Paket Belajar" && (
-            <Text style={{ ...Fonts.orangeColor14Bold }}>Lihat Semua</Text>
+          {Platform.OS === "android" ? (
+            <>
+              {title !== "Buku Sakti" && (
+                <Text style={{ ...Fonts.orangeColor14Bold }}>Lihat Semua</Text>
+              )}
+            </>
+          ) : (
+            <>
+              {title !== null && (
+                <Text style={{ ...Fonts.orangeColor14Bold }}>Lihat Semua</Text>
+              )}
+            </>
           )}
         </TouchableOpacity>
       </View>
@@ -111,36 +122,73 @@ const ProductContent = () => {
                   ? "Paket Belajar"
                   : index === 1
                   ? "Paket Tryout"
-                  : "Buku Sakti"
+                  : Platform.OS === "android"
+                  ? "Buku Sakti"
+                  : null
               )}
-              {val.data[0]?.category !== "busak" && val.data.length !== 0 ? (
+              {Platform.OS === "android" ? (
                 <>
-                  {val.data.length !== 0 ? (
-                    <FlatList
-                      keyExtractor={(item, index) => `${item._id}`}
-                      horizontal={true}
-                      showsHorizontalScrollIndicator={false}
-                      renderItem={({ item }) => (
-                        <ProductCard data={item} section={val.section} />
+                  {val.data[0]?.category !== "busak" &&
+                  val.data.length !== 0 ? (
+                    <>
+                      {val.data.length !== 0 ? (
+                        <FlatList
+                          keyExtractor={(item, index) => `${item._id}`}
+                          horizontal={true}
+                          showsHorizontalScrollIndicator={false}
+                          renderItem={({ item }) => (
+                            <ProductCard data={item} section={val.section} />
+                          )}
+                          data={val.data}
+                          contentContainerStyle={styles.contentContainer}
+                        />
+                      ) : (
+                        <View
+                          style={{
+                            padding: Sizes.fixPadding,
+                            height: 100,
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>Produk Kosong</Text>
+                        </View>
                       )}
-                      data={val.data}
-                      contentContainerStyle={styles.contentContainer}
-                    />
+                    </>
                   ) : (
-                    <View
-                      style={{
-                        padding: Sizes.fixPadding,
-                        height: 100,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text>Produk Kosong</Text>
-                    </View>
+                    <NoData img="noimage" msg="Coming Soon" />
                   )}
                 </>
               ) : (
-                <NoData img="noimage" msg="Coming Soon" />
+                <>
+                  {val.data[0]?.category !== "busak" && val.data.length !== 0 && (
+                    <>
+                      {val.data.length !== 0 ? (
+                        <FlatList
+                          keyExtractor={(item, index) => `${item._id}`}
+                          horizontal={true}
+                          showsHorizontalScrollIndicator={false}
+                          renderItem={({ item }) => (
+                            <ProductCard data={item} section={val.section} />
+                          )}
+                          data={val.data}
+                          contentContainerStyle={styles.contentContainer}
+                        />
+                      ) : (
+                        <View
+                          style={{
+                            padding: Sizes.fixPadding,
+                            height: 100,
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>Produk Kosong</Text>
+                        </View>
+                      )}
+                    </>
+                  )}
+                </>
               )}
             </View>
           );

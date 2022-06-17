@@ -44,7 +44,7 @@ const EmailCheckScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar title="Check Email" backEnabled={true} />
+      <DefaultAppBar title="Periksa Email" backEnabled={true} />
       <View style={{ padding: Sizes.fixPadding * 2 }}>
         <Text>Ketikkan alamat email yang akan kamu gunakan.</Text>
         <View style={{ marginVertical: 30 }}>
@@ -71,7 +71,7 @@ const EmailCheckScreen = () => {
           <ActivityIndicator color={Colors.orangeColor} size={24} />
         ) : (
           <DefaultPrimaryButton
-            text="Check"
+            text="Periksa Sekarang"
             onPress={() => {
               checkInternet().then((check) => {
                 if (check) {
