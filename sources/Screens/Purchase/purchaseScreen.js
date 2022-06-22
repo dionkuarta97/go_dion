@@ -10,7 +10,8 @@ import { useToast } from "native-base";
 import ToastErrorContent from "../../Components/ToastErrorContent";
 import PurchaseContentIos from "./Component/PurchaseContentIos";
 
-const PurchaseScreen = () => {
+const PurchaseScreen = (props) => {
+  const { from } = props;
   const toast = useToast();
   useFocusEffect(
     useCallback(() => {
@@ -37,6 +38,7 @@ const PurchaseScreen = () => {
       });
     }, [])
   );
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar backEnabled={false} title="Pembelian" />
@@ -48,13 +50,13 @@ const PurchaseScreen = () => {
             { key: "item3", title: "Expired" },
           ]}
           screen={[
-            <PurchaseContent status="pending" />,
-            <PurchaseContent status="done" />,
-            <PurchaseContent status="expire" />,
+            <PurchaseContent from={from} status="pending" />,
+            <PurchaseContent from={from} status="done" />,
+            <PurchaseContent from={from} status="expire" />,
           ]}
         />
       ) : (
-        <PurchaseContentIos />
+        <PurchaseContentIos from={from} />
       )}
 
       {/* <View style={{flex: 1}}>

@@ -12,12 +12,12 @@ import Colors from "../../Theme/Colors";
 import PurchaseContent from "./Component/purchaseContent";
 
 const PurchasePendingScreen = () => {
-    return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <DefaultAppBar backEnabled={true} title="Pembelian Pending" />
-            <PurchaseContent status="pending" />
-        </SafeAreaView>
-    );
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <DefaultAppBar backEnabled={true} title="Pembelian Pending" />
+      <PurchaseContent from={"home"} status="pending" />
+    </SafeAreaView>
+  );
 };
 
 export default PurchasePendingScreen;
