@@ -50,7 +50,7 @@ import ProgressTryout from "./Screens/Laporan/ProgressTryout";
 import TestVideo from "./Screens/Home/Component/TestVideo";
 import LeaderboardScreen from "./Screens/Leaderboard/LeaderboardScreen";
 import MyPosition from "./Screens/Leaderboard/MyPosition";
-import { Platform, StatusBar, View } from "react-native";
+import { Platform, StatusBar, View, Dimensions } from "react-native";
 import PilihLeaderboardScreen from "./Screens/Leaderboard/PilihLeaderboardScreen";
 import LeaderTryoutScreen from "./Screens/Leaderboard/LeaderTryoutScreen";
 import GantiFotoScreen from "./Screens/Profile/GantiFotoScreen";
@@ -58,7 +58,7 @@ import TryoutLeaderScreen from "./Screens/Leaderboard/TryoutLeaderScreen";
 import PositionTryoutScreen from "./Screens/Leaderboard/PositionTryoutScreen";
 
 const Stack = createStackNavigator();
-const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 50 : StatusBar.currentHeight;
+const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 20 : StatusBar.currentHeight;
 const HEADER_HEIGHT = Platform.OS === "ios" ? 44 : 56;
 
 export default App = () => {
@@ -95,7 +95,10 @@ export default App = () => {
         <PersistGate loading={null} persistor={persistor}>
           {Platform.OS === "ios" && (
             <View
-              style={{ height: STATUS_BAR_HEIGHT, backgroundColor: "#FFC226" }}
+              style={{
+                height: Dimensions.get("window").height > 700 ? 47 : 20,
+                backgroundColor: "#FFC226",
+              }}
             >
               <StatusBar
                 translucent

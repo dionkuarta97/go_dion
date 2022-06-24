@@ -145,7 +145,7 @@ export default MainScreen = (props) => {
           {currentIndex == 0 ? (
             <HomeScreen />
           ) : currentIndex == 1 ? (
-            <PurchaseScreen />
+            <PurchaseScreen from="home" />
           ) : currentIndex == 4 ? (
             <LainnyaScreen />
           ) : currentIndex == 2 ? (

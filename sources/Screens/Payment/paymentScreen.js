@@ -30,6 +30,7 @@ const PaymentScreen = (props) => {
     (state) => state.paymentReducer.paymentDetail
   );
   const orderId = props.route.params.orderId;
+  const from = props.route.params.from;
   const OpenWEB = (url) => {
     Linking.openURL(url);
   };
@@ -66,11 +67,11 @@ const PaymentScreen = (props) => {
     return vadetail[0].bank.toUpperCase();
   };
 
-  console.log(JSON.stringify(paymentDetail, null, 2));
+  console.log(JSON.stringify(from, null, 2));
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
-      <DefaultAppBar title="Pembayaran" backEnabled={true} />
+      <DefaultAppBar title="Detail Transaksi" backEnabled={true} />
       <ScrollView style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
         {paymentDetail.loading && (
           <View>
@@ -488,24 +489,26 @@ const PaymentScreen = (props) => {
                   />
                 </HStack>
               </View>
-              <View
-                style={{
-                  padding: 10,
-                  marginBottom: 100,
-                }}
-              >
-                <Button
-                  marginTop={10}
-                  colorScheme="amber"
-                  onPress={() => {
-                    navigation.navigate("MainScreen", {
-                      from: "pembayaran",
-                    });
+              {!from && (
+                <View
+                  style={{
+                    padding: 10,
+                    marginBottom: 100,
                   }}
                 >
-                  Kembali Ke Home
-                </Button>
-              </View>
+                  <Button
+                    marginTop={10}
+                    colorScheme="amber"
+                    onPress={() => {
+                      navigation.navigate("MainScreen", {
+                        from: "pembayaran",
+                      });
+                    }}
+                  >
+                    Kembali Ke Home
+                  </Button>
+                </View>
+              )}
             </View>
           </>
         )}

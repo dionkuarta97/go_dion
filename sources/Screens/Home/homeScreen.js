@@ -381,7 +381,6 @@ const HomeScreen = (props) => {
         src={require("../../../assets/Images/appbar_bg.png")}
       >
         <HomeContent />
-        <VersionText />
         <StatusBar backgroundColor={Colors.primaryColor} />
       </SliverAppBar>
     </SafeAreaView>

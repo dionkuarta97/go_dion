@@ -37,8 +37,6 @@ const PurchaseContent = (props) => {
     });
   }, [props.status]);
 
-  console.log(JSON.stringify(paymentList, 2, null));
-
   const renderItem = (item) => {
     return (
       <TouchableOpacity
@@ -46,10 +44,12 @@ const PurchaseContent = (props) => {
           if (item.status === "pending")
             navigation.navigate("PaymentScreen", {
               orderId: item.order_id,
+              from: props.from,
             });
           else {
             navigation.navigate("PaymentScreen", {
               orderId: item.order_id,
+              from: props.from,
             });
           }
         }}
