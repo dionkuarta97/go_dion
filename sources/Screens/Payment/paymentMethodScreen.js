@@ -79,8 +79,7 @@ const PaymentMethodScreen = () => {
 
   const renderSubItem = (subItem) => {
     return (
-      subItem.method !== "apple_pay" &&
-      subItem.method !== "cstore" && (
+      subItem.method !== "apple_pay" && (
         <TouchableOpacity
           key={subItem.name}
           onPress={() => {
@@ -89,7 +88,9 @@ const PaymentMethodScreen = () => {
           }}
         >
           <View style={styles.subItem}>
-            <Text style={{ flex: 1 }}>{subItem.title}</Text>
+            <Text style={{ flex: 1 }}>
+              {subItem.title === "Gojek" ? "Gopay" : subItem.title}
+            </Text>
             <Text style={{ ...Fonts.gray14Regular }}>Pilih</Text>
           </View>
         </TouchableOpacity>
@@ -114,10 +115,7 @@ const PaymentMethodScreen = () => {
         <ScrollView style={{ paddingVertical: Sizes.fixPadding * 2, flex: 1 }}>
           {paymentMethod.data.map((val) => {
             const providers = val.providers;
-            if (
-              val.title !== "Other Methods" &&
-              val.title !== "Convenience Store"
-            ) {
+            if (val.title !== "Other Methods") {
               return (
                 <ExpandableTile
                   key={val._id}

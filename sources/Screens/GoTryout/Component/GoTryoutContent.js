@@ -6,6 +6,7 @@ import { getGoTryout } from "../../../Redux/Tryout/tryoutActions";
 import checkInternet from "../../../Services/CheckInternet";
 import Colors from "../../../Theme/Colors";
 import GoTryoutCard from "./GoTryoutCard";
+import NoMateri from "../../GoBelajar/Component/noMateri";
 
 const GoTryoutContent = (props) => {
   const dispatch = useDispatch();
@@ -31,7 +32,10 @@ const GoTryoutContent = (props) => {
           <ActivityIndicator color={Colors.primaryColor} size={50} />
         </View>
       ) : tryoutData.error ? (
-        <NoData img="NoImage2" msg="Tryout Tidak Di Temukan" />
+        <NoMateri
+          title="Tryout Tidak Di Temukan"
+          status={props.status !== "untouched" ? true : false}
+        />
       ) : (
         <ScrollView
           style={{

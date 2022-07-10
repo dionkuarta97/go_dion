@@ -159,8 +159,8 @@ const ProfileContent = (props) => {
         }}
       >
         {renderInfoTile("Email", profile.email, "email")}
-        {renderInfoTile("Phone Number", profile.phone, "phone")}
-        {renderInfoTile("Class Level", profile.kelas, "class")}
+        {renderInfoTile("Nomor Telepon/HP", profile.phone, "phone")}
+        {renderInfoTile("Tingkatan Kelas", profile.kelas, "class")}
         {/* Data Alamat */}
         <Text
           style={{
@@ -168,11 +168,11 @@ const ProfileContent = (props) => {
             marginVertical: Sizes.fixPadding,
           }}
         >
-          Address Info
+          Informasi Alamat
         </Text>
-        {renderInfoTile("Province", profile.provinsi, "map")}
-        {renderInfoTile("City", profile.kota, "apartment")}
-        {renderInfoTile("Address", profile.alamat, "pin-drop")}
+        {renderInfoTile("Propinsi", profile.provinsi, "map")}
+        {renderInfoTile("Kab/Kota", profile.kota, "apartment")}
+        {renderInfoTile("Alamat", profile.alamat, "pin-drop")}
         {/* Data Sekolah */}
         <Text
           style={{
@@ -180,11 +180,11 @@ const ProfileContent = (props) => {
             marginVertical: Sizes.fixPadding,
           }}
         >
-          School Info
+          Alamat Sekolah
         </Text>
-        {renderInfoTile("School Province", profile.provinsi_sekolah, "map")}
-        {renderInfoTile("School City", profile.kota_sekolah, "apartment")}
-        {renderInfoTile("School Name", profile.sekolah, "school")}
+        {renderInfoTile("Propinsi", profile.provinsi_sekolah, "map")}
+        {renderInfoTile("Kab/Kota", profile.kota_sekolah, "apartment")}
+        {renderInfoTile("Nama Sekolah", profile.sekolah, "school")}
 
         {/* Data Wali */}
         <Text
@@ -193,11 +193,11 @@ const ProfileContent = (props) => {
             marginVertical: Sizes.fixPadding,
           }}
         >
-          Wali Info
+          Informasi Wali
         </Text>
-        {renderInfoTile("Wali Name", profile.nama_wali, "person")}
-        {renderInfoTile("Wali Email", profile.email_wali, "email")}
-        {renderInfoTile("Wali Phone Number", profile.phone_wali, "phone")}
+        {renderInfoTile("Nama Wali", profile.nama_wali, "person")}
+        {renderInfoTile("Email Wali", profile.email_wali, "email")}
+        {renderInfoTile("Nomor Telepon/HP Wali", profile.phone_wali, "phone")}
       </View>
     </View>
   );

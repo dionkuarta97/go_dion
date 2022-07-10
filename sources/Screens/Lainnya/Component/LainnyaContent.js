@@ -54,7 +54,7 @@ const LainnyaContent = () => {
       {!isLogin && (
         <Box mt={4} alignItems={"center"}>
           <Text style={{ fontSize: 15 }}>Login terlebih dahulu</Text>
-          <Text style={{ fontSize: 15 }}>Untuk melihat halaman ini</Text>
+          <Text style={{ fontSize: 15 }}>untuk melihat halaman ini</Text>
         </Box>
       )}
       {isLogin &&

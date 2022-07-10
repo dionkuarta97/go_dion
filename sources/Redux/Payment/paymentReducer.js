@@ -1,70 +1,77 @@
 import {
-    SET_CURRENT_PAYMENT,
-    SET_PAYMENT_DETAIL,
-    SET_PAYMENT_LIST,
-    SET_PAYMENT_METHOD,
-    SET_PAYMENT_PROCESS,
-    SET_SELECTED_PAYMENT_METHOD,
+  SET_CURRENT_PAYMENT,
+  SET_INDEX_ACTIVE,
+  SET_PAYMENT_DETAIL,
+  SET_PAYMENT_LIST,
+  SET_PAYMENT_METHOD,
+  SET_PAYMENT_PROCESS,
+  SET_SELECTED_PAYMENT_METHOD,
 } from "./paymentTypes";
 
 const initialState = {
-    paymentMethod: {
-        loading: false,
-        error: null,
-        data: null,
-    },
-    selectedPaymentMethod: null,
-    paymentProcess: {
-        loading: false,
-        error: null,
-        data: null,
-    },
-    currentPayment: null,
-    paymentList: {
-        loading: false,
-        error: null,
-        data: null,
-    },
-    paymentDetail: {
-        loading: false,
-        error: null,
-        data: null,
-    },
+  paymentMethod: {
+    loading: false,
+    error: null,
+    data: null,
+  },
+  selectedPaymentMethod: null,
+  paymentProcess: {
+    loading: false,
+    error: null,
+    data: null,
+  },
+  currentPayment: null,
+  paymentList: {
+    loading: false,
+    error: null,
+    data: null,
+  },
+  paymentDetail: {
+    loading: false,
+    error: null,
+    data: null,
+  },
+  indexActive: 0,
 };
 
 export function paymentReducer(state = initialState, action) {
-    switch (action.type) {
-        case SET_PAYMENT_METHOD:
-            return {
-                ...state,
-                paymentMethod: action.payload,
-            };
-        case SET_SELECTED_PAYMENT_METHOD:
-            return {
-                ...state,
-                selectedPaymentMethod: action.payload,
-            };
-        case SET_PAYMENT_PROCESS:
-            return {
-                ...state,
-                paymentProcess: action.payload,
-            };
-        case SET_CURRENT_PAYMENT:
-            return {
-                ...state,
-                currentPayment: action.payload,
-            };
-        case SET_PAYMENT_LIST:
-            return {
-                ...state,
-                paymentList: action.payload,
-            };
-        case SET_PAYMENT_DETAIL:
-            return {
-                ...state,
-                paymentDetail: action.payload,
-            };
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case SET_PAYMENT_METHOD:
+      return {
+        ...state,
+        paymentMethod: action.payload,
+      };
+    case SET_SELECTED_PAYMENT_METHOD:
+      return {
+        ...state,
+        selectedPaymentMethod: action.payload,
+      };
+    case SET_PAYMENT_PROCESS:
+      return {
+        ...state,
+        paymentProcess: action.payload,
+      };
+    case SET_CURRENT_PAYMENT:
+      return {
+        ...state,
+        currentPayment: action.payload,
+      };
+    case SET_PAYMENT_LIST:
+      return {
+        ...state,
+        paymentList: action.payload,
+      };
+    case SET_PAYMENT_DETAIL:
+      return {
+        ...state,
+        paymentDetail: action.payload,
+      };
+    case SET_INDEX_ACTIVE:
+      return {
+        ...state,
+        indexActive: action.payload,
+      };
+    default:
+      return state;
+  }
 }

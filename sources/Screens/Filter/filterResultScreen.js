@@ -186,7 +186,7 @@ const ThirdRoute = () => {
   }
   return (
     <View style={{ flex: 1, marginTop: 15 }}>
-      <NoData msg="Coming Soon" />
+      <NoData msg="Segera Hadir" />
     </View>
   );
 };
@@ -273,7 +273,7 @@ const FilterResultScreen = (props) => {
                       <Text
                         style={{ ...Fonts.black17Bold, alignSelf: "center" }}
                       >
-                        Soon
+                        Segera
                       </Text>
                     )}
                   </View>

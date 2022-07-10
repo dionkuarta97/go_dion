@@ -137,6 +137,28 @@ export function updatePassword(bodyParams) {
   };
 }
 
+export const newChangePassword = (payload) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      fetch("https://apionline.gobimbelonline.net/masterdata/v1/fp/reset", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.status) {
+            resolve({ success: json });
+            // dispatch(setProfile(json.data));
+          } else reject({ error: json });
+        })
+        .catch((err) => {
+          reject({ error: "Terjadi kesalahan pada server" });
+        });
+    });
+  };
+};
+
 export function setNewPassword(userData) {
   return {
     type: SET_NEW_PASSWORD,

@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -7,6 +7,8 @@ import {
   StyleSheet,
   Text,
   View,
+  RefreshControl,
+  ScrollView,
 } from "react-native";
 import NumberFormat from "react-number-format";
 import moment from "moment";
@@ -23,19 +25,36 @@ import CompStyles from "../../../Theme/styles/globalStyles";
 import EmptyIndicator from "../../../Components/Indicator/EmptyIndicator";
 import checkInternet from "../../../Services/CheckInternet";
 import { useToast } from "native-base";
+
 const PurchaseContent = (props) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
   const paymentList = useSelector((state) => state.paymentReducer.paymentList);
-
   useEffect(() => {
     checkInternet().then((connection) => {
       if (connection) {
-        dispatch(getPaymentList(props.status));
+        if (!refreshing) {
+          dispatch(getPaymentList(props.status));
+          console.log("kepanggil");
+        }
       }
     });
   }, [props.status]);
+
+  useEffect(() => {
+    if (refreshing) {
+      dispatch(getPaymentList(props.status));
+      if (!paymentList.loading) {
+        setRefreshing(false);
+      }
+    }
+  }, [refreshing]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+  }, []);
 
   const renderItem = (item) => {
     return (
@@ -80,7 +99,9 @@ const PurchaseContent = (props) => {
                     : Colors.neutralGreenColor,
               }}
             >
-              {item.status}
+              {item.status === "expire" && !item.time_remaining.isExpired
+                ? "cancel"
+                : item.status}
             </Text>
           </View>
 
@@ -119,6 +140,9 @@ const PurchaseContent = (props) => {
       ) : paymentList.data !== null ? (
         <View style={{ flex: 1 }}>
           <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             style={{ marginBottom: Sizes.fixPadding * 7 }}
             keyExtractor={(item) => `${item._id}`}
             data={paymentList.data}
@@ -127,7 +151,16 @@ const PurchaseContent = (props) => {
           />
         </View>
       ) : (
-        <EmptyIndicator msg="Data pembelian kamu akan muncul disini" />
+        <ScrollView
+          style={{
+            paddingTop: 150,
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <EmptyIndicator msg="Data pembelian kamu akan muncul disini" />
+        </ScrollView>
       )}
     </View>
   );

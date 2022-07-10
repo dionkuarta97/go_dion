@@ -23,8 +23,6 @@ const GoBelajarScreen = () => {
     dispatch(getMateri());
   }, []);
 
-  console.log(JSON.stringify(materi, null, 2));
-
   const renderItem = (item) => {
     return (
       <TouchableOpacity

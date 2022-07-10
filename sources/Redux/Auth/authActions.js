@@ -253,6 +253,7 @@ export const uploadFoto = (data) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       const urlBase = getState().initReducer.baseUrl;
+
       fetch(urlBase + "/masterdata/v1/auth/me/avatar", {
         method: "PUT",
         headers: {

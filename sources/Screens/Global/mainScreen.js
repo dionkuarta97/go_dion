@@ -34,9 +34,10 @@ import {
 } from "@react-navigation/native";
 import LeaderboardScreen from "../Leaderboard/LeaderboardScreen";
 import PilihLeaderboardScreen from "../Leaderboard/PilihLeaderboardScreen";
+import VersionMessage from "./components/VersionMessage";
 
 const bottomNavMenu = [
-  { title: "Home", icon: "home" },
+  { title: "Beranda", icon: "home" },
   { title: "Pembelian", icon: "shopping-cart" },
   { title: "Laporan", icon: "show-chart" },
   { title: "Leaderboard", icon: "insert-chart" },
@@ -55,7 +56,7 @@ export default MainScreen = (props) => {
     useCallback(() => {
       if (route.name === "MainScreen") {
         const backAction = () => {
-          Alert.alert("Perhatian", "Kamu akan keluar dari aplikasi. Yakin??", [
+          Alert.alert("Perhatian", "Anda yakin ingin keluar dari aplikasi?", [
             {
               text: "Tidak",
               onPress: () => null,
@@ -90,6 +91,8 @@ export default MainScreen = (props) => {
       });
     }
   }, [checkVersion]);
+
+  console.log(JSON.stringify(checkVersion, null, 2));
 
   useFocusEffect(
     useCallback(() => {
@@ -140,7 +143,7 @@ export default MainScreen = (props) => {
   };
   return (
     <>
-      {checkVersion.upToDate ? (
+      {checkVersion.upToDate === 0 ? (
         <View style={{ flex: 1 }}>
           {currentIndex == 0 ? (
             <HomeScreen />
@@ -171,23 +174,28 @@ export default MainScreen = (props) => {
           </View>
           <StatusBar backgroundColor={Colors.primaryColor} />
         </View>
-      ) : checkVersion.message ? (
-        <NoData msg={checkVersion.message} />
+      ) : checkVersion.upToDate === 1 || checkVersion.upToDate === 2 ? (
+        <VersionMessage
+          message={checkVersion.message}
+          status={checkVersion.upToDate}
+        />
       ) : (
         <>
-          <NoData
-            msg={
-              "Telah terjadi kesalahan, silahkan coba lagi beberapa saat lagi"
-            }
-            button={
-              <Button
-                width={150}
-                onPress={() => navigation.navigate("InitialScreen")}
-              >
-                Coba Sekarang
-              </Button>
-            }
-          />
+          {checkVersion.error && (
+            <NoData
+              msg={
+                "Telah terjadi kesalahan, silahkan coba lagi beberapa saat lagi"
+              }
+              button={
+                <Button
+                  width={150}
+                  onPress={() => navigation.navigate("InitialScreen")}
+                >
+                  Coba Sekarang
+                </Button>
+              }
+            />
+          )}
         </>
       )}
     </>

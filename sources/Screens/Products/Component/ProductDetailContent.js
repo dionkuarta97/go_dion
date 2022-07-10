@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  Alert,
 } from "react-native";
 import Divider from "../../../Components/Divider";
 
@@ -14,7 +15,7 @@ import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 import { addToCart } from "../../../Redux/Cart/cartActions";
 import RNIap, {
@@ -30,9 +31,11 @@ import LoadingModal from "../../../Components/Modal/LoadingModal";
 const { width } = Dimensions.get("screen");
 
 const ProductDetailContent = (props) => {
+  const isLogin = useSelector((state) => state.authReducer.isLogin);
   const [sukses, setSukses] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const item = props.item;
@@ -133,7 +136,16 @@ const ProductDetailContent = (props) => {
                   console.log("dsanjlkdakjsdjask");
                   await RNIap.finishTransaction(res, true);
                 })
+                .then(() => {
+                  navigation.popToTop();
+                  navigation.navigate("MainScreen");
+                })
                 .catch(async (err) => {
+                  if (err.message) {
+                    setError(err.message);
+                  } else {
+                    setError("Mohon maaf telah terjadi kesalahan pada server");
+                  }
                   setLoading(false);
                   console.log(err);
                   await RNIap.finishTransaction(res, true);
@@ -182,9 +194,9 @@ const ProductDetailContent = (props) => {
         backgroundColor: "white",
       }}
     >
-      {sukses && (
+      {error && (
         <DefaultModal>
-          <Text>Berhasil melakukan pembayaran</Text>
+          <Text>{error}</Text>
           <DefaultPrimaryButton
             text="Kembali ke Home"
             onPress={() => {
@@ -231,7 +243,22 @@ const ProductDetailContent = (props) => {
                 text="Beli Sekarang"
                 onPress={() => {
                   if (Platform.OS === "ios") {
-                    requestPurchase();
+                    if (isLogin) {
+                      requestPurchase();
+                    } else {
+                      Alert.alert(
+                        "Informasi",
+                        "Anda perlu login untuk melanjutkan pembayaran",
+                        [
+                          {
+                            text: "Oke",
+                            onPress: () => {
+                              navigation.navigate("MainScreen");
+                            },
+                          },
+                        ]
+                      );
+                    }
                   } else {
                     dispatch(addToCart(item));
                     navigation.navigate("CartScreen");

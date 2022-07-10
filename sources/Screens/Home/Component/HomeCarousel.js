@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Dimensions, ImageBackground, View } from "react-native";
-import Carousel from "react-native-snap-carousel";
+import Carousel, { Pagination } from "react-native-snap-carousel";
 
 import Sizes from "../../../Theme/Sizes";
 import { useSelector } from "react-redux";
@@ -21,6 +21,7 @@ const carouselItems = [
 
 const HomeCarousel = () => {
   const itemWidth = Math.round(width * 0.8);
+  const [activeSlide, setActiveSlide] = useState(0);
   const renderItem = ({ item }) => (
     <ImageBackground
       source={item.image}
@@ -42,10 +43,27 @@ const HomeCarousel = () => {
         sliderWidth={width}
         itemWidth={itemWidth}
         renderItem={renderItem}
+        onSnapToItem={(index) => setActiveSlide(index)}
         autoplay={true}
         loop={true}
         lockScrollWhileSnapping={true}
         autoplayInterval={4000}
+      />
+      <Pagination
+        dotsLength={carouselItems.length} // also based on number of sildes you want
+        activeDotIndex={activeSlide}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginHorizontal: 8,
+          backgroundColor: "black",
+        }}
+        inactiveDotStyle={{
+          backgroundColor: "#fb923c",
+        }}
+        inactiveDotOpacity={0.6}
+        inactiveDotScale={0.7}
       />
     </View>
   );

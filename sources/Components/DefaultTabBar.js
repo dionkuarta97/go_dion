@@ -16,8 +16,6 @@ const DefaultTabBar = (props) => {
   const [index, setIndex] = useState(0);
   const [routes] = useState(props.routes);
 
-  console.log(routes);
-
   const renderScene = ({ route, jumpTo }) => {
     return props.screen[index];
   };
@@ -26,7 +24,12 @@ const DefaultTabBar = (props) => {
     <TabView
       navigationState={{ index, routes }}
       renderScene={renderScene}
-      onIndexChange={setIndex}
+      onIndexChange={(val) => {
+        if (props.onChange) {
+          props.onChange(val);
+        }
+        setIndex(val);
+      }}
       renderTabBar={(item) => (
         <TabBar
           {...item}
