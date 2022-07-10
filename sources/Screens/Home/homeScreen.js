@@ -117,7 +117,7 @@ const HomeScreen = (props) => {
       <SliverAppBar
         rightItem={
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {!isLogin && (
+            {!isLogin && profile === null && (
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => navigation.navigate("LoginScreen")}
@@ -147,7 +147,7 @@ const HomeScreen = (props) => {
               {Platform.OS === "android" && (
                 <TouchableOpacity
                   onPress={() => {
-                    if (!isLogin) {
+                    if (!isLogin && profile === null) {
                       Alert.alert(
                         "Tidak Bisa Masuk",
                         "Kamu harus login terlebih dahulu untuk mengakses menu ini"
@@ -275,7 +275,7 @@ const HomeScreen = (props) => {
                           <Input
                             autoCapitalize="characters"
                             onChangeText={(val) => {
-                              setCode(val);
+                              setCode(val.toUpperCase());
                             }}
                             onTouchEndCapture={() => {
                               setSHow(true);
@@ -292,7 +292,7 @@ const HomeScreen = (props) => {
                                 color="muted.400"
                               />
                             }
-                            placeholder="Voucher Code"
+                            placeholder="Kode Voucher"
                           />
                           {errorCode && (
                             <Text style={{ color: "red" }}>

@@ -111,7 +111,7 @@ const CheckoutScreen = () => {
       <StatusBar backgroundColor={Colors.primaryColor} />
       <DefaultAppBar title="Checkout" backEnabled={true} />
       <View style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
-        <Text style={{ ...Fonts.black19Bold }}>Order Summary</Text>
+        <Text style={{ ...Fonts.black19Bold }}>Ringkasan Pesanan</Text>
         <View
           style={{
             flex: 1,
@@ -128,7 +128,7 @@ const CheckoutScreen = () => {
                   marginEnd: "auto",
                 }}
               >
-                Service Fee
+                Biaya Layanan
               </Text>
               <NumberFormat
                 value={cart.reduce(
@@ -276,7 +276,7 @@ const CheckoutScreen = () => {
             </Center>
           </Box>
           <Box paddingX={3} marginBottom={5}>
-            <Text color={"gray.500"}>
+            <Text color={"gray.500"} textAlign="justify">
               Mau bayar sekaligus dengan transaksi sebelumnya? Jika tidak, maka
               tranksaksimu sebelumnya akan dibatalkan
             </Text>
@@ -410,10 +410,10 @@ const CheckoutScreen = () => {
               />
             </HStack>
           </Box>
-          <Box paddingX={3} marginTop={5} marginBottom={2}>
-            <Text color={"red.500"}>
-              * Jika ada product yang sama pada transaksi saat ini dengan
-              transaksi sebelumnya, maka product yang sama pada transaksi
+          <Box paddingX={5} marginTop={5} marginBottom={2}>
+            <Text color={"red.500"} textAlign="justify">
+              * Jika ada produk yang sama pada transaksi saat ini dengan
+              transaksi sebelumnya, maka produk yang sama pada transaksi
               sebelumnya akan di hapus secara otomatis
             </Text>
           </Box>

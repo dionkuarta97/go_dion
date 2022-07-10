@@ -84,7 +84,7 @@ const TryoutScoreScreen = (props) => {
                   width: Dimensions.get("screen").width / 2,
                 }}
               >
-                Total Session
+                Total Sesi
               </Text>
 
               <Text

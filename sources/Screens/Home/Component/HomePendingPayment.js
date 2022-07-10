@@ -44,7 +44,7 @@ const HomePendingPayment = () => {
               }}
             >
               <Text style={{ flex: 1, ...Fonts.black15Bold }}>
-                Pending {paymentList.data.length} pembayaran
+                {paymentList.data.length} Pesanan Menunggu Pembayaran
               </Text>
               <MaterialIcons name="chevron-right" size={25} color="black" />
             </View>

@@ -111,7 +111,7 @@ const ProfileScreen = (props) => {
                     fontSize: 14,
                   }}
                 >
-                  <MaterialIcons size={14} name="edit" /> Edit Profile
+                  <MaterialIcons size={14} name="edit" /> Ubah Profile
                 </Text>
               </TouchableOpacity>
             </View>
@@ -125,7 +125,7 @@ const ProfileScreen = (props) => {
                 alignItems: "center",
               }}
             >
-              <Text style={Fonts.black25Bold}>Akun Profil</Text>
+              <Text style={Fonts.black25Bold}>Profil Saya</Text>
             </View>
           }
           toolbarColor={Colors.primaryColor}

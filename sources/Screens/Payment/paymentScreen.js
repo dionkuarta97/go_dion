@@ -6,6 +6,7 @@ import {
   Text,
   View,
   Linking,
+  Alert,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import NumberFormat from "react-number-format";
@@ -19,11 +20,15 @@ import CountDown from "react-native-countdown-component";
 import { useNavigation } from "@react-navigation/core";
 import CompStyles from "../../Theme/styles/globalStyles";
 import { useDispatch, useSelector } from "react-redux";
-import { getPaymentDetail } from "../../Redux/Payment/paymentActions";
+import {
+  batalTranksaksi,
+  getPaymentDetail,
+} from "../../Redux/Payment/paymentActions";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Button, HStack, ScrollView } from "native-base";
+import { Button, HStack, ScrollView, useToast } from "native-base";
 
 const PaymentScreen = (props) => {
+  const toast = useToast();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const paymentDetail = useSelector(
@@ -67,7 +72,7 @@ const PaymentScreen = (props) => {
     return vadetail[0].bank.toUpperCase();
   };
 
-  console.log(JSON.stringify(from, null, 2));
+  console.log(JSON.stringify(paymentDetail, null, 2));
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar backgroundColor={Colors.primaryColor} />
@@ -90,7 +95,7 @@ const PaymentScreen = (props) => {
                     ...CompStyles.defaultCard,
                   }}
                 >
-                  <Text style={{ flex: 1 }}>Time Remaining</Text>
+                  <Text style={{ flex: 1 }}>Sisa Waktu</Text>
                   <CountDown
                     until={getTotalSec(paymentDetail.data.time_remaining)}
                     digitStyle={{
@@ -119,18 +124,21 @@ const PaymentScreen = (props) => {
                       alignSelf: "center",
                     }}
                   >
-                    PENDING
+                    Belum Bayar
                   </Text>
-                  <Text>ID Order</Text>
+                  <Text>ID Pesanan</Text>
                   <Text style={{ ...Fonts.black15Regular }}>
                     {paymentDetail.data.order_id}
                   </Text>
 
                   <Text style={{ marginTop: Sizes.fixPadding }}>
-                    Payment Method
+                    Metoda Pembayaran
                   </Text>
                   <Text style={{ ...Fonts.black15Regular }}>
-                    {paymentDetail.data.payment_type}
+                    {paymentDetail.data.payment_type
+                      .split("_")
+                      .join(" ")
+                      .toUpperCase()}
                   </Text>
                   <Text style={{ marginTop: Sizes.fixPadding }}>Bank</Text>
                   <Text style={{ ...Fonts.black15Regular }}>
@@ -140,7 +148,7 @@ const PaymentScreen = (props) => {
                   {paymentDetail.data.payment_type === "bank_transfer" && (
                     <View>
                       <Text style={{ marginTop: Sizes.fixPadding }}>
-                        Virtual Account
+                        Nomor Rekening Virtual
                       </Text>
                       <View
                         style={{
@@ -294,42 +302,6 @@ const PaymentScreen = (props) => {
                             </View>
                           </TouchableOpacity>
                         </View>
-                        <Text style={{ marginTop: Sizes.fixPadding }}>
-                          Merchant Id
-                        </Text>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Text
-                            style={{
-                              ...Fonts.black17Bold,
-                              flex: 1,
-                            }}
-                          >
-                            {paymentDetail.data.payment_detail.merchant_id}
-                          </Text>
-                          <TouchableOpacity
-                            onPress={() =>
-                              Clipboard.setString(
-                                paymentDetail.data.payment_detail.merchant_id
-                              )
-                            }
-                          >
-                            <View
-                              style={{
-                                paddingVertical: Sizes.fixPadding / 2,
-                                paddingHorizontal: Sizes.fixPadding,
-                                backgroundColor: Colors.primaryColor,
-                                borderRadius: 5,
-                              }}
-                            >
-                              <Text>Copy</Text>
-                            </View>
-                          </TouchableOpacity>
-                        </View>
                       </View>
                     </>
                   )}
@@ -357,7 +329,7 @@ const PaymentScreen = (props) => {
                   )}
 
                   <Text style={{ marginTop: Sizes.fixPadding }}>
-                    Total Amount
+                    Jumlah Total
                   </Text>
                   <NumberFormat
                     value={
@@ -382,7 +354,7 @@ const PaymentScreen = (props) => {
             <View>
               <View style={{ ...CompStyles.defaultCard }}>
                 <Text style={{ alignSelf: "center", ...Fonts.black20Bold }}>
-                  Detail Order
+                  Detail Pesanan
                 </Text>
                 <View
                   style={{
@@ -406,8 +378,16 @@ const PaymentScreen = (props) => {
                         {idx + 1}. {val.title}
                       </Text>
                       <View style={{ flexDirection: "row" }}>
-                        <Text style={{ marginEnd: "auto", marginStart: 15 }}>
-                          Harga :
+                        <Text style={{ marginStart: 15 }}>Harga :</Text>
+                        <Text
+                          style={{
+                            ...Fonts.black17Bold,
+
+                            marginEnd: "auto",
+                            marginStart: 160,
+                          }}
+                        >
+                          IDR
                         </Text>
                         <NumberFormat
                           value={
@@ -418,7 +398,7 @@ const PaymentScreen = (props) => {
                           displayType={"text"}
                           thousandSeparator="."
                           decimalSeparator=","
-                          prefix={"IDR "}
+                          prefix={""}
                           renderText={(value, props) => (
                             <Text
                               style={{
@@ -433,12 +413,22 @@ const PaymentScreen = (props) => {
                     </View>
                     {val.price_discount > 0 && (
                       <View style={{ alignItems: "flex-end", marginEnd: 8 }}>
+                        <Text
+                          style={{
+                            ...Fonts.black17Bold,
+
+                            marginEnd: "auto",
+                            marginStart: 160,
+                          }}
+                        >
+                          IDR
+                        </Text>
                         <NumberFormat
                           value={val.price}
                           displayType={"text"}
                           thousandSeparator="."
                           decimalSeparator=","
-                          prefix={"IDR "}
+                          prefix={""}
                           renderText={(value, props) => (
                             <Text
                               style={{
@@ -459,10 +449,21 @@ const PaymentScreen = (props) => {
                 <HStack
                   style={{
                     marginTop: 8,
-                    paddingHorizontal: 10,
+                    paddingHorizontal: 8,
                   }}
                 >
-                  <Text style={{ marginEnd: "auto" }}>Service Fee:</Text>
+                  <Text>Biaya Layanan:</Text>
+                  <Text
+                    style={{
+                      ...Fonts.black17Bold,
+
+                      marginEnd: "auto",
+                      marginStart: 126,
+                    }}
+                  >
+                    IDR
+                  </Text>
+
                   <NumberFormat
                     value={
                       typeof paymentDetail.data.payment_detail.gross_amount ===
@@ -476,7 +477,7 @@ const PaymentScreen = (props) => {
                     displayType={"text"}
                     thousandSeparator="."
                     decimalSeparator=","
-                    prefix={"IDR "}
+                    prefix={""}
                     renderText={(value, props) => (
                       <Text
                         style={{
@@ -489,15 +490,54 @@ const PaymentScreen = (props) => {
                   />
                 </HStack>
               </View>
-              {!from && (
-                <View
-                  style={{
-                    padding: 10,
-                    marginBottom: 100,
-                  }}
-                >
+              <View
+                style={{
+                  padding: 10,
+                  marginBottom: 100,
+                }}
+              >
+                {paymentDetail.data.status === "pending" && (
                   <Button
                     marginTop={10}
+                    colorScheme={"danger"}
+                    onPress={() => {
+                      Alert.alert(
+                        "Peringatan",
+                        "apakah anda yakin untuk membatalkan transaksi ini?",
+                        [
+                          { text: "batalkan", onPress: () => {} },
+                          {
+                            text: "yakin",
+                            onPress: () => {
+                              dispatch(
+                                batalTranksaksi({
+                                  order_id: paymentDetail.data.order_id,
+                                })
+                              ).then(() => {
+                                navigation.navigate("MainScreen", {
+                                  from: "pembayaran",
+                                });
+                                toast.show({
+                                  title: "Berhasil",
+                                  status: "success",
+                                  description:
+                                    "transaksi anda berhasil dibatalakan",
+                                  placement: "top",
+                                  width: Dimensions.get("screen").width / 1.3,
+                                });
+                              });
+                            },
+                          },
+                        ]
+                      );
+                    }}
+                  >
+                    Batalkan Transaksi
+                  </Button>
+                )}
+                {!from && (
+                  <Button
+                    marginTop={2}
                     colorScheme="amber"
                     onPress={() => {
                       navigation.navigate("MainScreen", {
@@ -505,10 +545,10 @@ const PaymentScreen = (props) => {
                       });
                     }}
                   >
-                    Kembali Ke Home
+                    Kembali Ke Beranda
                   </Button>
-                </View>
-              )}
+                )}
+              </View>
             </View>
           </>
         )}

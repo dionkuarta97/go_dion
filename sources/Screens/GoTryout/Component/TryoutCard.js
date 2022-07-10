@@ -37,10 +37,10 @@ const TryoutCard = (props) => {
                     let msg = "";
                     if (detail.blocking_time) {
                       msg =
-                        "Anda akan mengerjakan try out dengan sistem blocking time dan harus menunggu waktu tiap mata uji habis, untuk pindah ke mata uji berikutnya.\n\nAnda harus mengerjakan try out hingga mata uji terakhir. Mulai mengerjakan? ";
+                        "Anda akan mengerjakan tryout dengan sistem blocking.  Untuk pindah ke mata uji berikutnya, silahkan menunggu waktu mata uji sebelumnya habis.\n\nAnda harus mengerjakan try out hingga mata uji terakhir. Mulai mengerjakan? ";
                     } else {
                       msg =
-                        "Anda akan mengerjakan try out dengan sistem non blocking time. Mulai mengerjakan?";
+                        "Anda akan mengerjakan tryout dengan sistem non blocking time. Mulai mengerjakan?";
                     }
                     Alert.alert(title, msg, [
                       {

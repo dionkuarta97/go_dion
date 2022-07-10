@@ -96,7 +96,7 @@ export default App = () => {
           {Platform.OS === "ios" && (
             <View
               style={{
-                height: Dimensions.get("window").height > 700 ? 47 : 20,
+                height: Dimensions.get("window").height > 700 ? 48 : 20,
                 backgroundColor: "#FFC226",
               }}
             >

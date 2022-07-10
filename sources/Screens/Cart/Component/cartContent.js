@@ -122,8 +122,8 @@ const CartContent = () => {
               }
             } else {
               Alert.alert(
-                "informasi",
-                "anda perlu login untuk melanjutkan pembayaran",
+                "Informasi",
+                "Anda perlu login untuk melanjutkan pembayaran",
                 [
                   {
                     text: "Oke",

@@ -12,6 +12,7 @@ import {
 
 import {
   SET_CURRENT_PAYMENT,
+  SET_INDEX_ACTIVE,
   SET_PAYMENT_DETAIL,
   SET_PAYMENT_LIST,
   SET_PAYMENT_METHOD,
@@ -156,7 +157,7 @@ export function setPaymentList(state) {
 export function getPaymentList(status) {
   return async (dispatch, getState) => {
     dispatch(setPaymentList(defaultInitState));
-
+    console.log(status);
     try {
       const urlBase = getState().initReducer.baseUrl;
       fetch(urlBase + urlPayment + `?status=${status}`, {
@@ -167,7 +168,6 @@ export function getPaymentList(status) {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
           if (json.status) {
             dispatch(setPaymentList(defaultDoneState(json.data)));
           } else dispatch(setPaymentList(defaultFailedState(json.message)));
@@ -182,6 +182,13 @@ export function getPaymentList(status) {
     }
   };
 }
+
+export const setIndexActive = (payload) => {
+  return {
+    type: SET_INDEX_ACTIVE,
+    payload,
+  };
+};
 
 export function setPaymentDetail(state) {
   return {
@@ -219,3 +226,32 @@ export function getPaymentDetail(orderId) {
     }
   };
 }
+
+export const batalTranksaksi = (payload) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      console.log(payload);
+      const urlBase = getState().initReducer.baseUrl;
+      console.log(urlBase + urlPayment + `/expire`);
+      fetch(urlBase + urlPayment + `/cancel`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${getState().authReducer.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json);
+          if (json.status) {
+            resolve("sukses");
+          } else reject("gagal");
+        })
+        .catch((err) => {
+          console.log(err);
+          reject("gagal");
+        });
+    });
+  };
+};

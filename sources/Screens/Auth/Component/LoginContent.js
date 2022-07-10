@@ -43,7 +43,7 @@ const LoginContent = () => {
 
   useEffect(() => {
     if (login.data) {
-      navigation.goBack();
+      navigation.replace("MainScreen");
     }
   }, [login.data]);
 

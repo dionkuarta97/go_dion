@@ -33,7 +33,7 @@ const PaymentMethodCard = () => {
           activeOpacity={0.8}
           onPress={() => navigation.navigate("PaymentMethodScreen")}
         >
-          <Text style={{ ...Fonts.orangeColor17Bold }}>Ubah</Text>
+          <Text style={{ ...Fonts.orangeColor17Bold }}>Pilih</Text>
         </TouchableOpacity>
       </View>
 

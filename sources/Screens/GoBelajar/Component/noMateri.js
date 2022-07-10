@@ -4,7 +4,8 @@ import NoMateriImage from "../../../../assets/Images/No_Image_Purple_No_BG.png";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import { useNavigation } from "@react-navigation/core";
 
-const noMateri = () => {
+const noMateri = (props) => {
+  const { title, status } = props;
   const navigation = useNavigation();
   return (
     <>
@@ -18,10 +19,17 @@ const noMateri = () => {
             marginBottom: 15,
           }}
         />
-        <Text style={{ alignSelf: "center" }}>Kamu Belum Memiliki Materi Apapun</Text>
+        <Text style={{ alignSelf: "center" }}>
+          {title ? title : "Kamu Belum Memiliki Materi Apapun"}
+        </Text>
       </View>
       <View style={{ paddingStart: 10, paddingEnd: 10 }}>
-        <DefaultPrimaryButton text="Beli Sekarang" onPress={() => navigation.navigate("ProductScreen")} />
+        {!status && (
+          <DefaultPrimaryButton
+            text="Beli Sekarang"
+            onPress={() => navigation.navigate("ProductScreen")}
+          />
+        )}
       </View>
     </>
   );
