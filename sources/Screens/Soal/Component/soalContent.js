@@ -27,7 +27,7 @@ import PertanyaanPBK from "./Pertanyaan/PertanyaanPBK";
 import PertanyaanPBS from "./Pertanyaan/PertanyaanPBS";
 import PertanyaanPBT from "./Pertanyaan/PertanyaanPBT";
 import Colors from "../../../Theme/Colors";
-import { useToast } from "native-base";
+import { HStack, useToast, VStack } from "native-base";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 
@@ -117,191 +117,195 @@ const SoalContent = (props) => {
 
   const headerComponent = () => {
     return (
-      <View style={{ padding: Sizes.fixPadding * 2 }}>
-        <Text style={{ ...Fonts.black17Bold }}>{sessionTitle}</Text>
-        <Text style={{ color: Colors.ligthGreyColor }}>
-          Sesi {sessionIndex + 1}/{sessionTotal}
-        </Text>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={{ ...Fonts.black17Bold, flex: 1 }}>{props.title}</Text>
-          <View>
-            {!delay && (
-              <CountDown
-                key={"Count 1"}
-                until={sessionDuration}
-                digitStyle={{
-                  backgroundColor: "transparent",
-                }}
-                showSeparator={true}
-                onFinish={() => {
-                  setDelay(true);
-                  var status = "not_done";
-                  if (answers.length === questions.length) {
-                    status = "done";
-                    if (sessionIndex + 1 !== sessionTotal) {
-                      dispatch(
-                        setSaveScore({
-                          answers: [...saveScore.answers, answers],
-                          rawData: [
-                            ...saveScore.rawData,
-                            {
-                              title: sessionTitle,
-                              questions: sessions[sessionIndex].questions,
-                              session_configs:
-                                sessions[sessionIndex].session_configs,
-                              total: sessions[sessionIndex].total,
-                            },
-                          ],
-                          status: status,
-                        })
-                      );
-                      dispatch(setNumber(1));
-                      const sesIndex = sessionIndex + 1;
-                      setSessionIndex(sesIndex);
-                      setQuestions(sessions[sesIndex].questions);
-                      setSessionTitle(sessions[sesIndex].title);
-                      setAnswers([]);
-                      console.log(saveScore, "<<save score");
-                    } else {
-                      dispatch(
-                        setSaveScore({
-                          answers: [...saveScore.answers, answers],
-                          rawData: [
-                            ...saveScore.rawData,
-                            {
-                              title: sessionTitle,
-                              questions: sessions[sessionIndex].questions,
-                              session_configs:
-                                sessions[sessionIndex].session_configs,
-                              total: sessions[sessionIndex].total,
-                            },
-                          ],
-                          status: status,
-                        })
-                      );
-
-                      checkInternet().then((data) => {
-                        if (data) {
-                          setFinish(true);
-                          dispatch(saveAnswer());
-                        } else {
-                          toast.show({
-                            placement: "top",
-                            duration: null,
-                            width: Dimensions.get("screen").width / 1.3,
-                            render: () => {
-                              return (
-                                <ToastErrorContent
-                                  content="Kamu tidak terhubung ke internet"
-                                  onPress={() => {
-                                    toast.closeAll();
-                                    navigation.popToTop();
-                                    navigation.navigate("MainScreen");
-                                  }}
-                                />
-                              );
-                            },
-                          });
-                        }
-                      });
-                    }
-                  } else {
-                    let jawabanKosong = answers;
-                    for (let i = answers.length; i < questions.length; i++) {
-                      jawabanKosong.push({
-                        duration: -1,
-                        user_answer: [-1],
-                      });
-                    }
-                    if (sessionIndex + 1 !== sessionTotal) {
-                      dispatch(
-                        setSaveScore({
-                          answers: [...saveScore.answers, jawabanKosong],
-                          rawData: [
-                            ...saveScore.rawData,
-                            {
-                              title: sessionTitle,
-                              questions: sessions[sessionIndex].questions,
-                              session_configs:
-                                sessions[sessionIndex].session_configs,
-                              total: sessions[sessionIndex].total,
-                            },
-                          ],
-                          status: status,
-                        })
-                      );
-                      dispatch(setNumber(1));
-                      const sesIndex = sessionIndex + 1;
-                      setSessionIndex(sesIndex);
-                      setQuestions(sessions[sesIndex].questions);
-                      setSessionTitle(sessions[sesIndex].title);
-                      setAnswers([]);
-                      console.log(
-                        JSON.stringify(jawabanKosong),
-                        "<<save score"
-                      );
-                      console.log(jawabanKosong.length, "jawaban kosong");
-                    } else {
-                      dispatch(
-                        setSaveScore({
-                          answers: [...saveScore.answers, answers],
-                          rawData: [
-                            ...saveScore.rawData,
-                            {
-                              title: sessionTitle,
-                              questions: sessions[sessionIndex].questions,
-                              session_configs:
-                                sessions[sessionIndex].session_configs,
-                              total: sessions[sessionIndex].total,
-                            },
-                          ],
-                          status: status,
-                        })
-                      );
-                      checkInternet().then((data) => {
-                        if (data) {
-                          setFinish(true);
-                          dispatch(saveAnswer());
-                        } else {
-                          toast.show({
-                            placement: "top",
-                            duration: null,
-                            width: Dimensions.get("screen").width / 1.3,
-                            render: () => {
-                              return (
-                                <ToastErrorContent
-                                  content="Kamu tidak terhubung ke internet"
-                                  onPress={() => {
-                                    toast.closeAll();
-                                    navigation.popToTop();
-                                    navigation.navigate("MainScreen");
-                                  }}
-                                />
-                              );
-                            },
-                          });
-                        }
-                      });
-                    }
-                  }
-
-                  setTimeout(() => {
-                    setDelay(false);
-                  }, 5000);
-                }}
-                size={14}
-                timeToShow={["M", "S"]}
-                timeLabels={{ m: null, s: null }}
-                style={{ ...Fonts.blackRegular }}
-                onChange={(t) => {
-                  setDuration(t);
-                }}
-                running={!finish && !delay}
-              />
-            )}
+      <HStack paddingX={5} paddingTop={4}>
+        <VStack style={{ marginEnd: "auto" }}>
+          <Text style={{ ...Fonts.black17Bold }}>{sessionTitle}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: Colors.ligthGreyColor, flex: 1 }}>
+              Sesi {sessionIndex + 1}/{sessionTotal}
+            </Text>
           </View>
-        </View>
-      </View>
+          <Text style={{ ...Fonts.black17Bold, marginTop: 10 }}>
+            {props.title}
+          </Text>
+        </VStack>
+        {!delay && (
+          <CountDown
+            key={"Count 1"}
+            until={sessionDuration}
+            digitStyle={{
+              backgroundColor: "transparent",
+            }}
+            showSeparator={true}
+            onFinish={() => {
+              setDelay(true);
+              var status = "not_done";
+              if (answers.length === questions.length) {
+                status = "done";
+                if (sessionIndex + 1 !== sessionTotal) {
+                  dispatch(
+                    setSaveScore({
+                      answers: [...saveScore.answers, answers],
+                      rawData: [
+                        ...saveScore.rawData,
+                        {
+                          title: sessionTitle,
+                          questions: sessions[sessionIndex].questions,
+                          session_configs:
+                            sessions[sessionIndex].session_configs,
+                          total: sessions[sessionIndex].total,
+                        },
+                      ],
+                      status: status,
+                    })
+                  );
+                  dispatch(setNumber(1));
+                  const sesIndex = sessionIndex + 1;
+                  setSessionIndex(sesIndex);
+                  setQuestions(sessions[sesIndex].questions);
+                  setSessionTitle(sessions[sesIndex].title);
+                  setAnswers([]);
+                  console.log(saveScore, "<<save score");
+                } else {
+                  dispatch(
+                    setSaveScore({
+                      answers: [...saveScore.answers, answers],
+                      rawData: [
+                        ...saveScore.rawData,
+                        {
+                          title: sessionTitle,
+                          questions: sessions[sessionIndex].questions,
+                          session_configs:
+                            sessions[sessionIndex].session_configs,
+                          total: sessions[sessionIndex].total,
+                        },
+                      ],
+                      status: status,
+                    })
+                  );
+
+                  checkInternet().then((data) => {
+                    if (data) {
+                      setFinish(true);
+                      dispatch(saveAnswer());
+                    } else {
+                      toast.show({
+                        placement: "top",
+                        duration: null,
+                        width: Dimensions.get("screen").width / 1.3,
+                        render: () => {
+                          return (
+                            <ToastErrorContent
+                              content="Kamu tidak terhubung ke internet"
+                              onPress={() => {
+                                toast.closeAll();
+                                navigation.popToTop();
+                                navigation.navigate("MainScreen");
+                              }}
+                            />
+                          );
+                        },
+                      });
+                    }
+                  });
+                }
+              } else {
+                let jawabanKosong = answers;
+                for (let i = answers.length; i < questions.length; i++) {
+                  jawabanKosong.push({
+                    duration: -1,
+                    user_answer: [-1],
+                  });
+                }
+                if (sessionIndex + 1 !== sessionTotal) {
+                  dispatch(
+                    setSaveScore({
+                      answers: [...saveScore.answers, jawabanKosong],
+                      rawData: [
+                        ...saveScore.rawData,
+                        {
+                          title: sessionTitle,
+                          questions: sessions[sessionIndex].questions,
+                          session_configs:
+                            sessions[sessionIndex].session_configs,
+                          total: sessions[sessionIndex].total,
+                        },
+                      ],
+                      status: status,
+                    })
+                  );
+                  dispatch(setNumber(1));
+                  const sesIndex = sessionIndex + 1;
+                  setSessionIndex(sesIndex);
+                  setQuestions(sessions[sesIndex].questions);
+                  setSessionTitle(sessions[sesIndex].title);
+                  setAnswers([]);
+                  console.log(JSON.stringify(jawabanKosong), "<<save score");
+                  console.log(jawabanKosong.length, "jawaban kosong");
+                } else {
+                  dispatch(
+                    setSaveScore({
+                      answers: [...saveScore.answers, answers],
+                      rawData: [
+                        ...saveScore.rawData,
+                        {
+                          title: sessionTitle,
+                          questions: sessions[sessionIndex].questions,
+                          session_configs:
+                            sessions[sessionIndex].session_configs,
+                          total: sessions[sessionIndex].total,
+                        },
+                      ],
+                      status: status,
+                    })
+                  );
+                  checkInternet().then((data) => {
+                    if (data) {
+                      setFinish(true);
+                      dispatch(saveAnswer());
+                    } else {
+                      toast.show({
+                        placement: "top",
+                        duration: null,
+                        width: Dimensions.get("screen").width / 1.3,
+                        render: () => {
+                          return (
+                            <ToastErrorContent
+                              content="Kamu tidak terhubung ke internet"
+                              onPress={() => {
+                                toast.closeAll();
+                                navigation.popToTop();
+                                navigation.navigate("MainScreen");
+                              }}
+                            />
+                          );
+                        },
+                      });
+                    }
+                  });
+                }
+              }
+
+              setTimeout(() => {
+                setDelay(false);
+              }, 5000);
+            }}
+            size={30}
+            timeToShow={["M", "S"]}
+            timeLabels={{ m: null, s: null }}
+            onChange={(t) => {
+              setDuration(t);
+            }}
+            running={!finish && !delay}
+          />
+        )}
+      </HStack>
     );
   };
 
@@ -335,37 +339,6 @@ const SoalContent = (props) => {
     );
   };
 
-  const loadingSendComponent = () => {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Image
-          style={{ height: 200 }}
-          resizeMode="contain"
-          source={require("../../../../assets/Images/soal/onsend.png")}
-        />
-        <Text style={{ marginTop: 30, fontWeight: "bold" }}>
-          Jawaban sedang dikirim,
-        </Text>
-        <Text style={{ color: "grey", textAlign: "center" }}>
-          Tunggu sebentar ya, hasil pengiriman akan segera muncul
-        </Text>
-        <View
-          style={{
-            marginTop: 10,
-          }}
-        >
-          <ActivityIndicator color={Colors.primaryColor} size={50} />
-        </View>
-      </View>
-    );
-  };
-
   const finishComponent = () => {
     return (
       <View style={{ flex: 1 }}>
@@ -374,7 +347,7 @@ const SoalContent = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            marginHorizontal: 20,
+            marginHorizontal: 10,
           }}
         >
           <Image
@@ -390,7 +363,7 @@ const SoalContent = (props) => {
           <Text style={{ color: "grey", textAlign: "center" }}>
             {finish && save.loading
               ? "Tunggu sebentar ya, hasil pengiriman akan segera muncul"
-              : "Kamu bisa cek skor kamu dengan klik tombol dibawah ini."}
+              : "Klik tombol dibawah ini untuk cek skor kamu"}
           </Text>
           {finish && save.loading && (
             <View
@@ -524,7 +497,6 @@ const SoalContent = (props) => {
             style={{
               flex: 1,
               paddingHorizontal: Sizes.fixPadding * 2,
-              marginTop: Sizes.fixPadding,
             }}
           >
             <View

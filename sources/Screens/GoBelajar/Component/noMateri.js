@@ -20,7 +20,7 @@ const noMateri = (props) => {
           }}
         />
         <Text style={{ alignSelf: "center" }}>
-          {title ? title : "Kamu Belum Memiliki Materi Apapun"}
+          {title ? title : "Kamu Belum Memiliki Materi Belajar"}
         </Text>
       </View>
       <View style={{ paddingStart: 10, paddingEnd: 10 }}>

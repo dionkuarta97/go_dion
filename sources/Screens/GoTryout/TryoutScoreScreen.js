@@ -66,7 +66,7 @@ const TryoutScoreScreen = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar
-        title="Score Tryout"
+        title="Nilai Tryout"
         backEnabled={fromSoal ? false : true}
         rightItem={fromSoal && <ActionButtonHome />}
       />
@@ -114,7 +114,7 @@ const TryoutScoreScreen = (props) => {
                   width: Dimensions.get("screen").width / 2,
                 }}
               >
-                Total Session Score
+                Total Nilai Sesi
               </Text>
 
               <Text
@@ -145,7 +145,7 @@ const TryoutScoreScreen = (props) => {
                   width: Dimensions.get("screen").width / 2,
                 }}
               >
-                Average Score
+                Rata-Rata Nilai
               </Text>
 
               <Text
@@ -195,7 +195,7 @@ const TryoutScoreScreen = (props) => {
                         >
                           {el.title}
                         </Text>
-                        <Text style={{ color: "grey" }}>Total Score</Text>
+                        <Text style={{ color: "grey" }}>Total Nilai</Text>
                         <Text
                           style={{
                             color: "#7DC579",
@@ -239,7 +239,7 @@ const TryoutScoreScreen = (props) => {
                       marginBottom: 10,
                     }}
                   >
-                    Score Anda masih di proses
+                    Score kamu sedang diproses
                   </Text>
                   <View
                     style={{
@@ -268,7 +268,7 @@ const TryoutScoreScreen = (props) => {
                           width: Dimensions.get("screen").width / 2,
                         }}
                       >
-                        Total Session
+                        Total Sesi
                       </Text>
 
                       <Text
@@ -298,7 +298,7 @@ const TryoutScoreScreen = (props) => {
                           width: Dimensions.get("screen").width / 2,
                         }}
                       >
-                        Total Session Score
+                        Total Nilai Sesi
                       </Text>
 
                       <Text
@@ -329,7 +329,7 @@ const TryoutScoreScreen = (props) => {
                           width: Dimensions.get("screen").width / 2,
                         }}
                       >
-                        Average Score
+                        Rata-Rata Nilai
                       </Text>
 
                       <Text
@@ -388,7 +388,7 @@ const TryoutScoreScreen = (props) => {
                                   {el.title}
                                 </Text>
                                 <Text style={{ color: "grey" }}>
-                                  Total Score
+                                  Total Nilai
                                 </Text>
                                 <Text
                                   style={{

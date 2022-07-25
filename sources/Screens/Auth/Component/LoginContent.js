@@ -125,7 +125,7 @@ const LoginContent = () => {
         )}
 
         <DefaultPrimaryButton
-          text="Sign In"
+          text="Masuk"
           onPress={() => {
             checkInternet().then((connection) => {
               if (connection) {

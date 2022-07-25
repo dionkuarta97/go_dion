@@ -18,13 +18,44 @@ import { useNavigation } from "@react-navigation/core";
 import SliverAppBar from "../../Components/sliverAppBar";
 import Colors from "../../Theme/Colors";
 import { useToast } from "native-base";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import NoData from "../../Components/NoData";
+import { getTahunAjaran } from "../../Redux/Data/dataActions";
+import checkInternet from "../../Services/CheckInternet";
+import ToastErrorContent from "../../Components/ToastErrorContent";
 const PilihLeaderboardScreen = () => {
   const toast = useToast();
   const navigation = useNavigation();
   const { isLogin } = useSelector((state) => state.authReducer);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    checkInternet().then((data) => {
+      if (data) {
+        dispatch(getTahunAjaran());
+      } else {
+        toast.show({
+          placement: "top",
+          duration: null,
+          width: Dimensions.get("screen").width / 1.3,
+          render: ({ id }) => {
+            return (
+              <>
+                <ToastErrorContent
+                  content="Kamu tidak terhubung ke internet"
+                  onPress={() => {
+                    toast.closeAll();
+                  }}
+                />
+              </>
+            );
+          },
+        });
+      }
+    });
+  }, []);
 
   return (
     <SafeAreaView

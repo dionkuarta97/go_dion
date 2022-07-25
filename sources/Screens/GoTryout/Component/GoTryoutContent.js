@@ -33,7 +33,7 @@ const GoTryoutContent = (props) => {
         </View>
       ) : tryoutData.error ? (
         <NoMateri
-          title="Tryout Tidak Di Temukan"
+          title="Tryout Tidak Ditemukan"
           status={props.status !== "untouched" ? true : false}
         />
       ) : (

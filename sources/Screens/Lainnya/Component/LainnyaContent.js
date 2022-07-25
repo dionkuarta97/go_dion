@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View, Linking } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
@@ -15,11 +15,17 @@ import { defaultInitState } from "../../../Redux/helper";
 import { setMe, setProfile } from "../../../Redux/Profile/profileActions";
 import VersionText from "../../../Components/VersionText";
 import { Box } from "native-base";
+import { Platform } from "expo-modules-core";
 
 const LainnyaContent = () => {
   const isLogin = useSelector((state) => state.authReducer.isLogin);
   const navigation = useNavigation();
+  const OpenWEB = (url) => {
+    Linking.openURL(url);
+  };
   const dispatch = useDispatch();
+
+  const { token } = useSelector((state) => state.authReducer);
 
   const renderTile = (lable, icon, onPress) => {
     return (
@@ -81,8 +87,9 @@ const LainnyaContent = () => {
       {/* {renderTile("Base Url", "link", () => {
                 navigation.navigate("BaseurlScreen");
             })} */}
+
       {isLogin &&
-        renderTile("Logout", "logout", () => {
+        renderTile("Keluar", "logout", () => {
           dispatch(setLoginStatus(false));
           dispatch(setToken(null));
           dispatch(setProfile(null));
@@ -95,7 +102,22 @@ const LainnyaContent = () => {
           );
           navigation.replace("MainScreen");
         })}
-
+      {isLogin &&
+        Platform.OS === "ios" &&
+        renderTile("Hapus Akun", "delete", () => {
+          Alert.alert("Peringatan", "Yakin akan menghapus akun kamu?", [
+            { text: "Tidak", onPress: () => {} },
+            {
+              text: "Ya",
+              onPress: () => {
+                OpenWEB(
+                  "https://student.gobimbelonline.net/setting/unactive?token=" +
+                    token
+                );
+              },
+            },
+          ]);
+        })}
       <VersionText />
     </View>
   );

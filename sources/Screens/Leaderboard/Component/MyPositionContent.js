@@ -9,10 +9,7 @@ import {
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getLeaderboard,
-  getMyPosition,
-} from "../../../Redux/Leaderboard/leaderboardAction";
+import { getMyPosition } from "../../../Redux/Leaderboard/leaderboardAction";
 import LeaderboardCard from "./LeaderboardCard";
 import { Dimensions, ActivityIndicator, TouchableOpacity } from "react-native";
 import Colors from "../../../Theme/Colors";

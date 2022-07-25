@@ -42,13 +42,13 @@ const SoalScreen = ({ route }) => {
         title="Soal"
         backEnabled={params.blockTime ? false : true}
         backPressed={() => {
-          Alert.alert("Cancel taking quiz", "Are you sure?", [
+          Alert.alert("Peringatan", "Batal ikut kuis?", [
             {
-              text: "Cancel",
+              text: "Tidak",
               onPress: () => {},
             },
             {
-              text: "Yes",
+              text: "Ya",
               onPress: () => navigation.goBack(),
             },
           ]);

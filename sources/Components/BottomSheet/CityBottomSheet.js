@@ -60,10 +60,10 @@ const CityBottomSheet = (props) => {
   }, []);
 
   return (
-    <DefaultBottomSheet title="City" onClose={() => props.onClose()}>
+    <DefaultBottomSheet title="Kota/Kabupaten" onClose={() => props.onClose()}>
       <View style={styles.search}>
         <TextInput
-          placeholder="Search"
+          placeholder="Cari"
           style={{
             flex: 1,
             paddingVertical: Sizes.fixPadding,

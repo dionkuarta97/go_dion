@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform,
 } from "react-native";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
@@ -63,26 +64,27 @@ const NewPasswordScreen = ({ route }) => {
   }
 
   function passwordValidation(text) {
-    if (text.length < 8) return "Password must be atleast 8 characters";
+    if (text.length < 8)
+      return "Password minimal 8 karakter, mengandung huruf besar, huruf kecil, dan angka";
     if (!text.match(new RegExp("[A-Z]")))
-      return "Password must contain at least one uppercase";
+      return "Password harus mengandung huruf besar, huruf kecil, dan angka";
     if (!text.match(new RegExp("[a-z]")))
-      return "Password must contain at least one lowercase";
+      return "Password harus mengandung huruf kecil dan angka";
     if (text.search(/[0-9]/) < 0) {
-      return "Your password must contain at least one digit";
+      return "Password harus mengandung angka";
     }
     return null;
   }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar title="New Password" />
+      <DefaultAppBar title="Password Baru" />
       <View style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
         <Text style={{ ...Fonts.black15Bold }}>
           Masukkan password baru kamu
         </Text>
         <PasswordTextInput
-          placeholder="New Password"
+          placeholder="Password Baru"
           onChangeText={setPassword}
         />
         {passwordValidation(password) != null && (
@@ -91,7 +93,7 @@ const NewPasswordScreen = ({ route }) => {
           </Text>
         )}
         <PasswordTextInput
-          placeholder="Repeat New Password"
+          placeholder="Ulang Password Baru"
           onChangeText={setRepeatPassword}
         />
         {password !== repeatPassword && (
@@ -105,7 +107,7 @@ const NewPasswordScreen = ({ route }) => {
           password === repeatPassword &&
           !passwordValidation(password) && (
             <DefaultPrimaryButton
-              text="Submit"
+              text="Kirim"
               onPress={() => {
                 setLoading(true);
                 dispatch(
@@ -133,11 +135,11 @@ const NewPasswordScreen = ({ route }) => {
             />
           )}
 
-        {loading && <LoadingModal />}
+        {loading && Platform.OS !== "ios" && <LoadingModal />}
 
         {success && (
           <DefaultModal>
-            <Text>Password Berhasil Diperbaharui</Text>
+            <Text>Password Berhasil Diperbarui</Text>
             <DefaultPrimaryButton
               text="Ke Halaman Login"
               onPress={() => {
@@ -149,7 +151,7 @@ const NewPasswordScreen = ({ route }) => {
 
         {error && (
           <DefaultModal>
-            <Text>Password Gagal Diperbaharui</Text>
+            <Text>Password Gagal Diperbarui</Text>
             <Text>{error}</Text>
             <DefaultPrimaryButton
               text="Ke Halaman Login"

@@ -21,6 +21,7 @@ import {
   SET_REGISTER,
   SET_TOKEN,
   SET_CHANGE_PASSWORD,
+  SET_APP_BACKGROUND,
 } from "./authTypes";
 
 export function setLoginStatus(status) {
@@ -36,6 +37,13 @@ export function setFirstLogin(payload) {
     payload,
   };
 }
+
+export const setAppBackground = (payload) => {
+  return {
+    type: SET_APP_BACKGROUND,
+    payload,
+  };
+};
 
 export function getLogin({ username, password, playerId }) {
   return async (dispatch, getState) => {

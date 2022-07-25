@@ -61,10 +61,10 @@ const SchoolBottomSheet = (props) => {
   }, []);
 
   return (
-    <DefaultBottomSheet title="School Name" onClose={() => props.onClose()}>
+    <DefaultBottomSheet title="Nama Sekolah" onClose={() => props.onClose()}>
       <View style={styles.search}>
         <TextInput
-          placeholder="Search"
+          placeholder="Cari"
           style={{
             flex: 1,
             paddingVertical: Sizes.fixPadding,

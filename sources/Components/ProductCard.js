@@ -1,7 +1,14 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import PropTypes from "prop-types";
 import NumberFormat from "react-number-format";
 
@@ -26,13 +33,16 @@ const dummyProductData = {
   price: 87000,
   price_discount: 67000,
   purchased: false,
-  thumbnail: "http://yrama-widya.co.id/wp-content/uploads/2018/08/Sonar-Maestro-USBN-SMP-2019.jpg",
+  thumbnail:
+    "http://yrama-widya.co.id/wp-content/uploads/2018/08/Sonar-Maestro-USBN-SMP-2019.jpg",
   title: "Tryout UNBK 2021",
 };
 
 const ProductCard = (props) => {
   const navigation = useNavigation();
   const item = !props.data ? dummyProductData : props.data;
+
+  console.log(JSON.stringify(item, null, 2));
 
   const { newStyle } = props;
   return (
@@ -47,7 +57,11 @@ const ProductCard = (props) => {
       style={newStyle?.card ? newStyle?.card : styles.card}
     >
       <View style={{ position: "relative" }}>
-        <Image source={{ uri: item.thumbnail }} resizeMode="cover" style={newStyle?.image ? newStyle?.image : styles.image} />
+        <Image
+          source={{ uri: item.thumbnail }}
+          resizeMode="cover"
+          style={newStyle?.image ? newStyle?.image : styles.image}
+        />
 
         {item.purchased && (
           <View style={styles.purchasedCircle}>
@@ -55,7 +69,13 @@ const ProductCard = (props) => {
           </View>
         )}
       </View>
-      <View style={newStyle?.infoContainer ? newStyle?.infoContainer : styles.infoContainer}>
+      <View
+        style={
+          newStyle?.infoContainer
+            ? newStyle?.infoContainer
+            : styles.infoContainer
+        }
+      >
         <Text style={{ ...Fonts.gray15Regular }}>{item.title}</Text>
         <Text
           style={{
@@ -74,7 +94,7 @@ const ProductCard = (props) => {
             }}
           >
             <NumberFormat
-              value={item.price}
+              value={Platform.OS === "android" ? item.price : item.price_ios}
               displayType={"text"}
               thousandSeparator="."
               decimalSeparator=","
@@ -93,23 +113,43 @@ const ProductCard = (props) => {
           </View>
         )}
 
-        <NumberFormat
-          value={item.price_discount !== 0 ? item.price_discount : item.price}
-          displayType={"text"}
-          thousandSeparator="."
-          decimalSeparator=","
-          prefix={"IDR "}
-          renderText={(value, props) => (
-            <Text
-              style={{
-                ...Fonts.black19Bold,
-                marginTop: Sizes.fixPadding,
-              }}
-            >
-              {value}
-            </Text>
-          )}
-        />
+        {Platform.OS === "android" ? (
+          <NumberFormat
+            value={item.price_discount !== 0 ? item.price_discount : item.price}
+            displayType={"text"}
+            thousandSeparator="."
+            decimalSeparator=","
+            prefix={"IDR "}
+            renderText={(value, props) => (
+              <Text
+                style={{
+                  ...Fonts.black19Bold,
+                  marginTop: Sizes.fixPadding,
+                }}
+              >
+                {value}
+              </Text>
+            )}
+          />
+        ) : (
+          <NumberFormat
+            value={item.price_ios}
+            displayType={"text"}
+            thousandSeparator="."
+            decimalSeparator=","
+            prefix={"IDR "}
+            renderText={(value, props) => (
+              <Text
+                style={{
+                  ...Fonts.black19Bold,
+                  marginTop: Sizes.fixPadding,
+                }}
+              >
+                {value}
+              </Text>
+            )}
+          />
+        )}
       </View>
     </TouchableOpacity>
   );

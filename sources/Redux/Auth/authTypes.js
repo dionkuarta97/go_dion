@@ -6,3 +6,4 @@ export const SET_REGISTER = "set register";
 export const SET_FORGOT_PASSWORD = "set forgot password";
 export const SET_CHANGE_PASSWORD = "set change password";
 export const SET_FIRST_LOGIN = "set first login";
+export const SET_APP_BACKGROUND = "set app background";

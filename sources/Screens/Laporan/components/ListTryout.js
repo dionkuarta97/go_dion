@@ -16,6 +16,8 @@ const ListTryout = (props) => {
     if (type) dispatch(getListTryout(type));
   }, [type]);
 
+  console.log(JSON.stringify(listTryout, null, 2));
+
   return (
     <>
       {listTryout.data !== null && (

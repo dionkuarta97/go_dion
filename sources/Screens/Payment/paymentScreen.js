@@ -132,17 +132,10 @@ const PaymentScreen = (props) => {
                   </Text>
 
                   <Text style={{ marginTop: Sizes.fixPadding }}>
-                    Metoda Pembayaran
+                    Metode Pembayaran
                   </Text>
                   <Text style={{ ...Fonts.black15Regular }}>
-                    {paymentDetail.data.payment_type
-                      .split("_")
-                      .join(" ")
-                      .toUpperCase()}
-                  </Text>
-                  <Text style={{ marginTop: Sizes.fixPadding }}>Bank</Text>
-                  <Text style={{ ...Fonts.black15Regular }}>
-                    {paymentDetail.data.provider.toUpperCase()}
+                    {paymentDetail.data.payment_title}
                   </Text>
 
                   {paymentDetail.data.payment_type === "bank_transfer" && (
@@ -306,7 +299,8 @@ const PaymentScreen = (props) => {
                     </>
                   )}
 
-                  {paymentDetail.data.payment_type === "gopay" && (
+                  {(paymentDetail.data.payment_type === "gopay" ||
+                    paymentDetail.data.payment_type === "shopeepay") && (
                     <>
                       <View
                         style={{
@@ -318,7 +312,11 @@ const PaymentScreen = (props) => {
                           colorScheme="green"
                           onPress={() => {
                             OpenWEB(
-                              paymentDetail.data.payment_detail.actions[1].url
+                              paymentDetail.data.payment_type === "gopay"
+                                ? paymentDetail.data.payment_detail.actions[1]
+                                    .url
+                                : paymentDetail.data.payment_detail.actions[0]
+                                    .url
                             );
                           }}
                         >
@@ -503,9 +501,9 @@ const PaymentScreen = (props) => {
                     onPress={() => {
                       Alert.alert(
                         "Peringatan",
-                        "apakah anda yakin untuk membatalkan transaksi ini?",
+                        "Kamu yakin ingin membatalkan transaksi ini?",
                         [
-                          { text: "batalkan", onPress: () => {} },
+                          { text: "batal", onPress: () => {} },
                           {
                             text: "yakin",
                             onPress: () => {

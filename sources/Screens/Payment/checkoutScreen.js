@@ -43,6 +43,7 @@ import {
 } from "native-base";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
+import { singkatNama } from "../../Services/helper";
 
 const CheckoutScreen = () => {
   const { isOpen, onOpen, onClose } = useDisclose();
@@ -79,14 +80,16 @@ const CheckoutScreen = () => {
     dispatch(getPaymentList("pending"));
   }, []);
 
-  console.log(JSON.stringify(selectedPaymentMethod, null, 2));
+  console.log(JSON.stringify(cart, null, 2));
 
   const renderItem = (item) => {
     return (
       <View style={styles.item} key={item._id}>
-        <Text style={{ flex: 4, ...Fonts.gray15Bold }}>{item.title}</Text>
+        <Text style={{ ...Fonts.gray15Bold, marginEnd: "auto" }}>
+          {singkatNama(item.title, 30)}
+        </Text>
         <NumberFormat
-          value={item.price_discount > 0 ? item.price_discount : item.price}
+          value={item.price_discount ? item.price_discount : item.price}
           displayType={"text"}
           thousandSeparator="."
           decimalSeparator=","
@@ -94,7 +97,6 @@ const CheckoutScreen = () => {
           renderText={(value, props) => (
             <Text
               style={{
-                flex: 1,
                 ...Fonts.gray15Regular,
               }}
             >
@@ -122,13 +124,21 @@ const CheckoutScreen = () => {
             {cart.map((val) => renderItem(val))}
           </ScrollView>
           {selectedPaymentMethod !== null && (
-            <HStack style={{ paddingHorizontal: Sizes.fixPadding / 2 }}>
+            <HStack style={{ paddingHorizontal: 10, marginBottom: 10 }}>
+              <Box
+                style={{
+                  width: Dimensions.get("screen").width / 1.8,
+                }}
+              >
+                <Text style={{ fontSize: 17 }}>Biaya Layanan</Text>
+              </Box>
               <Text
                 style={{
+                  ...Fonts.black17Regular,
                   marginEnd: "auto",
                 }}
               >
-                Biaya Layanan
+                IDR
               </Text>
               <NumberFormat
                 value={cart.reduce(
@@ -145,7 +155,7 @@ const CheckoutScreen = () => {
                 displayType={"text"}
                 thousandSeparator="."
                 decimalSeparator=","
-                prefix={"IDR "}
+                prefix={""}
                 renderText={(value, props) => (
                   <>
                     <Text
@@ -161,21 +171,27 @@ const CheckoutScreen = () => {
             </HStack>
           )}
 
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              paddingVertical: Sizes.fixPadding,
-              paddingHorizontal: Sizes.fixPadding / 2,
-            }}
-          >
-            <Text
+          <HStack style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
+            <Box
               style={{
-                flex: 1,
-                ...Fonts.black19Bold,
+                width: Dimensions.get("screen").width / 1.8,
               }}
             >
-              Total
+              <Text
+                style={{
+                  ...Fonts.black19Bold,
+                }}
+              >
+                Total
+              </Text>
+            </Box>
+            <Text
+              style={{
+                ...Fonts.black17Regular,
+                marginEnd: "auto",
+              }}
+            >
+              IDR
             </Text>
             <NumberFormat
               value={
@@ -190,7 +206,7 @@ const CheckoutScreen = () => {
               displayType={"text"}
               thousandSeparator="."
               decimalSeparator=","
-              prefix={"IDR "}
+              prefix={""}
               renderText={(value, props) => (
                 <>
                   <Text
@@ -203,7 +219,7 @@ const CheckoutScreen = () => {
                 </>
               )}
             />
-          </View>
+          </HStack>
         </View>
 
         <PaymentMethodCard />
@@ -214,7 +230,7 @@ const CheckoutScreen = () => {
             if (selectedPaymentMethod === null) {
               Alert.alert(
                 "Informasi",
-                "Silahkan memilih metode pembayaran terlebih dahulu"
+                "Silahkan pilih metode pembayaran pesanan kamu"
               );
             } else {
               if (paymentList.data) {
@@ -251,9 +267,9 @@ const CheckoutScreen = () => {
 
         {paymentProcess.data !== null && (
           <DefaultModal>
-            <Text>Berhasil melakukan checkout</Text>
+            <Text style={{ textAlign: "center" }}>Kamu Berhasil Checkout</Text>
             <DefaultPrimaryButton
-              text="Lihat status pembayaran"
+              text="Lihat Status Pembayaran"
               onPress={() => {
                 dispatch(clearCart());
                 navigation.popToTop();
@@ -271,14 +287,14 @@ const CheckoutScreen = () => {
           <Box w="100%" h={60} px={4} justifyContent="center">
             <Center>
               <Text bold fontSize={18}>
-                Ada transaksi belum di bayar
+                Ada Transaksi Belum Dibayar
               </Text>
             </Center>
           </Box>
           <Box paddingX={3} marginBottom={5}>
-            <Text color={"gray.500"} textAlign="justify">
-              Mau bayar sekaligus dengan transaksi sebelumnya? Jika tidak, maka
-              tranksaksimu sebelumnya akan dibatalkan
+            <Text textAlign="justify">
+              Mau bayar sekaligus dengan transaksi sebelumnya? Jika tidak,
+              transaksi sebelumnya akan dibatalkan
             </Text>
           </Box>
           <Box
@@ -294,7 +310,7 @@ const CheckoutScreen = () => {
                 marginRight={"auto"}
                 maxWidth={Dimensions.get("screen").width / 2.7}
               >
-                <Text>Transaksi saat ini</Text>
+                <Text>Transaksi Saat Ini</Text>
               </Box>
 
               <NumberFormat
@@ -330,7 +346,7 @@ const CheckoutScreen = () => {
                 marginRight={"auto"}
                 maxWidth={Dimensions.get("screen").width / 2.7}
               >
-                <Text>Transaksi sebelumnya</Text>
+                <Text>Transaksi Sebelumnya</Text>
               </Box>
               <NumberFormat
                 value={
@@ -360,9 +376,9 @@ const CheckoutScreen = () => {
             <HStack marginTop={3}>
               <Box
                 marginRight={"auto"}
-                maxWidth={Dimensions.get("screen").width / 2.7}
+                maxWidth={Dimensions.get("screen").width / 2}
               >
-                <Text bold>Total gabungan bayaran</Text>
+                <Text bold>Total Gabungan Bayaran</Text>
               </Box>
               <NumberFormat
                 value={
@@ -411,10 +427,12 @@ const CheckoutScreen = () => {
             </HStack>
           </Box>
           <Box paddingX={5} marginTop={5} marginBottom={2}>
-            <Text color={"red.500"} textAlign="justify">
-              * Jika ada produk yang sama pada transaksi saat ini dengan
-              transaksi sebelumnya, maka produk yang sama pada transaksi
-              sebelumnya akan di hapus secara otomatis
+            <Text bold color={"red.500"} fontSize={16}>
+              Note :
+            </Text>
+            <Text textAlign="justify">
+              Jika ada kesamaan produk pada transaksi saat ini dan sebelumnya,
+              secara otomatis produk yang sama akan dihapus
             </Text>
           </Box>
           <Button
@@ -447,7 +465,7 @@ const CheckoutScreen = () => {
               onClose(true);
             }}
           >
-            Bayar sekaligus
+            <Text bold>Bayar Sekaligus</Text>
           </Button>
           <Button
             colorScheme="amber"
@@ -480,7 +498,7 @@ const CheckoutScreen = () => {
               onClose(true);
             }}
           >
-            Bayar transaksi ini saja
+            Bayar Transaksi Ini Saja
           </Button>
         </Actionsheet.Content>
       </Actionsheet>

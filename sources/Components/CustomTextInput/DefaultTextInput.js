@@ -7,7 +7,7 @@ import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
 
 const DefaultTextInput = (props) => {
-  const { keyboardType } = props;
+  const { keyboardType, autoCapitalize } = props;
   const [focused, setFocused] = useState(false);
   return (
     <View
@@ -21,7 +21,7 @@ const DefaultTextInput = (props) => {
       <TextInput
         editable={props.disable === false ? props.disable : true}
         keyboardType={keyboardType ? keyboardType : "default"}
-        autoCapitalize="none"
+        autoCapitalize={autoCapitalize ? autoCapitalize : "none"}
         value={props.value}
         placeholder={props.placeholder}
         style={{

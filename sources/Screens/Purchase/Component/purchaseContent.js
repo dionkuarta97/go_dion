@@ -94,14 +94,18 @@ const PurchaseContent = (props) => {
                 backgroundColor:
                   item.status === "pending"
                     ? Colors.primaryColor
-                    : item.status === "expire"
+                    : item.status === "expire" || item.status === "cancel"
                     ? Colors.neutralRedColor
                     : Colors.neutralGreenColor,
               }}
             >
-              {item.status === "expire" && !item.time_remaining.isExpired
-                ? "cancel"
-                : item.status}
+              {item.status === "expire"
+                ? "Kedaluwarsa"
+                : item.status === "cancel"
+                ? "Dibatalkan"
+                : item.status === "done"
+                ? "Berhasil"
+                : "Tertunda"}
             </Text>
           </View>
 

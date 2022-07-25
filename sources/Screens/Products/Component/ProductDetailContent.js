@@ -27,6 +27,7 @@ import RNIap, {
 import { getPaymentApple } from "../../../Redux/Payment/paymentActions";
 import DefaultModal from "../../../Components/Modal/DefaultModal";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
+import { capitalizeFirstLetter } from "../../../Services/helper";
 
 const { width } = Dimensions.get("screen");
 
@@ -216,7 +217,7 @@ const ProductDetailContent = (props) => {
           {titleText("Detail Produk")}
           <View style={styles.content}>
             {infoTile("Informasi", item.desc)}
-            {infoTile("Kategori", item.details.category)}
+            {infoTile("Kategori", capitalizeFirstLetter(item.details.category))}
             {infoTile("Level", item.details.level)}
             {infoTile("Wilayah", item.details.wilayah)}
 
@@ -269,7 +270,7 @@ const ProductDetailContent = (props) => {
 
             {!item.purchased && onCart && (
               <DefaultPrimaryButton
-                text="Sudah ada di keranjang"
+                text="Sudah Ada di Keranjang"
                 onPress={() => {
                   navigation.navigate("CartScreen");
                 }}
