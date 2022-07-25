@@ -183,9 +183,7 @@ export default MainScreen = (props) => {
         <>
           {checkVersion.error && (
             <NoData
-              msg={
-                "Telah terjadi kesalahan, silahkan coba lagi beberapa saat lagi"
-              }
+              msg={"Telah terjadi kesalahan, silahkan coba beberapa saat lagi"}
               button={
                 <Button
                   width={150}

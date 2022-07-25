@@ -4,6 +4,7 @@ import {
   SET_LIST_GRADES,
   SET_LIST_PROVINCE,
   SET_LIST_SEKOLAH,
+  SET_TAHUN_AJARAN,
   SET_UNIVERSITAS,
 } from "./dataTypes";
 
@@ -34,6 +35,11 @@ const initialState = {
     data: null,
   },
   listJurusan: {
+    loading: false,
+    error: null,
+    data: null,
+  },
+  listTahunAjaran: {
     loading: false,
     error: null,
     data: null,
@@ -72,6 +78,12 @@ export function dataReducer(state = initialState, action) {
       return {
         ...state,
         listJurusan: action.payload,
+      };
+    }
+    case SET_TAHUN_AJARAN: {
+      return {
+        ...state,
+        listTahunAjaran: action.payload,
       };
     }
     default:

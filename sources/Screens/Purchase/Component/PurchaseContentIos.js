@@ -95,7 +95,7 @@ const PurchaseContentIos = (props) => {
                     : Colors.neutralGreenColor,
               }}
             >
-              {item.status}
+              Berhasil
             </Text>
           </View>
 

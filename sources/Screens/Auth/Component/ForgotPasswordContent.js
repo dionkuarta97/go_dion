@@ -47,8 +47,8 @@ const ForgotPasswordContent = () => {
         <View>
           <View style={{ marginBottom: Sizes.fixPadding }}>
             <Text style={{ ...Fonts.black17Regular }}>
-              Masukkan email yang kamu daftarkan. Kami akan mengirimkan link
-              untuk informasi password
+              Untuk mengatur ulang password, silakan masukkan email yang telah
+              kamu daftarkan.
             </Text>
           </View>
           <DefaultTextInput
@@ -101,8 +101,11 @@ const ForgotPasswordContent = () => {
               color={Colors.primaryColor}
             />
             <View style={{ marginVertical: 50, alignItems: "center" }}>
-              <Text style={{ ...Fonts.black17Regular }}>
-                Kami mengirimkan reset link ke email kamu
+              <Text style={{ ...Fonts.black17Bold, textAlign: "center" }}>
+                Cek Email Kamu
+              </Text>
+              <Text style={{ ...Fonts.black17Regular, textAlign: "center" }}>
+                Email pengaturan ulang password kamu sudah terkirim
               </Text>
               <Text
                 style={{
@@ -115,7 +118,7 @@ const ForgotPasswordContent = () => {
             </View>
           </View>
           <DefaultPrimaryButton
-            text="Kembali ke halaman login"
+            text="Kembali Ke Halaman Login"
             onPress={() => navigation.goBack()}
           />
         </View>

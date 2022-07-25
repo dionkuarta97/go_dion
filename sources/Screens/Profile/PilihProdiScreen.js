@@ -207,17 +207,17 @@ const PilihProdiScreen = (props) => {
               }}
             >
               <DefaultPrimaryButton
-                text="SIMPAN PILIHAN"
+                text="Simpan Pilihan"
                 onPress={() => {
                   checkInternet().then((data) => {
                     if (data) {
                       Alert.alert(
                         "Peringatan",
-                        "Setelah menentukan prodi, kamu tidak dapat menggantinya lagi. Pastikan memilih prodimu dengan benar",
+                        "Setelah menentukan prodi, kamu tidak dapat mengubahnya lagi.\n\nPastikan kamu memilih prodi yang sesuai.",
                         [
-                          { text: "Batal", onPress: () => {} },
+                          { text: "TIDAK", onPress: () => {} },
                           {
-                            text: "Benar",
+                            text: "YA",
                             onPress: () => {
                               let program_studi = [pilihanSatu, pilihanDua];
                               let data = { ...profile, program_studi };

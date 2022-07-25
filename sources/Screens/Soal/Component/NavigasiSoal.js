@@ -92,7 +92,7 @@ const NavigasiSoal = (props) => {
                     onPress={() => {
                       Alert.alert(
                         "Informasi",
-                        "Kamu harus menunggu waktu sesi ini berakhir untuk melanjutkan ke soal berikutnya.\nKamu bisa mereview kembali jawaban kamu."
+                        "Tunggu sesi ini berakhir untuk melanjutkan sesi berikutnya.\n\nYuk review kembali jawaban kamu!"
                       );
                     }}
                   >
@@ -110,7 +110,7 @@ const NavigasiSoal = (props) => {
                     onPress={() => {
                       Alert.alert(
                         "Informasi",
-                        "Kamu harus menunggu waktu sesi ini berakhir.\nKamu bisa mereview kembali jawaban kamu."
+                        "Kamu harus menunggu waktu sesi ini berakhir.\n\nYuk review kembali jawaban kamu!"
                       );
                     }}
                   >

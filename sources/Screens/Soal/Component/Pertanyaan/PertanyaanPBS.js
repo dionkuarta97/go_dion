@@ -23,7 +23,6 @@ const PertanyaanPBS = (props) => {
           setSelectedAnswer(index);
           props.onSelect([index]);
         }}
-        key={`answer${index}`}
       >
         <HStack style={{ alignItems: "center", justifyContent: "center" }}>
           <Text style={{ marginRight: 10, marginTop: 10 }}>

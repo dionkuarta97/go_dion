@@ -17,6 +17,7 @@ import {
   SET_LIST_GRADES,
   SET_LIST_PROVINCE,
   SET_LIST_SEKOLAH,
+  SET_TAHUN_AJARAN,
   SET_UNIVERSITAS,
 } from "./dataTypes";
 
@@ -192,6 +193,33 @@ export const getJurusan = (payload) => {
       }
     } catch (err) {
       dispatch(setJurusan(defaultErrorState));
+    }
+  };
+};
+
+export const setTahunAjaran = (payload) => {
+  return {
+    type: SET_TAHUN_AJARAN,
+    payload,
+  };
+};
+
+export const getTahunAjaran = () => {
+  return async (dispatch, getState) => {
+    dispatch(setTahunAjaran(defaultInitState));
+    try {
+      const urlBase = getState().initReducer.baseUrl;
+      const response = await fetch(
+        urlBase + "/masterdata/v1/master/tahun-ajaran"
+      );
+      const json = await response.json();
+      if (json.status) {
+        dispatch(setTahunAjaran(defaultDoneState(json.data)));
+      } else {
+        dispatch(setTahunAjaran(defaultFailedState(json.message)));
+      }
+    } catch (err) {
+      dispatch(setTahunAjaran(defaultErrorState));
     }
   };
 };

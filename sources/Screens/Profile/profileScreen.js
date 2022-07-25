@@ -111,7 +111,7 @@ const ProfileScreen = (props) => {
                     fontSize: 14,
                   }}
                 >
-                  <MaterialIcons size={14} name="edit" /> Ubah Profile
+                  <MaterialIcons size={14} name="edit" /> Ubah Profil
                 </Text>
               </TouchableOpacity>
             </View>

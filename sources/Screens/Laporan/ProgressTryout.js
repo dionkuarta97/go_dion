@@ -9,7 +9,7 @@ const ProgressTryout = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar backEnabled={true} title="Progress Tryout" />
+      <DefaultAppBar backEnabled={true} title="Laporan Tryout" />
 
       <ProgressTryoutContent type={type} _id={_id} />
     </SafeAreaView>

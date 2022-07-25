@@ -7,6 +7,7 @@ import {
   Dimensions,
   BackHandler,
   Platform,
+  AppState,
 } from "react-native";
 import * as Font from "expo-font";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,6 +74,19 @@ export default InitialScreen = ({ navigation }) => {
     // dispatch(setLoginStatus(false));
     // dispatch(setProfile(null));
     // dispatch(setLoginData({loading: false, error: null, data: null}));
+    const appStateListener = AppState.addEventListener(
+      "change",
+      (nextAppState) => {
+        console.log("Next AppState is: ", nextAppState);
+        if (nextAppState === "active") {
+          console.log("oke");
+          dispatch(getMe());
+        }
+      }
+    );
+    return () => {
+      appStateListener?.remove();
+    };
   }, []);
 
   return (

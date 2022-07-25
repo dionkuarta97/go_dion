@@ -122,20 +122,20 @@ const ProfileEditScreen = (props) => {
 
   function passwordValidation(text) {
     if (text.length < 8)
-      return "Password Harus Lebih Dari 8 Karakter, Mengandung Huruf Besar, Huruf Kecil & Angka";
+      return "Password minimal 8 karakter, mengandung huruf besar, huruf kecil, dan angka";
     if (!text.match(new RegExp("[A-Z]")))
-      return "Password Harus Mengandung Huruf Besar, Huruf Kecil & Angka";
+      return "Password harus mengandung huruf besar, huruf kecil, dan angka";
     if (!text.match(new RegExp("[a-z]")))
-      return "Password Harus Mengandung Huruf Kecil & Angka";
+      return "Password harus mengandung huruf kecil dan angka";
     if (text.search(/[0-9]/) < 0) {
-      return "Password Harus Mengandung Angka";
+      return "Password harus mengandung angka";
     }
     return null;
   }
 
   function phoneNumberValidation(int) {
     if (isNaN(int)) {
-      return "Phone Number Must Numeric";
+      return "Nomor telepon harus angka";
     }
     return null;
   }
@@ -170,7 +170,7 @@ const ProfileEditScreen = (props) => {
   const emailValidate = (text) => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
     if (reg.test(text) === false) {
-      return "Format Email Anda Salah";
+      return "Format email kamu salah";
     } else {
       return null;
     }
@@ -267,29 +267,38 @@ const ProfileEditScreen = (props) => {
                   }
                   if (newPassword) {
                     if (passwordValidation(newPassword) !== null) {
-                      Alert.alert("WARNING", "Format Password Anda Salah");
+                      Alert.alert("Peringatan", "Format password kamu salah");
                     }
                     if (newPassword !== reNewPassword) {
-                      Alert.alert("WARNING", "Password Tidak Sama");
+                      Alert.alert("Peringatan", "Password tidak sama");
                     }
                   }
 
                   if (city.idkabkota === null) {
                     Alert.alert(
-                      "WARNING",
-                      "Alamat Kab/Kota Tidak Boleh Kosong"
+                      "Peringatan",
+                      "Alamat kabupaten/kota tidak boleh kosong"
                     );
                   } else if (schoolCity.idkabkota === null) {
-                    Alert.alert("WARNING", "Alamat Sekolah Tidak Boleh Kosong");
+                    Alert.alert(
+                      "Peringatan",
+                      "Alamat sekolah tidak boleh kosong"
+                    );
                   } else if (schoolName === "--PILIH SEKOLAH--") {
-                    Alert.alert("WARNING", "Nama Sekolah Tidak Boleh Kosong");
+                    Alert.alert(
+                      "Peringatan",
+                      "Nama sekolah tidak boleh kosong"
+                    );
                   } else if (phoneNumberValidation(phone) !== null) {
-                    Alert.alert(phoneNumberValidation(phone));
+                    Alert.alert("Peringatan", phoneNumberValidation(phone));
                   } else if (emailValidate(email) !== null) {
-                    Alert.alert(emailValidate(email));
+                    Alert.alert("Peringatan", emailValidate(email));
                   } else if (waliPhone) {
                     if (phoneNumberValidation(waliPhone) !== null) {
-                      Alert.alert(phoneNumberValidation(waliPhone));
+                      Alert.alert(
+                        "Peringatan",
+                        phoneNumberValidation(waliPhone)
+                      );
                     } else {
                       dispatch(getUpdateProfile(bodyParams));
                     }
@@ -343,7 +352,9 @@ const ProfileEditScreen = (props) => {
                             resizeMode="contain"
                         /> */}
             </View>
-            <Text style={{ ...Fonts.black17Bold }}>Detail Info</Text>
+            <Text style={{ ...Fonts.black17Bold }}>
+              Informasi Peserta Didik
+            </Text>
             <DefaultTextInput
               disable={false}
               placeholder="Email"
@@ -407,7 +418,7 @@ const ProfileEditScreen = (props) => {
                 marginTop: Sizes.fixPadding,
               }}
             >
-              Address Info
+              Informasi Alamat
             </Text>
             <OnTapTextInput
               placeholder="Province"
@@ -465,7 +476,7 @@ const ProfileEditScreen = (props) => {
                 marginTop: Sizes.fixPadding,
               }}
             >
-              School Info
+              Informasi Sekolah
             </Text>
             <OnTapTextInput
               placeholder="School Province"
@@ -547,7 +558,7 @@ const ProfileEditScreen = (props) => {
                 marginTop: Sizes.fixPadding,
               }}
             >
-              Wali Info
+              Informasi Wali
             </Text>
             <DefaultTextInput
               placeholder="Wali Name"
@@ -571,7 +582,7 @@ const ProfileEditScreen = (props) => {
             <View
               style={{
                 borderRadius: 15,
-                borderWidth: 1,
+                borderWidth: 0.5,
                 marginTop: 10,
                 backgroundColor: "white",
                 marginBottom: 70,
@@ -579,6 +590,8 @@ const ProfileEditScreen = (props) => {
                 paddingStart: 10,
                 paddingBottom: 20,
                 paddingTop: 10,
+                marginTop: 50,
+                elevation: 3,
               }}
             >
               <Text
@@ -590,7 +603,7 @@ const ProfileEditScreen = (props) => {
                 Ganti Password
               </Text>
               <PasswordTextInput
-                placeholder="Masukan Password Lama"
+                placeholder="Masukkan Password Lama"
                 onChangeText={(val) => setOldpassword(val)}
               />
               {checkPassword.valid !== true && (
@@ -626,7 +639,7 @@ const ProfileEditScreen = (props) => {
                   >
                     <PasswordTextInput
                       onChangeText={(val) => setNewPassword(val)}
-                      placeholder="Masukan Password Baru"
+                      placeholder="Masukkan Password Baru"
                     />
                   </View>
                   {passwordValidation(newPassword) != null && (
@@ -644,7 +657,7 @@ const ProfileEditScreen = (props) => {
                   >
                     <PasswordTextInput
                       onChangeText={(val) => setReNewPassword(val)}
-                      placeholder="Masukan Password Baru Sekali Lagi"
+                      placeholder="Ketik Ulang Password baru"
                     />
                   </View>
                   {newPassword !== reNewPassword && (

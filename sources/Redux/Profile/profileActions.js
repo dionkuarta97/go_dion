@@ -1,4 +1,5 @@
 import { urlMe, urlUpdateMe } from "../../Services/ApiUrl";
+import { setLoginData, setLoginStatus, setToken } from "../Auth/authActions";
 import {
   defaultDoneState,
   defaultErrorState,
@@ -27,6 +28,19 @@ export function getMe() {
         .then((response) => response.json())
         .then((json) => {
           if (json.status) {
+            console.log(JSON.stringify(json, null, 2));
+            if (json.data.profile.is_active === false) {
+              dispatch(setLoginStatus(false));
+              dispatch(setToken(null));
+              dispatch(setProfile(null));
+              dispatch(
+                setLoginData({
+                  data: null,
+                  loading: false,
+                  error: null,
+                })
+              );
+            }
             dispatch(setMe(defaultDoneState(json.data.user)));
             dispatch(setProfile(json.data.profile));
             dispatch(setStatistic(json.data.statistics));

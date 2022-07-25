@@ -45,6 +45,7 @@ const VersionMessage = (props) => {
         <Text
           style={{
             textAlign: "center",
+            marginHorizontal: 10,
           }}
         >
           {props.message}

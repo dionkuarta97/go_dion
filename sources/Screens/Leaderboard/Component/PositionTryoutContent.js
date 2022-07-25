@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPositionTryout } from "../../../Redux/Leaderboard/leaderboardAction";
 import LeaderboardCard from "./LeaderboardCard";
-import { Dimensions, ActivityIndicator, TouchableOpacity } from "react-native";
+import { Dimensions, ActivityIndicator } from "react-native";
 import Colors from "../../../Theme/Colors";
 import { useNavigation } from "@react-navigation/native";
 const PositionTryoutContent = (props) => {

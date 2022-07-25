@@ -38,6 +38,7 @@ import success from "../../../assets/Images/helper/success.png";
 import { getRedeemCode, setRedeemCode } from "../../Redux/Produk/produkActions";
 import defaultImage from "../../../assets/Images/user_profile/no-user.jpg";
 import { getMe } from "../../Redux/Profile/profileActions";
+import { capitalizeFirstLetter } from "../../Services/helper";
 
 const DEFAULT_IMAGE = Image.resolveAssetSource(defaultImage).uri;
 const useKeyboardBottomInset = () => {
@@ -112,12 +113,18 @@ const HomeScreen = (props) => {
     };
   }, [show]);
 
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getMe());
+    }, [])
+  );
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <SliverAppBar
         rightItem={
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {!isLogin && profile === null && (
+            {!isLogin && (
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => navigation.navigate("LoginScreen")}
@@ -209,7 +216,7 @@ const HomeScreen = (props) => {
                                 textAlign: "center",
                               }}
                             >
-                              {redeemCode.error}
+                              {capitalizeFirstLetter(redeemCode.error)}
                             </Text>
                           </Box>
                           <Button
@@ -257,7 +264,7 @@ const HomeScreen = (props) => {
                                 textAlign: "center",
                               }}
                             >
-                              {redeemCode.data}
+                              {capitalizeFirstLetter(redeemCode.data)}
                             </Text>
                           </Box>
                         </>
@@ -349,7 +356,9 @@ const HomeScreen = (props) => {
             <View style={{ flex: 1 }}>
               <Text>Halo,</Text>
               <Text style={Fonts.black25Bold}>
-                {isLogin && profile !== null ? profile.full_name : "Guest"}
+                {isLogin && profile !== null
+                  ? capitalizeFirstLetter(profile.full_name)
+                  : "Guest"}
               </Text>
             </View>
             {isLogin && (

@@ -15,6 +15,7 @@ import { Image } from "react-native";
 import ImageView from "react-native-image-viewing";
 import defaultImage from "../../../../assets/Images/user_profile/no-user.jpg";
 import Colors from "../../../Theme/Colors";
+import { capitalizeFirstLetter } from "../../../Services/helper";
 const DEFAULT_IMAGE = Image.resolveAssetSource(defaultImage).uri;
 const LeaderboardCard = (props) => {
   const [visible, setIsVisible] = useState(false);
@@ -67,7 +68,9 @@ const LeaderboardCard = (props) => {
                 onRequestClose={() => setIsVisible(false)}
               />
               <Box paddingX={5}>
-                <Text textAlign={"center"}>{data.name}</Text>
+                <Text textAlign={"center"}>
+                  {capitalizeFirstLetter(data.name)}
+                </Text>
               </Box>
             </Center>
             <View
@@ -142,7 +145,7 @@ const LeaderboardCard = (props) => {
               marginRight={"auto"}
               maxWidth={Dimensions.get("screen").width / 2.8}
             >
-              <Text>{singkatNama(data.name)}</Text>
+              <Text>{singkatNama(capitalizeFirstLetter(data.name))}</Text>
             </Box>
 
             <Text bold>

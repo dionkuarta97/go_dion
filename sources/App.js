@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./Redux/store";
@@ -56,6 +56,7 @@ import LeaderTryoutScreen from "./Screens/Leaderboard/LeaderTryoutScreen";
 import GantiFotoScreen from "./Screens/Profile/GantiFotoScreen";
 import TryoutLeaderScreen from "./Screens/Leaderboard/TryoutLeaderScreen";
 import PositionTryoutScreen from "./Screens/Leaderboard/PositionTryoutScreen";
+import SolusiScreen from "./Screens/Laporan/SolusiScreen";
 
 const Stack = createStackNavigator();
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 20 : StatusBar.currentHeight;
@@ -260,6 +261,7 @@ export default App = () => {
                 name="PositionTryoutScreen"
                 component={PositionTryoutScreen}
               />
+              <Stack.Screen name="SolusiScreen" component={SolusiScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </PersistGate>

@@ -105,13 +105,13 @@ const RegisterContent = ({ sendedEmail }) => {
 
   function passwordValidation(text) {
     if (text.length < 8)
-      return "Password Minimal harus 8 karakter, Mengandung Huruf Besar, Huruf Kecil & Angka";
+      return "Password minimal 8 karakter, mengandung huruf besar, huruf kecil, dan angka";
     if (!text.match(new RegExp("[A-Z]")))
-      return "Password Harus Mengandung Huruf Besar, Huruf Kecil & Angka";
+      return "Password harus mengandung huruf besar, huruf kecil, dan angka";
     if (!text.match(new RegExp("[a-z]")))
-      return "Password Harus Mengandung Huruf Kecil & Angka";
+      return "Password harus mengandung huruf kecil dan angka";
     if (text.search(/[0-9]/) < 0) {
-      return "Password Harus Mengandung Angka";
+      return "Password harus mengandung angka";
     }
     return null;
   }
@@ -335,6 +335,7 @@ const RegisterContent = ({ sendedEmail }) => {
 
           <DefaultTextInput
             placeholder="Nama Wali"
+            autoCapitalize="words"
             onChangeText={setWaliName}
           />
 
@@ -406,8 +407,10 @@ const RegisterContent = ({ sendedEmail }) => {
         {register.data !== null && (
           <DefaultModal>
             <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>
-              Berhasil Regitrasi, Cek email kamu untuk memverifikasi pembuatan
-              akun.
+              Berhasil Regitrasi.
+            </Text>
+            <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>
+              Cek email kamu untuk verikasi ya :)
             </Text>
             <DefaultPrimaryButton
               text="Kembali ke Halaman Login"

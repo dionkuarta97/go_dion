@@ -14,9 +14,10 @@ const TryoutScoreContent = (props) => {
           paddingVertical: Sizes.fixPadding,
         }}
       >
-        <Text style={{ color: "grey", flex: 1 }}>True Answer</Text>
+        <Text style={{ color: "grey", flex: 1 }}>Jawaban Benar</Text>
         <Text style={{ fontWeight: "bold" }}>{detail.true_answer}</Text>
       </View>
+
       <View
         style={{
           flexDirection: "row",
@@ -25,18 +26,7 @@ const TryoutScoreContent = (props) => {
           paddingVertical: Sizes.fixPadding,
         }}
       >
-        <Text style={{ color: "grey", flex: 1 }}>Half Answer</Text>
-        <Text style={{ fontWeight: "bold" }}>{detail.true_half_answer}</Text>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          borderBottomWidth: 1,
-          borderBottomColor: "lightgrey",
-          paddingVertical: Sizes.fixPadding,
-        }}
-      >
-        <Text style={{ color: "grey", flex: 1 }}>False Answer</Text>
+        <Text style={{ color: "grey", flex: 1 }}>Jawaban Salah</Text>
         <Text style={{ fontWeight: "bold" }}>{detail.false_answer}</Text>
       </View>
       <View
@@ -47,7 +37,7 @@ const TryoutScoreContent = (props) => {
           paddingVertical: Sizes.fixPadding,
         }}
       >
-        <Text style={{ color: "grey", flex: 1 }}>No Answer</Text>
+        <Text style={{ color: "grey", flex: 1 }}>Tidak Dijawab</Text>
         <Text style={{ fontWeight: "bold" }}>{detail.no_answer}</Text>
       </View>
     </View>

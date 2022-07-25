@@ -58,10 +58,7 @@ const KelasBottomSheet = (props) => {
     });
   }, []);
   return (
-    <DefaultBottomSheet
-      title="Select Class Level"
-      onClose={() => props.onClose()}
-    >
+    <DefaultBottomSheet title="Tingkatan Kelas" onClose={() => props.onClose()}>
       {listGrades.loading && (
         <ActivityIndicator color={Colors.orangeColor} size={25} />
       )}

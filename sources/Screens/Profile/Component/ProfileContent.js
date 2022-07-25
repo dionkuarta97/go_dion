@@ -12,6 +12,7 @@ import { Button } from "native-base";
 import ImageView from "react-native-image-viewing";
 
 import defaultImage from "../../../../assets/Images/user_profile/no-user.jpg";
+import { capitalizeFirstLetter } from "../../../Services/helper";
 
 const DEFAULT_IMAGE = Image.resolveAssetSource(defaultImage).uri;
 
@@ -122,7 +123,7 @@ const ProfileContent = (props) => {
       </Button>
 
       <Text style={{ ...Fonts.black19Bold, marginTop: 30 }}>
-        {profile.full_name}
+        {capitalizeFirstLetter(profile.full_name)}
       </Text>
 
       <View
@@ -134,7 +135,10 @@ const ProfileContent = (props) => {
         <DefaultPrimaryButton
           onPress={() => {
             if (profile.kelas !== "12 IPA" && profile.kelas !== "12 IPS") {
-              Alert.alert("Warning", "Anda Belum Kelas 12 SMA");
+              Alert.alert(
+                "Peringatan",
+                "Maaf kamu belum bisa pilih prodi. Tunggu kelas 12 ya, semangat!"
+              );
             } else {
               if (profile.program_studi) {
                 navigation.navigate("LihatProdiScreen", {
@@ -148,7 +152,7 @@ const ProfileContent = (props) => {
               }
             }
           }}
-          text={profile.program_studi ? "LIHAT PRODI" : "PILIH PRODI"}
+          text={profile.program_studi ? "Lihat Prodi" : "Pilih Prodi"}
         />
       </View>
 

@@ -59,24 +59,45 @@ const ProductDetailScreen = (props) => {
         >
           {item.title}
         </Text>
-        <NumberFormat
-          value={item.price_discount > 0 ? item.price_discount : item.price}
-          displayType={"text"}
-          thousandSeparator="."
-          decimalSeparator=","
-          prefix={"IDR "}
-          renderText={(value, props) => (
-            <Text
-              style={{
-                fontWeight: "bold",
-                color: "white",
-                fontSize: 18,
-              }}
-            >
-              {value}
-            </Text>
-          )}
-        />
+        {Platform.OS === "android" ? (
+          <NumberFormat
+            value={item.price_discount > 0 ? item.price_discount : item.price}
+            displayType={"text"}
+            thousandSeparator="."
+            decimalSeparator=","
+            prefix={"IDR "}
+            renderText={(value, props) => (
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  color: "white",
+                  fontSize: 18,
+                }}
+              >
+                {value}
+              </Text>
+            )}
+          />
+        ) : (
+          <NumberFormat
+            value={item.price_ios}
+            displayType={"text"}
+            thousandSeparator="."
+            decimalSeparator=","
+            prefix={"IDR "}
+            renderText={(value, props) => (
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  color: "white",
+                  fontSize: 18,
+                }}
+              >
+                {value}
+              </Text>
+            )}
+          />
+        )}
         {item.price_discount > 0 && (
           <NumberFormat
             value={item.price}
@@ -191,7 +212,7 @@ const ProductDetailScreen = (props) => {
                     marginLeft: Sizes.fixPadding - 5.0,
                   }}
                 >
-                  Sudah ditambahkan
+                  Sudah Ditambahkan
                 </Text>
               </View>
             )

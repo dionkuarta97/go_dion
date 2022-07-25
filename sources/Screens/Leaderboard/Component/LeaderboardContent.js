@@ -14,12 +14,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getLeaderboard } from "../../../Redux/Leaderboard/leaderboardAction";
 import LeaderboardCard from "./LeaderboardCard";
-import { Dimensions, ActivityIndicator, TouchableOpacity } from "react-native";
+import { Dimensions, ActivityIndicator } from "react-native";
 import Colors from "../../../Theme/Colors";
 import { useNavigation } from "@react-navigation/native";
 import defaultImage from "../../../../assets/Images/user_profile/no-user.jpg";
-import FilterTahun from "./FilterTahun";
 import NoData from "../../../Components/NoData";
+import { capitalizeFirstLetter } from "../../../Services/helper";
+import TahunAjaran from "./TahunAjaran";
 const DEFAULT_IMAGE = Image.resolveAssetSource(defaultImage).uri;
 const LeaderboardContent = () => {
   const dispatch = useDispatch();
@@ -38,73 +39,13 @@ const LeaderboardContent = () => {
   const [page, setPage] = useState(1);
   const [tahunAwal, setTahunAwal] = useState(0);
   const [tahunAkhir, setTahunAkhir] = useState(0);
+  const { listTahunAjaran } = useSelector((state) => state.dataReducer);
+  const [tahunAjaran, setTahunAjaran] = useState(listTahunAjaran.data[0].id);
   const toast = useToast();
 
   useEffect(() => {
     setPage(1);
-    let now = new Date();
-    let tahun = now.getFullYear();
 
-    if (tahunAwal === 0 && tahunAkhir === 0) {
-      if (now.getMonth() >= 0 && now.getMonth() < 6) {
-        setTahunAwal(Number(tahun - 1));
-        setTahunAkhir(Number(tahun));
-        dispatch(
-          getLeaderboard({
-            type:
-              select === "Nasional"
-                ? "national"
-                : select === "Kota"
-                ? "region"
-                : "school",
-            page: 1,
-            limit: 20,
-            tahun: Number(tahun - 1) + "/" + Number(tahun),
-          })
-        );
-      } else {
-        setTahunAwal(Number(tahun));
-        setTahunAkhir(Number(tahun + 1));
-        dispatch(
-          getLeaderboard({
-            type:
-              select === "Nasional"
-                ? "national"
-                : select === "Kota"
-                ? "region"
-                : "school",
-            page: 1,
-            limit: 20,
-            tahun: Number(tahun) + "/" + Number(tahun + 1),
-          })
-        );
-      }
-    } else {
-      dispatch(
-        getLeaderboard({
-          type:
-            select === "Nasional"
-              ? "national"
-              : select === "Kota"
-              ? "region"
-              : "school",
-          page: 1,
-          limit: 20,
-          tahun: tahunAwal + "/" + tahunAkhir,
-        })
-      );
-    }
-  }, [select]);
-
-  const onChangeTahunAwal = (str) => {
-    setTahunAwal(str);
-  };
-  const onChangeTahunAkhir = (str) => {
-    setTahunAkhir(str);
-  };
-
-  const cari = () => {
-    setPage(1);
     dispatch(
       getLeaderboard({
         type:
@@ -115,7 +56,24 @@ const LeaderboardContent = () => {
             : "school",
         page: 1,
         limit: 20,
-        tahun: tahunAwal + "/" + tahunAkhir,
+        tahun: tahunAjaran,
+      })
+    );
+  }, [select]);
+
+  const onChange = (val) => {
+    setTahunAjaran(val);
+    dispatch(
+      getLeaderboard({
+        type:
+          select === "Nasional"
+            ? "national"
+            : select === "Kota"
+            ? "region"
+            : "school",
+        page: 1,
+        limit: 20,
+        tahun: val,
       })
     );
   };
@@ -210,12 +168,9 @@ const LeaderboardContent = () => {
             </Text>
           </HStack>
 
-          <FilterTahun
-            cari={cari}
-            tahunAwal={tahunAwal}
-            tahunAkhir={tahunAkhir}
-            onChangeTahunAwal={onChangeTahunAwal}
-            onChangeTahunAkhir={onChangeTahunAkhir}
+          <TahunAjaran
+            onChange={onChange}
+            tahun={listTahunAjaran.data !== null ? listTahunAjaran.data : []}
           />
         </Animated.View>
         {leaderboard.loading ? (
@@ -311,7 +266,9 @@ const LeaderboardContent = () => {
             >
               <VStack space={2}>
                 <Text color={"white"} bold>
-                  {singkatNama(leaderboard.data?.user.full_name)}
+                  {singkatNama(
+                    capitalizeFirstLetter(leaderboard.data?.user.full_name)
+                  )}
                 </Text>
                 {leaderboard.data?.my_position > 0 && (
                   <Button
@@ -329,7 +286,7 @@ const LeaderboardContent = () => {
                       } else {
                         navigation.navigate("MyPosition", {
                           select,
-                          tahun: tahunAwal + "/" + tahunAkhir,
+                          tahun: tahunAjaran,
                         });
                       }
                     }}

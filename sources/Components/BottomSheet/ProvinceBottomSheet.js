@@ -60,10 +60,10 @@ const ProvinceBottomSheet = (props) => {
     });
   }, []);
   return (
-    <DefaultBottomSheet title="Province" onClose={() => props.onClose()}>
+    <DefaultBottomSheet title="Provinsi" onClose={() => props.onClose()}>
       <View style={styles.search}>
         <TextInput
-          placeholder="Search"
+          placeholder="Cari"
           style={{
             flex: 1,
             paddingVertical: Sizes.fixPadding,

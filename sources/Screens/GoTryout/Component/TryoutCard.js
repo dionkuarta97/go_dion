@@ -33,22 +33,23 @@ const TryoutCard = (props) => {
               if (data) {
                 if (!detail.touched) {
                   if (detail.type === "UAS") {
-                    let title = "Peringatan !";
+                    let title = "Peringatan";
                     let msg = "";
                     if (detail.blocking_time) {
                       msg =
-                        "Anda akan mengerjakan tryout dengan sistem blocking.  Untuk pindah ke mata uji berikutnya, silahkan menunggu waktu mata uji sebelumnya habis.\n\nAnda harus mengerjakan try out hingga mata uji terakhir. Mulai mengerjakan? ";
+                        "Kamu akan mengerjakan tryout dengan sistem blocking. Silakan menunggu mata uji sebelumnya habis untuk masuk ke mata uji berikutnya\n\n" +
+                        "Kamu wajib mengerjakan tryout hingga mata uji terakhir. Mulai mengerjakan? ";
                     } else {
                       msg =
-                        "Anda akan mengerjakan tryout dengan sistem non blocking time. Mulai mengerjakan?";
+                        "Kamu akan mengerjakan tryout dengan sistem non blocking time. Mulai mengerjakan?";
                     }
                     Alert.alert(title, msg, [
                       {
-                        text: "cancel",
+                        text: "TIDAK",
                         onPress: () => {},
                       },
                       {
-                        text: "yakin",
+                        text: "YA",
                         onPress: () => {
                           dispatch(
                             setSoalUrl(
@@ -68,11 +69,11 @@ const TryoutCard = (props) => {
                     if (!profile.program_studi) {
                       Alert.alert(
                         "Peringatan",
-                        "Tipe soal ini adalah SBMPTN, untuk mengerjakan soal ini anda perlu memilih prodi, silahkan pilih prodi terlebih dahulu",
+                        "Tipe soal ini adalah SBMPTN, untuk mengerjakan soal ini kamu perlu memilih prodi, silakan pilih prodi terlebih dahulu",
                         [
-                          { text: "Cancel", onPress: () => {} },
+                          { text: "TIDAK", onPress: () => {} },
                           {
-                            text: "Pilih Prodi",
+                            text: "PILIH",
                             onPress: () => {
                               navigation.navigate("ProfileScreen", {
                                 from: "tryout",
@@ -86,18 +87,19 @@ const TryoutCard = (props) => {
                       let msg = "";
                       if (detail.blocking_time) {
                         msg =
-                          "Anda akan mengerjakan try out dengan sistem blocking time dan harus menunggu waktu tiap mata uji habis, untuk pindah ke mata uji berikutnya.\n\nAnda harus mengerjakan try out hingga mata uji terakhir. Mulai mengerjakan? ";
+                          "Kamu akan mengerjakan tryout dengan sistem blocking. Silakan menunggu mata uji sebelumnya habis untuk masuk ke mata uji berikutnya\n\n" +
+                          "Kamu wajib mengerjakan tryout hingga mata uji terakhir. Mulai mengerjakan? ";
                       } else {
                         msg =
-                          "Anda akan mengerjakan try out dengan sistem non blocking time. Mulai mengerjakan?";
+                          "Kamu akan mengerjakan try out dengan sistem non blocking time. Mulai mengerjakan?";
                       }
                       Alert.alert(title, msg, [
                         {
-                          text: "cancel",
+                          text: "TIDAK",
                           onPress: () => {},
                         },
                         {
-                          text: "yakin",
+                          text: "YA",
                           onPress: () => {
                             dispatch(
                               setSoalUrl(
@@ -118,7 +120,7 @@ const TryoutCard = (props) => {
                   if (detail.score === "processing") {
                     Alert.alert(
                       "Proses",
-                      "mohon bersabar ya.. score anda masih di nilai :)"
+                      "Mohon bersabar ya.. tryout kamu masih dinilai :)"
                     );
                   } else {
                     navigation.navigate("TryoutScoreScreen", {
