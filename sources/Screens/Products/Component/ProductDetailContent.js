@@ -134,21 +134,22 @@ const ProductDetailContent = (props) => {
                 .then(async (json) => {
                   setSukses(validate);
                   setLoading(false);
-                  console.log("dsanjlkdakjsdjask");
                   await RNIap.finishTransaction(res, true);
+                  console.log(json, "<<<<<Json");
                 })
                 .then(() => {
                   navigation.popToTop();
                   navigation.navigate("MainScreen");
                 })
                 .catch(async (err) => {
+                  console.log(err, "<<<<Error");
                   if (err.message) {
                     setError(err.message);
                   } else {
                     setError("Mohon maaf telah terjadi kesalahan pada server");
                   }
                   setLoading(false);
-                  console.log(err);
+
                   await RNIap.finishTransaction(res, true);
                 });
             }

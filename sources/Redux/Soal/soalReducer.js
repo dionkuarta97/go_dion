@@ -1,5 +1,7 @@
 import {
   SET_FINAL_ANSWER,
+  SET_JAWABAN,
+  SET_JAWABAN_NONBLOCKING,
   SET_NUMBER,
   SET_SAVE_ANSWER,
   SET_SAVE_SCORE,
@@ -21,6 +23,8 @@ const initialState = {
     error: null,
     data: null,
   },
+  jawaban: null,
+  jawabanNon: null,
   saveScore: {
     rawData: [],
     answers: [],
@@ -63,6 +67,16 @@ export function soalReducer(state = initialState, action) {
       return {
         ...state,
         saveScore: action.payload,
+      };
+    case SET_JAWABAN:
+      return {
+        ...state,
+        jawaban: action.payload,
+      };
+    case SET_JAWABAN_NONBLOCKING:
+      return {
+        ...state,
+        jawabanNon: action.payload,
       };
     default:
       return state;

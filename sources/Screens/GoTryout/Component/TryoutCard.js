@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import {
   View,
@@ -11,11 +11,17 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import { useDispatch, useSelector } from "react-redux";
-import { setSoalUrl } from "../../../Redux/Soal/soalActions";
+import {
+  saveAnswer,
+  setJawaban,
+  setSaveAnswer,
+  setSoalUrl,
+  setSoal,
+} from "../../../Redux/Soal/soalActions";
 import { urlQuests } from "../../../Services/ApiUrl";
 import { MaterialIcons } from "@expo/vector-icons";
 import checkInternet from "../../../Services/CheckInternet";
-import { useToast } from "native-base";
+import { Center, HStack, useToast } from "native-base";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 
 const TryoutCard = (props) => {
@@ -24,6 +30,24 @@ const TryoutCard = (props) => {
   const navigation = useNavigation();
   const { detail, tryoutId } = props;
   const profile = useSelector((state) => state.profileReducer.profile);
+  const { jawaban } = useSelector((state) => state.soalReducer);
+  const [idx, setIdx] = useState(null);
+  console.log(jawaban);
+  console.log(detail);
+  const cekOpen = (arr) => {
+    console.log(arr);
+    for (const key in arr) {
+      console.log(jawaban[key].related_to.bab_id);
+      if (
+        detail._id === jawaban[key].related_to.bab_id &&
+        jawaban[key].user_id === profile._id
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <>
       {detail.quiz ? (
@@ -51,6 +75,17 @@ const TryoutCard = (props) => {
                       {
                         text: "YA",
                         onPress: () => {
+                          dispatch(setJawaban(null));
+                          dispatch(
+                            setSaveAnswer({
+                              data: null,
+                              error: null,
+                              loading: false,
+                            })
+                          );
+                          dispatch(
+                            setSoal({ data: null, error: null, loading: false })
+                          );
                           dispatch(
                             setSoalUrl(
                               urlQuests +
@@ -101,6 +136,14 @@ const TryoutCard = (props) => {
                         {
                           text: "YA",
                           onPress: () => {
+                            dispatch(
+                              setSaveAnswer({
+                                data: null,
+                                error: null,
+                                loading: false,
+                              })
+                            );
+
                             dispatch(
                               setSoalUrl(
                                 urlQuests +
@@ -165,6 +208,7 @@ const TryoutCard = (props) => {
               TPS ({detail.total_question} Soal - {detail.total_time / 60}{" "}
               menit)
             </Text>
+
             <Text style={{ marginTop: 10 }}>{detail.desc}</Text>
             {detail.touched && (
               <View
@@ -183,6 +227,16 @@ const TryoutCard = (props) => {
                 <MaterialIcons name="check" size={12} color="white" />
               </View>
             )}
+            <Center mt={2}>
+              {cekOpen(jawaban) && !detail.touched && (
+                <>
+                  <Text style={{ color: "red" }}>
+                    Kamu telah membuka soal ini
+                  </Text>
+                  <HStack></HStack>
+                </>
+              )}
+            </Center>
           </View>
         </TouchableOpacity>
       ) : (

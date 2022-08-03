@@ -53,7 +53,6 @@ const PertanyaanPBK = (props) => {
           setSelectedAnswer(index);
           props.onSelect([index]);
         }}
-        key={`answer${index}`}
       >
         <View
           style={{

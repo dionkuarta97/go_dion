@@ -164,7 +164,7 @@ export default function ProgressTryoutContent(props) {
               >
                 <Text>
                   <Text bold color={"amber.400"}>
-                    {detailTryout.data.score}
+                    {detailTryout.data.score.toFixed(2)}
                   </Text>
                   <Text color={"light.400"}>/100</Text>
                 </Text>
@@ -188,6 +188,8 @@ export default function ProgressTryoutContent(props) {
                     solution: el.solution,
                     quiz: el.quiz,
                     answer: el.answer,
+                    quiz_options: el.quiz_options,
+                    title: el.title.toUpperCase(),
                   });
                 }}
               >
@@ -213,7 +215,7 @@ export default function ProgressTryoutContent(props) {
                       <HStack mt={1}>
                         <Text
                           style={{
-                            marginEnd: Dimensions.get("screen").width / 1.9,
+                            marginEnd: Dimensions.get("screen").width / 2.1,
                           }}
                         >
                           <AntDesign

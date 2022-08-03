@@ -5,3 +5,5 @@ export const SET_NUMBER = "set number";
 export const SET_SAVE_ANSWER = "set save answer";
 export const SET_FINAL_ANSWER = "set final answer";
 export const SET_SAVE_SCORE = "set save score";
+export const SET_JAWABAN = "set jawaban";
+export const SET_JAWABAN_NONBLOCKING = "set jawaban non blocking";

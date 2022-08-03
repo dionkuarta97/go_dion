@@ -264,6 +264,20 @@ export default App = () => {
               <Stack.Screen name="SolusiScreen" component={SolusiScreen} />
             </Stack.Navigator>
           </NavigationContainer>
+          {Platform.OS === "ios" && (
+            <View
+              style={{
+                height: Dimensions.get("window").height > 700 ? 48 : 20,
+                backgroundColor: "#FFFFF",
+              }}
+            >
+              <StatusBar
+                translucent
+                backgroundColor="#FFFFF"
+                barStyle="dark-content"
+              />
+            </View>
+          )}
         </PersistGate>
       </Provider>
     </NativeBaseProvider>
