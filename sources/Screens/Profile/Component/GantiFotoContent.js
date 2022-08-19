@@ -1,9 +1,9 @@
-import { Button, Center, VStack, Text, View } from "native-base";
+import { Button, Center, VStack, Text, View, useToast } from "native-base";
 import React, { useCallback, useEffect, useState } from "react";
 import ImagePicker from "react-native-image-crop-picker";
 import { useDispatch } from "react-redux";
 import { uploadFoto } from "../../../Redux/Auth/authActions";
-import { Platform, Image, TouchableOpacity } from "react-native";
+import { Platform, Image, TouchableOpacity, Dimensions } from "react-native";
 
 import ImageView from "react-native-image-viewing";
 import defaultImage from "../../../../assets/Images/user_profile/no-user.jpg";
@@ -12,6 +12,7 @@ const DEFAULT_IMAGE = Image.resolveAssetSource(defaultImage).uri;
 
 const GantiFotoContent = (props) => {
   const bawaan = props.poto;
+  const toast = useToast();
   const [visible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
@@ -40,6 +41,23 @@ const GantiFotoContent = (props) => {
   useEffect(() => {
     if (!loading && success) {
       navigation.navigate("ProfileScreen");
+      toast.show({
+        title: "Berhasil",
+        status: "success",
+        description: "Avatar berhasil diganti",
+        placement: "top",
+        width: Dimensions.get("screen").width / 1.3,
+      });
+    }
+    if (!loading && error) {
+      navigation.navigate("ProfileScreen");
+      toast.show({
+        title: "Gagal",
+        status: "error",
+        description: "Terjadi keselahan dari server",
+        placement: "top",
+        width: Dimensions.get("screen").width / 1.3,
+      });
     }
   }, [loading]);
 
@@ -104,12 +122,12 @@ const GantiFotoContent = (props) => {
                     .then((data) => {
                       setSuccess(data);
                       console.log(JSON.stringify(data, null, 2));
-                      setLoading(false);
                     })
                     .catch((err) => {
                       console.log(err);
                       setError(err.message);
-                    });
+                    })
+                    .finally(() => setLoading(false));
                 }}
               >
                 Simpan Foto

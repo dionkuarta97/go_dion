@@ -4,16 +4,14 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   Dimensions,
   Platform,
   Alert,
 } from "react-native";
-import Divider from "../../../Components/Divider";
 
+import firestore from "@react-native-firebase/firestore";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
-import Colors from "../../../Theme/Colors";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
@@ -21,23 +19,25 @@ import { addToCart } from "../../../Redux/Cart/cartActions";
 import RNIap, {
   purchaseErrorListener,
   purchaseUpdatedListener,
-  type ProductPurchase,
-  type PurchaseError,
 } from "react-native-iap";
 import { getPaymentApple } from "../../../Redux/Payment/paymentActions";
 import DefaultModal from "../../../Components/Modal/DefaultModal";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
 import { capitalizeFirstLetter } from "../../../Services/helper";
+import { setTransIos } from "../../../Redux/Init/initActions";
 
 const { width } = Dimensions.get("screen");
 
 const ProductDetailContent = (props) => {
   const isLogin = useSelector((state) => state.authReducer.isLogin);
+  const { newTransIos } = useSelector((state) => state.initReducer);
   const [sukses, setSukses] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const profile = useSelector((state) => state.profileReducer.profile);
 
   const item = props.item;
   const onCart = props.onCart;
@@ -53,44 +53,104 @@ const ProductDetailContent = (props) => {
         try {
           const products = await RNIap.getProducts(itemSkus);
           if (products) {
+            if (isLogin) {
+              let trans = newTransIos.filter((value) =>
+                value.user_id.includes(profile._id)
+              );
+              if (trans.length > 0) {
+                dispatch(getPaymentApple(item))
+                  .then(async (json) => {
+                    if (json.status) {
+                      let newTrans = newTransIos.filter(
+                        (value) => value.user_id !== profile._id
+                      );
+                      dispatch(setTransIos(newTrans));
+                      setSukses(true);
+                    } else {
+                      setError(
+                        "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
+                      );
+                    }
+                    console.log(json, "<<<<<Json");
+                  })
+                  .catch(async (err) => {
+                    setError(
+                      "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
+                    );
+                  })
+                  .finally(() => {
+                    setLoading(false);
+                  });
+              } else {
+                setLoading(false);
+              }
+            } else {
+              setLoading(false);
+            }
+          } else {
+            setError("Mohon maaf, produk ini belum terdaftar");
             setLoading(false);
           }
-          console.log(JSON.stringify(products, null, 2));
         } catch (err) {
           console.warn(err);
+          setError("Terjadi kesalahan coba beberapa saat lagi");
+          setLoading(false);
         }
 
         RNIap.initConnection().then(() => {
-          // we make sure that "ghost" pending payment are removed
-          // (ghost = failed pending payment that are still marked as pending in Google's native Vending module cache)
-          RNIap.flushFailedPurchasesCachedAsPendingAndroid()
-            .catch(() => {
-              // exception can happen here if:
-              // - there are pending purchases that are still pending (we can't consume a pending purchase)
-              // in any case, you might not want to do anything special with the error
-            })
-            .then(() => {
-              purchaseUpdateSubscription = purchaseUpdatedListener(
-                (purchase) => {
-                  console.log("purchaseUpdatedListener", purchase);
-                  const receipt = purchase.transactionReceipt;
-                  if (receipt) {
-                    dispatch(getPaymentApple(item))
-                      .then(async (json) => {
-                        setLoading(false);
-                        await RNIap.finishTransaction(purchase, true);
-                      })
-                      .catch((err) => {
-                        setLoading(false);
-                        console.log(err);
-                      });
-                  }
+          purchaseUpdateSubscription = purchaseUpdatedListener(
+            async (purchase) => {
+              const receipt = purchase.transactionReceipt;
+              if (receipt) {
+                console.log("sukkseessss");
+                if (isLogin) {
+                  dispatch(getPaymentApple(item))
+                    .then(async (json) => {
+                      if (json.status) {
+                        let newTrans = newTransIos.filter(
+                          (value) => value.user_id !== profile._id
+                        );
+                        dispatch(setTransIos(newTrans));
+                        setSukses(true);
+                      } else {
+                        dispatch(
+                          setTransIos([
+                            ...newTransIos,
+                            { item: item, user_id: profile._id },
+                          ])
+                        );
+                        setError(
+                          "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
+                        );
+                      }
+
+                      console.log(json, "<<<<<Json");
+                    })
+                    .catch(async (err) => {
+                      dispatch(
+                        setTransIos([
+                          ...newTransIos,
+                          { item: item, user_id: profile._id },
+                        ])
+                      );
+
+                      setError(
+                        "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
+                      );
+                    })
+                    .finally(async () => {
+                      await RNIap.finishTransaction(purchase, true);
+                      setLoading(false);
+                    });
                 }
-              );
-              purchaseErrorSubscription = purchaseErrorListener((error) => {
-                console.warn("purchaseErrorListener", error);
-              });
-            });
+              }
+            }
+          );
+          purchaseErrorSubscription = purchaseErrorListener((error) => {
+            setLoading(false);
+            setError("Transaksi di Batalkan");
+            console.warn("purchaseErrorListener", error);
+          });
         });
       }
     }
@@ -106,58 +166,10 @@ const ProductDetailContent = (props) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (Platform.OS === "ios") {
-  //     if (sukses) {
-  //
-  //     }
-  //   }
-  // }, [sukses]);
-
   const requestPurchase = async () => {
     try {
       setLoading(true);
-      await RNIap.requestPurchase("com.goonline.app." + item._id, false)
-        .then(async (res) => {
-          console.log("baru beli");
-          const recipt = res.transactionReceipt;
-          console.log(res);
-          if (recipt) {
-            const receiptBody = {
-              "receipt-data": recipt,
-              password: "f72a4af2242a467395a3bb582c099e69",
-            };
-            console.log(recipt);
-            const validate = await RNIap.validateReceiptIos(receiptBody, true);
-            if (validate) {
-              dispatch(getPaymentApple(item))
-                .then(async (json) => {
-                  setSukses(validate);
-                  setLoading(false);
-                  await RNIap.finishTransaction(res, true);
-                  console.log(json, "<<<<<Json");
-                })
-                .then(() => {
-                  navigation.popToTop();
-                  navigation.navigate("MainScreen");
-                })
-                .catch(async (err) => {
-                  console.log(err, "<<<<Error");
-                  if (err.message) {
-                    setError(err.message);
-                  } else {
-                    setError("Mohon maaf telah terjadi kesalahan pada server");
-                  }
-                  setLoading(false);
-
-                  await RNIap.finishTransaction(res, true);
-                });
-            }
-          }
-        })
-        .catch(() => {
-          setLoading(false);
-        });
+      await RNIap.requestPurchase("com.goonline.app." + item._id, false);
     } catch (err) {
       setLoading(false);
       console.warn(err);
@@ -196,12 +208,28 @@ const ProductDetailContent = (props) => {
         backgroundColor: "white",
       }}
     >
-      {error && (
+      {!loading && error && (
         <DefaultModal>
           <Text>{error}</Text>
           <DefaultPrimaryButton
             text="Kembali ke Home"
             onPress={() => {
+              setError(null);
+              setLoading(false);
+              navigation.popToTop();
+              navigation.navigate("MainScreen");
+            }}
+          />
+        </DefaultModal>
+      )}
+      {!loading && sukses && (
+        <DefaultModal>
+          <Text>Berhasil melakukan pembelian</Text>
+          <DefaultPrimaryButton
+            text="Kembali ke Home"
+            onPress={() => {
+              setSukses(false);
+              setLoading(false);
               navigation.popToTop();
               navigation.navigate("MainScreen");
             }}
@@ -240,42 +268,72 @@ const ProductDetailContent = (props) => {
                 }}
               />
             )}
-            {!item.purchased && !onCart && (
-              <DefaultPrimaryButton
-                text="Beli Sekarang"
-                onPress={() => {
-                  if (Platform.OS === "ios") {
-                    if (isLogin) {
-                      requestPurchase();
-                    } else {
-                      Alert.alert(
-                        "Informasi",
-                        "Anda perlu login untuk melanjutkan pembayaran",
-                        [
-                          {
-                            text: "Oke",
-                            onPress: () => {
-                              navigation.navigate("MainScreen");
+            {Platform.OS === "ios" ? (
+              <>
+                {isLogin ? (
+                  <>
+                    {newTransIos.filter((value) =>
+                      value.user_id.includes(profile._id)
+                    ).length === 0 && (
+                      <>
+                        {!item.purchased && !onCart && (
+                          <DefaultPrimaryButton
+                            text="Beli Sekarang"
+                            onPress={() => {
+                              requestPurchase();
+                            }}
+                          />
+                        )}
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <DefaultPrimaryButton
+                      text="Beli Sekarang"
+                      onPress={() => {
+                        Alert.alert(
+                          "Informasi",
+                          "Anda perlu login untuk melanjutkan pembayaran",
+                          [
+                            {
+                              text: "Oke",
+                              onPress: () => {
+                                navigation.navigate("MainScreen");
+                              },
                             },
-                          },
-                        ]
-                      );
-                    }
-                  } else {
-                    dispatch(addToCart(item));
-                    navigation.navigate("CartScreen");
-                  }
-                }}
-              />
+                          ]
+                        );
+                      }}
+                    />
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {!item.purchased && !onCart && (
+                  <DefaultPrimaryButton
+                    text="Beli Sekarang"
+                    onPress={() => {
+                      dispatch(addToCart(item));
+                      navigation.navigate("CartScreen");
+                    }}
+                  />
+                )}
+              </>
             )}
 
-            {!item.purchased && onCart && (
-              <DefaultPrimaryButton
-                text="Sudah Ada di Keranjang"
-                onPress={() => {
-                  navigation.navigate("CartScreen");
-                }}
-              />
+            {Platform.OS === "android" && (
+              <>
+                {!item.purchased && onCart && (
+                  <DefaultPrimaryButton
+                    text="Sudah Ada di Keranjang"
+                    onPress={() => {
+                      navigation.navigate("CartScreen");
+                    }}
+                  />
+                )}
+              </>
             )}
           </View>
         </ScrollView>

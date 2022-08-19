@@ -201,7 +201,7 @@ const TryoutLeaderContent = (props) => {
                                   : "school",
                               page: page + 1,
                               limit: 20,
-                              tahun: tahunAwal + "/" + tahunAkhir,
+                              tahun: tahunAjaran,
                               id: id,
                             },
                             temp
@@ -295,7 +295,7 @@ const TryoutLeaderContent = (props) => {
                         }
                       }}
                     >
-                      Liha Posisi Saya
+                      Lihat Posisi Saya
                     </Button>
                   )}
                 </VStack>

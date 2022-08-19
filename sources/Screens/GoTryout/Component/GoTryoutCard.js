@@ -5,31 +5,47 @@ import Colors from "../../../Theme/Colors";
 import Fonts from "../../../Theme/Fonts";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
+import { Progress, Box, VStack, HStack } from "native-base";
 
 const GoTryoutCard = (props) => {
   const navigation = useNavigation();
   const { data, tryoutId } = props;
   const [time, setTime] = useState(0);
   const [soal, setSoal] = useState(0);
+  const [value, setValue] = useState(0);
+  const [complete, setComplete] = useState(0);
   const waktu = () => {
     let temp = 0;
     let temp2 = 0;
+    let temp3 = 0;
+    let temp4 = 100;
     for (const key in data.includes) {
       temp += data.includes[key]["total_time"];
       temp2 += data.includes[key]["total_question"];
+      if (data.includes[key]["touched"]) {
+        temp3 += 1;
+      }
     }
+    temp4 = temp4 / data.includes.length;
+    temp4 = temp4 * temp3;
     setTime(temp);
     setSoal(temp2);
+    setComplete(temp3);
+    setValue(temp4);
   };
   useEffect(() => {
     waktu();
   }, []);
+
+  console.log(JSON.stringify(data, null, 2));
+
   return (
     <TouchableOpacity
       onPress={() => {
         navigation.navigate("TryoutDetailScreen", {
           data: data.includes,
           tryoutId: tryoutId,
+          title: data.title,
         });
       }}
     >
@@ -42,26 +58,49 @@ const GoTryoutCard = (props) => {
           borderColor: Colors.ligthGreyColor,
           marginTop: 15,
           backgroundColor: "white",
-          paddingEnd: 8,
-          paddingStart: 20,
-          paddingBottom: 10,
-          paddingTop: 10,
-          flexDirection: "row",
+          padding: 10,
+          elevation: 4,
         }}
       >
-        <View style={{ marginEnd: "auto" }}>
-          <Text style={{ ...Fonts.black17Bold }}>{data.title}</Text>
-          <Text style={{ ...Fonts.black15Regular }}>{data.desc}</Text>
-          <Text style={{ ...Fonts.black15Regular }}>{data.level}</Text>
-          <Text style={{ ...Fonts.black17Bold }}>
-            TPS ( {soal} Soal -{" "}
-            {time < 60 ? time + " Detik" : time / 60 + " Menit"} )
-          </Text>
-        </View>
+        <HStack>
+          <VStack marginRight={"auto"}>
+            <Text style={{ ...Fonts.black17Bold }}>{data.title}</Text>
+            <Text style={{ ...Fonts.black15Regular }}>{data.desc}</Text>
+            <Text style={{ ...Fonts.black15Regular }}>{data.level}</Text>
+            <Text style={{ ...Fonts.black17Bold }}>
+              TPS ( {soal} Soal -{" "}
+              {time < 60 ? time + " Detik" : time / 60 + " Menit"} )
+            </Text>
+          </VStack>
+          <View style={{ justifyContent: "center" }}>
+            <MaterialIcons name="arrow-forward-ios" size={30} color="black" />
+          </View>
+        </HStack>
 
-        <View style={{ justifyContent: "center" }}>
-          <MaterialIcons name="arrow-forward-ios" size={30} color="black" />
-        </View>
+        {complete > 0 && (
+          <HStack mt={2} justifyContent={"center"} alignItems={"center"}>
+            <Box w="80%" marginRight={"auto"}>
+              <Progress
+                bg="coolGray.300"
+                _filledTrack={{
+                  bg: "green.400",
+                }}
+                value={value}
+              />
+            </Box>
+            <Text>
+              {complete} / {data.includes.length}
+            </Text>
+          </HStack>
+        )}
+        {complete === 0 && (
+          <HStack space={4} mt={2}>
+            <Text style={{ ...Fonts.black15Bold }}>Total Sub Tryout</Text>
+            <Text style={{ ...Fonts.black15Bold }}>
+              ( {data.includes.length} )
+            </Text>
+          </HStack>
+        )}
       </View>
     </TouchableOpacity>
   );

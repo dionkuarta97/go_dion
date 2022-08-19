@@ -551,7 +551,7 @@ const PaymentScreen = (props) => {
                                   title: "Berhasil",
                                   status: "success",
                                   description:
-                                    "transaksi anda berhasil dibatalakan",
+                                    "Transaksi Anda berhasil dibatalkan",
                                   placement: "top",
                                   width: Dimensions.get("screen").width / 1.3,
                                 });

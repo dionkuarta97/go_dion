@@ -37,8 +37,6 @@ const LeaderboardContent = () => {
   const navigation = useNavigation();
   const [select, setSelect] = useState("Nasional");
   const [page, setPage] = useState(1);
-  const [tahunAwal, setTahunAwal] = useState(0);
-  const [tahunAkhir, setTahunAkhir] = useState(0);
   const { listTahunAjaran } = useSelector((state) => state.dataReducer);
   const [tahunAjaran, setTahunAjaran] = useState(listTahunAjaran.data[0].id);
   const toast = useToast();
@@ -208,7 +206,7 @@ const LeaderboardContent = () => {
                                   : "school",
                               page: page + 1,
                               limit: 20,
-                              tahun: tahunAwal + "/" + tahunAkhir,
+                              tahun: tahunAjaran,
                             },
                             temp
                           )
@@ -291,7 +289,7 @@ const LeaderboardContent = () => {
                       }
                     }}
                   >
-                    Liha Posisi Saya
+                    Lihat Posisi Saya
                   </Button>
                 )}
               </VStack>

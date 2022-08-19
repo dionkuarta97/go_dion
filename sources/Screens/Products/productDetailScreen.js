@@ -36,8 +36,6 @@ const ProductDetailScreen = (props) => {
 
   const cart = useSelector((state) => state.cartReducer.cart);
 
-  console.log(JSON.stringify(item, null, 2));
-
   const productInfo = () => {
     return (
       <View>

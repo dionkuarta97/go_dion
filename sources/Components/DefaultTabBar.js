@@ -39,8 +39,24 @@ const DefaultTabBar = (props) => {
           }}
           style={{ backgroundColor: Colors.whiteColor }}
           renderLabel={({ route, focused, color }) => (
-            <Text style={{ ...Fonts.black15Bold, alignSelf: "center" }}>
+            <Text
+              style={{
+                fontSize: Dimensions.get("screen").width / 36,
+                fontWeight: "bold",
+                alignSelf: "center",
+              }}
+            >
               {route.title}
+              {route.tryout && route.tryout > 0 ? (
+                <Text
+                  style={{
+                    fontSize: Dimensions.get("screen").width / 31,
+                    color: "red",
+                  }}
+                >
+                  {" " + `(${route.tryout})`}
+                </Text>
+              ) : null}
             </Text>
           )}
         />

@@ -373,6 +373,7 @@ const RegisterContent = ({ sendedEmail }) => {
                         schoolCity !== null ? schoolCity.kabkota : "",
                       sekolah: schoolName,
                       password: password,
+                      password_comparison: repeatPassword,
                       nama_wali: waliName,
                       email_wali: waliEmail,
                       phone_wali: waliPhone,

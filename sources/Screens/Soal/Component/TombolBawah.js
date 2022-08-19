@@ -5,6 +5,7 @@ import { Alert, Dimensions } from "react-native";
 import { useDispatch } from "react-redux";
 import { setSoal } from "../../../Redux/Soal/soalActions";
 import { Ionicons } from "@expo/vector-icons";
+import firestore from "@react-native-firebase/firestore";
 const TombolBawah = (props) => {
   const {
     index,
@@ -18,6 +19,11 @@ const TombolBawah = (props) => {
     setWaktuUjian,
     totalSesi,
     setFinish,
+    setLoadingBawah,
+    firestoreTime,
+    setFirestoreTime,
+    firestoreId,
+    loadingSoal,
   } = props;
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -30,9 +36,28 @@ const TombolBawah = (props) => {
           _pressed={{
             bg: "light.200",
           }}
+          disabled={loadingSoal ? true : false}
+          opacity={loadingSoal ? 0.3 : 1}
           width={Dimensions.get("screen").width / 3}
           onPress={() => {
-            setIndex(index - 1);
+            if (!blockTime) {
+              setIndex(index - 1);
+            } else {
+              setLoadingBawah(true);
+              setIndex(index - 1);
+              let newTime = firestoreTime;
+              newTime[sesi] = sisaTime;
+              setFirestoreTime(newTime);
+              firestore()
+                .collection("Jawaban")
+                .doc(firestoreId)
+                .update({
+                  time: newTime,
+                })
+
+                .then(() => setLoadingBawah(false))
+                .catch(() => navigation.goBack());
+            }
           }}
         >
           <Text bold>Sebelumnya</Text>
@@ -45,6 +70,8 @@ const TombolBawah = (props) => {
                 bg: "light.200",
               }}
               bg={"light.300"}
+              disabled={loadingSoal ? true : false}
+              opacity={loadingSoal ? 0.3 : 1}
               width={Dimensions.get("screen").width / 3}
               onPress={() => {
                 Alert.alert("Peringatan", "Batal ikut kuis?", [
@@ -73,6 +100,8 @@ const TombolBawah = (props) => {
                 bg: "light.200",
               }}
               bg={"light.300"}
+              disabled={loadingSoal ? true : false}
+              opacity={loadingSoal ? 0.3 : 1}
               width={Dimensions.get("screen").width / 3}
               onPress={() => {
                 setSesi(sesi - 1);
@@ -92,9 +121,29 @@ const TombolBawah = (props) => {
           _pressed={{
             bg: "amber.300",
           }}
+          disabled={loadingSoal ? true : false}
+          opacity={loadingSoal ? 0.3 : 1}
           width={Dimensions.get("screen").width / 3}
           onPress={() => {
-            setIndex(index + 1);
+            if (!blockTime) {
+              setIndex(index + 1);
+            } else {
+              setLoadingBawah(true);
+              setIndex(index + 1);
+              let newTime = firestoreTime;
+              newTime[sesi] = sisaTime;
+              setFirestoreTime(newTime);
+              setFirestoreTime(newTime);
+              firestore()
+                .collection("Jawaban")
+                .doc(firestoreId)
+                .update({
+                  time: newTime,
+                })
+
+                .then(() => setLoadingBawah(false))
+                .catch(() => navigation.goBack());
+            }
           }}
         >
           <Text bold>Selanjutnya</Text>
@@ -109,6 +158,8 @@ const TombolBawah = (props) => {
                   _pressed={{
                     bg: "success.300",
                   }}
+                  disabled={loadingSoal ? true : false}
+                  opacity={loadingSoal ? 0.3 : 1}
                   width={Dimensions.get("screen").width / 3}
                   onPress={() => {
                     setSesi(sesi + 1);
@@ -151,6 +202,8 @@ const TombolBawah = (props) => {
               <Button
                 bg={"warning.300"}
                 _pressed={{ bg: "warning.200" }}
+                disabled={loadingSoal ? true : false}
+                opacity={loadingSoal ? 0.3 : 1}
                 onPress={() => {
                   let msg = "";
                   if (sesi + 1 < totalSesi) {

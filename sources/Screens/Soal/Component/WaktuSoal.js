@@ -30,13 +30,10 @@ const WaktuSoal = (props) => {
             if (sesi + 1 === totalSesi) {
               setDelay(true);
               setFinish(true);
-              setNomor(0);
             } else {
               setDelay(true);
-              setTimeout(() => {
-                setSesi(sesi + 1);
-                setNomor(0);
-              }, 500);
+              setSesi(sesi + 1);
+              setNomor(0);
             }
           }
         }}

@@ -57,6 +57,7 @@ import GantiFotoScreen from "./Screens/Profile/GantiFotoScreen";
 import TryoutLeaderScreen from "./Screens/Leaderboard/TryoutLeaderScreen";
 import PositionTryoutScreen from "./Screens/Leaderboard/PositionTryoutScreen";
 import SolusiScreen from "./Screens/Laporan/SolusiScreen";
+import ProductTerbeliScreen from "./Screens/Products/ProductTerbeliScreen";
 
 const Stack = createStackNavigator();
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 20 : StatusBar.currentHeight;
@@ -262,6 +263,10 @@ export default App = () => {
                 component={PositionTryoutScreen}
               />
               <Stack.Screen name="SolusiScreen" component={SolusiScreen} />
+              <Stack.Screen
+                name="ProductTerbeliScreen"
+                component={ProductTerbeliScreen}
+              />
             </Stack.Navigator>
           </NavigationContainer>
           {Platform.OS === "ios" && (

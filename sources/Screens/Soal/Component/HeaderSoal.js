@@ -30,9 +30,9 @@ const HeaderSoal = (props) => {
     setDelay,
     blockTime,
     setSesi,
+    loadingBawah,
+    loading,
   } = props;
-
-  console.log(JSON.stringify(allJawab, null, 2));
 
   return (
     <>
@@ -81,6 +81,8 @@ const HeaderSoal = (props) => {
           allJawab={allJawab[sesi]}
           idx={nomor}
           setIndex={setNomor}
+          loading={loading}
+          loadingBawah={loadingBawah}
         />
       </HStack>
     </>

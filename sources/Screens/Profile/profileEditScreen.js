@@ -257,7 +257,10 @@ const ProfileEditScreen = (props) => {
                     phone_wali: waliPhone,
                     program_studi: profile.program_studi,
                   };
-                  if (newPassword !== "") data["password"] = newPassword;
+                  if (newPassword !== "") {
+                    data["password"] = newPassword;
+                    data["password_comparison"] = reNewPassword;
+                  }
                   const bodyParams = JSON.stringify(data);
                   console.log(bodyParams);
                   if (waliEmail) {

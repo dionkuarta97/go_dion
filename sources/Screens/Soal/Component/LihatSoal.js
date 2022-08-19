@@ -5,13 +5,15 @@ import { Dimensions } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
 
 const LihatSoal = (props) => {
-  const { quiz, idx, setIndex, allJawab } = props;
+  const { quiz, idx, setIndex, allJawab, loadingBawah, loading } = props;
   const [showModal, setShowModal] = useState(false);
 
   return (
     <Center>
       <Button
         bg={"amber.400"}
+        disabled={loading || loadingBawah ? true : false}
+        opacity={loading || loadingBawah ? 0.3 : 1}
         _pressed={{
           bg: "amber.300",
         }}

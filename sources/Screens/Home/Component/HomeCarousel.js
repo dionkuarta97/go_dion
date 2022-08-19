@@ -27,7 +27,7 @@ const HomeCarousel = () => {
       source={item.image}
       style={{
         width: itemWidth - 10,
-        height: 200,
+        height: 150,
         alignItems: "center",
         justifyContent: "center",
       }}

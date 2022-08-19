@@ -20,7 +20,6 @@ const GoTryoutContent = (props) => {
     });
   }, [props.status]);
 
-  console.log(JSON.stringify(tryoutData.data, null, 2));
   return (
     <View style={{ flex: 1 }}>
       {tryoutData.loading ? (

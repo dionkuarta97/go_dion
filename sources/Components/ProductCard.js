@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/core";
 import { MaterialIcons } from "@expo/vector-icons";
 import {
+  Alert,
   Image,
   Platform,
   StyleSheet,
@@ -15,6 +16,7 @@ import NumberFormat from "react-number-format";
 import Fonts from "../Theme/Fonts";
 import Sizes from "../Theme/Sizes";
 import Colors from "../Theme/Colors";
+import { useSelector } from "react-redux";
 
 const dummyProductData = {
   _id: "6167e3732d4fb95908691d2a",
@@ -40,20 +42,44 @@ const dummyProductData = {
 
 const ProductCard = (props) => {
   const navigation = useNavigation();
+  const { newTransIos } = useSelector((state) => state.initReducer);
+  const profile = useSelector((state) => state.profileReducer.profile);
   const item = !props.data ? dummyProductData : props.data;
-
-  console.log(JSON.stringify(item, null, 2));
-
+  const isLogin = useSelector((state) => state.authReducer.isLogin);
   const { newStyle } = props;
   return (
     <TouchableOpacity
       activeOpacity={0.9}
-      onPress={() =>
-        navigation.navigate("ProductDetailScreen", {
-          item: item,
-          section: props.section,
-        })
-      }
+      onPress={() => {
+        if (isLogin) {
+          if (
+            newTransIos.filter((value) => value.user_id.includes(profile._id))
+              .length > 0
+          ) {
+            if (Platform.OS === "ios") {
+              Alert.alert(
+                "Informasi",
+                "Maaf masih ada transaksi yang tertunda"
+              );
+            } else {
+              navigation.navigate("ProductDetailScreen", {
+                item: item,
+                section: props.section,
+              });
+            }
+          } else {
+            navigation.navigate("ProductDetailScreen", {
+              item: item,
+              section: props.section,
+            });
+          }
+        } else {
+          navigation.navigate("ProductDetailScreen", {
+            item: item,
+            section: props.section,
+          });
+        }
+      }}
       style={newStyle?.card ? newStyle?.card : styles.card}
     >
       <View style={{ position: "relative" }}>

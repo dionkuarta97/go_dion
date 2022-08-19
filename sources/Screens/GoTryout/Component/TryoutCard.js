@@ -21,7 +21,8 @@ import {
 import { urlQuests } from "../../../Services/ApiUrl";
 import { MaterialIcons } from "@expo/vector-icons";
 import checkInternet from "../../../Services/CheckInternet";
-import { Center, HStack, useToast } from "native-base";
+import { useToast, Progress, Box } from "native-base";
+
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 
 const TryoutCard = (props) => {
@@ -30,23 +31,8 @@ const TryoutCard = (props) => {
   const navigation = useNavigation();
   const { detail, tryoutId } = props;
   const profile = useSelector((state) => state.profileReducer.profile);
-  const { jawaban } = useSelector((state) => state.soalReducer);
+
   const [idx, setIdx] = useState(null);
-  console.log(jawaban);
-  console.log(detail);
-  const cekOpen = (arr) => {
-    console.log(arr);
-    for (const key in arr) {
-      console.log(jawaban[key].related_to.bab_id);
-      if (
-        detail._id === jawaban[key].related_to.bab_id &&
-        jawaban[key].user_id === profile._id
-      ) {
-        return true;
-      }
-    }
-    return false;
-  };
 
   return (
     <>
@@ -227,16 +213,6 @@ const TryoutCard = (props) => {
                 <MaterialIcons name="check" size={12} color="white" />
               </View>
             )}
-            <Center mt={2}>
-              {cekOpen(jawaban) && !detail.touched && (
-                <>
-                  <Text style={{ color: "red" }}>
-                    Kamu telah membuka soal ini
-                  </Text>
-                  <HStack></HStack>
-                </>
-              )}
-            </Center>
           </View>
         </TouchableOpacity>
       ) : (

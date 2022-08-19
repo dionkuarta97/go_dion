@@ -11,6 +11,8 @@ const RenderOption = ({
   pilihJawaban,
   setPilihan,
   nomor,
+  loading,
+  loadingBawah,
 }) => {
   const countInterval = useRef(null);
   const [value, setValue] = useState(0);
@@ -31,10 +33,17 @@ const RenderOption = ({
       <Text>{options[idx]}</Text>
       <Button
         bg={pilihan.user_answer[0] === idx ? "#E1FFDF" : "white"}
-        disabled={pilihan.user_answer[0] === idx ? true : false}
+        disabled={
+          loading || loadingBawah
+            ? true
+            : pilihan.user_answer[0] === idx
+            ? true
+            : false
+        }
         _pressed={{
           bg: "green.50",
         }}
+        opacity={loading || loadingBawah ? 0.3 : 1}
         borderWidth={0.5}
         onPress={() => {
           pilihJawaban({

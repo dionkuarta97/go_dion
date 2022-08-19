@@ -68,7 +68,13 @@ const TryoutScoreScreen = (props) => {
       <DefaultAppBar
         title="Nilai Tryout"
         backEnabled={fromSoal ? false : true}
-        rightItem={fromSoal && <ActionButtonHome />}
+        rightItem={
+          fromSoal && (
+            <ActionButtonHome
+              onPress={() => navigation.navigate("MainScreen")}
+            />
+          )
+        }
       />
       {scores ? (
         <>

@@ -23,7 +23,7 @@ const SolusiContent = (props) => {
 
   const navigation = useNavigation();
 
-  console.log(JSON.stringify(answer[index]));
+  console.log(JSON.stringify(quiz, null, 2));
 
   const renderOption = (el, idx) => {
     return (
