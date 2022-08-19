@@ -22,34 +22,22 @@ const CartContent = () => {
     (state) => state.produkReducer.purchasedProduk
   );
 
-  const checker = (id, arr) => {
-    for (const key in arr) {
-      if (arr[key]._id === id) {
+  const checkAll = (arr1) => {
+    for (const i in arr1) {
+      if (arr1[i].purchased) {
         return true;
       }
     }
   };
 
-  const checkAll = (arr1, arr2) => {
-    for (const i in arr1) {
-      for (const y in arr2) {
-        if (arr1[i]._id === arr2[y]._id) {
-          return true;
-        }
-      }
-    }
-  };
-
-  useEffect(() => {
-    dispatch(getPurchasedproduk("dasdsa"));
-  }, []);
+  console.log(JSON.stringify(cart, null, 2));
 
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
         {cart.map((val) => (
           <ProductCardHorizontal
-            ganda={checker(val._id, purchasedProduk.data)}
+            ganda={val.purchased}
             key={val._id}
             id={val._id}
             title={val.title}
@@ -115,7 +103,7 @@ const CartContent = () => {
           text="Checkout"
           onPress={() => {
             if (isLogin) {
-              if (checkAll(cart, purchasedProduk?.data)) {
+              if (checkAll(cart)) {
                 Alert.alert("warning", "terdapat produk yang sudah anda beli");
               } else {
                 navigation.navigate("CheckoutScreen");

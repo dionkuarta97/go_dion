@@ -105,10 +105,9 @@ const LainnyaContent = () => {
       {isLogin &&
         Platform.OS === "ios" &&
         renderTile("Hapus Akun", "delete", () => {
-          Alert.alert("Peringatan", "Yakin akan menghapus akun kamu?", [
-            { text: "Tidak", onPress: () => {} },
+          Alert.alert("Peringatan", "Apakah kamu yakin untuk menghapus akun?", [
             {
-              text: "Ya",
+              text: "Ya, Saya Yakin",
               onPress: () => {
                 OpenWEB(
                   "https://student.gobimbelonline.net/setting/unactive?token=" +
@@ -116,6 +115,7 @@ const LainnyaContent = () => {
                 );
               },
             },
+            { text: "Tidak", onPress: () => {} },
           ]);
         })}
       <VersionText />

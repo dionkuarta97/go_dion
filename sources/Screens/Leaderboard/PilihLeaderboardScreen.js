@@ -24,10 +24,12 @@ import NoData from "../../Components/NoData";
 import { getTahunAjaran } from "../../Redux/Data/dataActions";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
+import LoadingIndicator from "../../Components/Indicator/LoadingIndicator";
 const PilihLeaderboardScreen = () => {
   const toast = useToast();
   const navigation = useNavigation();
   const { isLogin } = useSelector((state) => state.authReducer);
+  const { listTahunAjaran } = useSelector((state) => state.dataReducer);
 
   const dispatch = useDispatch();
 
@@ -93,118 +95,126 @@ const PilihLeaderboardScreen = () => {
             />
           </View>
         ) : (
-          <View style={{ padding: 20 }}>
-            <TouchableHighlight
-              style={{ borderRadius: 15 }}
-              onPress={() => {
-                navigation.navigate("LeaderTryoutScreen");
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: "white",
-                  height: Dimensions.get("screen").height / 6.5,
-                  flexDirection: "row",
-                  padding: 20,
-                  elevation: 4,
-                  borderRadius: 15,
-                }}
-              >
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "white",
-                    elevation: 3,
-                    borderRadius: 15,
+          <>
+            {listTahunAjaran.loading ? (
+              <LoadingIndicator />
+            ) : (
+              <View style={{ padding: 20 }}>
+                <TouchableHighlight
+                  style={{ borderRadius: 15 }}
+                  onPress={() => {
+                    navigation.navigate("LeaderTryoutScreen");
                   }}
                 >
-                  <Image
-                    source={imgMateri}
+                  <View
                     style={{
-                      width: Dimensions.get("screen").width / 4,
-                      height: Dimensions.get("screen").width / 4,
+                      backgroundColor: "white",
+                      height: Dimensions.get("screen").height / 6.5,
+                      flexDirection: "row",
+                      padding: 20,
+                      elevation: 4,
+                      borderRadius: 15,
                     }}
-                  />
-                </View>
-                <View
-                  style={{
-                    marginEnd: "auto",
-                    marginStart: 10,
-                    justifyContent: "center",
-                    flex: 1,
-                  }}
-                >
-                  <Text style={{ ...Fonts.black17Bold }}>Try out</Text>
-                  <Text style={{ ...Fonts.gray15Regular }}>
-                    Leaderboard Try out yang telah kamu kerjakan
-                  </Text>
-                </View>
+                  >
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "white",
+                        elevation: 3,
+                        borderRadius: 15,
+                      }}
+                    >
+                      <Image
+                        source={imgMateri}
+                        style={{
+                          width: Dimensions.get("screen").width / 4,
+                          height: Dimensions.get("screen").width / 4,
+                        }}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        marginEnd: "auto",
+                        marginStart: 10,
+                        justifyContent: "center",
+                        flex: 1,
+                      }}
+                    >
+                      <Text style={{ ...Fonts.black17Bold }}>Try out</Text>
+                      <Text style={{ ...Fonts.gray15Regular }}>
+                        Leaderboard Try out yang telah kamu kerjakan
+                      </Text>
+                    </View>
 
-                <View style={{ justifyContent: "center" }}>
-                  <MaterialIcons
-                    name="arrow-forward-ios"
-                    size={30}
-                    color="black"
-                  />
-                </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={{ borderRadius: 15, marginTop: 15 }}
-              onPress={() => navigation.navigate("LeaderboardScreen")}
-            >
-              <View
-                style={{
-                  backgroundColor: "white",
-                  height: Dimensions.get("screen").height / 6.5,
-                  flexDirection: "row",
-                  padding: 20,
-                  elevation: 4,
-                  borderRadius: 15,
-                }}
-              >
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "white",
-                    elevation: 3,
-                    borderRadius: 15,
-                  }}
+                    <View style={{ justifyContent: "center" }}>
+                      <MaterialIcons
+                        name="arrow-forward-ios"
+                        size={30}
+                        color="black"
+                      />
+                    </View>
+                  </View>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={{ borderRadius: 15, marginTop: 15 }}
+                  onPress={() => navigation.navigate("LeaderboardScreen")}
                 >
-                  <Image
-                    source={imgTryout}
+                  <View
                     style={{
-                      width: Dimensions.get("screen").width / 4,
-                      height: Dimensions.get("screen").width / 4,
+                      backgroundColor: "white",
+                      height: Dimensions.get("screen").height / 6.5,
+                      flexDirection: "row",
+                      padding: 20,
+                      elevation: 4,
+                      borderRadius: 15,
                     }}
-                  />
-                </View>
-                <View
-                  style={{
-                    marginEnd: "auto",
-                    marginStart: 10,
-                    justifyContent: "center",
-                    flex: 1,
-                  }}
-                >
-                  <Text style={{ ...Fonts.black17Bold }}>Pengerjaan Soal</Text>
-                  <Text style={{ ...Fonts.gray15Regular }}>
-                    Leaderboard semua soal yang telah kamu kerjakan
-                  </Text>
-                </View>
+                  >
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "white",
+                        elevation: 3,
+                        borderRadius: 15,
+                      }}
+                    >
+                      <Image
+                        source={imgTryout}
+                        style={{
+                          width: Dimensions.get("screen").width / 4,
+                          height: Dimensions.get("screen").width / 4,
+                        }}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        marginEnd: "auto",
+                        marginStart: 10,
+                        justifyContent: "center",
+                        flex: 1,
+                      }}
+                    >
+                      <Text style={{ ...Fonts.black17Bold }}>
+                        Pengerjaan Soal
+                      </Text>
+                      <Text style={{ ...Fonts.gray15Regular }}>
+                        Leaderboard semua soal yang telah kamu kerjakan
+                      </Text>
+                    </View>
 
-                <View style={{ justifyContent: "center" }}>
-                  <MaterialIcons
-                    name="arrow-forward-ios"
-                    size={30}
-                    color="black"
-                  />
-                </View>
+                    <View style={{ justifyContent: "center" }}>
+                      <MaterialIcons
+                        name="arrow-forward-ios"
+                        size={30}
+                        color="black"
+                      />
+                    </View>
+                  </View>
+                </TouchableHighlight>
               </View>
-            </TouchableHighlight>
-          </View>
+            )}
+          </>
         )}
         <StatusBar backgroundColor={Colors.primaryColor} />
       </SliverAppBar>

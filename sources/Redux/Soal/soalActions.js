@@ -7,6 +7,8 @@ import {
 } from "../helper";
 import {
   SET_FINAL_ANSWER,
+  SET_JAWABAN,
+  SET_JAWABAN_NONBLOCKING,
   SET_NUMBER,
   SET_SAVE_ANSWER,
   SET_SAVE_SCORE,
@@ -86,17 +88,12 @@ export function setSaveAnswer(state) {
   };
 }
 
-export function saveAnswer(status) {
+export function saveAnswer(data) {
   console.log("save answer...");
   return async (dispatch, getState) => {
     dispatch(setSaveAnswer(defaultInitState));
     try {
-      const { saveScore } = getState().soalReducer;
-      const bodyParams = {
-        ...saveScore,
-        related_to: getState().soalReducer.soal.data.related_to,
-      };
-      console.log(JSON.stringify(bodyParams, null, 2), "<<<rawData");
+      console.log(JSON.stringify(data, null, 2), "<<<rawData");
       const urlBase = getState().initReducer.baseUrl;
       fetch(urlBase + urlQuests + "/save", {
         method: "POST",
@@ -104,7 +101,7 @@ export function saveAnswer(status) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getState().authReducer.token}`,
         },
-        body: JSON.stringify(bodyParams),
+        body: JSON.stringify(data),
       })
         .then((response) => {
           console.log(response);
@@ -113,9 +110,7 @@ export function saveAnswer(status) {
         .then((json) => {
           console.log(json);
           if (json.status) {
-            setTimeout(() => {
-              dispatch(setSaveAnswer(defaultDoneState(json.data)));
-            }, 4000);
+            dispatch(setSaveAnswer(defaultDoneState(json.data)));
           } else dispatch(setSaveAnswer(defaultFailedState(json.message)));
         })
         .catch((err) => {
@@ -126,3 +121,17 @@ export function saveAnswer(status) {
     }
   };
 }
+
+export const setJawaban = (payload) => {
+  return {
+    type: SET_JAWABAN,
+    payload,
+  };
+};
+
+export const setJawabanNon = (payload) => {
+  return {
+    type: SET_JAWABAN_NONBLOCKING,
+    payload,
+  };
+};

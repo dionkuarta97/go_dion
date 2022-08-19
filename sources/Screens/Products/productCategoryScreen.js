@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Dimensions,
   Image,
+  Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -51,6 +53,10 @@ const ProductCategoryScreen = (props) => {
   const { allProduk, loading, loadingDua, totalData } = useSelector(
     (state) => state.produkReducer
   );
+
+  const { newTransIos } = useSelector((state) => state.initReducer);
+  const profile = useSelector((state) => state.profileReducer.profile);
+  const isLogin = useSelector((state) => state.authReducer.isLogin);
   const section_id = props.route.params.id;
   const title = props.route.params.title;
 
@@ -97,7 +103,7 @@ const ProductCategoryScreen = (props) => {
           <View style={{ flexDirection: "row" }}>
             <ActionButtonFilter />
             <View style={{ width: 15 }} />
-            <ActionButtonCart />
+            {Platform.OS === "android" && <ActionButtonCart />}
           </View>
         }
       />
@@ -131,10 +137,35 @@ const ProductCategoryScreen = (props) => {
                   <>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate("ProductDetailScreen", {
-                          item: item,
-                          section: title,
-                        });
+                        if (isLogin) {
+                          if (
+                            newTransIos.filter((value) =>
+                              value.user_id.includes(profile._id)
+                            ).length > 0
+                          ) {
+                            if (Platform.OS === "ios") {
+                              Alert.alert(
+                                "Informasi",
+                                "Maaf masih ada transaksi yang tertunda"
+                              );
+                            } else {
+                              navigation.navigate("ProductDetailScreen", {
+                                item: item,
+                                section: props.section,
+                              });
+                            }
+                          } else {
+                            navigation.navigate("ProductDetailScreen", {
+                              item: item,
+                              section: props.section,
+                            });
+                          }
+                        } else {
+                          navigation.navigate("ProductDetailScreen", {
+                            item: item,
+                            section: props.section,
+                          });
+                        }
                       }}
                     >
                       <View
@@ -147,7 +178,7 @@ const ProductCategoryScreen = (props) => {
                       >
                         <View
                           style={{
-                            width: Dimensions.get("window").width / 5,
+                            width: Dimensions.get("window").width / 3.5,
                             height: Dimensions.get("window").height / 9,
                             borderRadius: Sizes.fixPadding,
                             marginRight: Sizes.fixPadding,
@@ -201,9 +232,11 @@ const ProductCategoryScreen = (props) => {
                           >
                             <NumberFormat
                               value={
-                                item.price_discount !== 0
-                                  ? item.price_discount
-                                  : item.price
+                                Platform.OS === "android"
+                                  ? item.price_discount !== 0
+                                    ? item.price_discount
+                                    : item.price
+                                  : item.price_ios
                               }
                               displayType={"text"}
                               thousandSeparator="."

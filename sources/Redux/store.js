@@ -23,7 +23,16 @@ import leaderboardReducer from "./Leaderboard/leaderboardReducer";
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  blacklist: ["updatePassword"],
+  blacklist: [
+    "updatePassword",
+    "url",
+    "soal",
+    "currentNumber",
+    "answers",
+    "saveAnswer",
+    "jawabanNon",
+    "saveScore",
+  ],
 };
 
 const rootReducer = combineReducers({

@@ -7,6 +7,5 @@ export function formatQuestion(pertanyaan) {
     "https://app.gobimbelonline.net/fileupload/banksoal"
   );
   let newPeretanyaan = formated.replace(regex2, '"');
-  console.log(pertanyaan);
   return newPeretanyaan;
 }

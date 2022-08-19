@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { useToast } from "native-base";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView, Dimensions } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultTabBar from "../../Components/DefaultTabBar";
@@ -15,6 +15,32 @@ const GoTryoutScreen = () => {
   const dispatch = useDispatch();
   const toast = useToast();
   const navigation = useNavigation();
+  const urlBase = useSelector((state) => state.initReducer.baseUrl);
+  const token = useSelector((state) => state.authReducer.token);
+  const [tryout, setTryout] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getTryout = async () => {
+    try {
+      const response = await fetch(
+        urlBase + "/masterdata/v1/tryouts?status=touched",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const result = await response.json();
+      if (result.status) setTryout(result.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     checkInternet().then((data) => {
       if (!data) {
@@ -36,24 +62,33 @@ const GoTryoutScreen = () => {
         });
       } else {
         dispatch(getMe());
+        getTryout();
       }
     });
   }, []);
+
+  console.log(tryout, "<<<<<akweakw");
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar title="Go Tryout" backEnabled={true} />
-      <DefaultTabBar
-        routes={[
-          { key: "item1", title: "Belum Diikuti" },
-          { key: "item2", title: "Diikuti Sebagian" },
-          { key: "item3", title: "Sudah Diikuti" },
-        ]}
-        screen={[
-          <GoTryoutContent status="untouched" />,
-          <GoTryoutContent status="touched" />,
-          <GoTryoutContent status="done" />,
-        ]}
-      />
+      {!loading && (
+        <DefaultTabBar
+          routes={[
+            { key: "item1", title: "Belum Diikuti" },
+            {
+              key: "item2",
+              title: `Diikuti Sebagian`,
+              tryout: tryout.length,
+            },
+            { key: "item3", title: "Sudah Diikuti" },
+          ]}
+          screen={[
+            <GoTryoutContent status="untouched" />,
+            <GoTryoutContent status="touched" />,
+            <GoTryoutContent status="done" />,
+          ]}
+        />
+      )}
     </SafeAreaView>
   );
 };

@@ -37,7 +37,6 @@ const ModalStatusSoal = (props) => {
             item
             data={questions}
             renderItem={({ item, index }) => {
-              console.log(answers[index]);
               return (
                 <TouchableOpacity onPress={() => props.onSelect(index)}>
                   <View

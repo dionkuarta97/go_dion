@@ -4,6 +4,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -78,7 +79,7 @@ const ProductPurchasedScreen = (props) => {
           <View style={{ flexDirection: "row" }}>
             <ActionButtonFilter />
             <View style={{ width: 15 }} />
-            <ActionButtonCart />
+            {Platform.OS === "android" && <ActionButtonCart />}
           </View>
         }
       />
@@ -221,7 +222,7 @@ const ProductPurchasedScreen = (props) => {
                 alignItems: "center",
               }}
             >
-              <NoData msg="anda belum membeli produk" />
+              <NoData msg="Anda belum membeli produk" />
             </View>
           ))}
       </View>

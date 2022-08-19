@@ -7,6 +7,7 @@ import {
   View,
   Linking,
   Alert,
+  Dimensions,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import NumberFormat from "react-number-format";
@@ -25,7 +26,7 @@ import {
   getPaymentDetail,
 } from "../../Redux/Payment/paymentActions";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Button, HStack, ScrollView, useToast } from "native-base";
+import { Button, HStack, ScrollView, useToast, VStack } from "native-base";
 
 const PaymentScreen = (props) => {
   const toast = useToast();
@@ -363,9 +364,15 @@ const PaymentScreen = (props) => {
                     borderBottomWidth: 1,
                   }}
                 />
-                {paymentDetail.data?.products.map((val, idx) => (
-                  <View View key={val._id}>
-                    <View
+                <VStack
+                  style={{
+                    marginEnd: 8,
+                    marginStart: 8,
+                    marginTop: 5,
+                  }}
+                >
+                  {paymentDetail.data?.products.map((val, idx) => (
+                    <VStack
                       style={{
                         marginEnd: 8,
                         marginStart: 8,
@@ -375,118 +382,143 @@ const PaymentScreen = (props) => {
                       <Text style={{ marginEnd: "auto" }}>
                         {idx + 1}. {val.title}
                       </Text>
-                      <View style={{ flexDirection: "row" }}>
-                        <Text style={{ marginStart: 15 }}>Harga :</Text>
-                        <Text
+                      <HStack>
+                        <View
                           style={{
-                            ...Fonts.black17Bold,
-
-                            marginEnd: "auto",
-                            marginStart: 160,
+                            width: Dimensions.get("screen").width / 2.3,
                           }}
                         >
-                          IDR
-                        </Text>
-                        <NumberFormat
-                          value={
-                            val.price_discount !== 0
-                              ? val.price_discount
-                              : val.price
-                          }
-                          displayType={"text"}
-                          thousandSeparator="."
-                          decimalSeparator=","
-                          prefix={""}
-                          renderText={(value, props) => (
-                            <Text
-                              style={{
-                                ...Fonts.black17Bold,
-                              }}
-                            >
-                              {value}
-                            </Text>
-                          )}
-                        />
-                      </View>
-                    </View>
-                    {val.price_discount > 0 && (
-                      <View style={{ alignItems: "flex-end", marginEnd: 8 }}>
-                        <Text
+                          <Text>Harga :</Text>
+                        </View>
+                        <View
                           style={{
-                            ...Fonts.black17Bold,
-
                             marginEnd: "auto",
-                            marginStart: 160,
                           }}
                         >
-                          IDR
-                        </Text>
-                        <NumberFormat
-                          value={val.price}
-                          displayType={"text"}
-                          thousandSeparator="."
-                          decimalSeparator=","
-                          prefix={""}
-                          renderText={(value, props) => (
-                            <Text
-                              style={{
-                                marginLeft: Sizes.fixPadding,
-                                color: "black",
-                                opacity: 0.8,
-                                textDecorationLine: "line-through",
-                              }}
-                            >
-                              {value}
-                            </Text>
-                          )}
-                        />
-                      </View>
-                    )}
-                  </View>
-                ))}
-                <HStack
-                  style={{
-                    marginTop: 8,
-                    paddingHorizontal: 8,
-                  }}
-                >
-                  <Text>Biaya Layanan:</Text>
-                  <Text
+                          <Text style={{ ...Fonts.black17Bold }}>IDR</Text>
+                        </View>
+                        <View>
+                          <NumberFormat
+                            value={
+                              val.price_discount !== 0
+                                ? val.price_discount
+                                : val.price
+                            }
+                            displayType={"text"}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            prefix={""}
+                            renderText={(value, props) => (
+                              <Text
+                                style={{
+                                  ...Fonts.black17Bold,
+                                }}
+                              >
+                                {value}
+                              </Text>
+                            )}
+                          />
+                        </View>
+                      </HStack>
+                    </VStack>
+                  ))}
+                  <HStack
                     style={{
-                      ...Fonts.black17Bold,
-
-                      marginEnd: "auto",
-                      marginStart: 126,
+                      marginTop: 8,
+                      paddingHorizontal: 8,
                     }}
                   >
-                    IDR
-                  </Text>
-
-                  <NumberFormat
-                    value={
-                      typeof paymentDetail.data.payment_detail.gross_amount ===
-                      "string"
-                        ? paymentDetail.data.payment_detail.gross_amount.split(
-                            "."
-                          )[0] - totalHarga(paymentDetail.data?.products)
-                        : paymentDetail.data.payment_detail.gross_amount -
-                          totalHarga(paymentDetail.data?.products)
-                    }
-                    displayType={"text"}
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    prefix={""}
-                    renderText={(value, props) => (
-                      <Text
-                        style={{
-                          ...Fonts.black17Bold,
-                        }}
-                      >
-                        {value}
-                      </Text>
-                    )}
+                    <View
+                      style={{
+                        width: Dimensions.get("screen").width / 2.3,
+                      }}
+                    >
+                      <Text>Biaya Layanan :</Text>
+                    </View>
+                    <View
+                      style={{
+                        marginEnd: "auto",
+                      }}
+                    >
+                      <Text style={{ ...Fonts.black17Bold }}>IDR</Text>
+                    </View>
+                    <View>
+                      <NumberFormat
+                        value={
+                          typeof paymentDetail.data.payment_detail
+                            .gross_amount === "string"
+                            ? paymentDetail.data.payment_detail.gross_amount.split(
+                                "."
+                              )[0] - totalHarga(paymentDetail.data?.products)
+                            : paymentDetail.data.payment_detail.gross_amount -
+                              totalHarga(paymentDetail.data?.products)
+                        }
+                        displayType={"text"}
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        prefix={""}
+                        renderText={(value, props) => (
+                          <Text
+                            style={{
+                              ...Fonts.black17Bold,
+                            }}
+                          >
+                            {value}
+                          </Text>
+                        )}
+                      />
+                    </View>
+                  </HStack>
+                  <View
+                    style={{
+                      marginEnd: 8,
+                      marginStart: 8,
+                      marginTop: 5,
+                      borderBottomColor: Colors.ligthGreyColor,
+                      borderBottomWidth: 1,
+                    }}
                   />
-                </HStack>
+                  <HStack
+                    style={{
+                      marginTop: 8,
+                      paddingHorizontal: 8,
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: Dimensions.get("screen").width / 2.3,
+                      }}
+                    >
+                      <Text>Total Biaya :</Text>
+                    </View>
+                    <View
+                      style={{
+                        marginEnd: "auto",
+                      }}
+                    >
+                      <Text style={{ ...Fonts.black17Bold }}>IDR</Text>
+                    </View>
+                    <View>
+                      <NumberFormat
+                        value={
+                          typeof paymentDetail.data.payment_detail
+                            .gross_amount === "string"
+                            ? paymentDetail.data.payment_detail.gross_amount.split(
+                                "."
+                              )[0]
+                            : paymentDetail.data.payment_detail.gross_amount
+                        }
+                        displayType={"text"}
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        prefix={""}
+                        renderText={(value, props) => (
+                          <Text style={{ ...Fonts.black17Bold }}>{value}</Text>
+                        )}
+                      />
+                    </View>
+                  </HStack>
+                </VStack>
               </View>
               <View
                 style={{
@@ -519,7 +551,7 @@ const PaymentScreen = (props) => {
                                   title: "Berhasil",
                                   status: "success",
                                   description:
-                                    "transaksi anda berhasil dibatalakan",
+                                    "Transaksi Anda berhasil dibatalkan",
                                   placement: "top",
                                   width: Dimensions.get("screen").width / 1.3,
                                 });

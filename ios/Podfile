@@ -7,6 +7,8 @@ platform :ios, '12.0'
 require 'json'
 podfile_properties = JSON.parse(File.read('./Podfile.properties.json')) rescue {}
 
+use_frameworks!
+$RNFirebaseAsStaticFramework = true
 target 'goonlinemobileUI' do
   use_expo_modules!
   config = use_native_modules!
@@ -23,8 +25,10 @@ target 'goonlinemobileUI' do
   # end
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
-
+ 
   pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
+
+  
 
   post_install do |installer|
     react_native_post_install(installer)
@@ -32,6 +36,7 @@ target 'goonlinemobileUI' do
     # Workaround `Cycle inside FBReactNativeSpec` error for react-native 0.64
     # Reference: https://github.com/software-mansion/react-native-screens/issues/842#issuecomment-812543933
     installer.pods_project.targets.each do |target|
+     
       if (target.name&.eql?('FBReactNativeSpec'))
         target.build_phases.each do |build_phase|
           if (build_phase.respond_to?(:name) && build_phase.name.eql?('[CP-User] Generate Specs'))

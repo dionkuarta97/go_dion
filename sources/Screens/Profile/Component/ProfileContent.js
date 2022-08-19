@@ -174,7 +174,7 @@ const ProfileContent = (props) => {
         >
           Informasi Alamat
         </Text>
-        {renderInfoTile("Propinsi", profile.provinsi, "map")}
+        {renderInfoTile("Provinsi", profile.provinsi, "map")}
         {renderInfoTile("Kab/Kota", profile.kota, "apartment")}
         {renderInfoTile("Alamat", profile.alamat, "pin-drop")}
         {/* Data Sekolah */}
@@ -186,7 +186,7 @@ const ProfileContent = (props) => {
         >
           Alamat Sekolah
         </Text>
-        {renderInfoTile("Propinsi", profile.provinsi_sekolah, "map")}
+        {renderInfoTile("Provinsi", profile.provinsi_sekolah, "map")}
         {renderInfoTile("Kab/Kota", profile.kota_sekolah, "apartment")}
         {renderInfoTile("Nama Sekolah", profile.sekolah, "school")}
 

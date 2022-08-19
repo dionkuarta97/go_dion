@@ -7,7 +7,7 @@ import SolusiContent from "./components/SolusiContent";
 
 const SolusiScreen = (props) => {
   const { route } = props;
-  const { solution, quiz, answer } = route.params;
+  const { solution, quiz, answer, quiz_options, title } = route.params;
   const [index, setIndex] = useState(0);
   const navigation = useNavigation();
   console.log(solution.length);
@@ -20,6 +20,9 @@ const SolusiScreen = (props) => {
         quiz={quiz}
         answer={answer}
         index={index}
+        title={title}
+        quiz_options={quiz_options}
+        setIndex={setIndex}
       />
       <View
         paddingY={3}

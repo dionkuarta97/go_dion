@@ -115,6 +115,10 @@ const SoalContent = (props) => {
     }
   }, [number]);
 
+  console.log(JSON.stringify(answers, null, 2));
+
+  console.log(answers.length);
+
   const headerComponent = () => {
     return (
       <HStack paddingX={5} paddingTop={4}>
@@ -138,7 +142,7 @@ const SoalContent = (props) => {
         {!delay && (
           <CountDown
             key={"Count 1"}
-            until={sessionDuration}
+            until={60}
             digitStyle={{
               backgroundColor: "transparent",
             }}
@@ -223,6 +227,7 @@ const SoalContent = (props) => {
                     user_answer: [-1],
                   });
                 }
+                console.log(sessionTotal);
                 if (sessionIndex + 1 !== sessionTotal) {
                   dispatch(
                     setSaveScore({
@@ -246,8 +251,11 @@ const SoalContent = (props) => {
                   setQuestions(sessions[sesIndex].questions);
                   setSessionTitle(sessions[sesIndex].title);
                   setAnswers([]);
-                  console.log(JSON.stringify(jawabanKosong), "<<save score");
-                  console.log(jawabanKosong.length, "jawaban kosong");
+                  console.log(
+                    JSON.stringify(jawabanKosong, null, 2),
+                    "<<save score"
+                  );
+                  console.log(jawabanKosong.length);
                 } else {
                   dispatch(
                     setSaveScore({
@@ -430,8 +438,6 @@ const SoalContent = (props) => {
       };
       currentAnswer[number - 1] = tes;
       setAnswers(currentAnswer);
-      console.log("-----> Current Answer");
-      console.log(currentAnswer);
     }
 
     switch (questions[number - 1].tipe) {
@@ -447,7 +453,6 @@ const SoalContent = (props) => {
             onSelect={(answer) => {
               onSelectAnswer(answer);
               setNotAnswer(false);
-              console.log(answers);
             }}
           />
         );
@@ -477,7 +482,7 @@ const SoalContent = (props) => {
             }
             onSelect={(answer) => {
               onSelectAnswer(answer);
-              console.log(answers);
+              // console.log(answers);
             }}
           />
         );

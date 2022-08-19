@@ -72,22 +72,21 @@ const KelasBottomSheet = (props) => {
         {listGrades.data !== null &&
           listGrades.data.map((val, index) => {
             return (
-              <TouchableOpacity onPress={() => setIdx(index)}>
-                <Text
-                  key={index}
-                  style={{
-                    borderWidth: 2,
-                    paddingHorizontal: 20,
-                    paddingVertical: 10,
-                    margin: 10,
-                    borderRadius: 8,
-                    backgroundColor:
-                      idx === index ? Colors.primaryColor : "white",
-                    borderColor: Colors.primaryColor,
-                  }}
-                >
-                  {val.title}
-                </Text>
+              <TouchableOpacity
+                key={index}
+                style={{
+                  borderWidth: 1,
+                  paddingHorizontal: 20,
+                  paddingVertical: 10,
+                  margin: 10,
+                  borderRadius: 8,
+                  backgroundColor:
+                    idx === index ? Colors.primaryColor : "white",
+                  borderColor: Colors.primaryColor,
+                }}
+                onPress={() => setIdx(index)}
+              >
+                <Text>{val.title}</Text>
               </TouchableOpacity>
             );
           })}
@@ -102,6 +101,7 @@ const KelasBottomSheet = (props) => {
                 <Box
                   bg={item.substring(3, 10) === "IPA" ? "red.300" : "amber.400"}
                   borderRadius={5}
+                  paddingY={2}
                 >
                   <Text style={{ alignSelf: "center" }}>{`Kelas ${item}`}</Text>
                 </Box>

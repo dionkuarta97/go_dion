@@ -98,6 +98,16 @@ const HomeMenu = () => {
           );
         }
         break;
+      case 3:
+        if (isLogin) {
+          navigation.navigate("ProductTerbeliScreen");
+        } else {
+          Alert.alert(
+            "Tidak Bisa Masuk",
+            "Kamu harus login terlebih dahulu untuk mengakses menu ini"
+          );
+        }
+        break;
       default:
         break;
     }
@@ -107,7 +117,7 @@ const HomeMenu = () => {
     return (
       <VStack alignItems={"center"}>
         <TouchableHighlight
-          style={{ marginHorizontal: 15, borderRadius: 180 }}
+          style={{ marginHorizontal: 10, borderRadius: 180 }}
           onPress={() => onPressItem(item.idx)}
         >
           <View
@@ -116,26 +126,33 @@ const HomeMenu = () => {
               alignItems: "center",
             }}
           >
-            <View style={styles.menu}>
+            <View style={{ ...styles.menu, elevation: 3 }}>
               <Image
                 source={{ uri: item.image }}
                 style={{
-                  width: Dimensions.get("screen").width / 8.2,
-                  height: Dimensions.get("screen").width / 8.2,
+                  width: Dimensions.get("screen").width / 9.6,
+                  height: Dimensions.get("screen").width / 9.6,
                   tintColor: Colors.orangeColor,
                 }}
               />
             </View>
           </View>
         </TouchableHighlight>
-        <Text
+        <View
           style={{
-            ...Fonts.black15Bold,
-            marginTop: Sizes.fixPadding,
+            width: Dimensions.get("screen").width / 8,
           }}
         >
-          {item.title}
-        </Text>
+          <Text
+            style={{
+              textAlign: "center",
+              ...Fonts.black15Regular,
+              marginTop: Sizes.fixPadding,
+            }}
+          >
+            {item.title}
+          </Text>
+        </View>
       </VStack>
     );
   };
@@ -145,7 +162,8 @@ const HomeMenu = () => {
       style={{
         alignItems: "center",
         justifyContent: "center",
-        marginVertical: 10,
+        marginVertical: 30,
+        paddingHorizontal: 10,
       }}
     >
       {homeMenuState.loading && homeMenuState.error == null ? (
@@ -170,9 +188,9 @@ export default HomeMenu;
 
 const styles = StyleSheet.create({
   menu: {
-    height: Dimensions.get("screen").width / 4.8,
-    width: Dimensions.get("screen").width / 4.8,
-    elevation: 3,
+    height: Dimensions.get("screen").width / 6,
+    width: Dimensions.get("screen").width / 6,
+
     backgroundColor: Colors.whiteColor,
     borderRadius: 60,
     justifyContent: "center",
