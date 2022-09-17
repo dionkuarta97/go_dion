@@ -543,19 +543,48 @@ const PaymentScreen = (props) => {
                                 batalTranksaksi({
                                   order_id: paymentDetail.data.order_id,
                                 })
-                              ).then(() => {
-                                navigation.navigate("MainScreen", {
-                                  from: "pembayaran",
+                              )
+                                .then(() => {
+                                  navigation.navigate("MainScreen", {
+                                    from: "pembayaran",
+                                  });
+                                  toast.show({
+                                    title: "Berhasil",
+                                    status: "success",
+                                    description:
+                                      "Transaksi kamu berhasil dibatalkan",
+                                    placement: "top",
+                                    width: Dimensions.get("screen").width / 1.3,
+                                  });
+                                })
+                                .catch((err) => {
+                                  if (err === "gagal") {
+                                    navigation.navigate("MainScreen", {
+                                      from: "pembayaran",
+                                    });
+                                    toast.show({
+                                      title: "Gagal",
+                                      status: "error",
+                                      description:
+                                        "Terjadi kesalahan pada server",
+                                      placement: "top",
+                                      width:
+                                        Dimensions.get("screen").width / 1.3,
+                                    });
+                                  } else {
+                                    navigation.navigate("MainScreen", {
+                                      from: "pembayaran",
+                                    });
+                                    toast.show({
+                                      title: "Gagal",
+                                      status: "error",
+                                      description: err,
+                                      placement: "top",
+                                      width:
+                                        Dimensions.get("screen").width / 1.3,
+                                    });
+                                  }
                                 });
-                                toast.show({
-                                  title: "Berhasil",
-                                  status: "success",
-                                  description:
-                                    "Transaksi Anda berhasil dibatalkan",
-                                  placement: "top",
-                                  width: Dimensions.get("screen").width / 1.3,
-                                });
-                              });
                             },
                           },
                         ]

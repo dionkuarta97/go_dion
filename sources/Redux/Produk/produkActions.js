@@ -30,7 +30,7 @@ export const getRedeemCode = (payload) => {
     return new Promise((resolve, reject) => {
       dispatch(setRedeemCode(defaultInitState));
       const urlBase = getState().initReducer.baseUrl;
-      console.log(urlBase + "/masterdata/v1/redeems/code");
+
       fetch(urlBase + "/masterdata/v1/redeems/code", {
         method: "POST",
         headers: {
@@ -41,7 +41,6 @@ export const getRedeemCode = (payload) => {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json, "jsssadas");
           if (json.status) {
             dispatch(setRedeemCode(defaultDoneState(json.message)));
           } else {
@@ -49,7 +48,6 @@ export const getRedeemCode = (payload) => {
           }
         })
         .catch((err) => {
-          console.log(err, "errr");
           dispatch(setRedeemCode(defaultErrorState));
         });
     });
@@ -94,11 +92,9 @@ export function getGroupedProduk() {
           } else dispatch(setGroupedProduk(defaultFailedState(json.message)));
         })
         .catch((err) => {
-          console.log(err);
           dispatch(setGroupedProduk(defaultErrorState));
         });
     } catch (err) {
-      console.log(err);
       dispatch(setGroupedProduk(defaultErrorState));
     }
   };
@@ -120,15 +116,12 @@ export function setLoading(payload) {
 
 export function getAllProduk(section_id, page) {
   return async (dispatch, getState) => {
-    console.log("ini jalan");
     if (page === 1) {
       dispatch(setAllProduk(defaultInitState));
     } else dispatch(setLoading(true));
     try {
       const urlBase = getState().initReducer.baseUrl;
       const product = getState().produkReducer.allProduk.data;
-      console.log(product, "ini product");
-      console.log(urlBase + urlGroupedProduk + `/${section_id}?page=${page}`);
       fetch(urlBase + urlGroupedProduk + `/${section_id}?page=${page}`, {
         method: "GET",
         headers: {
@@ -158,7 +151,6 @@ export function getAllProduk(section_id, page) {
           }, 2000);
         })
         .catch((err) => {
-          console.log(err);
           dispatch(setAllProduk(defaultErrorState));
           setTimeout(() => {
             dispatch(setLoading(false));
@@ -166,7 +158,6 @@ export function getAllProduk(section_id, page) {
           }, 1000);
         });
     } catch (err) {
-      console.log(err);
       setTimeout(() => {
         dispatch(setLoading(false));
         dispatch(setLoadingDua(false));
@@ -208,7 +199,6 @@ export function getTotalPurchasedProduk(section_id) {
           dispatch(setTotalPurchasedProduk(defaultErrorState));
         });
     } catch (err) {
-      console.log(err, "<<<< err2");
       dispatch(setTotalPurchasedProduk(defaultErrorState));
     }
   };
@@ -222,7 +212,6 @@ export function setPurchasedProduk(state) {
 }
 
 export function getPurchasedproduk(section_id) {
-  console.log("Start getting purchased produk");
   return async (dispatch, getState) => {
     dispatch(setPurchasedProduk(defaultInitState));
     try {
@@ -235,17 +224,14 @@ export function getPurchasedproduk(section_id) {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
           if (json.status) {
             dispatch(setPurchasedProduk(defaultDoneState(json.data)));
           } else dispatch(setPurchasedProduk(defaultFailedState(json.message)));
         })
         .catch((err) => {
-          console.log(err);
           dispatch(setPurchasedProduk(defaultErrorState));
         });
     } catch (err) {
-      console.log(err);
       dispatch(setPurchasedProduk(defaultErrorState));
     }
   };
@@ -271,17 +257,14 @@ export function getIncludesProduk(produkId) {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
           if (json.status) {
             dispatch(setIncludesProduk(defaultDoneState(json.data)));
           } else dispatch(setIncludesProduk(defaultFailedState(json.message)));
         })
         .catch((err) => {
-          console.log(err);
           dispatch(setIncludesProduk(defaultErrorState));
         });
     } catch (err) {
-      console.log(err);
       dispatch(setIncludesProduk(defaultErrorState));
     }
   };
@@ -314,7 +297,6 @@ export function getSearchProductTitle(payload) {
         dispatch(setSearchProductTitle(defaultDoneState(result.data)));
       else dispatch(setSearchProductTitle(defaultFailedState(result.message)));
     } catch (err) {
-      console.log(err);
       dispatch(setSearchProductTitle(defaultErrorState));
     }
   };

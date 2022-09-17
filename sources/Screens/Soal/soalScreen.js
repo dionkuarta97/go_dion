@@ -50,6 +50,7 @@ const SoalScreen = ({ route }) => {
   const [loading, setLoading] = useState(true);
   const [loadingBawah, setLoadingBawah] = useState(false);
   const [loadingSoal, setLoadingSoal] = useState(false);
+  const [timeOpen, setTimeOpen] = useState(null);
 
   useEffect(() => {
     dispatch(getSoal());
@@ -115,12 +116,28 @@ const SoalScreen = ({ route }) => {
                   soal.data.sessions[key].session_configs.session_duration
                 );
               }
+              let firstOpen = [];
+              let now = new Date();
+              let jml = 0;
+              for (let i = 0; i < time.length; i++) {
+                if (i === 0) {
+                  firstOpen.push(now.getTime());
+                } else {
+                  jml += time[i];
+                  let int = (jml + 10) * 1000;
+                  firstOpen.push(now.getTime() + int);
+                }
+              }
               let data = {
                 user_id: profile._id,
                 soal_id: soal.data._id,
                 jawaban: arry,
                 sesi: sesi,
                 time: time,
+                firstOpen: firstOpen,
+                title: params.title,
+                blockTime: params.blockTime,
+                soalUrl: params.soalUrl,
               };
 
               if (querySnapshot.docs.length === 0) {
@@ -133,7 +150,6 @@ const SoalScreen = ({ route }) => {
                     setFirestoreId(snapshot.id);
                     dispatch(setJawabanNon(temp));
                     setWaktuUjian(time[sesi]);
-                    setFirestoreTime(time);
                     setLoading(false);
                   })
                   .catch(() => navigation.goBack());
@@ -144,12 +160,19 @@ const SoalScreen = ({ route }) => {
                   console.log(key);
                   ar.push(jwb.jawaban[key]);
                 }
+
                 setFirestoreTime(jwb.time);
+                setTimeOpen(jwb.firstOpen);
                 setFirestoreId(jwb.id);
                 dispatch(setJawabanNon(ar));
-                setSesi(jwb.sesi);
-                console.log(jwb.time[sesi]);
-                setWaktuUjian(jwb.time[sesi]);
+                let now = new Date();
+                let temp = (now.getTime() - jwb.firstOpen[jwb.sesi]) / 1000;
+                if (temp < jwb.time[jwb.sesi]) {
+                  setSesi(jwb.sesi);
+                  setWaktuUjian(jwb.time[jwb.sesi] - temp);
+                } else {
+                  setSesi(jwb.sesi + 1);
+                }
                 setLoading(false);
               }
             })
@@ -165,22 +188,38 @@ const SoalScreen = ({ route }) => {
       animated: false,
     });
     if (params.blockTime) {
-      if (sesi > 0) {
-        setLoading(true);
-        firestore()
-          .collection("Jawaban")
-          .doc(firestoreId)
-          .update({
-            sesi: sesi,
-          })
-          .then(() => {
-            setWaktuUjian(firestoreTime[sesi]);
-          })
-          .then(() => setLoading(false))
-          .catch(() => navigation.goBack());
+      if (firestoreTime) {
+        if (sesi > 0 && sesi < firestoreTime.length) {
+          setLoading(true);
+          if (!delay) {
+            setDelay(true);
+          }
+          firestore()
+            .collection("Jawaban")
+            .doc(firestoreId)
+            .update({
+              sesi: sesi,
+            })
+            .then(() => {
+              let now = new Date();
+              let temp = (now.getTime() - timeOpen[sesi]) / 1000;
+              if (temp < firestoreTime[sesi]) {
+                setWaktuUjian(firestoreTime[sesi] - temp);
+              } else {
+                setSesi(sesi + 1);
+              }
+            })
+            .then(() => setLoading(false))
+            .catch(() => navigation.goBack());
+        } else if (sesi === firestoreTime.length) {
+          setDelay(true);
+          setFinish(true);
+        }
       }
     }
   }, [sesi]);
+
+  console.log(sesi);
 
   useEffect(() => {
     if (finish) {
@@ -273,8 +312,6 @@ const SoalScreen = ({ route }) => {
                   sisaTime={sisaTime}
                   waktuUjian={waktuUjian}
                   delay={delay}
-                  firestoreTime={firestoreTime}
-                  setFirestoreTime={setFirestoreTime}
                   firestoreId={firestoreId}
                   setNomor={setNomor}
                   setFinish={setFinish}
@@ -312,8 +349,6 @@ const SoalScreen = ({ route }) => {
                     setFinish={setFinish}
                     setWaktuUjian={setWaktuUjian}
                     totalSesi={soal.data.sessions.length}
-                    firestoreTime={firestoreTime}
-                    setFirestoreTime={setFirestoreTime}
                     setLoadingBawah={setLoadingBawah}
                     firestoreId={firestoreId}
                   />

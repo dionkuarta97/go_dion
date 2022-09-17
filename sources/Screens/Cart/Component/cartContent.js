@@ -4,33 +4,27 @@ import { Alert, ScrollView, Text, View } from "react-native";
 import NumberFormat from "react-number-format";
 
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import ProductCardHorizontal from "../../../Components/Card/ProductCardHorizontal";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
-import { getPurchasedproduk } from "../../../Redux/Produk/produkActions";
-import { getPaymentList } from "../../../Redux/Payment/paymentActions";
 
 const CartContent = () => {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
   const isLogin = useSelector((state) => state.authReducer.isLogin);
   const cart = useSelector((state) => state.cartReducer.cart);
-  const [duplicate, setDuplicate] = useState([]);
-  const purchasedProduk = useSelector(
-    (state) => state.produkReducer.purchasedProduk
-  );
 
   const checkAll = (arr1) => {
+    let temp = false;
     for (const i in arr1) {
       if (arr1[i].purchased) {
-        return true;
+        temp = true;
+        break;
       }
     }
+    return temp;
   };
-
-  console.log(JSON.stringify(cart, null, 2));
 
   return (
     <View style={{ flex: 1 }}>
@@ -104,7 +98,10 @@ const CartContent = () => {
           onPress={() => {
             if (isLogin) {
               if (checkAll(cart)) {
-                Alert.alert("warning", "terdapat produk yang sudah anda beli");
+                Alert.alert(
+                  "Peringatan",
+                  "Terdapat produk yang sudah kamu beli"
+                );
               } else {
                 navigation.navigate("CheckoutScreen");
               }

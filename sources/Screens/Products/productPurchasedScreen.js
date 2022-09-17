@@ -72,17 +72,7 @@ const ProductPurchasedScreen = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar
-        title="Produk Terbeli"
-        backEnabled={true}
-        rightItem={
-          <View style={{ flexDirection: "row" }}>
-            <ActionButtonFilter />
-            <View style={{ width: 15 }} />
-            {Platform.OS === "android" && <ActionButtonCart />}
-          </View>
-        }
-      />
+      <DefaultAppBar title="Produk Terbeli" backEnabled={true} />
       <View style={{ flex: 1 }}>
         {purchasedProduk.loading && (
           <View
@@ -133,11 +123,6 @@ const ProductPurchasedScreen = (props) => {
                         }}
                         resizeMode="cover"
                       />
-                      {item.purchased && (
-                        <View style={styles.purchasedCircle}>
-                          <MaterialIcons name="check" size={12} color="white" />
-                        </View>
-                      )}
                     </View>
                     <View
                       style={{
@@ -222,7 +207,7 @@ const ProductPurchasedScreen = (props) => {
                 alignItems: "center",
               }}
             >
-              <NoData msg="Anda belum membeli produk" />
+              <NoData msg="Kamu belum membeli produk" />
             </View>
           ))}
       </View>

@@ -25,10 +25,16 @@ import DefaultModal from "../../../Components/Modal/DefaultModal";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
 import { capitalizeFirstLetter } from "../../../Services/helper";
 import { setTransIos } from "../../../Redux/Init/initActions";
+import { useToast } from "native-base";
+
+let purchaseUpdateSubscription = null;
+
+let purchaseErrorSubscription = null;
 
 const { width } = Dimensions.get("screen");
 
 const ProductDetailContent = (props) => {
+  const toast = useToast();
   const isLogin = useSelector((state) => state.authReducer.isLogin);
   const { newTransIos } = useSelector((state) => state.initReducer);
   const [sukses, setSukses] = useState(false);
@@ -57,6 +63,7 @@ const ProductDetailContent = (props) => {
               let trans = newTransIos.filter((value) =>
                 value.user_id.includes(profile._id)
               );
+              console.log(JSON.stringify(trans, null, 2), "<<<trans");
               if (trans.length > 0) {
                 dispatch(getPaymentApple(item))
                   .then(async (json) => {
@@ -65,7 +72,14 @@ const ProductDetailContent = (props) => {
                         (value) => value.user_id !== profile._id
                       );
                       dispatch(setTransIos(newTrans));
-                      setSukses(true);
+                      toast.show({
+                        title: "Berhasil",
+                        status: "success",
+                        description: "Berhasil melakukan pembelian",
+                        placement: "top",
+                        width: Dimensions.get("screen").width / 1.3,
+                      });
+                      navigation.navigate("MainScreen");
                     } else {
                       setError(
                         "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
@@ -103,16 +117,52 @@ const ProductDetailContent = (props) => {
               const receipt = purchase.transactionReceipt;
               if (receipt) {
                 console.log("sukkseessss");
-                if (isLogin) {
-                  dispatch(getPaymentApple(item))
-                    .then(async (json) => {
-                      if (json.status) {
-                        let newTrans = newTransIos.filter(
-                          (value) => value.user_id !== profile._id
+                const receiptBody = {
+                  "receipt-data": receipt,
+                  password: "f72a4af2242a467395a3bb582c099e69",
+                };
+                const validate = await RNIap.validateReceiptIos(
+                  receiptBody,
+                  true
+                );
+                if (validate) {
+                  if (isLogin) {
+                    dispatch(getPaymentApple(item))
+                      .then(async (json) => {
+                        console.log(
+                          JSON.stringify(json, null, 2),
+                          "<<<<<bawah"
                         );
-                        dispatch(setTransIos(newTrans));
-                        setSukses(true);
-                      } else {
+                        if (json.status) {
+                          let newTrans = newTransIos.filter(
+                            (value) => value.user_id !== profile._id
+                          );
+                          dispatch(setTransIos(newTrans));
+                          await RNIap.finishTransaction(purchase, true);
+                          setLoading(false);
+                          toast.show({
+                            title: "Berhasil",
+                            status: "success",
+                            description: "Berhasil melakukan pembelian",
+                            placement: "top",
+                            width: Dimensions.get("screen").width / 1.3,
+                          });
+                          navigation.navigate("MainScreen");
+                        } else {
+                          dispatch(
+                            setTransIos([
+                              ...newTransIos,
+                              { item: item, user_id: profile._id },
+                            ])
+                          );
+                          setError(
+                            "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
+                          );
+                          await RNIap.finishTransaction(purchase, true);
+                          setLoading(false);
+                        }
+                      })
+                      .catch(async (err) => {
                         dispatch(
                           setTransIos([
                             ...newTransIos,
@@ -120,28 +170,16 @@ const ProductDetailContent = (props) => {
                           ])
                         );
                         setError(
-                          "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
+                          "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
                         );
-                      }
-
-                      console.log(json, "<<<<<Json");
-                    })
-                    .catch(async (err) => {
-                      dispatch(
-                        setTransIos([
-                          ...newTransIos,
-                          { item: item, user_id: profile._id },
-                        ])
-                      );
-
-                      setError(
-                        "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
-                      );
-                    })
-                    .finally(async () => {
-                      await RNIap.finishTransaction(purchase, true);
-                      setLoading(false);
-                    });
+                        await RNIap.finishTransaction(purchase, true);
+                        setLoading(false);
+                      })
+                      .finally(() => {
+                        purchaseUpdateSubscription.remove();
+                        purchaseUpdateSubscription = null;
+                      });
+                  }
                 }
               }
             }

@@ -81,13 +81,9 @@ export default App = () => {
   useEffect(() => {
     OneSignal.setLogLevel(6, 0);
     OneSignal.setAppId("419576d0-3ce4-47c8-9538-452216cfb157");
-    OneSignal.setNotificationOpenedHandler((notification) => {
-      console.log("OneSignal: notification opened:", notification);
-    });
+    OneSignal.setNotificationOpenedHandler((notification) => {});
     if (Platform.OS === "ios") {
-      OneSignal.promptForPushNotificationsWithUserResponse((response) => {
-        console.log("Prompt response:", response);
-      });
+      OneSignal.promptForPushNotificationsWithUserResponse((response) => {});
     }
   }, []);
 

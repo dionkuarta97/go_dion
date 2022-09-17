@@ -28,7 +28,6 @@ export function getMe() {
         .then((response) => response.json())
         .then((json) => {
           if (json.status) {
-            console.log(JSON.stringify(json, null, 2));
             if (json.data.profile.is_active === false) {
               dispatch(setLoginStatus(false));
               dispatch(setToken(null));
@@ -44,10 +43,11 @@ export function getMe() {
             dispatch(setMe(defaultDoneState(json.data.user)));
             dispatch(setProfile(json.data.profile));
             dispatch(setStatistic(json.data.statistics));
-          } else dispatch(setMe(defaultFailedState(json.message)));
+          } else {
+            dispatch(setMe(defaultFailedState(json.message)));
+          }
         })
         .catch((err) => {
-          console.log(err);
           dispatch(setMe(defaultErrorState));
         });
     } catch (err) {
@@ -110,7 +110,6 @@ export function getUpdateProfile(bodyParams) {
           } else dispatch(setUpdateProfile(defaultFailedState(json.message)));
         })
         .catch((err) => {
-          console.log(err);
           dispatch(setUpdateProfile(defaultErrorState));
         });
     } catch (err) {

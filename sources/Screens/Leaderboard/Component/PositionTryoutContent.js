@@ -6,6 +6,7 @@ import {
   ScrollView,
   Box,
   Image,
+  Center,
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +15,7 @@ import LeaderboardCard from "./LeaderboardCard";
 import { Dimensions, ActivityIndicator } from "react-native";
 import Colors from "../../../Theme/Colors";
 import { useNavigation } from "@react-navigation/native";
+import NoData from "../../../Components/NoData";
 const PositionTryoutContent = (props) => {
   const temp = props.select;
   const { id, tahun } = props;
@@ -37,8 +39,6 @@ const PositionTryoutContent = (props) => {
       )
     );
   }, [select]);
-
-  console.log(JSON.stringify(positionTryout, null, 2));
 
   return (
     <>
@@ -91,6 +91,13 @@ const PositionTryoutContent = (props) => {
           <View padding={5}>
             <ActivityIndicator color={Colors.orangeColor} size={30} />
           </View>
+        )}
+        {positionTryout.data?.rankings.length === 0 && (
+          <Center>
+            <View>
+              <NoData msg="Belum Ada Data" img="noimage" />
+            </View>
+          </Center>
         )}
         <ScrollView marginBottom={Dimensions.get("screen").height / 30}>
           {positionTryout.data?.rankings.map((el) => (

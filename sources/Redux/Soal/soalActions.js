@@ -43,6 +43,7 @@ export function getSoal() {
     try {
       console.log(getState().soalReducer.url);
       const urlBase = getState().initReducer.baseUrl;
+      console.log(urlBase + getState().soalReducer.url);
       fetch(urlBase + getState().soalReducer.url, {
         method: "GET",
         headers: {
@@ -114,9 +115,11 @@ export function saveAnswer(data) {
           } else dispatch(setSaveAnswer(defaultFailedState(json.message)));
         })
         .catch((err) => {
+          console.log(err);
           dispatch(setSaveAnswer(defaultErrorState));
         });
     } catch (err) {
+      console.log(err);
       dispatch(setSaveAnswer(defaultErrorState));
     }
   };

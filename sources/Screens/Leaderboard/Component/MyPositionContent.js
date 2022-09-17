@@ -6,6 +6,7 @@ import {
   ScrollView,
   Box,
   Image,
+  Center,
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +15,7 @@ import LeaderboardCard from "./LeaderboardCard";
 import { Dimensions, ActivityIndicator, TouchableOpacity } from "react-native";
 import Colors from "../../../Theme/Colors";
 import { useNavigation } from "@react-navigation/native";
+import NoData from "../../../Components/NoData";
 const MyPositionContent = (props) => {
   const temp = props.select;
   const { tahun } = props;
@@ -91,6 +93,13 @@ const MyPositionContent = (props) => {
           <View padding={5}>
             <ActivityIndicator color={Colors.orangeColor} size={30} />
           </View>
+        )}
+        {myPosition.data?.rankings.length === 0 && (
+          <Center>
+            <View>
+              <NoData msg="Belum Ada Data" img="noimage" />
+            </View>
+          </Center>
         )}
         <ScrollView marginBottom={Dimensions.get("screen").height / 30}>
           {myPosition.data?.rankings.map((el) => (

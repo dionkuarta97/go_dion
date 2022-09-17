@@ -1,6 +1,6 @@
-import { HStack, Text, Button } from "native-base";
+import { HStack, Text, Button, View } from "native-base";
 import React, { useRef, useEffect, useState } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, TouchableOpacity } from "react-native";
 import RenderHTML from "react-native-render-html";
 const options = ["A", "B", "C", "D", "E", "F"];
 
@@ -28,10 +28,43 @@ const RenderOption = ({
     setValue(0);
   }, [nomor]);
 
+  console.log(JSON.stringify(el.pilihan, null));
+
   return (
-    <HStack space={4} alignItems="center">
-      <Text>{options[idx]}</Text>
-      <Button
+    <TouchableOpacity
+      disabled={
+        loading || loadingBawah
+          ? true
+          : pilihan.user_answer[0] === idx
+          ? true
+          : false
+      }
+      style={{
+        borderWidth: 0.5,
+        paddingHorizontal: 15,
+        marginBottom: 20,
+        borderRadius: 10,
+        backgroundColor: pilihan.user_answer[0] === idx ? "#E1FFDF" : "white",
+      }}
+      onPress={() => {
+        pilihJawaban({
+          duration:
+            pilihan.duration === -1
+              ? pilihan.duration + value + 1
+              : pilihan.duration + value,
+          user_answer: [idx],
+        });
+        setValue(0);
+        clearInterval(countInterval);
+        setPilihan({
+          duration: -1,
+          user_answer: [idx],
+        });
+      }}
+    >
+      <HStack space={4} alignItems="center">
+        <Text>{options[idx]}.</Text>
+        {/* <Button
         bg={pilihan.user_answer[0] === idx ? "#E1FFDF" : "white"}
         disabled={
           loading || loadingBawah
@@ -66,14 +99,25 @@ const RenderOption = ({
         paddingX={4}
         marginBottom={3}
       >
-        <RenderHTML
-          source={{
-            html: `${el.pilihan}`,
-          }}
-          contentWidth={Dimensions.get("screen").width / 1.6}
-        />
-      </Button>
-    </HStack>
+        <View flex={1}>
+          <RenderHTML
+            source={{
+              html: `<table><tbody><tr><td><p>persebaran tanah sesuai kondisi wilayah suatu daerah.</p></td></tr></tbody></table>`,
+            }}
+            contentWidth={Dimensions.get("screen").width / 1.6}
+          />
+        </View>
+      </Button> */}
+        <View flex={1}>
+          <RenderHTML
+            source={{
+              html: `${el.pilihan}`,
+            }}
+            contentWidth={Dimensions.get("screen").width / 1.6}
+          />
+        </View>
+      </HStack>
+    </TouchableOpacity>
   );
 };
 

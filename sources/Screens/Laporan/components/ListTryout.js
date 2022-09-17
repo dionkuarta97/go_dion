@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getListTryout } from "../../../Redux/Laporan/LaporanAction";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../../../Theme/Colors";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 const ListTryout = (props) => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const ListTryout = (props) => {
     if (type) dispatch(getListTryout(type));
   }, [type]);
 
-  console.log(JSON.stringify(listTryout, null, 2));
+  console.log(JSON.stringify(type, null, 2));
 
   return (
     <>
@@ -34,12 +34,23 @@ const ListTryout = (props) => {
             {listTryout.data.map((el, idx) => (
               <TouchableOpacity
                 key={el._id}
-                onPress={() =>
-                  navigation.navigate("ProgressTryout", {
-                    type: type,
-                    _id: el._id,
-                  })
-                }
+                onPress={() => {
+                  if (type === "sbmptn") {
+                    if (el.status) {
+                      navigation.navigate("ProgressTryout", {
+                        type: type,
+                        _id: el._id,
+                      });
+                    } else {
+                      Alert.alert("Informasi", "Laporan kamu sedang di proses");
+                    }
+                  } else {
+                    navigation.navigate("ProgressTryout", {
+                      type: type,
+                      _id: el._id,
+                    });
+                  }
+                }}
               >
                 <View
                   style={{

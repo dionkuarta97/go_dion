@@ -25,7 +25,6 @@ export function getSliderImages() {
           data: null,
         })
       );
-      console.log(err);
     }
   };
 }

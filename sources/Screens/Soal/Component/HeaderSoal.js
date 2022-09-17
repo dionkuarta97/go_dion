@@ -7,11 +7,12 @@ import {
   Text,
   VStack,
 } from "native-base";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LihatSoal from "./LihatSoal";
 import WaktuSoal from "./WaktuSoal";
 
 const HeaderSoal = (props) => {
+  const [temp, setTemp] = useState(false);
   const {
     config,
     title,
@@ -33,6 +34,15 @@ const HeaderSoal = (props) => {
     loadingBawah,
     loading,
   } = props;
+
+  useEffect(() => {
+    if (sisaTime < 10 && sisaTime > 1) {
+      setTemp(true);
+    }
+    if (temp) {
+      setTemp(false);
+    }
+  }, [sisaTime]);
 
   return (
     <>
@@ -67,9 +77,11 @@ const HeaderSoal = (props) => {
           setNomor={setNomor}
         />
       </HStack>
-      {sisaTime < 10 && sisaTime > 0 && (
+      {sisaTime < 10 && sisaTime > 1 && (
         <Center mt={2}>
-          <Text color={"red.600"}>Waktu ujian akan segera habis!</Text>
+          <Text bold fontSize={18} opacity={temp ? 1 : 0} color={"red.600"}>
+            Waktu ujian akan segera habis!
+          </Text>
         </Center>
       )}
       <HStack alignItems={"center"} mt={3}>

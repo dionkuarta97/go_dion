@@ -15,7 +15,6 @@ const TahunAjaran = (props) => {
     }
   }, [tahun]);
 
-  console.log(tryout);
   return (
     <>
       <Text marginTop={1} bold>

@@ -64,7 +64,6 @@ export function getLogin({ username, password, playerId }) {
         .then((response) => response.json())
         .then((json) => {
           if (json.status) {
-            console.log(json);
             dispatch(setLoginData(defaultDoneState(json.data)));
             dispatch(setLoginStatus(true));
             dispatch(setToken(json.data.token));
@@ -80,9 +79,7 @@ export function getLogin({ username, password, playerId }) {
               }),
             })
               .then((response) => response.json())
-              .then((json) => {
-                console.log(json);
-              });
+              .then((json) => {});
           } else dispatch(setLoginData(defaultFailedState(json.message)));
         })
         .catch((err) => {
@@ -159,7 +156,6 @@ export function setEmailCheck(state) {
 }
 
 export function getEmailCheck(email) {
-  console.log(email);
   return async (dispatch, getState) => {
     const urlBase = getState().initReducer.baseUrl;
 
@@ -173,7 +169,6 @@ export function getEmailCheck(email) {
         .then((response) => response.json())
         .then((json) => {
           if (json.status) {
-            console.log(json);
             dispatch(setEmailCheck(defaultDoneState(json.message)));
           } else dispatch(setEmailCheck(defaultFailedState(json.message)));
         })
@@ -206,7 +201,6 @@ export function getRegister(bodyParams) {
         .then((response) => response.json())
         .then((json) => {
           if (json.status) {
-            console.log(json);
             dispatch(setRegister(defaultDoneState(json.data)));
           } else dispatch(setRegister(defaultFailedState(json.message)));
         })
@@ -231,7 +225,7 @@ export function getForgotPassword(email, os) {
     dispatch(setForgotPassword(defaultInitState));
     try {
       const urlBase = getState().initReducer.baseUrl;
-      console.log(urlBase + urlForgotPassword);
+
       fetch(urlBase + urlForgotPassword, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -240,7 +234,6 @@ export function getForgotPassword(email, os) {
         .then((response) => response.json())
         .then((json) => {
           if (json.status) {
-            console.log(json);
             dispatch(setForgotPassword(defaultDoneState(json.message)));
           } else dispatch(setForgotPassword(defaultFailedState(json.message)));
         })

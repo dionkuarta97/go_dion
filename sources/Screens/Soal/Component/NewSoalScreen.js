@@ -24,8 +24,6 @@ const NewSoalScreen = (props) => {
     setFinish,
     setDelay,
     setSesi,
-    firestoreTime,
-    setFirestoreTime,
     firestoreId,
     loadingBawah,
     loading,
@@ -52,20 +50,15 @@ const NewSoalScreen = (props) => {
       let temp = jawabanNon;
       temp[sesi][nomor] = pilih;
       dispatch(setJawabanNon(temp));
-      let newTime = firestoreTime;
-      newTime[sesi] = sisaTime;
       let newTemp = {};
       for (const key in temp) {
         newTemp[`${key}`] = temp[key];
       }
-      setFirestoreTime(newTime);
-      console.log(firestoreTime);
       firestore()
         .collection("Jawaban")
         .doc(firestoreId)
         .update({
           jawaban: newTemp,
-          time: newTime,
         })
         .then(() => setLoading(false))
         .catch(() => navigation.goBack());

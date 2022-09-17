@@ -38,11 +38,11 @@ const WaktuSoal = (props) => {
           }
         }}
         size={30}
-        timeToShow={["M", "S"]}
-        timeLabels={{ m: null, s: null }}
         onChange={(t) => {
           setSisaWaktu(t);
         }}
+        timeToShow={["M", "S"]}
+        timeLabels={{ m: null, s: null }}
       />
     </>
   );

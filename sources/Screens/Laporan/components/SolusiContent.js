@@ -8,7 +8,7 @@ import {
   Button,
   Heading,
 } from "native-base";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import RenderHtml from "react-native-render-html";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -23,7 +23,16 @@ const SolusiContent = (props) => {
 
   const navigation = useNavigation();
 
+  const scrollRef = useRef();
+
   console.log(JSON.stringify(quiz, null, 2));
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      y: 0,
+      animated: false,
+    });
+  }, [index]);
 
   const renderOption = (el, idx) => {
     return (
@@ -68,7 +77,7 @@ const SolusiContent = (props) => {
   };
 
   return (
-    <ScrollView padding={15}>
+    <ScrollView ref={scrollRef} padding={15}>
       <Heading>{title}</Heading>
       <HStack>
         <Text marginTop={2} style={{ marginEnd: "auto" }} fontSize={16}>
@@ -115,7 +124,7 @@ const SolusiContent = (props) => {
       </Text>
 
       {solution[index]["type"] === "VIDEO" ? (
-        <Center marginTop={10}>
+        <Center marginTop={10} marginBottom={100}>
           <Button
             shadow={2}
             bg={"amber.400"}
@@ -123,6 +132,7 @@ const SolusiContent = (props) => {
             onPress={() => {
               navigation.navigate("TestVideo", {
                 video: solution[index]["video"],
+                from: "Video Solusi",
               });
             }}
           >
