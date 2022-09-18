@@ -53,11 +53,7 @@ export const getMyPosition = (type, tahun) => {
       dispatch(setMyPosition(defaultInitState));
       const urlBase = getState().initReducer.baseUrl;
       const response = await fetch(
-        urlBase +
-          "/scoring/v1/report/leaderboards/my-rank/" +
-          type +
-          "?tahun=" +
-          tahun,
+        urlBase + "/report/v1/leaderboards/my-rank/" + type + "?tahun=" + tahun,
         {
           method: "GET",
           headers: {
@@ -72,7 +68,6 @@ export const getMyPosition = (type, tahun) => {
         dispatch(setMyPosition(defaultFailedState(json.message)));
       }
     } catch (err) {
-      console.log(err);
       dispatch(setMyPosition(defaultErrorState));
     }
   };
@@ -85,7 +80,7 @@ export const getPositionTryout = (type, params) => {
       const urlBase = getState().initReducer.baseUrl;
       const response = await fetch(
         urlBase +
-          "/scoring/v1/report/leaderboards/tryout/my-rank/" +
+          "/report/v1/leaderboards/tryout/my-rank/" +
           type +
           "?tryout_id=" +
           params.id +
@@ -105,7 +100,6 @@ export const getPositionTryout = (type, params) => {
         dispatch(setPositionLeader(defaultFailedState(json.message)));
       }
     } catch (err) {
-      console.log(err);
       dispatch(setPositionLeader(defaultErrorState));
     }
   };
@@ -124,7 +118,7 @@ export const getLeaderboard = (params, leaderboard) => {
 
       const response = await fetch(
         urlBase +
-          "/scoring/v1/report/leaderboards/" +
+          "/report/v1/leaderboards/" +
           params.type +
           "?limit=" +
           params.limit +
@@ -162,7 +156,6 @@ export const getLeaderboard = (params, leaderboard) => {
         dispatch(setLeaderboard(defaultFailedState(json.message)));
       }
     } catch (err) {
-      console.log(err);
       dispatch(setLeaderboard(defaultErrorState));
     }
   };
@@ -178,22 +171,10 @@ export const getTryoutLeader = (params, leaderboard) => {
       }
 
       const urlBase = getState().initReducer.baseUrl;
-      console.log(
-        urlBase +
-          "/scoring/v1/report/leaderboards/tryout/" +
-          params.type +
-          "?limit=" +
-          params.limit +
-          "&page=" +
-          params.page +
-          "&tahun=" +
-          params.tahun +
-          "&tryout_id=" +
-          params.id
-      );
+
       const response = await fetch(
         urlBase +
-          "/scoring/v1/report/leaderboards/tryout/" +
+          "/report/v1/leaderboards/tryout/" +
           params.type +
           "?limit=" +
           params.limit +
@@ -235,7 +216,6 @@ export const getTryoutLeader = (params, leaderboard) => {
         dispatch(setTryoutLeader(defaultFailedState(json.message)));
       }
     } catch (err) {
-      console.log(err);
       dispatch(setTryoutLeader(defaultErrorState));
     }
   };

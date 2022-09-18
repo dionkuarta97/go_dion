@@ -1,4 +1,13 @@
-import { Box, Button, HStack, Text, useToast, View, VStack } from "native-base";
+import {
+  Box,
+  Button,
+  Center,
+  HStack,
+  Text,
+  useToast,
+  View,
+  VStack,
+} from "native-base";
 import React, { useEffect, useState } from "react";
 import { Dimensions, ScrollView, TouchableHighlight } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,17 +27,23 @@ import Colors from "../../../Theme/Colors";
 import { useNavigation } from "@react-navigation/native";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Linking } from "react-native";
 
 export default function ProgressTryoutContent(props) {
   const { _id, type } = props;
+  const OpenWEB = (url) => {
+    Linking.openURL(url);
+  };
   const toast = useToast();
   const navigation = useNavigation();
   const { detailTryout } = useSelector((state) => state.laporanReducer);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-
+  const [link, setLink] = useState(null);
   const [data, setData] = useState();
   const [maxima, setMaxima] = useState();
+  const token = useSelector((state) => state.authReducer.token);
   useEffect(() => {
     checkInternet().then((data) => {
       if (data) {
@@ -84,6 +99,25 @@ export default function ProgressTryoutContent(props) {
       setLoading(false);
     }
   }, [detailTryout]);
+
+  useEffect(() => {
+    fetch(
+      `https://apionline.gobimbelonline.net/report/v1/tryouts/${_id}/download`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        if (json.status) {
+          setLink(json.data);
+        }
+      });
+  }, []);
 
   return (
     <>
@@ -256,6 +290,28 @@ export default function ProgressTryoutContent(props) {
               </TouchableHighlight>
             ))}
           </>
+        )}
+        {link && (
+          <Center marginBottom={50}>
+            <Button
+              bg={"red.500"}
+              _pressed={{
+                bg: "red.400",
+              }}
+              onPress={() => OpenWEB(link)}
+            >
+              <HStack space={1}>
+                <MaterialCommunityIcons
+                  name="file-pdf-box"
+                  size={24}
+                  color="white"
+                />
+                <Text color={"white"} bold>
+                  Unduh Laporan
+                </Text>
+              </HStack>
+            </Button>
+          </Center>
         )}
       </ScrollView>
     </>

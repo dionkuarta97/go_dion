@@ -17,7 +17,7 @@ import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import ExpandableTile from "../../Components/Tile/ExpendableTile";
 import ToastErrorContent from "../../Components/ToastErrorContent";
-import { getScore } from "../../Redux/Score/scoreActions";
+import { getScore, setScore } from "../../Redux/Score/scoreActions";
 import checkInternet from "../../Services/CheckInternet";
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
@@ -61,6 +61,9 @@ const TryoutScoreScreen = (props) => {
         }
       });
     }
+    return () => {
+      dispatch(setScore({ loading: false, error: null, data: null }));
+    };
   }, []);
 
   return (

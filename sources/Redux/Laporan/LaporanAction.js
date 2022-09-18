@@ -26,15 +26,12 @@ export function getTypeTryout() {
       dispatch(setTypeTryout(defaultInitState));
       const urlBase = getState().initReducer.baseUrl;
 
-      const response = await fetch(
-        urlBase + "/scoring/v1/report/tryouts/type",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${getState().authReducer.token}`,
-          },
-        }
-      );
+      const response = await fetch(urlBase + "/report/v1/tryouts/type", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getState().authReducer.token}`,
+        },
+      });
 
       const json = await response.json();
       if (json.status) {
@@ -61,7 +58,7 @@ export const getListTryout = (payload) => {
       dispatch(setListTryout(defaultInitState));
       const urlBase = getState().initReducer.baseUrl;
       const response = await fetch(
-        urlBase + "/scoring/v1/report/tryouts?type=" + payload,
+        urlBase + "/report/v1/tryouts?type=" + payload,
         {
           method: "GET",
           headers: {
@@ -95,10 +92,10 @@ export function getChartTryout(payload) {
       const urlBase = getState().initReducer.baseUrl;
       let url = "";
       if (payload.type === "uas") {
-        url = "/scoring/v1/report/tryouts/chart?type=" + payload.type;
+        url = "/report/v1/tryouts/chart?type=" + payload.type;
       } else {
         url =
-          "/scoring/v1/report/tryouts/chart?type=" +
+          "/report/v1/tryouts/chart?type=" +
           payload.type +
           "&prodi=" +
           payload.prodi;
@@ -142,7 +139,7 @@ export function getDetailTryout(payload) {
       const urlBase = getState().initReducer.baseUrl;
       const response = await fetch(
         urlBase +
-          `/scoring/v1/report/tryouts/${payload._id}/detail?type=${payload.type}`,
+          `/report/v1/tryouts/${payload._id}/detail?type=${payload.type}`,
         {
           method: "GET",
           headers: {

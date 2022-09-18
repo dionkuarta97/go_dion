@@ -20,9 +20,6 @@ const TombolBawah = (props) => {
     totalSesi,
     setFinish,
     setLoadingBawah,
-    firestoreTime,
-    setFirestoreTime,
-    firestoreId,
     loadingSoal,
   } = props;
   const navigation = useNavigation();
@@ -45,18 +42,7 @@ const TombolBawah = (props) => {
             } else {
               setLoadingBawah(true);
               setIndex(index - 1);
-              let newTime = firestoreTime;
-              newTime[sesi] = sisaTime;
-              setFirestoreTime(newTime);
-              firestore()
-                .collection("Jawaban")
-                .doc(firestoreId)
-                .update({
-                  time: newTime,
-                })
-
-                .then(() => setLoadingBawah(false))
-                .catch(() => navigation.goBack());
+              setLoadingBawah(false);
             }
           }}
         >
@@ -130,19 +116,7 @@ const TombolBawah = (props) => {
             } else {
               setLoadingBawah(true);
               setIndex(index + 1);
-              let newTime = firestoreTime;
-              newTime[sesi] = sisaTime;
-              setFirestoreTime(newTime);
-              setFirestoreTime(newTime);
-              firestore()
-                .collection("Jawaban")
-                .doc(firestoreId)
-                .update({
-                  time: newTime,
-                })
-
-                .then(() => setLoadingBawah(false))
-                .catch(() => navigation.goBack());
+              setLoadingBawah(false);
             }
           }}
         >

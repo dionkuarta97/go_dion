@@ -21,6 +21,13 @@ import { useSelector } from "react-redux";
 import HomePendingIos from "./HomePendingIos";
 import Aktivitas from "./Aktivitas";
 
+import firestore from "@react-native-firebase/firestore";
+import PendingTryout from "./PendingTryout";
+import ModalCountDown from "./ModalCountDown";
+import ModalFinish from "./ModalFinish";
+import LoadingIndicator from "../../../Components/Indicator/LoadingIndicator";
+import VideoTest from "./VideoTest";
+
 const products = [
   { id: 1, title: "a" },
   { id: 2, title: "a" },
@@ -37,14 +44,14 @@ const HomeContent = () => {
   const urlBase = useSelector((state) => state.initReducer.baseUrl);
   const [tryout, setTryout] = useState([]);
   const [loading, setLoading] = useState(true);
-  // const handleDynamicLink = (link) => {
-  //     console.log("dynamic link called...");
-  //     console.log("=====>", link);
-  //     // Handle dynamic link inside your own application
-  //     if (link.url === "https://gobimbelonline.net/newpassword") {
-  //         navigation.navigate("NewPasswordScreen");
-  //     }
-  // };
+  const [pending, setPending] = useState(false);
+  const profile = useSelector((state) => state.profileReducer.profile);
+  const [soal, setSoal] = useState({});
+  const [sesi, setSesi] = useState(null);
+  const [waktu, setWaktu] = useState(null);
+  const [finish, setFinish] = useState(false);
+  const [firestoreTime, setFirestoreTime] = useState(null);
+  const [timeOpen, setTimeOpen] = useState(null);
 
   useEffect(async () => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
@@ -73,27 +80,78 @@ const HomeContent = () => {
         console.log(err);
         setLoading(false);
       }
+      if (isLogin && profile) {
+        setLoading(true);
+        firestore()
+          .collection("Jawaban")
+          .where("user_id", "==", profile._id)
+          .get()
+          .then((querySnapshot) => {
+            if (querySnapshot.docs.length > 0) {
+              let temp = querySnapshot.docs[0].data();
+              console.log(temp);
+              setFirestoreTime(temp.time);
+              setTimeOpen(temp.firstOpen);
+              setSoal({
+                title: temp.title,
+                soalUrl: temp.soalUrl,
+                blockTime: temp.blockTime,
+              });
+              let now = new Date();
+              let int = (now.getTime() - temp.firstOpen[temp.sesi]) / 1000;
+              if (int < temp.time[temp.sesi]) {
+                setSesi(temp.sesi);
+                setWaktu(temp.time[temp.sesi] - int);
+              } else {
+                setSesi(temp.sesi + 1);
+              }
+              setPending(true);
+            } else {
+              setFinish(false);
+              setPending(false);
+            }
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
     }
-    // listen to dynamic links
-    // dynamicLinks()
-    //     .getInitialLink()
-    //     .then((link) => {
-    //         console.log("======== Link useEffect =======");
-    //         if (link.url === "https://gobimbelonline.net/newpassword") {
-    //             console.log("new password called...");
-    //             navigation.navigate("NewPasswordScreen");
-    //         }
-    //     });
 
-    // // subscribe to dynamic link
-    // const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
-    // // When the component is unmounted, remove the listener
-    // return () => unsubscribe();
     return () => {
       setTryout([]);
       setLoading(true);
+      setPending(false);
+      setSoal({});
+      setWaktu(null);
+      setSesi(null);
+      setFinish(false);
+      setFirestoreTime(null);
+      setTimeOpen(null);
     };
   }, [isFocused]);
+
+  useEffect(() => {
+    if (firestoreTime) {
+      setLoading(true);
+      if (sesi > 0 && sesi < firestoreTime.length) {
+        let now = new Date();
+        let temp = (now.getTime() - timeOpen[sesi]) / 1000;
+        console.log(temp);
+        if (temp < firestoreTime[sesi]) {
+          setWaktu(firestoreTime[sesi] - temp);
+          console.log(firestoreTime[sesi] - temp);
+        } else {
+          setSesi(sesi + 1);
+        }
+        setFinish(false);
+      } else if (sesi === firestoreTime.length) {
+        setFinish(true);
+      }
+    }
+    setLoading(false);
+  }, [sesi]);
+
+  console.log(finish, sesi);
 
   const sectionHeader = (title) => {
     return (
@@ -114,58 +172,79 @@ const HomeContent = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      {isLogin && !loading && tryout.length > 0 && (
-        <Aktivitas tryout={tryout} />
-      )}
-
-      {isLogin && (
-        <>
-          {Platform.OS === "android" ? (
-            <HomePendingPayment />
-          ) : (
-            <HomePendingIos />
+    <>
+      {loading ? (
+        <LoadingIndicator from={"home"} />
+      ) : (
+        <View style={{ flex: 1 }}>
+          {isLogin && !loading && tryout.length > 0 && (
+            <Aktivitas tryout={tryout} />
           )}
-        </>
+
+          {isLogin && (
+            <>
+              {pending && <PendingTryout soal={soal} />}
+              {Platform.OS === "android" ? (
+                <HomePendingPayment />
+              ) : (
+                <HomePendingIos />
+              )}
+            </>
+          )}
+          <HomeMenu />
+          <HomeCarousel />
+          {pending && !finish && (
+            <ModalCountDown
+              setFinish={setFinish}
+              setPending={setPending}
+              soal={soal}
+              setSesi={setSesi}
+              sesi={sesi}
+              waktu={waktu}
+            />
+          )}
+          {finish && (
+            <ModalFinish
+              setFinish={setFinish}
+              setPending={setPending}
+              soal={soal}
+            />
+          )}
+          {/* <View>
+         {sectionHeader("Materi Baru")}
+
+         <FlatList
+             keyExtractor={(item) => `${item.id}`}
+             horizontal={true}
+             showsHorizontalScrollIndicator={false}
+             renderItem={(item) => <ProductCard />}
+             data={products}
+             contentContainerStyle={{
+                 paddingHorizontal: Sizes.fixPadding,
+                 paddingTop: Sizes.fixPadding * 2.0,
+                 paddingBottom: Sizes.fixPadding * 4.0,
+             }}
+         />
+     </View>
+
+     <View>
+         {sectionHeader("Materi Populer")}
+         <FlatList
+             keyExtractor={(item) => `${item.id}`}
+             horizontal={true}
+             showsHorizontalScrollIndicator={false}
+             renderItem={(item) => <ProductCard />}
+             data={products}
+             contentContainerStyle={{
+                 paddingHorizontal: Sizes.fixPadding,
+                 paddingTop: Sizes.fixPadding * 2.0,
+                 paddingBottom: Sizes.fixPadding * 4.0,
+             }}
+         />
+     </View> */}
+        </View>
       )}
-      <HomeMenu />
-      <HomeCarousel />
-
-      {/* <View>
-                {sectionHeader("Materi Baru")}
-
-                <FlatList
-                    keyExtractor={(item) => `${item.id}`}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={(item) => <ProductCard />}
-                    data={products}
-                    contentContainerStyle={{
-                        paddingHorizontal: Sizes.fixPadding,
-                        paddingTop: Sizes.fixPadding * 2.0,
-                        paddingBottom: Sizes.fixPadding * 4.0,
-                    }}
-                />
-            </View>
-
-            <View>
-                {sectionHeader("Materi Populer")}
-                <FlatList
-                    keyExtractor={(item) => `${item.id}`}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={(item) => <ProductCard />}
-                    data={products}
-                    contentContainerStyle={{
-                        paddingHorizontal: Sizes.fixPadding,
-                        paddingTop: Sizes.fixPadding * 2.0,
-                        paddingBottom: Sizes.fixPadding * 4.0,
-                    }}
-                />
-            </View> */}
-
-      <View style={{ height: 50 }}></View>
-    </View>
+    </>
   );
 };
 

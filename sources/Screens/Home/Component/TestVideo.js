@@ -71,7 +71,10 @@ const TestVideo = ({ route }) => {
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
-        <DefaultAppBar title="Video Materi" backEnabled={true} />
+        <DefaultAppBar
+          title={params.from ? params.from : "Video Materi"}
+          backEnabled={true}
+        />
         <WebView
           source={{
             uri: params.video,

@@ -59,6 +59,8 @@ const LeaderboardContent = () => {
     );
   }, [select]);
 
+  console.log(JSON.stringify(leaderboard, null, 2));
+
   const onChange = (val) => {
     setTahunAjaran(val);
     dispatch(
@@ -194,6 +196,7 @@ const LeaderboardContent = () => {
                   if (!loading) {
                     if (handleInfinityScroll(e)) {
                       let temp = leaderboard.data?.rankings;
+                      console.log("wkwkkw");
                       if (temp) {
                         dispatch(
                           getLeaderboard(

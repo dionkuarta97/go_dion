@@ -21,7 +21,7 @@ import DefaultBottomSheet from "./DefaultBottomSheet";
 const RoleBottomSheet = (props) => {
   return (
     <DefaultBottomSheet title="Pilih Peran" onClose={() => props.onClose()}>
-      {["Siswa", "Orang Tua"].map((val, idx) => {
+      {["Siswa"].map((val, idx) => {
         return (
           <TouchableOpacity
             key={`role-${idx}`}

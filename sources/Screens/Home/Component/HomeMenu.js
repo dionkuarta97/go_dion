@@ -140,14 +140,17 @@ const HomeMenu = () => {
         </TouchableHighlight>
         <View
           style={{
-            width: Dimensions.get("screen").width / 8,
+            justifyContent: "center",
+            alignItems: "center",
+            width: Dimensions.get("screen").width / 6,
           }}
         >
           <Text
             style={{
               textAlign: "center",
-              ...Fonts.black15Regular,
-              marginTop: Sizes.fixPadding,
+              marginTop: 5,
+              fontWeight: "500",
+              fontSize: Dimensions.get("screen").width / 31,
             }}
           >
             {item.title}

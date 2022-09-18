@@ -45,11 +45,9 @@ export function getPaymentMethod(section_id) {
           } else dispatch(setPaymentMethod(defaultFailedState(json.message)));
         })
         .catch((err) => {
-          console.log(err);
           dispatch(setPaymentMethod(defaultErrorState));
         });
     } catch (err) {
-      console.log(err);
       dispatch(setPaymentMethod(defaultErrorState));
     }
   };
@@ -81,8 +79,6 @@ export function getPaymentProcess(merge) {
           products: getState().cartReducer.cart,
         });
 
-        console.log(bodyParams);
-
         const urlBase = getState().initReducer.baseUrl;
         fetch(urlBase + urlPaymentProcess, {
           method: "POST",
@@ -94,18 +90,15 @@ export function getPaymentProcess(merge) {
         })
           .then((response) => response.json())
           .then((json) => {
-            console.log(json);
             if (json.status) {
               dispatch(setPaymentProcess(defaultDoneState(json.data)));
             } else
               dispatch(setPaymentProcess(defaultFailedState(json.message)));
           })
           .catch((err) => {
-            console.log(err);
             dispatch(setPaymentProcess(defaultErrorState));
           });
       } catch (err) {
-        console.log(err);
         dispatch(setPaymentProcess(defaultErrorState));
       }
   };
@@ -120,7 +113,7 @@ export const getPaymentApple = (product) => {
         payment_type: "apple_pay",
         products: [product],
       });
-      console.log(bodyParams);
+
       fetch(urlBase + urlPaymentProcess, {
         method: "POST",
         headers: {
@@ -157,7 +150,7 @@ export function setPaymentList(state) {
 export function getPaymentList(status) {
   return async (dispatch, getState) => {
     dispatch(setPaymentList(defaultInitState));
-    console.log(status);
+
     try {
       const urlBase = getState().initReducer.baseUrl;
       fetch(urlBase + urlPayment + `?status=${status}`, {
@@ -173,11 +166,9 @@ export function getPaymentList(status) {
           } else dispatch(setPaymentList(defaultFailedState(json.message)));
         })
         .catch((err) => {
-          console.log(err);
           dispatch(setPaymentList(defaultErrorState));
         });
     } catch (err) {
-      console.log(err);
       dispatch(setPaymentList(defaultErrorState));
     }
   };
@@ -211,17 +202,14 @@ export function getPaymentDetail(orderId) {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
           if (json.status) {
             dispatch(setPaymentDetail(defaultDoneState(json.data)));
           } else dispatch(setPaymentDetail(defaultFailedState(json.message)));
         })
         .catch((err) => {
-          console.log(err);
           dispatch(setPaymentDetail(defaultErrorState));
         });
     } catch (err) {
-      console.log(err);
       dispatch(setPaymentDetail(defaultErrorState));
     }
   };
@@ -230,9 +218,8 @@ export function getPaymentDetail(orderId) {
 export const batalTranksaksi = (payload) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      console.log(payload);
       const urlBase = getState().initReducer.baseUrl;
-      console.log(urlBase + urlPayment + `/expire`);
+
       fetch(urlBase + urlPayment + `/cancel`, {
         method: "POST",
         headers: {
@@ -243,13 +230,11 @@ export const batalTranksaksi = (payload) => {
       })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
           if (json.status) {
             resolve("sukses");
-          } else reject("gagal");
+          } else reject(json.message);
         })
         .catch((err) => {
-          console.log(err);
           reject("gagal");
         });
     });

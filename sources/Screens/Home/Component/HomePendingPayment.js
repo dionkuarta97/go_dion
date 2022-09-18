@@ -29,6 +29,7 @@ const HomePendingPayment = () => {
             ...CompStyles.defaultCard,
             marginHorizontal: Sizes.fixPadding * 2,
             backgroundColor: Colors.primaryColor,
+            marginTop: 30,
           }}
         >
           <TouchableOpacity

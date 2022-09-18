@@ -24,6 +24,7 @@ import checkInternet from "../../../Services/CheckInternet";
 import { useToast, Progress, Box } from "native-base";
 
 import ToastErrorContent from "../../../Components/ToastErrorContent";
+import Colors from "../../../Theme/Colors";
 
 const TryoutCard = (props) => {
   const dispatch = useDispatch();
@@ -82,6 +83,9 @@ const TryoutCard = (props) => {
                           navigation.navigate("SoalScreen", {
                             title: detail.title,
                             blockTime: detail.blocking_time,
+                            soalUrl:
+                              urlQuests +
+                              `/tryout/${tryoutId}/bab/${detail._id}`,
                           });
                         },
                       },
@@ -139,6 +143,9 @@ const TryoutCard = (props) => {
                             navigation.navigate("SoalScreen", {
                               title: detail.title,
                               blockTime: detail.blocking_time,
+                              soalUrl:
+                                urlQuests +
+                                `/tryout/${tryoutId}/bab/${detail._id}`,
                             });
                           },
                         },
@@ -196,6 +203,18 @@ const TryoutCard = (props) => {
             </Text>
 
             <Text style={{ marginTop: 10 }}>{detail.desc}</Text>
+            <Box mt={1}>
+              <Text
+                style={{
+                  color: detail.blocking_time
+                    ? Colors.neutralRedColor
+                    : Colors.neutralGreenColor,
+                  fontWeight: "bold",
+                }}
+              >
+                {detail.blocking_time ? "Blocking Time" : "Non-Blocking Time"}
+              </Text>
+            </Box>
             {detail.touched && (
               <View
                 style={{
@@ -232,6 +251,18 @@ const TryoutCard = (props) => {
             TPS ({detail.total_question} Soal - {detail.total_time} menit)
           </Text>
           <Text style={{ marginTop: 10 }}>{detail.desc}</Text>
+          <Box mt={1}>
+            <Text
+              style={{
+                color: detail.blocking_time
+                  ? Colors.neutralRedColor
+                  : Colors.neutralGreenColor,
+                fontWeight: "bold",
+              }}
+            >
+              {detail.blocking_time ? "Blocking Time" : "Non-Blocking Time"}
+            </Text>
+          </Box>
           {detail.touched && (
             <View
               style={{
