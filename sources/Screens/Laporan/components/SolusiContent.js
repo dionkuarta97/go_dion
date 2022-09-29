@@ -25,7 +25,7 @@ const SolusiContent = (props) => {
 
   const scrollRef = useRef();
 
-  console.log(JSON.stringify(quiz, null, 2));
+  console.log(JSON.stringify(solution, null, 2));
 
   useEffect(() => {
     scrollRef.current?.scrollTo({

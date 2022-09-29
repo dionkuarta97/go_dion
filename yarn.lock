@@ -3859,6 +3859,11 @@ expo-font@~10.0.3:
     expo-modules-core "~0.4.4"
     fontfaceobserver "^2.1.0"
 
+expo-in-app-purchases@^13.1.0:
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/expo-in-app-purchases/-/expo-in-app-purchases-13.1.0.tgz#a42cddc4d2e82a03f5ae73c343c647c3a7b447e0"
+  integrity sha512-buIHdRwpmul6UnC902/MhkVTIVJYuBTIu0byoHOtjHhpNqxpiAxj7yZUUfG+QEljfiW+Q8LusE15sj5oZqHPAQ==
+
 expo-json-utils@~0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/expo-json-utils/-/expo-json-utils-0.2.0.tgz"

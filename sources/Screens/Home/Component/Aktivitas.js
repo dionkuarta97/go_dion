@@ -99,7 +99,7 @@ const Aktivitas = (props) => {
   return (
     <View paddingX={5} paddingY={2}>
       <Text bold fontSize={17}>
-        Lanjutkan Aktifitas Kamu
+        Lanjutkan Aktivitas Kamu
       </Text>
       <ScrollView showsHorizontalScrollIndicator={false} horizontal>
         {tryout.map((el, idx) => tryoutCard(el, idx))}

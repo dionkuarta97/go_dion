@@ -9,27 +9,20 @@ import {
   Alert,
 } from "react-native";
 
-import firestore from "@react-native-firebase/firestore";
+import * as InAppPurchases from "expo-in-app-purchases";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 import { addToCart } from "../../../Redux/Cart/cartActions";
-import RNIap, {
-  purchaseErrorListener,
-  purchaseUpdatedListener,
-} from "react-native-iap";
+
 import { getPaymentApple } from "../../../Redux/Payment/paymentActions";
 import DefaultModal from "../../../Components/Modal/DefaultModal";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
 import { capitalizeFirstLetter } from "../../../Services/helper";
 import { setTransIos } from "../../../Redux/Init/initActions";
 import { useToast } from "native-base";
-
-let purchaseUpdateSubscription = null;
-
-let purchaseErrorSubscription = null;
 
 const { width } = Dimensions.get("screen");
 
@@ -52,14 +45,20 @@ const ProductDetailContent = (props) => {
     android: ["com.example.coins100"],
   });
 
-  useEffect(async () => {
+  const firstProces = async () => {
     if (Platform.OS === "ios") {
+      await InAppPurchases.connectAsync();
       if (!item.purchased) {
         setLoading(true);
-        try {
-          const products = await RNIap.getProducts(itemSkus);
-          if (products) {
+
+        const { responseCode, results } = await InAppPurchases.getProductsAsync(
+          itemSkus
+        );
+        if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+          if (results.length > 0) {
             if (isLogin) {
+              console.log(JSON.stringify(results, null, 2));
+
               let trans = newTransIos.filter((value) =>
                 value.user_id.includes(profile._id)
               );
@@ -81,6 +80,15 @@ const ProductDetailContent = (props) => {
                       });
                       navigation.navigate("MainScreen");
                     } else {
+                      toast.show({
+                        title: "Kesalahan",
+                        status: "error",
+                        description:
+                          "Pesanan anda sedang dalam antrian, coba beberapa saat lagi",
+                        placement: "top",
+                        width: Dimensions.get("screen").width / 1.3,
+                      });
+                      navigation.navigate("MainScreen");
                       setError(
                         "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
                       );
@@ -92,125 +100,188 @@ const ProductDetailContent = (props) => {
                       "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
                     );
                   })
-                  .finally(() => {
+                  .finally(async () => {
                     setLoading(false);
+                    await InAppPurchases.disconnectAsync();
                   });
               } else {
                 setLoading(false);
+                await InAppPurchases.disconnectAsync();
               }
             } else {
               setLoading(false);
+              await InAppPurchases.disconnectAsync();
             }
           } else {
-            setError("Mohon maaf, produk ini belum terdaftar");
+            toast.show({
+              title: "Kesalahan",
+              status: "error",
+              description:
+                "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi",
+              placement: "top",
+              width: Dimensions.get("screen").width / 1.3,
+            });
+            navigation.navigate("MainScreen");
+            setError(
+              "Mohon maaf, produk ini belum terdaftar untuk platfrom IOS"
+            );
+            toast.show({
+              title: "Informasi",
+              status: "warning",
+              description:
+                "Mohon maaf, produk ini belum terdaftar untuk platfrom IOS",
+              placement: "top",
+              width: Dimensions.get("screen").width / 1.3,
+            });
+            navigation.navigate("MainScreen");
             setLoading(false);
+            await InAppPurchases.disconnectAsync();
           }
-        } catch (err) {
-          console.warn(err);
-          setError("Terjadi kesalahan coba beberapa saat lagi");
-          setLoading(false);
         }
-
-        RNIap.initConnection().then(() => {
-          purchaseUpdateSubscription = purchaseUpdatedListener(
-            async (purchase) => {
-              const receipt = purchase.transactionReceipt;
-              if (receipt) {
-                console.log("sukkseessss");
-                const receiptBody = {
-                  "receipt-data": receipt,
-                  password: "f72a4af2242a467395a3bb582c099e69",
-                };
-                const validate = await RNIap.validateReceiptIos(
-                  receiptBody,
-                  true
-                );
-                if (validate) {
-                  if (isLogin) {
-                    dispatch(getPaymentApple(item))
-                      .then(async (json) => {
-                        console.log(
-                          JSON.stringify(json, null, 2),
-                          "<<<<<bawah"
-                        );
-                        if (json.status) {
-                          let newTrans = newTransIos.filter(
-                            (value) => value.user_id !== profile._id
-                          );
-                          dispatch(setTransIos(newTrans));
-                          await RNIap.finishTransaction(purchase, true);
-                          setLoading(false);
-                          toast.show({
-                            title: "Berhasil",
-                            status: "success",
-                            description: "Berhasil melakukan pembelian",
-                            placement: "top",
-                            width: Dimensions.get("screen").width / 1.3,
-                          });
-                          navigation.navigate("MainScreen");
-                        } else {
-                          dispatch(
-                            setTransIos([
-                              ...newTransIos,
-                              { item: item, user_id: profile._id },
-                            ])
-                          );
-                          setError(
-                            "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
-                          );
-                          await RNIap.finishTransaction(purchase, true);
-                          setLoading(false);
-                        }
-                      })
-                      .catch(async (err) => {
-                        dispatch(
-                          setTransIos([
-                            ...newTransIos,
-                            { item: item, user_id: profile._id },
-                          ])
-                        );
-                        setError(
-                          "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
-                        );
-                        await RNIap.finishTransaction(purchase, true);
-                        setLoading(false);
-                      })
-                      .finally(() => {
-                        purchaseUpdateSubscription.remove();
-                        purchaseUpdateSubscription = null;
-                      });
-                  }
-                }
-              }
-            }
-          );
-          purchaseErrorSubscription = purchaseErrorListener((error) => {
-            setLoading(false);
-            setError("Transaksi di Batalkan");
-            console.warn("purchaseErrorListener", error);
-          });
-        });
       }
     }
-    return () => {
-      if (purchaseUpdateSubscription) {
-        purchaseUpdateSubscription.remove();
-        purchaseUpdateSubscription = null;
+  };
+
+  const initIAPandEventListeners = async () => {
+    // connect to store if not done so already
+    // purchase listener. Most of this is boilerplate from the official docs, with a
+    // couple of additions to process a purchase and stop processing.
+    InAppPurchases.setPurchaseListener(
+      async ({ responseCode, results, errorCode }) => {
+        // Purchase was successful
+        if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+          results.forEach(async (purchase) => {
+            if (!purchase.acknowledged) {
+              // process transaction here and unlock content
+              // !! This is your own logic that is not a part of expo-in-app-purchases.
+              // any processing that needs to be done within your app or on your server
+              // can be executed here, just before finishTransactionAsync
+
+              // finish the transaction on platform's end
+              if (isLogin) {
+                dispatch(getPaymentApple(item))
+                  .then(async (json) => {
+                    console.log(JSON.stringify(json, null, 2), "<<<<<bawah");
+                    if (json.status) {
+                      let newTrans = newTransIos.filter(
+                        (value) => value.user_id !== profile._id
+                      );
+                      dispatch(setTransIos(newTrans));
+                      toast.show({
+                        title: "Berhasil",
+                        status: "success",
+                        description: "Berhasil melakukan pembelian",
+                        placement: "top",
+                        width: Dimensions.get("screen").width / 1.3,
+                      });
+                      navigation.navigate("MainScreen");
+                    } else {
+                      dispatch(
+                        setTransIos([
+                          ...newTransIos,
+                          { item: item, user_id: profile._id },
+                        ])
+                      );
+                      toast.show({
+                        title: "Kesalahan",
+                        status: "error",
+                        description:
+                          "Pesanan anda sedang dalam antrian, coba beberapa saat lagi",
+                        placement: "top",
+                        width: Dimensions.get("screen").width / 1.3,
+                      });
+                      navigation.navigate("MainScreen");
+                      setError(
+                        "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
+                      );
+                    }
+                  })
+                  .catch(async (err) => {
+                    dispatch(
+                      setTransIos([
+                        ...newTransIos,
+                        { item: item, user_id: profile._id },
+                      ])
+                    );
+                    toast.show({
+                      title: "Kesalahan",
+                      status: "error",
+                      description:
+                        "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi",
+                      placement: "top",
+                      width: Dimensions.get("screen").width / 1.3,
+                    });
+                    navigation.navigate("MainScreen");
+                    setError(
+                      "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
+                    );
+                  })
+                  .finally(async () => {
+                    InAppPurchases.finishTransactionAsync(purchase, true);
+                    await InAppPurchases.disconnectAsync();
+                    navigation.navigate("MainScreen");
+                    setLoading(false);
+                  });
+              }
+            }
+          });
+
+          // handle particular error codes
+        } else if (
+          responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED
+        ) {
+          toast.show({
+            title: "Informasi",
+            status: "warning",
+            description: "Kamu Membatalkan transaksi",
+            placement: "top",
+            width: Dimensions.get("screen").width / 1.3,
+          });
+          await InAppPurchases.disconnectAsync();
+          navigation.navigate("MainScreen");
+          setLoading(false);
+        } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
+          console.log(
+            "User does not have permissions to buy but requested parental approval (iOS only)"
+          );
+        } else {
+          toast.show({
+            title: "Kesalahan",
+            status: "error",
+            description: "Telah terjadi kesalahan pada server",
+            placement: "top",
+            width: Dimensions.get("screen").width / 1.3,
+          });
+
+          await InAppPurchases.disconnectAsync();
+          navigation.navigate("MainScreen");
+          setLoading(false);
+          console.warn(
+            `Something went wrong with the purchase. Received errorCode ${errorCode}`
+          );
+        }
+
+        // stop processing. This state update should be reflected
+        // in your components. E.g. make IAPs accessible again.
       }
-      if (purchaseErrorSubscription) {
-        purchaseErrorSubscription.remove();
-        purchaseErrorSubscription = null;
-      }
-    };
+    );
+  };
+
+  useEffect(async () => {
+    firstProces();
+    initIAPandEventListeners();
   }, []);
 
   const requestPurchase = async () => {
-    try {
-      setLoading(true);
-      await RNIap.requestPurchase("com.goonline.app." + item._id, false);
-    } catch (err) {
-      setLoading(false);
-      console.warn(err);
+    setLoading(true);
+    await InAppPurchases.connectAsync();
+    const { responseCode, results } = await InAppPurchases.getProductsAsync(
+      itemSkus
+    );
+    if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+      if (results.length > 0) {
+        InAppPurchases.purchaseItemAsync("com.goonline.app." + item._id);
+      }
     }
   };
 

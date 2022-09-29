@@ -119,6 +119,10 @@ const HomeScreen = (props) => {
     }, [])
   );
 
+  const capitalWord = (str) => {
+    return str[0].toUpperCase() + str.substring(1);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <SliverAppBar
@@ -216,7 +220,7 @@ const HomeScreen = (props) => {
                                 textAlign: "center",
                               }}
                             >
-                              {capitalizeFirstLetter(redeemCode.error)}
+                              {capitalWord(redeemCode.error)}
                             </Text>
                           </Box>
                           <Button

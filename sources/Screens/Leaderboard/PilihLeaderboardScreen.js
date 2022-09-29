@@ -103,7 +103,11 @@ const PilihLeaderboardScreen = () => {
                 <TouchableHighlight
                   style={{ borderRadius: 15 }}
                   onPress={() => {
-                    navigation.navigate("LeaderTryoutScreen");
+                    if (listTahunAjaran.data) {
+                      navigation.navigate("LeaderTryoutScreen");
+                    } else {
+                      Alert.alert("Error", "Terjadi kesalahan pada server");
+                    }
                   }}
                 >
                   <View
@@ -158,7 +162,13 @@ const PilihLeaderboardScreen = () => {
                 </TouchableHighlight>
                 <TouchableHighlight
                   style={{ borderRadius: 15, marginTop: 15 }}
-                  onPress={() => navigation.navigate("LeaderboardScreen")}
+                  onPress={() => {
+                    if (listTahunAjaran.data) {
+                      navigation.navigate("LeaderboardScreen");
+                    } else {
+                      Alert.alert("Error", "Terjadi kesalahan pada server");
+                    }
+                  }}
                 >
                   <View
                     style={{

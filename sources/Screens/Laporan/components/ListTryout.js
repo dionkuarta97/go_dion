@@ -42,7 +42,7 @@ const ListTryout = (props) => {
                         _id: el._id,
                       });
                     } else {
-                      Alert.alert("Informasi", "Laporan kamu sedang di proses");
+                      Alert.alert("Informasi", "Laporan kamu sedang diproses");
                     }
                   } else {
                     navigation.navigate("ProgressTryout", {
