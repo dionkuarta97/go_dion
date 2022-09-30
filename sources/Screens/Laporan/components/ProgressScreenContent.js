@@ -9,7 +9,12 @@ import {
   VStack,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { Dimensions, ScrollView, TouchableHighlight } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  ScrollView,
+  TouchableHighlight,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   VictoryChart,
@@ -19,7 +24,10 @@ import {
   VictoryGroup,
   VictoryLabel,
 } from "victory-native";
-import { getDetailTryout } from "../../../Redux/Laporan/LaporanAction";
+import {
+  getDetailTryout,
+  setDetailTryout,
+} from "../../../Redux/Laporan/LaporanAction";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { AntDesign } from "@expo/vector-icons";
@@ -67,7 +75,12 @@ export default function ProgressTryoutContent(props) {
         });
       }
     });
+
+    return () => {
+      dispatch(setDetailTryout({ data: null, loading: false, error: null }));
+    };
   }, []);
+
   useEffect(() => {
     if (detailTryout.data !== null) {
       let temp = [];
@@ -118,6 +131,8 @@ export default function ProgressTryoutContent(props) {
         }
       });
   }, []);
+
+  console.log(JSON.stringify(detailTryout, null, 2));
 
   return (
     <>
@@ -206,7 +221,6 @@ export default function ProgressTryoutContent(props) {
             )}
           </Box>
         </View>
-
         {detailTryout.data !== null && (
           <>
             {detailTryout.data.matpel.map((el, idx) => (
@@ -218,13 +232,17 @@ export default function ProgressTryoutContent(props) {
                 }}
                 key={el.title + el.score}
                 onPress={() => {
-                  navigation.navigate("SolusiScreen", {
-                    solution: el.solution,
-                    quiz: el.quiz,
-                    answer: el.answer,
-                    quiz_options: el.quiz_options,
-                    title: el.title.toUpperCase(),
-                  });
+                  if (el.solution.length === 0) {
+                    Alert.alert("Informasi", "Solusi belum tersedia");
+                  } else {
+                    navigation.navigate("SolusiScreen", {
+                      solution: el.solution,
+                      quiz: el.quiz,
+                      answer: el.answer,
+                      quiz_options: el.quiz_options,
+                      title: el.title.toUpperCase(),
+                    });
+                  }
                 }}
               >
                 <Box
@@ -237,7 +255,11 @@ export default function ProgressTryoutContent(props) {
                 >
                   <HStack>
                     <VStack marginEnd={"auto"}>
-                      <Text>
+                      <Text
+                        style={{
+                          maxWidth: Dimensions.get("screen").width / 1.4,
+                        }}
+                      >
                         <AntDesign
                           name="book"
                           size={15}
@@ -291,28 +313,35 @@ export default function ProgressTryoutContent(props) {
             ))}
           </>
         )}
-        {link && (
-          <Center marginBottom={50}>
-            <Button
-              bg={"red.500"}
-              _pressed={{
-                bg: "red.400",
-              }}
-              onPress={() => OpenWEB(link)}
-            >
-              <HStack space={1}>
-                <MaterialCommunityIcons
-                  name="file-pdf-box"
-                  size={24}
-                  color="white"
-                />
-                <Text color={"white"} bold>
-                  Unduh Laporan
-                </Text>
-              </HStack>
-            </Button>
-          </Center>
-        )}
+        <Center marginBottom={50}>
+          <Button
+            bg={"red.500"}
+            _pressed={{
+              bg: "red.400",
+            }}
+            onPress={() => {
+              if (link) {
+                navigation.navigate("PDFScreen", { book: link });
+              } else {
+                Alert.alert(
+                  "Informasi",
+                  "Laporan PDF kamu sedang di proses. Silakan cek lagi nanti ya :)"
+                );
+              }
+            }}
+          >
+            <HStack space={1}>
+              <MaterialCommunityIcons
+                name="file-pdf-box"
+                size={24}
+                color="white"
+              />
+              <Text color={"white"} bold>
+                Lihat Laporan
+              </Text>
+            </HStack>
+          </Button>
+        </Center>
       </ScrollView>
     </>
   );

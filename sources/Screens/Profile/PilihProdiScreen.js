@@ -30,11 +30,15 @@ const PilihProdiScreen = (props) => {
   const [showShetUniversitasDua, setShowShetUniversitasDua] = useState(false);
   const [pilihanSatu, setPilihanSatu] = useState({
     universitas: null,
+    universitas_id: null,
+    jurusan_id: null,
     jurusan: null,
     passing_grade: null,
   });
   const [pilihanDua, setPilihanDua] = useState({
     universitas: null,
+    universitas_id: null,
+    jurusan_id: null,
     jurusan: null,
     passing_grade: null,
   });
@@ -78,7 +82,7 @@ const PilihProdiScreen = (props) => {
       setPilihanDua({ ...pilihanDua, jurusan: null, passing_grade: null });
     }
   }, [pilihanDua.universitas]);
-  console.log(JSON.stringify(update));
+  console.log(JSON.stringify(pilihanSatu));
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
@@ -255,7 +259,11 @@ const PilihProdiScreen = (props) => {
           <SelectUniversitas
             onClose={() => setShowShetUniversitas(false)}
             onSelect={(val) => {
-              setPilihanSatu({ ...pilihanSatu, universitas: val.title });
+              setPilihanSatu({
+                ...pilihanSatu,
+                universitas: val.title,
+                universitas_id: val.id,
+              });
               setIdUniversitas(val.id);
               setShowShetUniversitas(false);
               setShowJurusan(true);
@@ -270,6 +278,7 @@ const PilihProdiScreen = (props) => {
               setPilihanSatu({
                 ...pilihanSatu,
                 jurusan: val.title,
+                jurusan_id: val.id,
                 passing_grade: val.passing_grade,
               });
               setShowShetJurusan(false);
@@ -280,7 +289,11 @@ const PilihProdiScreen = (props) => {
           <SelectUniversitasDua
             onClose={() => setShowShetUniversitasDua(false)}
             onSelect={(val) => {
-              setPilihanDua({ ...pilihanDua, universitas: val.title });
+              setPilihanDua({
+                ...pilihanDua,
+                universitas: val.title,
+                universitas_id: val.id,
+              });
               setIdUniversitasDua(val.id);
               setShowShetUniversitasDua(false);
               setShowJurusanDua(true);
@@ -295,6 +308,7 @@ const PilihProdiScreen = (props) => {
               setPilihanDua({
                 ...pilihanDua,
                 jurusan: val.title,
+                jurusan_id: val.id,
                 passing_grade: val.passing_grade,
               });
               setShowShetJurusanDua(false);

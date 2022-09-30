@@ -32,6 +32,8 @@ const SelectUniversitasDua = (props) => {
   const { onClose, onSelect } = props;
   const [search, setSearch] = useState("");
 
+  console.log(listUniversitas);
+
   useEffect(() => {
     checkInternet().then((data) => {
       if (data) {

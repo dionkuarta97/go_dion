@@ -230,11 +230,13 @@ export const batalTranksaksi = (payload) => {
       })
         .then((response) => response.json())
         .then((json) => {
+          console.log(JSON.stringify(json, null, 2));
           if (json.status) {
             resolve("sukses");
           } else reject(json.message);
         })
         .catch((err) => {
+          console.log(JSON.stringify(err, null, 2));
           reject("gagal");
         });
     });

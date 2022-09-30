@@ -8,6 +8,7 @@ import {
   Linking,
   Alert,
   Dimensions,
+  Platform,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import NumberFormat from "react-number-format";
@@ -43,13 +44,13 @@ const PaymentScreen = (props) => {
   const totalHarga = (arr) => {
     let temp = 0;
     for (const i in arr) {
-      if (arr[i].price_discount > 0) {
+      if (arr[i].price_discount > 0 && Platform.OS === "android") {
         temp += arr[i].price_discount;
       } else {
-        temp += arr[i].price;
+        if (Platform.OS === "android") temp += arr[i].price;
+        else temp += arr[i].price_ios;
       }
     }
-
     return temp;
   };
 
@@ -400,9 +401,11 @@ const PaymentScreen = (props) => {
                         <View>
                           <NumberFormat
                             value={
-                              val.price_discount !== 0
-                                ? val.price_discount
-                                : val.price
+                              Platform.OS === "android"
+                                ? val.price_discount !== 0
+                                  ? val.price_discount
+                                  : val.price
+                                : val.price_ios
                             }
                             displayType={"text"}
                             thousandSeparator="."
@@ -575,6 +578,7 @@ const PaymentScreen = (props) => {
                                     navigation.navigate("MainScreen", {
                                       from: "pembayaran",
                                     });
+
                                     toast.show({
                                       title: "Gagal",
                                       status: "error",
