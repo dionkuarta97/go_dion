@@ -98,17 +98,15 @@ const ProfileScreen = (props) => {
                     profile: profile,
                   });
                 }}
+                style={{ borderRadius: 8, backgroundColor: Colors.blackColor }}
               >
                 <Text
                   style={{
                     paddingHorizontal: 15,
                     paddingVertical: 5,
-                    borderRadius: 50,
-                    backgroundColor: Colors.blackColor,
                     color: Colors.primaryColor,
                     fontWeight: "bold",
                     letterSpacing: 1.2,
-                    fontSize: 14,
                   }}
                 >
                   <MaterialIcons size={14} name="edit" /> Ubah Profil

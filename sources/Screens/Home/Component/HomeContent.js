@@ -35,7 +35,7 @@ const products = [
   { id: 4, title: "a" },
 ];
 
-const HomeContent = () => {
+const HomeContent = (props) => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const isLogin = useSelector((state) => state.authReducer.isLogin);
@@ -78,7 +78,6 @@ const HomeContent = () => {
       } catch (err) {
         setTryout([]);
         console.log(err);
-        setLoading(false);
       }
       if (isLogin && profile) {
         setLoading(true);
@@ -131,6 +130,10 @@ const HomeContent = () => {
   }, [isFocused]);
 
   useEffect(() => {
+    setLoading(true);
+  }, [props.currentIndex]);
+
+  useEffect(() => {
     if (firestoreTime) {
       setLoading(true);
       if (sesi > 0 && sesi < firestoreTime.length) {
@@ -147,8 +150,8 @@ const HomeContent = () => {
       } else if (sesi === firestoreTime.length) {
         setFinish(true);
       }
+      setLoading(false);
     }
-    setLoading(false);
   }, [sesi]);
 
   console.log(finish, sesi);
@@ -181,18 +184,27 @@ const HomeContent = () => {
             <Aktivitas tryout={tryout} />
           )}
 
-          {isLogin && (
+          {isLogin ? (
             <>
-              {pending && <PendingTryout soal={soal} />}
               {Platform.OS === "android" ? (
                 <HomePendingPayment />
               ) : (
                 <HomePendingIos />
               )}
+              {!loading && (
+                <>
+                  <HomeMenu loading={loading} />
+                  <HomeCarousel />
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <HomeMenu loading={loading} />
+              <HomeCarousel />
             </>
           )}
-          <HomeMenu />
-          <HomeCarousel />
+
           {pending && !finish && (
             <ModalCountDown
               setFinish={setFinish}

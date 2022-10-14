@@ -132,13 +132,12 @@ const HomeScreen = (props) => {
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => navigation.navigate("LoginScreen")}
+                style={{ borderRadius: 8, backgroundColor: Colors.blackColor }}
               >
                 <Text
                   style={{
                     paddingHorizontal: 15,
                     paddingVertical: 5,
-                    borderRadius: 50,
-                    backgroundColor: Colors.blackColor,
                     color: Colors.primaryColor,
                     fontWeight: "bold",
                     letterSpacing: 1.2,
@@ -393,7 +392,7 @@ const HomeScreen = (props) => {
         toolbarMaxHeight={230}
         src={require("../../../assets/Images/appbar_bg.png")}
       >
-        <HomeContent />
+        <HomeContent currentIndex={props.currentIndex} />
         <StatusBar backgroundColor={Colors.primaryColor} />
       </SliverAppBar>
     </SafeAreaView>

@@ -1,4 +1,4 @@
-import { Text, View, Center, Switch, HStack } from "native-base";
+import { Text, View, Center, Switch, HStack, Button } from "native-base";
 import React, { useEffect, useState } from "react";
 import { Dimensions, ScrollView } from "react-native";
 import { LineChart } from "react-native-chart-kit";
@@ -49,6 +49,16 @@ const TryoutChart = (props) => {
       }, 1000);
   }, [tooltipPos]);
 
+  toBeNumber = (arr) => {
+    let temp = [];
+    for (const key in arr) {
+      temp.push(Number(key) + 1);
+    }
+    return temp;
+  };
+
+  console.log(JSON.stringify(chartTryout, null, 2));
+
   return (
     <>
       {chartTryout.error && type && (
@@ -57,7 +67,7 @@ const TryoutChart = (props) => {
             marginTop: 50,
           }}
         >
-          <NoData msg="Tryout tidak ditemukan" />
+          <NoData msg="Laporan tidak ditemukan" />
         </View>
       )}
       {chartTryout.data !== null && (
@@ -73,44 +83,39 @@ const TryoutChart = (props) => {
           >
             {type !== "uas" && (
               <Center>
-                <HStack mb={5} mt={2} space={7}>
-                  <View
-                    bg={prodi === 1 ? "red.400" : "light.300"}
-                    style={{
-                      borderRadius: 10,
-                      paddingVertical: 5,
-                      paddingHorizontal: 10,
+                <Button.Group
+                  isAttached
+                  colorScheme="dark"
+                  marginBottom={10}
+                  marginTop={5}
+                  mx={{
+                    base: "auto",
+                    md: 0,
+                  }}
+                >
+                  <Button
+                    width={Dimensions.get("screen").width / 3.4}
+                    disabled={prodi === 1 ? true : false}
+                    onPress={() => {
+                      dispatch(setProdi(1));
                     }}
+                    variant={prodi === 1 ? "solid" : "outline"}
+                    bg={prodi === 1 ? "red.600" : "white"}
                   >
-                    <Text color={prodi === 1 ? "amber.50" : "black"} bold>
-                      Pilihan 1
-                    </Text>
-                  </View>
-
-                  <Switch
-                    colorScheme="success"
-                    defaultIsChecked={prodi === 1 ? false : true}
-                    onChange={() => {
-                      if (prodi === 1) {
-                        dispatch(setProdi(2));
-                      } else {
-                        dispatch(setProdi(1));
-                      }
+                    Pilihan 1
+                  </Button>
+                  <Button
+                    width={Dimensions.get("screen").width / 3.4}
+                    disabled={prodi === 2 ? true : false}
+                    onPress={() => {
+                      dispatch(setProdi(2));
                     }}
-                  />
-                  <View
-                    bg={prodi === 2 ? "amber.400" : "light.300"}
-                    style={{
-                      borderRadius: 10,
-                      paddingVertical: 5,
-                      paddingHorizontal: 10,
-                    }}
+                    variant={prodi === 2 ? "solid" : "outline"}
+                    bg={prodi === 2 ? "amber.400" : "white"}
                   >
-                    <Text color={prodi === 2 ? "amber.50" : "black"} bold>
-                      Pilihan 2
-                    </Text>
-                  </View>
-                </HStack>
+                    Pilihan 2
+                  </Button>
+                </Button.Group>
               </Center>
             )}
 
@@ -118,11 +123,10 @@ const TryoutChart = (props) => {
               <LineChart
                 style={{ borderRadius: 15 }}
                 yLabelsOffset={10}
-                formatXLabel={(value) => value.replace("TOBK ", "")}
                 data={
                   type === "uas"
                     ? {
-                        labels: [...chartTryout.data.labels],
+                        labels: [...toBeNumber(chartTryout.data.labels)],
                         datasets: [
                           {
                             data: [...chartTryout.data.datasets],
@@ -145,7 +149,7 @@ const TryoutChart = (props) => {
                       }
                     : prodi === 1
                     ? {
-                        labels: [...chartTryout.data.labels],
+                        labels: [...toBeNumber(chartTryout.data.labels)],
                         datasets: [
                           {
                             data: [...chartTryout.data.datasets],
@@ -172,7 +176,7 @@ const TryoutChart = (props) => {
                         ],
                       }
                     : {
-                        labels: [...chartTryout.data.labels],
+                        labels: [...toBeNumber(chartTryout.data.labels)],
                         datasets: [
                           {
                             data: [...chartTryout.data.datasets],

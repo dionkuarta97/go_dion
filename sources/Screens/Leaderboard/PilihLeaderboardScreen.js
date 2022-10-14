@@ -145,9 +145,9 @@ const PilihLeaderboardScreen = () => {
                         flex: 1,
                       }}
                     >
-                      <Text style={{ ...Fonts.black17Bold }}>Try out</Text>
+                      <Text style={{ ...Fonts.black17Bold }}>Tryout</Text>
                       <Text style={{ ...Fonts.gray15Regular }}>
-                        Leaderboard Try out yang telah kamu kerjakan
+                        Leaderboard Tryout yang telah kamu kerjakan
                       </Text>
                     </View>
 

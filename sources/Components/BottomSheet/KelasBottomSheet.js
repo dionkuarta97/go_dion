@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -20,7 +20,7 @@ import DefaultBottomSheet from "./DefaultBottomSheet";
 import { FlatGrid } from "react-native-super-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { getListGrades } from "../../Redux/Data/dataActions";
-import { Box, useToast } from "native-base";
+import { Box, Button, Center, HStack, useToast } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../ToastErrorContent";
@@ -31,6 +31,22 @@ const KelasBottomSheet = (props) => {
   const navigation = useNavigation();
   const listGrades = useSelector((state) => state.dataReducer.listGrades);
   const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    if (props.value) {
+      console.log(props.value);
+      if (props.value >= 1 && props.value <= 6) {
+        setIdx(2);
+        console.log("sd");
+      } else if (props.value >= 7 && props.value <= 9) {
+        console.log("smp");
+        setIdx(1);
+      } else {
+        console.log("sma");
+        setIdx(0);
+      }
+    }
+  }, []);
 
   useLayoutEffect(() => {
     checkInternet().then((data) => {
@@ -62,50 +78,40 @@ const KelasBottomSheet = (props) => {
       {listGrades.loading && (
         <ActivityIndicator color={Colors.orangeColor} size={25} />
       )}
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        {listGrades.data !== null &&
-          listGrades.data.map((val, index) => {
-            return (
-              <TouchableOpacity
-                key={index}
-                style={{
-                  borderWidth: 1,
-                  paddingHorizontal: 20,
-                  paddingVertical: 10,
-                  margin: 10,
-                  borderRadius: 8,
-                  backgroundColor:
-                    idx === index ? Colors.primaryColor : "white",
-                  borderColor: Colors.primaryColor,
-                }}
-                onPress={() => setIdx(index)}
-              >
-                <Text>{val.title}</Text>
-              </TouchableOpacity>
-            );
-          })}
-      </View>
+      <Center>
+        <HStack space={6}>
+          {listGrades.data !== null &&
+            listGrades.data.map((val, index) => {
+              return (
+                <Button
+                  width={20}
+                  marginBottom={6}
+                  key={index}
+                  onPress={() => setIdx(index)}
+                  colorScheme={"amber"}
+                  variant={idx === index ? "solid" : "outline"}
+                >
+                  {val.title}
+                </Button>
+              );
+            })}
+        </HStack>
+      </Center>
       {listGrades.data !== null && (
         <FlatGrid
           key={idx}
           data={listGrades.data[idx].grade}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity onPress={() => props.onSelect(item)}>
-                <Box
-                  bg={item.substring(3, 10) === "IPA" ? "red.300" : "amber.400"}
-                  borderRadius={5}
-                  paddingY={2}
-                >
-                  <Text style={{ alignSelf: "center" }}>{`Kelas ${item}`}</Text>
-                </Box>
-              </TouchableOpacity>
+              <Button
+                variant={item === props.value ? "solid" : "outline"}
+                onPress={() => props.onSelect(item)}
+                colorScheme={item.substring(3, 10) === "IPA" ? "red" : "amber"}
+                borderRadius={5}
+                paddingY={2}
+              >
+                {`Kelas ${item}`}
+              </Button>
             );
           }}
         />

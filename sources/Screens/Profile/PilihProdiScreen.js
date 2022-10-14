@@ -54,9 +54,23 @@ const PilihProdiScreen = (props) => {
       if (props.route.params.from !== undefined) {
         navigation.popToTop();
         navigation.navigate("GoTryoutScreen");
+        toast.show({
+          title: "Berhasil",
+          status: "success",
+          description: "Berhasil pilih prodi",
+          placement: "top",
+          width: Dimensions.get("screen").width / 1.3,
+        });
       } else {
         navigation.popToTop();
         navigation.navigate("ProfileScreen");
+        toast.show({
+          title: "Berhasil",
+          status: "success",
+          description: "Berhasil pilih prodi",
+          placement: "top",
+          width: Dimensions.get("screen").width / 1.3,
+        });
       }
 
       dispatch(setUpdateProfile({ data: null, loading: false, error: null }));

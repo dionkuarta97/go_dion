@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getListTryout } from "../../../Redux/Laporan/LaporanAction";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../../../Theme/Colors";
-import { TouchableOpacity, Alert } from "react-native";
+import { TouchableOpacity, Alert, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 const ListTryout = (props) => {
   const dispatch = useDispatch();
@@ -62,6 +62,7 @@ const ListTryout = (props) => {
                     borderBottomColor: Colors.ligthGreyColor,
                   }}
                 >
+                  <Box marginRight={3}>{idx + 1 + ". "}</Box>
                   <Box
                     style={{
                       marginEnd: "auto",

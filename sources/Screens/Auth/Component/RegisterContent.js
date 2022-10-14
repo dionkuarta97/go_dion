@@ -54,7 +54,7 @@ const RegisterContent = ({ sendedEmail }) => {
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("Siswa");
   const [kelas, setKelas] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -150,22 +150,6 @@ const RegisterContent = ({ sendedEmail }) => {
           />
 
           <OnTapTextInput
-            placeholder="Peran"
-            value={role}
-            onTap={() => setRoleBottomeSheetVisible(true)}
-          />
-
-          {roleBottomeSheetVisible && (
-            <RoleBottomSheet
-              onClose={() => setRoleBottomeSheetVisible(false)}
-              onSelect={(val) => {
-                setRole(val);
-                setRoleBottomeSheetVisible(false);
-              }}
-            />
-          )}
-
-          <OnTapTextInput
             placeholder="Tingkatan Kelas"
             value={kelas}
             onTap={() => {
@@ -177,6 +161,7 @@ const RegisterContent = ({ sendedEmail }) => {
           {classBottomSheetVisible && (
             <KelasBottomSheet
               onClose={() => setClassBottomSheetVisible(false)}
+              value={kelas}
               onSelect={(val) => {
                 setKelas(val);
                 setSchoolName("--PILIH SEKOLAH--");

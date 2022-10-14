@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useEffect, useState } from "react";
-import { Dimensions, Text, View, Platform } from "react-native";
+import { Dimensions, Text, View, Platform, TextInput } from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import { Fontisto } from "@expo/vector-icons";
@@ -17,6 +17,7 @@ import LoadingModal from "../../../Components/Modal/LoadingModal";
 import { useToast } from "native-base";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
+import { Button } from "native-base";
 
 const ForgotPasswordContent = () => {
   const toast = useToast();
@@ -27,13 +28,33 @@ const ForgotPasswordContent = () => {
   );
 
   const [email, setEmail] = useState("");
+  const [isEmail, setIsEmail] = useState(false);
 
   useEffect(() => {
     dispatch(setForgotPassword({ loading: false, error: null, data: null }));
     setEmail("");
   }, []);
 
-  console.log(JSON.stringify(forgotPassword, null, 2));
+  const formatEmail = (email) => {
+    const emailReg = new RegExp(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.){1,2}[a-zA-Z]{2,}))$/
+    );
+
+    if (emailReg.test(email)) {
+      return true;
+    } else {
+      false;
+    }
+  };
+
+  useEffect(() => {
+    if (formatEmail(email)) {
+      setIsEmail(true);
+    }
+    return () => {
+      if (isEmail === true) setIsEmail(false);
+    };
+  }, [email]);
 
   return (
     <View
@@ -51,21 +72,38 @@ const ForgotPasswordContent = () => {
               kamu daftarkan.
             </Text>
           </View>
-          <DefaultTextInput
-            keyboardType="email-address"
-            autoCapitalize="none"
-            placeholder="email kamu"
-            onChangeText={setEmail}
-          />
+          <View style={{ marginVertical: 30 }}>
+            <TextInput
+              style={{
+                height: 40,
+                padding: 10,
+                backgroundColor: "white",
+                borderRadius: 5,
+                borderWidth: email ? 1 : 0,
+                borderColor: email && !isEmail ? "red" : "green",
+              }}
+              keyboardType="email-address"
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              value={email}
+              placeholder="ketikkan email kamu"
+            />
+          </View>
 
           {forgotPassword.error !== null && (
             <Text style={{ color: "red", opacity: 0.8 }}>
               {forgotPassword.error}
             </Text>
           )}
-
-          <DefaultPrimaryButton
-            text="Kirim Permintaan"
+          <Button
+            mt={10}
+            paddingTop={5}
+            paddingBottom={5}
+            bg={isEmail ? "amber.400" : "amber.300"}
+            disabled={isEmail ? false : true}
+            _pressed={{
+              bg: "amber.300",
+            }}
             onPress={() => {
               checkInternet().then((connenction) => {
                 if (connenction) {
@@ -90,7 +128,11 @@ const ForgotPasswordContent = () => {
                 }
               });
             }}
-          />
+          >
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+              Periksa Sekarang
+            </Text>
+          </Button>
         </View>
       ) : (
         <View>
