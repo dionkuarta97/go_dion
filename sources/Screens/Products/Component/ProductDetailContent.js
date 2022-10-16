@@ -9,7 +9,15 @@ import {
   Alert,
 } from "react-native";
 
-import * as InAppPurchases from "expo-in-app-purchases";
+import {
+  connectAsync,
+  getProductsAsync,
+  IAPResponseCode,
+  disconnectAsync,
+  setPurchaseListener,
+  finishTransactionAsync,
+  purchaseItemAsync,
+} from "expo-in-app-purchases";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
@@ -47,14 +55,12 @@ const ProductDetailContent = (props) => {
 
   const firstProces = async () => {
     if (Platform.OS === "ios") {
-      await InAppPurchases.connectAsync();
+      await connectAsync();
       if (!item.purchased) {
         setLoading(true);
 
-        const { responseCode, results } = await InAppPurchases.getProductsAsync(
-          itemSkus
-        );
-        if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+        const { responseCode, results } = await getProductsAsync(itemSkus);
+        if (responseCode === IAPResponseCode.OK) {
           if (results.length > 0) {
             if (isLogin) {
               console.log(JSON.stringify(results, null, 2));
@@ -102,15 +108,15 @@ const ProductDetailContent = (props) => {
                   })
                   .finally(async () => {
                     setLoading(false);
-                    await InAppPurchases.disconnectAsync();
+                    await disconnectAsync();
                   });
               } else {
                 setLoading(false);
-                await InAppPurchases.disconnectAsync();
+                await disconnectAsync();
               }
             } else {
               setLoading(false);
-              await InAppPurchases.disconnectAsync();
+              await disconnectAsync();
             }
           } else {
             toast.show({
@@ -135,9 +141,11 @@ const ProductDetailContent = (props) => {
             });
             navigation.navigate("MainScreen");
             setLoading(false);
-            await InAppPurchases.disconnectAsync();
+            await disconnectAsync();
           }
         }
+      } else {
+        await disconnectAsync();
       }
     }
   };
@@ -146,57 +154,35 @@ const ProductDetailContent = (props) => {
     // connect to store if not done so already
     // purchase listener. Most of this is boilerplate from the official docs, with a
     // couple of additions to process a purchase and stop processing.
-    InAppPurchases.setPurchaseListener(
-      async ({ responseCode, results, errorCode }) => {
-        // Purchase was successful
-        if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-          results.forEach(async (purchase) => {
-            if (!purchase.acknowledged) {
-              // process transaction here and unlock content
-              // !! This is your own logic that is not a part of expo-in-app-purchases.
-              // any processing that needs to be done within your app or on your server
-              // can be executed here, just before finishTransactionAsync
+    setPurchaseListener(async ({ responseCode, results, errorCode }) => {
+      // Purchase was successful
+      if (responseCode === IAPResponseCode.OK) {
+        results.forEach(async (purchase) => {
+          if (!purchase.acknowledged) {
+            // process transaction here and unlock content
+            // !! This is your own logic that is not a part of expo-in-app-purchases.
+            // any processing that needs to be done within your app or on your server
+            // can be executed here, just before finishTransactionAsync
 
-              // finish the transaction on platform's end
-              if (isLogin) {
-                dispatch(getPaymentApple(item))
-                  .then(async (json) => {
-                    console.log(JSON.stringify(json, null, 2), "<<<<<bawah");
-                    if (json.status) {
-                      let newTrans = newTransIos.filter(
-                        (value) => value.user_id !== profile._id
-                      );
-                      dispatch(setTransIos(newTrans));
-                      toast.show({
-                        title: "Berhasil",
-                        status: "success",
-                        description: "Berhasil melakukan pembelian",
-                        placement: "top",
-                        width: Dimensions.get("screen").width / 1.3,
-                      });
-                      navigation.navigate("MainScreen");
-                    } else {
-                      dispatch(
-                        setTransIos([
-                          ...newTransIos,
-                          { item: item, user_id: profile._id },
-                        ])
-                      );
-                      toast.show({
-                        title: "Kesalahan",
-                        status: "error",
-                        description:
-                          "Pesanan anda sedang dalam antrian, coba beberapa saat lagi",
-                        placement: "top",
-                        width: Dimensions.get("screen").width / 1.3,
-                      });
-                      navigation.navigate("MainScreen");
-                      setError(
-                        "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
-                      );
-                    }
-                  })
-                  .catch(async (err) => {
+            // finish the transaction on platform's end
+            if (isLogin) {
+              dispatch(getPaymentApple(item))
+                .then(async (json) => {
+                  console.log(JSON.stringify(json, null, 2), "<<<<<bawah");
+                  if (json.status) {
+                    let newTrans = newTransIos.filter(
+                      (value) => value.user_id !== profile._id
+                    );
+                    dispatch(setTransIos(newTrans));
+                    toast.show({
+                      title: "Berhasil",
+                      status: "success",
+                      description: "Berhasil melakukan pembelian",
+                      placement: "top",
+                      width: Dimensions.get("screen").width / 1.3,
+                    });
+                    navigation.navigate("MainScreen");
+                  } else {
                     dispatch(
                       setTransIos([
                         ...newTransIos,
@@ -207,80 +193,98 @@ const ProductDetailContent = (props) => {
                       title: "Kesalahan",
                       status: "error",
                       description:
-                        "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi",
+                        "Pesanan anda sedang dalam antrian, coba beberapa saat lagi",
                       placement: "top",
                       width: Dimensions.get("screen").width / 1.3,
                     });
                     navigation.navigate("MainScreen");
                     setError(
-                      "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
+                      "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
                     );
-                  })
-                  .finally(async () => {
-                    InAppPurchases.finishTransactionAsync(purchase, true);
-                    await InAppPurchases.disconnectAsync();
-                    navigation.navigate("MainScreen");
-                    setLoading(false);
+                  }
+                })
+                .catch(async (err) => {
+                  dispatch(
+                    setTransIos([
+                      ...newTransIos,
+                      { item: item, user_id: profile._id },
+                    ])
+                  );
+                  toast.show({
+                    title: "Kesalahan",
+                    status: "error",
+                    description:
+                      "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi",
+                    placement: "top",
+                    width: Dimensions.get("screen").width / 1.3,
                   });
-              }
+                  navigation.navigate("MainScreen");
+                  setError(
+                    "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
+                  );
+                })
+                .finally(async () => {
+                  finishTransactionAsync(purchase, true);
+                  await disconnectAsync();
+                  navigation.navigate("MainScreen");
+                  setLoading(false);
+                });
             }
-          });
+          }
+        });
 
-          // handle particular error codes
-        } else if (
-          responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED
-        ) {
-          toast.show({
-            title: "Informasi",
-            status: "warning",
-            description: "Kamu Membatalkan transaksi",
-            placement: "top",
-            width: Dimensions.get("screen").width / 1.3,
-          });
-          await InAppPurchases.disconnectAsync();
-          navigation.navigate("MainScreen");
-          setLoading(false);
-        } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
-          console.log(
-            "User does not have permissions to buy but requested parental approval (iOS only)"
-          );
-        } else {
-          toast.show({
-            title: "Kesalahan",
-            status: "error",
-            description: "Telah terjadi kesalahan pada server",
-            placement: "top",
-            width: Dimensions.get("screen").width / 1.3,
-          });
+        // handle particular error codes
+      } else if (responseCode === IAPResponseCode.USER_CANCELED) {
+        toast.show({
+          title: "Informasi",
+          status: "warning",
+          description: "Kamu Membatalkan transaksi",
+          placement: "top",
+          width: Dimensions.get("screen").width / 1.3,
+        });
+        await disconnectAsync();
+        navigation.navigate("MainScreen");
+        setLoading(false);
+      } else if (responseCode === IAPResponseCode.DEFERRED) {
+        console.log(
+          "User does not have permissions to buy but requested parental approval (iOS only)"
+        );
+      } else {
+        toast.show({
+          title: "Kesalahan",
+          status: "error",
+          description: "Telah terjadi kesalahan pada server",
+          placement: "top",
+          width: Dimensions.get("screen").width / 1.3,
+        });
 
-          await InAppPurchases.disconnectAsync();
-          navigation.navigate("MainScreen");
-          setLoading(false);
-          console.warn(
-            `Something went wrong with the purchase. Received errorCode ${errorCode}`
-          );
-        }
-
-        // stop processing. This state update should be reflected
-        // in your components. E.g. make IAPs accessible again.
+        await disconnectAsync();
+        navigation.navigate("MainScreen");
+        setLoading(false);
+        console.warn(
+          `Something went wrong with the purchase. Received errorCode ${errorCode}`
+        );
       }
-    );
+
+      // stop processing. This state update should be reflected
+      // in your components. E.g. make IAPs accessible again.
+    });
   };
 
   useEffect(async () => {
-    firstProces();
-    initIAPandEventListeners();
+    if (Platform.OS === "ios") {
+      firstProces();
+      initIAPandEventListeners();
+    }
   }, []);
 
   const requestPurchase = async () => {
     setLoading(true);
-    await InAppPurchases.connectAsync();
-    const { responseCode, results } = await InAppPurchases.getProductsAsync(
-      itemSkus
-    );
-    if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+    await connectAsync();
+    const { responseCode, results } = await getProductsAsync(itemSkus);
+    if (responseCode === IAPResponseCode.OK) {
       if (results.length > 0) {
-        InAppPurchases.purchaseItemAsync("com.goonline.app." + item._id);
+        purchaseItemAsync("com.goonline.app." + item._id);
       }
     }
   };

@@ -23,7 +23,7 @@ import { HStack, useToast, VStack } from "native-base";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 
-const HomeMenu = () => {
+const HomeMenu = (props) => {
   const toast = useToast();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -169,7 +169,7 @@ const HomeMenu = () => {
         paddingHorizontal: 10,
       }}
     >
-      {homeMenuState.loading && homeMenuState.error == null ? (
+      {homeMenuState.loading && homeMenuState.error == null && props.loading ? (
         <View>
           <Text>Loading.. </Text>
         </View>

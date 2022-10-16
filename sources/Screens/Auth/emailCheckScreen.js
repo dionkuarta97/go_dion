@@ -20,6 +20,7 @@ import { getEmailCheck, setEmailCheck } from "../../Redux/Auth/authActions";
 import checkInternet from "../../Services/CheckInternet";
 import Colors from "../../Theme/Colors";
 import Sizes from "../../Theme/Sizes";
+import { Button } from "native-base";
 
 const EmailCheckScreen = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const EmailCheckScreen = () => {
   const toast = useToast();
   const [email, setEmail] = useState("");
   const checkEmail = useSelector((state) => state.authReducer.checkEmail);
-
+  const [isEmail, setIsEmail] = useState(false);
   useFocusEffect(
     useCallback(() => {
       dispatch(setEmailCheck({ loading: false, data: null, error: null }));
@@ -42,6 +43,27 @@ const EmailCheckScreen = () => {
     }
   }, [checkEmail]);
 
+  const formatEmail = (email) => {
+    const emailReg = new RegExp(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.){1,2}[a-zA-Z]{2,}))$/
+    );
+
+    if (emailReg.test(email)) {
+      return true;
+    } else {
+      false;
+    }
+  };
+
+  useEffect(() => {
+    if (formatEmail(email)) {
+      setIsEmail(true);
+    }
+    return () => {
+      if (isEmail === true) setIsEmail(false);
+    };
+  }, [email]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar title="Periksa Email" backEnabled={true} />
@@ -54,6 +76,8 @@ const EmailCheckScreen = () => {
               padding: 10,
               backgroundColor: "white",
               borderRadius: 5,
+              borderWidth: email ? 1 : 0,
+              borderColor: email && !isEmail ? "red" : "green",
             }}
             keyboardType="email-address"
             onChangeText={setEmail}
@@ -70,8 +94,15 @@ const EmailCheckScreen = () => {
         {checkEmail.loading ? (
           <ActivityIndicator color={Colors.orangeColor} size={24} />
         ) : (
-          <DefaultPrimaryButton
-            text="Periksa Sekarang"
+          <Button
+            mt={10}
+            paddingTop={5}
+            paddingBottom={5}
+            bg={isEmail ? "amber.400" : "amber.300"}
+            disabled={isEmail ? false : true}
+            _pressed={{
+              bg: "amber.300",
+            }}
             onPress={() => {
               checkInternet().then((check) => {
                 if (check) {
@@ -98,7 +129,11 @@ const EmailCheckScreen = () => {
 
               Keyboard.dismiss();
             }}
-          />
+          >
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+              Periksa Sekarang
+            </Text>
+          </Button>
         )}
       </View>
 

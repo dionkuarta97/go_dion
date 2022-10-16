@@ -124,7 +124,7 @@ const LaporanScreen = () => {
                 >
                   <Text style={{ ...Fonts.black17Bold }}>Materi Terkuasai</Text>
                   <Text style={{ ...Fonts.gray15Regular }}>
-                    Cek laporan yang sudah kamu kuasai
+                    Cek progres belajar kamu
                   </Text>
                 </View>
 
@@ -178,7 +178,7 @@ const LaporanScreen = () => {
                 >
                   <Text style={{ ...Fonts.black17Bold }}>Tryout</Text>
                   <Text style={{ ...Fonts.gray15Regular }}>
-                    Cek laporan hasil Tryout kamu
+                    Cek hasil tryout kamu
                   </Text>
                 </View>
 

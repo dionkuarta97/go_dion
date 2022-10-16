@@ -212,6 +212,13 @@ const ProfileEditScreen = (props) => {
   useEffect(() => {
     if (update.data) {
       dispatch(setUpdateProfile({ data: null, loading: false, error: null }));
+      toast.show({
+        title: "Berhasil",
+        status: "success",
+        description: "Berhasil ubah profil",
+        placement: "top",
+        width: Dimensions.get("screen").width / 1.3,
+      });
       navigation.goBack();
     }
     if (update.error === "Terjadi kesalahan saat memproses data") {
@@ -379,22 +386,6 @@ const ProfileEditScreen = (props) => {
             />
 
             <OnTapTextInput
-              placeholder="Role"
-              value={role}
-              onTap={() => setRoleBottomeSheetVisible(true)}
-            />
-
-            {roleBottomeSheetVisible && (
-              <RoleBottomSheet
-                onClose={() => setRoleBottomeSheetVisible(false)}
-                onSelect={(val) => {
-                  setRole(val);
-                  setRoleBottomeSheetVisible(false);
-                }}
-              />
-            )}
-
-            <OnTapTextInput
               placeholder="Class Level"
               value={kelas}
               onTap={() => {
@@ -406,6 +397,7 @@ const ProfileEditScreen = (props) => {
             {classBottomSheetVisible && (
               <KelasBottomSheet
                 onClose={() => setClassBottomSheetVisible(false)}
+                value={kelas}
                 onSelect={(val) => {
                   setKelas(val);
                   console.log(val);

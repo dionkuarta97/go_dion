@@ -146,7 +146,7 @@ export default MainScreen = (props) => {
       {checkVersion.upToDate === 0 ? (
         <View style={{ flex: 1 }}>
           {currentIndex == 0 ? (
-            <HomeScreen />
+            <HomeScreen currentIndex={currentIndex} />
           ) : currentIndex == 1 ? (
             <PurchaseScreen from="home" />
           ) : currentIndex == 4 ? (

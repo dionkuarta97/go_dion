@@ -43,6 +43,7 @@ export default function ProgressTryoutContent(props) {
   const OpenWEB = (url) => {
     Linking.openURL(url);
   };
+  const profile = useSelector((state) => state.profileReducer.profile);
   const toast = useToast();
   const navigation = useNavigation();
   const { detailTryout } = useSelector((state) => state.laporanReducer);
@@ -113,6 +114,8 @@ export default function ProgressTryoutContent(props) {
     }
   }, [detailTryout]);
 
+  console.log(profile);
+
   useEffect(() => {
     fetch(
       `https://apionline.gobimbelonline.net/report/v1/tryouts/${_id}/download`,
@@ -131,8 +134,6 @@ export default function ProgressTryoutContent(props) {
         }
       });
   }, []);
-
-  console.log(JSON.stringify(detailTryout, null, 2));
 
   return (
     <>
@@ -320,14 +321,15 @@ export default function ProgressTryoutContent(props) {
               bg: "red.400",
             }}
             onPress={() => {
-              if (link) {
-                navigation.navigate("PDFScreen", { book: link });
-              } else {
-                Alert.alert(
-                  "Informasi",
-                  "Laporan PDF kamu sedang di proses. Silakan cek lagi nanti ya :)"
-                );
-              }
+              OpenWEB(
+                "https://apionline.gobimbelonline.net/report/v1/pdf/" +
+                  type +
+                  "/" +
+                  _id +
+                  "?uid=" +
+                  profile._id +
+                  "&mode=stream"
+              );
             }}
           >
             <HStack space={1}>
