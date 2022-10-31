@@ -392,11 +392,24 @@ const RegisterContent = ({ sendedEmail }) => {
         {register.loading && <LoadingModal />}
         {register.data !== null && (
           <DefaultModal>
-            <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>
-              Berhasil Regitrasi.
+            <Text
+              style={{
+                marginBottom: Sizes.fixPadding * 0.2,
+                textAlign: "center",
+                fontSize: 18,
+                fontWeight: "bold",
+              }}
+            >
+              Berhasil Registrasi
             </Text>
-            <Text style={{ marginBottom: Sizes.fixPadding * 2 }}>
-              Cek email kamu untuk verikasi ya :)
+            <Text
+              style={{
+                marginBottom: Sizes.fixPadding * 1,
+                textAlign: "center",
+                fontSize: 15,
+              }}
+            >
+              Cek email kamu untuk verifikasi ya :)
             </Text>
             <DefaultPrimaryButton
               text="Kembali ke Halaman Login"

@@ -163,7 +163,7 @@ const PurchaseContent = (props) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          <EmptyIndicator msg="Data pembelian kamu akan muncul disini" />
+          <EmptyIndicator msg="Data pembelian kamu akan muncul di sini" />
         </ScrollView>
       )}
     </View>

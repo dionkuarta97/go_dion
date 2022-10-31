@@ -12,7 +12,7 @@ const TryoutLeaderScreen = ({ route }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar backEnabled={true} title={params.title} />
+      <DefaultAppBar backEnabled={true} title={"Top 100"} />
       {!isLogin ? (
         <View
           style={{

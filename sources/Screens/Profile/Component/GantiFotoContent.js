@@ -130,7 +130,7 @@ const GantiFotoContent = (props) => {
                     .finally(() => setLoading(false));
                 }}
               >
-                Simpan Foto
+                Gunakan Foto
               </Button>
             )}
           </VStack>

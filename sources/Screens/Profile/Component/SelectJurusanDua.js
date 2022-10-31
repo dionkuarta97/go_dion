@@ -29,13 +29,13 @@ const SelectJurusanDua = (props) => {
   const toast = useToast();
   const navigation = useNavigation();
   const { listJurusan } = useSelector((state) => state.dataReducer);
-  const { onClose, onSelect, idUniversitas } = props;
+  const { onClose, onSelect, idUniversitas, kelompok } = props;
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     checkInternet().then((data) => {
       if (data) {
-        dispatch(getJurusan(idUniversitas));
+        dispatch(getJurusan(idUniversitas, kelompok));
       } else {
         props.onClose();
         toast.show({
@@ -57,6 +57,7 @@ const SelectJurusanDua = (props) => {
       }
     });
   }, []);
+  console.log(kelompok);
   return (
     <>
       <DefaultBottomSheet onClose={() => onClose()} title="Pilih Jurusan">

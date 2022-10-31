@@ -22,13 +22,13 @@ const FilterSearchText = () => {
   return (
     <DefaultCard>
       <Text style={{ ...Fonts.black17Regular }}>
-        Ketikkan pelajaran atau bab yang kamu inginkan dibawah ini.
+        Masukkan kata kunci untuk produk yang ingin kamu cari.
       </Text>
 
       <DefaultTextInput
         value={keyword}
         onChangeText={(val) => setKeyword(val)}
-        placeholder="ketikkan yang dicari"
+        placeholder="Contoh: Integral"
       />
 
       <View style={{ width: 180, alignSelf: "flex-end" }}>

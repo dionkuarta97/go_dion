@@ -48,7 +48,7 @@ const DelaySoal = (props) => {
         />
       </Box>
       <Text style={{ marginTop: 30, fontWeight: "bold" }}>Mohon Tunggu</Text>
-      <Text style={{ color: "grey" }}>Sesi sedang dipersiapkan</Text>
+      <Text style={{ color: "grey" }}>Sesi sedang disiapkan</Text>
     </View>
   );
 };

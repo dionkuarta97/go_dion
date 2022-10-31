@@ -1,8 +1,9 @@
-import { ScrollView } from "native-base";
+import { HStack, ScrollView } from "native-base";
 import React from "react";
 import { SafeAreaView, Text, View } from "react-native";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import Fonts from "../../Theme/Fonts";
+import { Ionicons } from "@expo/vector-icons";
 
 const LihatProdiScreen = (props) => {
   const { prodi } = props.route.params;
@@ -16,13 +17,21 @@ const LihatProdiScreen = (props) => {
             paddingTop: 20,
           }}
         >
-          <Text
+          <HStack
+            space={1}
             style={{
-              color: "red",
+              alignItems: "center",
             }}
           >
-            * Saat ini pilihan prodi tidak dapat diubah
-          </Text>
+            <Ionicons name="information-circle" size={18} color="red" />
+            <Text
+              style={{
+                color: "red",
+              }}
+            >
+              Saat ini pilihan prodi tidak dapat diubah
+            </Text>
+          </HStack>
         </View>
         <ScrollView
           style={{

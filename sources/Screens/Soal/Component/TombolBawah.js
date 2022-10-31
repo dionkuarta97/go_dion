@@ -152,19 +152,23 @@ const TombolBawah = (props) => {
                   }}
                   width={Dimensions.get("screen").width / 3}
                   onPress={() => {
-                    Alert.alert("Peringatan", "Apakah kamu yakin?", [
-                      {
-                        text: "Tidak",
-                        onPress: () => {},
-                      },
-                      {
-                        text: "Ya, saya yakin",
-                        onPress: () => {
-                          setDelay(true);
-                          setFinish(true);
+                    Alert.alert(
+                      "Peringatan",
+                      "Apakah kamu yakin untuk menyelesaikan sesi ini?",
+                      [
+                        {
+                          text: "Tidak",
+                          onPress: () => {},
                         },
-                      },
-                    ]);
+                        {
+                          text: "Ya, saya yakin",
+                          onPress: () => {
+                            setDelay(true);
+                            setFinish(true);
+                          },
+                        },
+                      ]
+                    );
                   }}
                 >
                   <Text bold>Selesai</Text>
@@ -185,7 +189,7 @@ const TombolBawah = (props) => {
                       "Tunggu sesi ini berakhir untuk melanjutkan sesi berikutnya.\n\nYuk review kembali jawaban kamu!";
                   } else {
                     msg =
-                      "Kamu harus menunggu waktu sesi ini berakhir.\n\nYuk review kembali jawaban kamu!";
+                      "Kamu harus menunggu waktu sesi ini berakhir.\n\nYuk periksa kembali jawaban kamu!";
                   }
                   Alert.alert("Informasi", msg);
                 }}

@@ -27,6 +27,8 @@ import ModalCountDown from "./ModalCountDown";
 import ModalFinish from "./ModalFinish";
 import LoadingIndicator from "../../../Components/Indicator/LoadingIndicator";
 import VideoTest from "./VideoTest";
+import OneSignal from "react-native-onesignal";
+import ModalValid from "./ModalValid";
 
 const products = [
   { id: 1, title: "a" },
@@ -52,11 +54,10 @@ const HomeContent = (props) => {
   const [finish, setFinish] = useState(false);
   const [firestoreTime, setFirestoreTime] = useState(null);
   const [timeOpen, setTimeOpen] = useState(null);
+  const [valid, setValid] = useState(true);
 
   useEffect(async () => {
-    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-
-    console.log(isFocused);
+    console.log(isLogin, "<<<login");
     setLoading(true);
     if (isFocused) {
       try {
@@ -81,6 +82,9 @@ const HomeContent = (props) => {
       }
       if (isLogin && profile) {
         setLoading(true);
+        console.log("masuk sini");
+        const deviceState = await OneSignal.getDeviceState();
+        console.log(JSON.stringify(deviceState.userId, null, 2), "dsadas");
         firestore()
           .collection("Jawaban")
           .where("user_id", "==", profile._id)
@@ -88,23 +92,27 @@ const HomeContent = (props) => {
           .then((querySnapshot) => {
             if (querySnapshot.docs.length > 0) {
               let temp = querySnapshot.docs[0].data();
-              console.log(temp);
-              setFirestoreTime(temp.time);
-              setTimeOpen(temp.firstOpen);
-              setSoal({
-                title: temp.title,
-                soalUrl: temp.soalUrl,
-                blockTime: temp.blockTime,
-              });
-              let now = new Date();
-              let int = (now.getTime() - temp.firstOpen[temp.sesi]) / 1000;
-              if (int < temp.time[temp.sesi]) {
-                setSesi(temp.sesi);
-                setWaktu(temp.time[temp.sesi] - int);
+              if (temp.playerId === deviceState.userId) {
+                setValid(true);
+                setFirestoreTime(temp.time);
+                setTimeOpen(temp.firstOpen);
+                setSoal({
+                  title: temp.title,
+                  soalUrl: temp.soalUrl,
+                  blockTime: temp.blockTime,
+                });
+                let now = new Date();
+                let int = (now.getTime() - temp.firstOpen[temp.sesi]) / 1000;
+                if (int < temp.time[temp.sesi]) {
+                  setSesi(temp.sesi);
+                  setWaktu(temp.time[temp.sesi] - int);
+                } else {
+                  setSesi(temp.sesi + 1);
+                }
+                setPending(true);
               } else {
-                setSesi(temp.sesi + 1);
+                setValid(false);
               }
-              setPending(true);
             } else {
               setFinish(false);
               setPending(false);
@@ -126,8 +134,9 @@ const HomeContent = (props) => {
       setFinish(false);
       setFirestoreTime(null);
       setTimeOpen(null);
+      setValid(true);
     };
-  }, [isFocused]);
+  }, [isFocused, isLogin]);
 
   useEffect(() => {
     setLoading(true);
@@ -153,8 +162,6 @@ const HomeContent = (props) => {
       setLoading(false);
     }
   }, [sesi]);
-
-  console.log(finish, sesi);
 
   const sectionHeader = (title) => {
     return (
@@ -204,7 +211,7 @@ const HomeContent = (props) => {
               <HomeCarousel />
             </>
           )}
-
+          {!valid && <ModalValid setValid={setValid} />}
           {pending && !finish && (
             <ModalCountDown
               setFinish={setFinish}

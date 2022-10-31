@@ -74,7 +74,7 @@ export default App = () => {
     config,
   };
   const linkingIos = {
-    prefixes: ["https://dionkasih.online", "goonline://"],
+    prefixes: ["https://student.gobimbelonline.net", "goonline://"],
     config,
   };
 

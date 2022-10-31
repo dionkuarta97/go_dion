@@ -59,8 +59,16 @@ const PaymentScreen = (props) => {
   }, []);
 
   const getTotalSec = (time) => {
-    const minSec = time.minutes * 60;
-    return minSec + time.seconds;
+    console.log(JSON.stringify(time, null, 2));
+    let temp = 0;
+    if (time.hours > 0) {
+      temp += time.hours * 60 * 60;
+    }
+    if (time.minutes > 0) {
+      temp += time.minutes * 60;
+    }
+    temp += time.seconds;
+    return temp;
   };
 
   const getVaNumber = (detail) => {
@@ -106,7 +114,7 @@ const PaymentScreen = (props) => {
                     showSeparator={true}
                     onFinish={() => console.log("finish")}
                     size={14}
-                    timeToShow={["M", "S"]}
+                    timeToShow={["H", "M", "S"]}
                     timeLabels={{ m: null, s: null }}
                     style={{ ...Fonts.blackRegular }}
                     onChange={(t) => {}}

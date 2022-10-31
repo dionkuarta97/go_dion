@@ -106,7 +106,9 @@ const KelasBottomSheet = (props) => {
               <Button
                 variant={item === props.value ? "solid" : "outline"}
                 onPress={() => props.onSelect(item)}
-                colorScheme={item.substring(3, 10) === "IPA" ? "red" : "amber"}
+                colorScheme={
+                  item.substring(3, 10) === "IPA" ? "muted" : "amber"
+                }
                 borderRadius={5}
                 paddingY={2}
               >

@@ -24,6 +24,8 @@ import DelaySoal from "./Component/DelaySoal";
 import DelayFinish from "./Component/DelayFinish";
 import Finish from "./Component/Finish";
 import ErrorScreen from "./Component/ErrorScreen";
+import OneSignal from "react-native-onesignal";
+import ModalValid from "../Home/Component/ModalValid";
 
 const SoalScreen = ({ route }) => {
   const toast = useToast();
@@ -37,7 +39,9 @@ const SoalScreen = ({ route }) => {
   const [delay, setDelay] = useState(true);
   const [waktuUjian, setWaktuUjian] = useState(0);
   const [sisaTime, setSisaTime] = useState(0);
+  const [playerId, setPlayerId] = useState("");
   const [finish, setFinish] = useState(false);
+  const [valid, setValid] = useState(true);
   const { jawabanNon, saveAnswer: save } = useSelector(
     (state) => state.soalReducer
   );
@@ -51,10 +55,15 @@ const SoalScreen = ({ route }) => {
   const [loadingBawah, setLoadingBawah] = useState(false);
   const [loadingSoal, setLoadingSoal] = useState(false);
   const [timeOpen, setTimeOpen] = useState(null);
+  const getPlayerId = async () => {
+    const deviceState = await OneSignal.getDeviceState();
+    setPlayerId(deviceState.userId);
+    console.log(JSON.stringify(deviceState.userId, null, 2), "dsadas");
+  };
 
   useEffect(() => {
     dispatch(getSoal());
-
+    getPlayerId();
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => true
@@ -138,6 +147,7 @@ const SoalScreen = ({ route }) => {
                 title: params.title,
                 blockTime: params.blockTime,
                 soalUrl: params.soalUrl,
+                playerId: playerId,
               };
 
               if (querySnapshot.docs.length === 0) {
@@ -155,25 +165,31 @@ const SoalScreen = ({ route }) => {
                   .catch(() => navigation.goBack());
               } else {
                 let jwb = querySnapshot.docs[0].data();
-                let ar = [];
-                for (const key in jwb.jawaban) {
-                  console.log(key);
-                  ar.push(jwb.jawaban[key]);
-                }
-
-                setFirestoreTime(jwb.time);
-                setTimeOpen(jwb.firstOpen);
-                setFirestoreId(jwb.id);
-                dispatch(setJawabanNon(ar));
-                let now = new Date();
-                let temp = (now.getTime() - jwb.firstOpen[jwb.sesi]) / 1000;
-                if (temp < jwb.time[jwb.sesi]) {
-                  setSesi(jwb.sesi);
-                  setWaktuUjian(jwb.time[jwb.sesi] - temp);
+                if (jwb.playerId !== playerId) {
+                  setValid(false);
+                  setLoading(false);
                 } else {
-                  setSesi(jwb.sesi + 1);
+                  let ar = [];
+                  for (const key in jwb.jawaban) {
+                    console.log(key);
+                    ar.push(jwb.jawaban[key]);
+                  }
+
+                  setFirestoreTime(jwb.time);
+                  setTimeOpen(jwb.firstOpen);
+                  setFirestoreId(jwb.id);
+                  dispatch(setJawabanNon(ar));
+                  let now = new Date();
+                  let temp = (now.getTime() - jwb.firstOpen[jwb.sesi]) / 1000;
+                  if (temp < jwb.time[jwb.sesi]) {
+                    setSesi(jwb.sesi);
+                    setWaktuUjian(jwb.time[jwb.sesi] - temp);
+                  } else {
+                    setSesi(jwb.sesi + 1);
+                  }
+                  setValid(true);
+                  setLoading(false);
                 }
-                setLoading(false);
               }
             })
             .catch(() => navigation.goBack());
@@ -288,6 +304,7 @@ const SoalScreen = ({ route }) => {
           ]);
         }}
       />
+      {!valid && <ModalValid setValid={setValid} />}
       {soal.loading && <LoadingIndicator />}
       {soal.error || save.error ? (
         <ErrorScreen />

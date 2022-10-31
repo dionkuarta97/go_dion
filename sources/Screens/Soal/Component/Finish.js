@@ -21,7 +21,7 @@ const Finish = (props) => {
         Jawaban kamu berhasil dikirim
       </Text>
       <Text style={{ color: "grey" }} paddingX={10} textAlign={"center"}>
-        Klik tombol dibawah ini untuk cek skor kamu
+        Klik tombol di bawah ini untuk cek nilai kamu
       </Text>
       <Button
         width={Dimensions.get("screen").width / 1.4}
@@ -47,7 +47,7 @@ const Finish = (props) => {
         }}
       >
         <Text bold fontSize={17}>
-          Cek Skor Kamu
+          Cek Nilai Kamu
         </Text>
       </Button>
     </View>
