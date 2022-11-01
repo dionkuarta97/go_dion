@@ -64,7 +64,10 @@ export function getLogin({ username, password, playerId }) {
         .then((response) => response.json())
         .then((json) => {
           if (json.status) {
-            dispatch(setLoginData(defaultDoneState(json.data)));
+            setTimeout(() => {
+              dispatch(setLoginData(defaultDoneState(json.data)));
+            }, 2000);
+
             dispatch(setLoginStatus(true));
             dispatch(setToken(json.data.token));
             dispatch(setProfile(json.data.user));

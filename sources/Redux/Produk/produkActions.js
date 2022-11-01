@@ -79,7 +79,7 @@ export function getGroupedProduk() {
     dispatch(setGroupedProduk(defaultInitState));
     try {
       const urlBase = getState().initReducer.baseUrl;
-      fetch(urlBase + urlGroupedProduk, {
+      fetch(urlBase + urlGroupedProduk + "?limit=5", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${getState().authReducer.token}`,

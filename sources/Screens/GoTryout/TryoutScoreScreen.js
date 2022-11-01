@@ -248,7 +248,7 @@ const TryoutScoreScreen = (props) => {
                       marginBottom: 10,
                     }}
                   >
-                    Score kamu sedang diproses
+                    Nilai kamu sedang diproses
                   </Text>
                   <View
                     style={{
@@ -256,7 +256,7 @@ const TryoutScoreScreen = (props) => {
                     }}
                   >
                     <DefaultPrimaryButton
-                      text="Refresh"
+                      text="Segarkan"
                       onPress={() => {
                         dispatch(getScore(related_to));
                       }}

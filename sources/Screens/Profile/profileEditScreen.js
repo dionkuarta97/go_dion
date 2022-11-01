@@ -215,7 +215,7 @@ const ProfileEditScreen = (props) => {
       toast.show({
         title: "Berhasil",
         status: "success",
-        description: "Berhasil ubah profil",
+        description: "Berhasil memperbarui profil",
         placement: "top",
         width: Dimensions.get("screen").width / 1.3,
       });
@@ -607,17 +607,17 @@ const ProfileEditScreen = (props) => {
                   style={styles.button}
                   onPress={handlePress}
                 >
-                  <Text style={{ ...Fonts.black19Bold }}>Cek</Text>
+                  <Text style={{ ...Fonts.black19Bold }}>Periksa</Text>
                 </TouchableOpacity>
               )}
 
               {checkPassword.error === 401 && (
-                <Text style={{ color: "red", marginTop: 30 }}>
-                  Password Kamu Salah !
+                <Text style={{ color: "red", marginTop: 20 }}>
+                  Password kamu salah !
                 </Text>
               )}
               {checkPassword.error === 500 && (
-                <Text style={{ color: "red", marginTop: 30 }}>
+                <Text style={{ color: "red", marginTop: 20 }}>
                   Terjadi kesalahan saat memproses data, Coba Lagi Nanti
                 </Text>
               )}
@@ -676,7 +676,7 @@ export default ProfileEditScreen;
 const styles = StyleSheet.create({
   button: {
     alignSelf: "center",
-    width: 80,
+    width: Dimensions.get("screen").width / 1.7,
     backgroundColor: Colors.ligthGreyColor,
     paddingVertical: Sizes.fixPadding + 5.0,
     justifyContent: "center",

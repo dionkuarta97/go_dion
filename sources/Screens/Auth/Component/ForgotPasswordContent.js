@@ -129,9 +129,7 @@ const ForgotPasswordContent = () => {
               });
             }}
           >
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-              Periksa Sekarang
-            </Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>Kirim</Text>
           </Button>
         </View>
       ) : (

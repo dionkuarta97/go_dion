@@ -9,7 +9,7 @@ const LeaderboardScreen = () => {
   const { isLogin } = useSelector((state) => state.authReducer);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar backEnabled={true} title={"Pengerjaan Soal"} />
+      <DefaultAppBar backEnabled={true} title={"Top 100"} />
       {!isLogin ? (
         <View
           style={{

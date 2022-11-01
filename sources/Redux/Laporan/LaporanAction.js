@@ -87,34 +87,35 @@ export function setChartTryout(payload) {
 
 export function getChartTryout(payload) {
   return async (dispatch, getState) => {
-    try {
-      dispatch(setChartTryout(defaultInitState));
-      const urlBase = getState().initReducer.baseUrl;
-      let url = "";
-      if (payload.type === "uas") {
-        url = "/report/v1/tryouts/chart?type=" + payload.type;
-      } else {
-        url =
-          "/report/v1/tryouts/chart?type=" +
-          payload.type +
-          "&prodi=" +
-          payload.prodi;
-      }
-      const response = await fetch(urlBase + url, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${getState().authReducer.token}`,
-        },
-      });
-      const json = await response.json();
-      if (json.status) {
-        dispatch(setChartTryout(defaultDoneState(json.data)));
-      } else {
-        dispatch(setChartTryout(defaultFailedState(json.message)));
-      }
-    } catch (error) {
-      dispatch(setChartTryout(defaultErrorState));
+    // try {
+    dispatch(setChartTryout(defaultInitState));
+    const urlBase = getState().initReducer.baseUrl;
+    let url = "";
+    if (payload.type === "uas") {
+      url = "/report/v1/tryouts/chart?type=" + payload.type;
+    } else {
+      url =
+        "/report/v1/tryouts/chart?type=" +
+        payload.type +
+        "&prodi=" +
+        payload.prodi;
     }
+    const response = await fetch(urlBase + url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${getState().authReducer.token}`,
+      },
+    });
+    const json = await response.json();
+    if (json.status) {
+      dispatch(setChartTryout(defaultDoneState(json.data)));
+    } else {
+      dispatch(setChartTryout(defaultFailedState(json.message)));
+    }
+    // } catch (error) {
+    //   console.log(error);
+    //   dispatch(setChartTryout(defaultErrorState));
+    // }
   };
 }
 

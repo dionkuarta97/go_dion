@@ -7,6 +7,7 @@ import NoData from "../../../Components/NoData";
 import { getChartTryout, setProdi } from "../../../Redux/Laporan/LaporanAction";
 
 import { Rect, Text as TextSVG, Svg } from "react-native-svg";
+import LoadingModal from "../../../Components/Modal/LoadingModal";
 const screenWidth = Dimensions.get("window").width;
 
 const chartConfig = {
@@ -31,6 +32,8 @@ const TryoutChart = (props) => {
     value: 0,
   });
 
+  console.log(JSON.stringify(prodi, null, 2));
+
   useEffect(() => {
     if (type) dispatch(getChartTryout({ type, prodi }));
     dispatch(setProdi(1));
@@ -49,11 +52,13 @@ const TryoutChart = (props) => {
       }, 1000);
   }, [tooltipPos]);
 
-  toBeNumber = (arr) => {
+  const toBeNumber = (arr) => {
     let temp = [];
     for (const key in arr) {
       temp.push(Number(key) + 1);
     }
+
+    console.log(temp);
     return temp;
   };
 
@@ -70,6 +75,7 @@ const TryoutChart = (props) => {
           <NoData msg="Laporan tidak ditemukan" />
         </View>
       )}
+      {chartTryout.loading && <LoadingModal />}
       {chartTryout.data !== null && (
         <>
           <View
@@ -101,6 +107,7 @@ const TryoutChart = (props) => {
                     }}
                     variant={prodi === 1 ? "solid" : "outline"}
                     bg={prodi === 1 ? "red.600" : "white"}
+                    borderColor={"amber.400"}
                   >
                     Pilihan 1
                   </Button>
@@ -112,6 +119,7 @@ const TryoutChart = (props) => {
                     }}
                     variant={prodi === 2 ? "solid" : "outline"}
                     bg={prodi === 2 ? "amber.400" : "white"}
+                    borderColor={"red.600"}
                   >
                     Pilihan 2
                   </Button>
@@ -205,9 +213,11 @@ const TryoutChart = (props) => {
                       }
                 }
                 width={
-                  chartTryout.data.labels.length > 3
-                    ? (screenWidth * (12 + (chartTryout.data.length - 3))) / 10
-                    : (screenWidth * 12) / 10
+                  chartTryout.data.labels.length > 5
+                    ? (screenWidth *
+                        (12 + (chartTryout.data.labels.length - 3))) /
+                      13.5
+                    : (screenWidth * 12) / 13.5
                 }
                 height={Dimensions.get("screen").height / 2.5}
                 xLabelsOffset={10}

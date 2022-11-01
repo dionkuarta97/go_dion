@@ -49,10 +49,11 @@ const ProductDetailContent = (props) => {
   const item = props.item;
   const onCart = props.onCart;
   const itemSkus = Platform.select({
-    ios: ["com.goonline.app." + item._id],
+    ios: ["com.goonline.app." + item.details.apple_id],
     android: ["com.example.coins100"],
   });
 
+  console.log(JSON.stringify(item, null, 2));
   const firstProces = async () => {
     if (Platform.OS === "ios") {
       await connectAsync();
@@ -284,7 +285,7 @@ const ProductDetailContent = (props) => {
     const { responseCode, results } = await getProductsAsync(itemSkus);
     if (responseCode === IAPResponseCode.OK) {
       if (results.length > 0) {
-        purchaseItemAsync("com.goonline.app." + item._id);
+        purchaseItemAsync("com.goonline.app." + item.details.apple_id);
       }
     }
   };

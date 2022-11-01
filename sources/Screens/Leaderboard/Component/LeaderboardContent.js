@@ -164,7 +164,10 @@ const LeaderboardContent = () => {
               Tingkat {select}
             </Text>
             <Text color={"light.400"}>
-              {leaderboard.data?.total_data} Result
+              {leaderboard.data?.total_data >= 100
+                ? 100
+                : leaderboard.data?.total_data}{" "}
+              Hasil
             </Text>
           </HStack>
 
@@ -189,10 +192,7 @@ const LeaderboardContent = () => {
                   scrollY.setValue(e.nativeEvent.contentOffset.y);
                 }
 
-                if (
-                  leaderboard.data?.total_data !==
-                  leaderboard.data?.rankings.length
-                ) {
+                if (99 >= leaderboard.data?.rankings.length) {
                   if (!loading) {
                     if (handleInfinityScroll(e)) {
                       let temp = leaderboard.data?.rankings;

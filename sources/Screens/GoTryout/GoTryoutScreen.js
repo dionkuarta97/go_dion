@@ -70,7 +70,7 @@ const GoTryoutScreen = () => {
   console.log(tryout, "<<<<<akweakw");
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar title="Go Tryout" backEnabled={true} />
+      <DefaultAppBar title="Tryout" backEnabled={true} />
       {!loading && (
         <DefaultTabBar
           routes={[

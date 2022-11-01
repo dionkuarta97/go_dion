@@ -46,7 +46,7 @@ const FirstRoute = () => {
   return (
     <View style={{ flex: 1, marginTop: 15 }}>
       {products.length === 0 ? (
-        <NoData msg="Produk Tidak Di Temukan" />
+        <NoData msg="Produk tidak ditemukan" />
       ) : (
         <FlatGrid
           onScroll={(e) => {

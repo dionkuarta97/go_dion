@@ -37,6 +37,7 @@ import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Linking } from "react-native";
+import LoadingModal from "../../../Components/Modal/LoadingModal";
 
 export default function ProgressTryoutContent(props) {
   const { _id, type } = props;
@@ -141,6 +142,7 @@ export default function ProgressTryoutContent(props) {
         style={{ paddingHorizontal: 15, paddingVertical: 10, flex: 1 }}
       >
         <View>
+          {loading && <LoadingModal />}
           <Box
             bg={"white"}
             shadow={4}
@@ -280,7 +282,7 @@ export default function ProgressTryoutContent(props) {
                             name="rocket1"
                             color={Colors.neutralRedColor}
                           />{" "}
-                          Score :
+                          Nilai :
                         </Text>
                         <Box
                           bg={"green.600"}
@@ -315,34 +317,36 @@ export default function ProgressTryoutContent(props) {
           </>
         )}
         <Center marginBottom={50}>
-          <Button
-            bg={"red.500"}
-            _pressed={{
-              bg: "red.400",
-            }}
-            onPress={() => {
-              OpenWEB(
-                "https://apionline.gobimbelonline.net/report/v1/pdf/" +
-                  type +
-                  "/" +
-                  _id +
-                  "?uid=" +
-                  profile._id +
-                  "&mode=stream"
-              );
-            }}
-          >
-            <HStack space={1}>
-              <MaterialCommunityIcons
-                name="file-pdf-box"
-                size={24}
-                color="white"
-              />
-              <Text color={"white"} bold>
-                Lihat Laporan
-              </Text>
-            </HStack>
-          </Button>
+          {type !== "uas" && (
+            <Button
+              bg={"red.500"}
+              _pressed={{
+                bg: "red.400",
+              }}
+              onPress={() => {
+                OpenWEB(
+                  "https://apionline.gobimbelonline.net/report/v1/pdf/" +
+                    type +
+                    "/" +
+                    _id +
+                    "?uid=" +
+                    profile._id +
+                    "&mode=html"
+                );
+              }}
+            >
+              <HStack space={1}>
+                <MaterialCommunityIcons
+                  name="file-pdf-box"
+                  size={24}
+                  color="white"
+                />
+                <Text color={"white"} bold>
+                  Lihat Laporan
+                </Text>
+              </HStack>
+            </Button>
+          )}
         </Center>
       </ScrollView>
     </>

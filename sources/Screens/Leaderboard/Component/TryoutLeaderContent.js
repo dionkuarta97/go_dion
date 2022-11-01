@@ -161,7 +161,10 @@ const TryoutLeaderContent = (props) => {
                 Tingkat {select}
               </Text>
               <Text color={"light.400"}>
-                {tryoutLeader.data?.total_data} Result
+                {tryoutLeader.data?.total_data >= 100
+                  ? 100
+                  : tryoutLeader.data?.total_data}{" "}
+                Hasil
               </Text>
             </HStack>
             <TahunAjaran
@@ -182,10 +185,7 @@ const TryoutLeaderContent = (props) => {
                   scrollY.setValue(e.nativeEvent.contentOffset.y);
                 }
 
-                if (
-                  tryoutLeader.data?.total_data !==
-                  tryoutLeader.data?.rankings.length
-                ) {
+                if (99 >= tryoutLeader.data?.rankings.length) {
                   if (!loading) {
                     if (handleInfinityScroll(e)) {
                       let temp = tryoutLeader.data?.rankings;

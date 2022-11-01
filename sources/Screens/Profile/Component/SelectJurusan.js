@@ -29,13 +29,13 @@ const SelectJurusan = (props) => {
   const toast = useToast();
   const navigation = useNavigation();
   const { listJurusan } = useSelector((state) => state.dataReducer);
-  const { onClose, onSelect, idUniversitas } = props;
+  const { onClose, onSelect, idUniversitas, kelompok } = props;
   const [search, setSearch] = useState("");
-
+  console.log(kelompok);
   useEffect(() => {
     checkInternet().then((data) => {
       if (data) {
-        dispatch(getJurusan(idUniversitas));
+        dispatch(getJurusan(idUniversitas, kelompok));
       } else {
         props.onClose();
         toast.show({
@@ -87,55 +87,84 @@ const SelectJurusan = (props) => {
         {listJurusan.loading ? (
           <ActivityIndicator color={Colors.orangeColor} />
         ) : (
-          <FlatList
-            style={{
-              marginBottom: 50,
-              maxHeight:
-                Platform.OS === "ios"
-                  ? Dimensions.get("screen").height / 2.2
-                  : Dimensions.get("screen").height / 4,
-              minHeight:
-                Platform.OS === "ios"
-                  ? Dimensions.get("screen").height / 2.2
-                  : Dimensions.get("screen").height / 4,
-            }}
-            keyExtractor={(item, index) => item.id + "univ"}
-            data={listJurusan.data?.filter((value) =>
-              value.title.toLowerCase().includes(search.toLowerCase())
-            )}
-            renderItem={({ item, index }) => {
-              return (
-                <TouchableOpacity
-                  key={`universitas-${item.id}`}
-                  onPress={() => onSelect(item)}
+          <>
+            {listJurusan.data === null ? (
+              <>
+                <View
+                  style={{
+                    padding: 30,
+                    marginTop: 50,
+                    maxHeight:
+                      Platform.OS === "ios"
+                        ? Dimensions.get("screen").height / 2.2
+                        : Dimensions.get("screen").height / 4,
+                    minHeight:
+                      Platform.OS === "ios"
+                        ? Dimensions.get("screen").height / 2.2
+                        : Dimensions.get("screen").height / 4,
+                  }}
                 >
-                  <View
+                  <Text
                     style={{
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      paddingVertical: 10,
-                      borderBottomWidth: 1,
-                      borderBottomColor: "lightgrey",
+                      textAlign: "center",
                     }}
                   >
-                    <Text style={{ flex: 1 }}>{item.title}</Text>
-                    <View
-                      style={{
-                        paddingHorizontal: 2,
-                      }}
+                    Program studi dengan jurusanmu tidak tersedia di PTN ini
+                  </Text>
+                </View>
+              </>
+            ) : (
+              <FlatList
+                style={{
+                  marginBottom: 50,
+                  maxHeight:
+                    Platform.OS === "ios"
+                      ? Dimensions.get("screen").height / 2.2
+                      : Dimensions.get("screen").height / 4,
+                  minHeight:
+                    Platform.OS === "ios"
+                      ? Dimensions.get("screen").height / 2.2
+                      : Dimensions.get("screen").height / 4,
+                }}
+                keyExtractor={(item, index) => item.id + "univ"}
+                data={listJurusan.data?.filter((value) =>
+                  value.title.toLowerCase().includes(search.toLowerCase())
+                )}
+                renderItem={({ item, index }) => {
+                  return (
+                    <TouchableOpacity
+                      key={`universitas-${item.id}`}
+                      onPress={() => onSelect(item)}
                     >
-                      <MaterialIcons
-                        name="keyboard-arrow-right"
-                        size={30}
-                        color={Colors.orangeColor}
-                      />
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              );
-            }}
-          />
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          paddingVertical: 10,
+                          borderBottomWidth: 1,
+                          borderBottomColor: "lightgrey",
+                        }}
+                      >
+                        <Text style={{ flex: 1 }}>{item.title}</Text>
+                        <View
+                          style={{
+                            paddingHorizontal: 2,
+                          }}
+                        >
+                          <MaterialIcons
+                            name="keyboard-arrow-right"
+                            size={30}
+                            color={Colors.orangeColor}
+                          />
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            )}
+          </>
         )}
       </DefaultBottomSheet>
     </>

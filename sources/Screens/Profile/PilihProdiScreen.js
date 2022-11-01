@@ -1,7 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
-import { useToast } from "native-base";
+import { Box, HStack, useToast } from "native-base";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text, Alert, Dimensions } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  Alert,
+  Dimensions,
+  Image,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
@@ -9,6 +16,7 @@ import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import OnTapTextInput from "../../Components/CustomTextInput/OnTapTextInput";
 import NewModalLoading from "../../Components/Modal/NewLoadingModal";
 import ToastErrorContent from "../../Components/ToastErrorContent";
+import warning from "../../../assets/Images/warning2.png";
 import {
   getUpdateProfile,
   setUpdateProfile,
@@ -57,7 +65,7 @@ const PilihProdiScreen = (props) => {
         toast.show({
           title: "Berhasil",
           status: "success",
-          description: "Berhasil pilih prodi",
+          description: "Berhasil, pilihan prodi telah disimpan",
           placement: "top",
           width: Dimensions.get("screen").width / 1.3,
         });
@@ -67,7 +75,7 @@ const PilihProdiScreen = (props) => {
         toast.show({
           title: "Berhasil",
           status: "success",
-          description: "Berhasil pilih prodi",
+          description: "Berhasil, pilihan prodi telah disimpan",
           placement: "top",
           width: Dimensions.get("screen").width / 1.3,
         });
@@ -96,7 +104,7 @@ const PilihProdiScreen = (props) => {
       setPilihanDua({ ...pilihanDua, jurusan: null, passing_grade: null });
     }
   }, [pilihanDua.universitas]);
-  console.log(JSON.stringify(pilihanSatu));
+  console.log(JSON.stringify(profile.kelas.substring(3, 6)));
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
@@ -107,13 +115,26 @@ const PilihProdiScreen = (props) => {
             paddingTop: 20,
           }}
         >
-          <Text
-            style={{
-              color: "red",
-            }}
-          >
-            * Saat ini pilihan prodi tidak dapat diubah
-          </Text>
+          <Box paddingY={2} paddingX={1} borderRadius={10}>
+            <HStack alignItems={"center"} space="3">
+              <View>
+                <Image
+                  source={warning}
+                  style={{
+                    borderRadius: 10,
+                    width: Dimensions.get("screen").width / 5,
+                    height: Dimensions.get("screen").width / 5,
+                  }}
+                />
+              </View>
+              <View style={{ width: Dimensions.get("screen").width / 1.7 }}>
+                <Text>
+                  Pastikan pilihan prodimu sesuai ya. Karena setelah kamu
+                  simpan, prodi tidak bisa diubah lagi
+                </Text>
+              </View>
+            </HStack>
+          </Box>
         </View>
         <ScrollView>
           <View
@@ -198,6 +219,7 @@ const PilihProdiScreen = (props) => {
                   value={
                     pilihanDua.jurusan ? pilihanDua.jurusan : "--JURUSAN--"
                   }
+                  kelompok={profile.kelas.substring(3, 6)}
                   onTap={() => setShowShetJurusanDua(true)}
                 />
               )}
@@ -233,9 +255,9 @@ const PilihProdiScreen = (props) => {
                         "Peringatan",
                         "Setelah menentukan prodi, kamu tidak dapat mengubahnya lagi.\n\nPastikan kamu memilih prodi yang sesuai.",
                         [
-                          { text: "TIDAK", onPress: () => {} },
+                          { text: "Batal", onPress: () => {} },
                           {
-                            text: "YA",
+                            text: "Simpan",
                             onPress: () => {
                               let program_studi = [pilihanSatu, pilihanDua];
                               let data = { ...profile, program_studi };
@@ -288,6 +310,7 @@ const PilihProdiScreen = (props) => {
           <SelectJurusan
             idUniversitas={idUniversitas}
             onClose={() => setShowShetJurusan(false)}
+            kelompok={profile.kelas.substring(3, 6)}
             onSelect={(val) => {
               setPilihanSatu({
                 ...pilihanSatu,
@@ -318,6 +341,7 @@ const PilihProdiScreen = (props) => {
           <SelectJurusanDua
             idUniversitas={idUniversitasDua}
             onClose={() => setShowShetJurusanDua(false)}
+            kelompok={profile.kelas.substring(3, 6)}
             onSelect={(val) => {
               setPilihanDua({
                 ...pilihanDua,

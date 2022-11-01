@@ -48,11 +48,12 @@ const TryoutCard = (props) => {
                     let msg = "";
                     if (detail.blocking_time) {
                       msg =
-                        "Kamu akan mengerjakan tryout dengan sistem blocking. Silakan menunggu mata uji sebelumnya habis untuk masuk ke mata uji berikutnya\n\n" +
-                        "Kamu wajib mengerjakan tryout hingga mata uji terakhir. Mulai mengerjakan? ";
+                        "1. Kamu harus menunggu waktu mata uji sebelumnya habis untuk masuk ke mata uji berikutnya\n\n" +
+                        "2. Kamu wajib mengerjakan tryout hingga mata uji terakhir\n\n" +
+                        "3. Perhitungan waktu uji akan tetap berjalan sekalipun aplikasi dalam keadaan tertutup\n\n\n\n";
                     } else {
                       msg =
-                        "Kamu akan mengerjakan tryout dengan sistem non blocking time. Mulai mengerjakan?";
+                        "Kamu akan mengerjakan tryout dengan sistem non blocking time.\n\nMulai mengerjakan?";
                     }
                     Alert.alert(title, msg, [
                       {
@@ -112,11 +113,12 @@ const TryoutCard = (props) => {
                       let msg = "";
                       if (detail.blocking_time) {
                         msg =
-                          "Kamu akan mengerjakan tryout dengan sistem blocking. Silakan menunggu mata uji sebelumnya habis untuk masuk ke mata uji berikutnya\n\n" +
-                          "Kamu wajib mengerjakan tryout hingga mata uji terakhir. Mulai mengerjakan? ";
+                          "1. Kamu harus menunggu waktu mata uji sebelumnya habis untuk masuk ke mata uji berikutnya\n\n" +
+                          "2. Kamu wajib mengerjakan tryout hingga mata uji terakhir\n\n" +
+                          "3. Perhitungan waktu uji akan tetap berjalan sekalipun aplikasi dalam keadaan tertutup\n\n\n\n";
                       } else {
                         msg =
-                          "Kamu akan mengerjakan try out dengan sistem non blocking time. Mulai mengerjakan?";
+                          "Kamu akan mengerjakan try out dengan sistem non blocking time.\n\nMulai mengerjakan?";
                       }
                       Alert.alert(title, msg, [
                         {

@@ -176,14 +176,19 @@ export const setJurusan = (payload) => {
   };
 };
 
-export const getJurusan = (payload) => {
+export const getJurusan = (payload, kelompok) => {
   return async (dispatch, getState) => {
     dispatch(setJurusan(defaultInitState));
     try {
       const urlBase = getState().initReducer.baseUrl;
 
       const response = await fetch(
-        urlBase + urlUniversitas + "/" + payload + "/jurusan"
+        urlBase +
+          urlUniversitas +
+          "/" +
+          payload +
+          "/jurusan?kelompok=" +
+          kelompok
       );
       const json = await response.json();
       if (json.status) {

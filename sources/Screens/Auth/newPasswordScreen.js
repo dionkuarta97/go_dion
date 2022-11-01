@@ -139,7 +139,9 @@ const NewPasswordScreen = ({ route }) => {
 
         {success && (
           <DefaultModal>
-            <Text>Password Berhasil Diperbarui</Text>
+            <Text style={{ textAlign: "center" }}>
+              Password berhasil diperbarui
+            </Text>
             <DefaultPrimaryButton
               text="Ke Halaman Login"
               onPress={() => {
@@ -151,7 +153,9 @@ const NewPasswordScreen = ({ route }) => {
 
         {error && (
           <DefaultModal>
-            <Text>Password Gagal Diperbarui</Text>
+            <Text style={{ textAlign: "center" }}>
+              Password gagal diperbarui
+            </Text>
             <Text>{error}</Text>
             <DefaultPrimaryButton
               text="Ke Halaman Login"
