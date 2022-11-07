@@ -216,7 +216,14 @@ const RegisterContent = ({ sendedEmail }) => {
             value={city !== null ? city.kabkota : ""}
             onTap={() => {
               console.log("Tap Kelas");
-              setCityBottomSheetVisible(true);
+              if (province === null) {
+                Alert.alert(
+                  "Peringatan",
+                  "Silakan memlih Propinsi terlebih dahulu"
+                );
+              } else {
+                setCityBottomSheetVisible(true);
+              }
             }}
           />
           {cityBottomSheetVisible && (
@@ -259,7 +266,14 @@ const RegisterContent = ({ sendedEmail }) => {
             placeholder="Kab/Kota"
             value={schoolCity !== null ? schoolCity.kabkota : ""}
             onTap={() => {
-              setSchoolCityBottomSheetVisible(true);
+              if (schoolProvince === null) {
+                Alert.alert(
+                  "Peringatan",
+                  "Silakan memilih Propinsi terlebih dahulu"
+                );
+              } else {
+                setSchoolCityBottomSheetVisible(true);
+              }
             }}
           />
           {schoolCityBottomSheetVisible && (
@@ -290,7 +304,14 @@ const RegisterContent = ({ sendedEmail }) => {
                   width: Dimensions.get("screen").width / 1.3,
                 });
               } else {
-                setSchoolNameBottomSheetVisible(true);
+                if (schoolCity === null) {
+                  Alert.alert(
+                    "Peringatan",
+                    "Silakan memilih Kab/Kota terlebih dahulu"
+                  );
+                } else {
+                  setSchoolNameBottomSheetVisible(true);
+                }
               }
             }}
           />

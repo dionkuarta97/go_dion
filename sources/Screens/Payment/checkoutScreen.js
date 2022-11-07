@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Dimensions,
@@ -61,7 +61,8 @@ const CheckoutScreen = () => {
     (state) => state.paymentReducer.selectedPaymentMethod
   );
   const paymentList = useSelector((state) => state.paymentReducer.paymentList);
-
+  const [produkSama, setProdukSama] = useState(null);
+  const [totalListPayment, setTotalListPayment] = useState(null);
   const totalHarga = (arr) => {
     let temp = 0;
     for (const key in arr) {
@@ -73,6 +74,17 @@ const CheckoutScreen = () => {
     }
     return temp;
   };
+  const checkProduk = (listPayment, listCart) => {
+    let temp = [];
+    for (const i in listPayment) {
+      for (const j in listCart) {
+        if (listPayment[i]._id === listCart[j]._id) {
+          temp.push(listPayment[i]);
+        }
+      }
+    }
+    return temp;
+  };
 
   useEffect(() => {
     dispatch(setSelectedPaymentMethod(null));
@@ -80,7 +92,21 @@ const CheckoutScreen = () => {
     dispatch(getPaymentList("pending"));
   }, []);
 
-  console.log(JSON.stringify(cart, null, 2));
+  useEffect(() => {
+    if (paymentList.data) {
+      if (checkProduk(paymentList.data[0].products, cart).length > 0) {
+        setProdukSama(checkProduk(paymentList.data[0].products, cart));
+      }
+    }
+  }, [paymentList]);
+
+  useEffect(() => {
+    if (produkSama !== null) {
+      setTotalListPayment(totalHarga(produkSama));
+    }
+  }, [produkSama]);
+
+  console.log(produkSama, totalListPayment);
 
   const renderItem = (item) => {
     return (
@@ -307,12 +333,14 @@ const CheckoutScreen = () => {
           >
             <HStack>
               <Box
-                marginRight={"auto"}
-                maxWidth={Dimensions.get("screen").width / 2.7}
+                marginRight={Dimensions.get("screen").width / 7}
+                width={Dimensions.get("screen").width / 2.5}
               >
                 <Text>Transaksi Saat Ini</Text>
               </Box>
-
+              <Box marginRight={"auto"}>
+                <Text bold>IDR</Text>
+              </Box>
               <NumberFormat
                 value={
                   selectedPaymentMethod === null
@@ -327,7 +355,6 @@ const CheckoutScreen = () => {
                 displayType={"text"}
                 thousandSeparator="."
                 decimalSeparator=","
-                prefix={"IDR "}
                 renderText={(value, props) => (
                   <>
                     <Text
@@ -341,12 +368,15 @@ const CheckoutScreen = () => {
                 )}
               />
             </HStack>
-            <HStack marginTop={1}>
+            <HStack>
               <Box
-                marginRight={"auto"}
-                maxWidth={Dimensions.get("screen").width / 2.7}
+                marginRight={Dimensions.get("screen").width / 7}
+                width={Dimensions.get("screen").width / 2.5}
               >
                 <Text>Transaksi Sebelumnya</Text>
+              </Box>
+              <Box marginRight={"auto"}>
+                <Text bold>IDR</Text>
               </Box>
               <NumberFormat
                 value={
@@ -359,7 +389,6 @@ const CheckoutScreen = () => {
                 displayType={"text"}
                 thousandSeparator="."
                 decimalSeparator=","
-                prefix={"IDR "}
                 renderText={(value, props) => (
                   <>
                     <Text
@@ -373,12 +402,79 @@ const CheckoutScreen = () => {
                 )}
               />
             </HStack>
+            {totalListPayment !== null && (
+              <HStack>
+                <Box
+                  marginRight={Dimensions.get("screen").width / 7}
+                  width={Dimensions.get("screen").width / 2.5}
+                >
+                  <Text color={"red.600"}>Total Kesamaan Produk</Text>
+                </Box>
+                <Box marginRight={"auto"}>
+                  <Text color={"red.600"} bold>
+                    IDR
+                  </Text>
+                </Box>
+                <NumberFormat
+                  value={totalListPayment}
+                  displayType={"text"}
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  prefix="-"
+                  renderText={(value, props) => (
+                    <>
+                      <Text fontSize={16} bold color={"red.600"}>
+                        {value}
+                      </Text>
+                    </>
+                  )}
+                />
+              </HStack>
+            )}
+            <HStack>
+              <Box
+                marginRight={Dimensions.get("screen").width / 7}
+                width={Dimensions.get("screen").width / 2.5}
+              >
+                <Text color={"red.600"}>Penyesuaian fee</Text>
+              </Box>
+              <Box marginRight={"auto"}>
+                <Text color={"red.600"} bold>
+                  IDR
+                </Text>
+              </Box>
+              <NumberFormat
+                value={
+                  paymentList.data !== null
+                    ? Number(
+                        paymentList.data[0]?.payment_detail.gross_amount.split(
+                          "."
+                        )[0]
+                      ) - totalHarga(paymentList.data[0]?.products)
+                    : 0
+                }
+                displayType={"text"}
+                thousandSeparator="."
+                decimalSeparator=","
+                prefix="-"
+                renderText={(value, props) => (
+                  <>
+                    <Text fontSize={16} bold color={"red.600"}>
+                      {value}
+                    </Text>
+                  </>
+                )}
+              />
+            </HStack>
             <HStack marginTop={3}>
               <Box
-                marginRight={"auto"}
-                maxWidth={Dimensions.get("screen").width / 2}
+                marginRight={Dimensions.get("screen").width / 7}
+                width={Dimensions.get("screen").width / 2.5}
               >
                 <Text bold>Total Gabungan Bayaran</Text>
+              </Box>
+              <Box marginRight={"auto"}>
+                <Text bold>IDR</Text>
               </Box>
               <NumberFormat
                 value={
@@ -389,7 +485,14 @@ const CheckoutScreen = () => {
                           paymentList.data[0]?.payment_detail.gross_amount.split(
                             "."
                           )[0]
-                        )
+                        ) -
+                        totalListPayment -
+                        (Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        ) -
+                          totalHarga(paymentList.data[0]?.products))
                       : selectedPaymentMethod?.service_fee.key === "var"
                       ? totalHarga(cart) +
                         totalHarga(cart) *
@@ -398,20 +501,33 @@ const CheckoutScreen = () => {
                           paymentList.data[0]?.payment_detail.gross_amount.split(
                             "."
                           )[0]
-                        )
+                        ) -
+                        totalListPayment -
+                        (Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        ) -
+                          totalHarga(paymentList.data[0]?.products))
                       : totalHarga(cart) +
                         selectedPaymentMethod?.service_fee.value +
                         Number(
                           paymentList.data[0]?.payment_detail.gross_amount.split(
                             "."
                           )[0]
-                        )
+                        ) -
+                        totalListPayment -
+                        (Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        ) -
+                          totalHarga(paymentList.data[0]?.products))
                     : 0
                 }
                 displayType={"text"}
                 thousandSeparator="."
                 decimalSeparator=","
-                prefix={"IDR "}
                 renderText={(value, props) => (
                   <>
                     <Text
