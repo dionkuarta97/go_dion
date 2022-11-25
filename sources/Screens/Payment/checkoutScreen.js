@@ -28,7 +28,7 @@ import {
   setSelectedPaymentMethod,
 } from "../../Redux/Payment/paymentActions";
 import LoadingModal from "../../Components/Modal/LoadingModal";
-import { clearCart } from "../../Redux/Cart/cartActions";
+import { clearCart, deleteAllCart } from "../../Redux/Cart/cartActions";
 import DefaultModal from "../../Components/Modal/DefaultModal";
 import {
   HStack,
@@ -52,7 +52,7 @@ const CheckoutScreen = () => {
   const navigation = useNavigation();
 
   const cart = useSelector((state) => state.cartReducer.cart);
-
+  const carts = useSelector((state) => state.cartReducer.carts);
   const paymentProcess = useSelector(
     (state) => state.paymentReducer.paymentProcess
   );
@@ -94,8 +94,8 @@ const CheckoutScreen = () => {
 
   useEffect(() => {
     if (paymentList.data) {
-      if (checkProduk(paymentList.data[0].products, cart).length > 0) {
-        setProdukSama(checkProduk(paymentList.data[0].products, cart));
+      if (checkProduk(paymentList.data[0].products, carts.data).length > 0) {
+        setProdukSama(checkProduk(paymentList.data[0].products, carts.data));
       }
     }
   }, [paymentList]);
@@ -106,7 +106,7 @@ const CheckoutScreen = () => {
     }
   }, [produkSama]);
 
-  console.log(produkSama, totalListPayment);
+  console.log(paymentProcess);
 
   const renderItem = (item) => {
     return (
@@ -147,7 +147,7 @@ const CheckoutScreen = () => {
           }}
         >
           <ScrollView style={{ flex: 1 }}>
-            {cart.map((val) => renderItem(val))}
+            {carts.data?.map((val) => renderItem(val))}
           </ScrollView>
           {selectedPaymentMethod !== null && (
             <HStack style={{ paddingHorizontal: 10, marginBottom: 10 }}>
@@ -167,7 +167,7 @@ const CheckoutScreen = () => {
                 IDR
               </Text>
               <NumberFormat
-                value={cart.reduce(
+                value={carts.data?.reduce(
                   (total, x) =>
                     selectedPaymentMethod?.service_fee.key === "var"
                       ? total +
@@ -222,12 +222,13 @@ const CheckoutScreen = () => {
             <NumberFormat
               value={
                 selectedPaymentMethod === null
-                  ? totalHarga(cart)
+                  ? totalHarga(carts.data)
                   : selectedPaymentMethod?.service_fee.key === "var"
-                  ? totalHarga(cart) +
-                    totalHarga(cart) *
+                  ? totalHarga(carts.data) +
+                    totalHarga(carts.data) *
                       (selectedPaymentMethod?.service_fee.value / 100)
-                  : totalHarga(cart) + selectedPaymentMethod?.service_fee.value
+                  : totalHarga(carts.data) +
+                    selectedPaymentMethod?.service_fee.value
               }
               displayType={"text"}
               thousandSeparator="."
@@ -297,11 +298,11 @@ const CheckoutScreen = () => {
             <DefaultPrimaryButton
               text="Lihat Status Pembayaran"
               onPress={() => {
-                dispatch(clearCart());
                 navigation.popToTop();
                 navigation.navigate("PaymentScreen", {
                   orderId: paymentProcess.data.order_id,
                 });
+                dispatch(deleteAllCart());
               }}
             />
           </DefaultModal>
@@ -344,12 +345,12 @@ const CheckoutScreen = () => {
               <NumberFormat
                 value={
                   selectedPaymentMethod === null
-                    ? totalHarga(cart)
+                    ? totalHarga(carts.data)
                     : selectedPaymentMethod?.service_fee.key === "var"
-                    ? totalHarga(cart) +
-                      totalHarga(cart) *
+                    ? totalHarga(carts.data) +
+                      totalHarga(carts.data) *
                         (selectedPaymentMethod?.service_fee.value / 100)
-                    : totalHarga(cart) +
+                    : totalHarga(carts.data) +
                       selectedPaymentMethod?.service_fee.value
                 }
                 displayType={"text"}
@@ -480,7 +481,7 @@ const CheckoutScreen = () => {
                 value={
                   paymentList.data !== null
                     ? selectedPaymentMethod === null
-                      ? totalHarga(cart) +
+                      ? totalHarga(carts.data) +
                         Number(
                           paymentList.data[0]?.payment_detail.gross_amount.split(
                             "."
@@ -494,8 +495,8 @@ const CheckoutScreen = () => {
                         ) -
                           totalHarga(paymentList.data[0]?.products))
                       : selectedPaymentMethod?.service_fee.key === "var"
-                      ? totalHarga(cart) +
-                        totalHarga(cart) *
+                      ? totalHarga(carts.data) +
+                        totalHarga(carts.data) *
                           (selectedPaymentMethod?.service_fee.value / 100) +
                         Number(
                           paymentList.data[0]?.payment_detail.gross_amount.split(
@@ -509,7 +510,7 @@ const CheckoutScreen = () => {
                           )[0]
                         ) -
                           totalHarga(paymentList.data[0]?.products))
-                      : totalHarga(cart) +
+                      : totalHarga(carts.data) +
                         selectedPaymentMethod?.service_fee.value +
                         Number(
                           paymentList.data[0]?.payment_detail.gross_amount.split(

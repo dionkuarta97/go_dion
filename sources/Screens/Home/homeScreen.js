@@ -113,12 +113,6 @@ const HomeScreen = (props) => {
     };
   }, [show]);
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(getMe());
-    }, [])
-  );
-
   const capitalWord = (str) => {
     return str[0].toUpperCase() + str.substring(1);
   };

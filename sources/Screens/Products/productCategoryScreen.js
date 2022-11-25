@@ -94,6 +94,8 @@ const ProductCategoryScreen = (props) => {
     return false;
   }
 
+  console.log(JSON.stringify(allProduk, null, 2));
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar
@@ -170,7 +172,7 @@ const ProductCategoryScreen = (props) => {
                     >
                       <View
                         style={{
-                          height: Dimensions.get("window").height / 7,
+                          height: Dimensions.get("window").height / 6,
                           ...CompStyles.defaultCard,
                           marginHorizontal: Sizes.fixPadding * 1,
                           flexDirection: "row",
@@ -179,7 +181,7 @@ const ProductCategoryScreen = (props) => {
                         <View
                           style={{
                             width: Dimensions.get("window").width / 3.5,
-                            height: Dimensions.get("window").height / 9,
+                            height: Dimensions.get("window").height / 7.8,
                             borderRadius: Sizes.fixPadding,
                             marginRight: Sizes.fixPadding,
                             overflow: "hidden",
@@ -194,6 +196,7 @@ const ProductCategoryScreen = (props) => {
                             }}
                             resizeMode="cover"
                           />
+
                           {item.purchased && (
                             <View style={styles.purchasedCircle}>
                               <MaterialIcons
@@ -217,13 +220,19 @@ const ProductCategoryScreen = (props) => {
                           >
                             {title}
                           </Text>
-                          <Text
+                          <View
                             style={{
-                              ...Fonts.black17Regular,
+                              height: Dimensions.get("screen").height / 13.5,
                             }}
                           >
-                            {item.title}
-                          </Text>
+                            <Text
+                              style={{
+                                ...Fonts.black17Regular,
+                              }}
+                            >
+                              {item.title}
+                            </Text>
+                          </View>
                           <View
                             style={{
                               flexDirection: "row",

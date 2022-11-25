@@ -76,9 +76,10 @@ export function getPaymentProcess(merge) {
           merge: merge,
           provider: getState().paymentReducer.selectedPaymentMethod.name,
           payment_type: getState().paymentReducer.selectedPaymentMethod.method,
-          products: getState().cartReducer.cart,
+          products: getState().cartReducer.carts.data,
         });
 
+        console.log(JSON.stringify(JSON.parse(bodyParams), null, 2));
         const urlBase = getState().initReducer.baseUrl;
         fetch(urlBase + urlPaymentProcess, {
           method: "POST",
@@ -96,9 +97,11 @@ export function getPaymentProcess(merge) {
               dispatch(setPaymentProcess(defaultFailedState(json.message)));
           })
           .catch((err) => {
+            console.log(err);
             dispatch(setPaymentProcess(defaultErrorState));
           });
       } catch (err) {
+        console.log(err);
         dispatch(setPaymentProcess(defaultErrorState));
       }
   };

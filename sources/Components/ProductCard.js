@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Dimensions,
 } from "react-native";
 import PropTypes from "prop-types";
 import NumberFormat from "react-number-format";
@@ -102,15 +103,9 @@ const ProductCard = (props) => {
             : styles.infoContainer
         }
       >
-        <Text style={{ ...Fonts.gray15Regular }}>{item.title}</Text>
-        <Text
-          style={{
-            ...Fonts.black17Bold,
-            marginVertical: Sizes.fixPadding - 5.0,
-          }}
-        >
-          {props.section}
-        </Text>
+        <View style={{ height: Dimensions.get("screen").height / 8 }}>
+          <Text style={{ ...Fonts.gray15Regular }}>{item.title}</Text>
+        </View>
         {item.price_discount !== 0 && (
           <View
             style={{

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -9,6 +9,7 @@ import {
   Image,
   Dimensions,
   Platform,
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -22,8 +23,9 @@ import Colors from "../../Theme/Colors";
 
 import { useNavigation } from "@react-navigation/core";
 import ProductDetailContent from "./Component/ProductDetailContent";
-import { addToCart } from "../../Redux/Cart/cartActions";
+import { addCart, addToCart } from "../../Redux/Cart/cartActions";
 import { Box } from "native-base";
+import LoadingModal from "../../Components/Modal/LoadingModal";
 
 const { width } = Dimensions.get("screen");
 
@@ -35,7 +37,18 @@ const ProductDetailScreen = (props) => {
   const section = props.route.params.section;
 
   const cart = useSelector((state) => state.cartReducer.cart);
+  const [loading, setLoading] = useState(false);
 
+  const carts = useSelector((state) => state.cartReducer.carts);
+  const isLogin = useSelector((state) => state.authReducer.isLogin);
+
+  useEffect(() => {
+    if (!carts.loading) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [carts]);
   const productInfo = () => {
     return (
       <View>
@@ -158,11 +171,33 @@ const ProductDetailScreen = (props) => {
           </Box>
         }
         rightItem={
-          Platform.OS === "android" ? (
-            !cart.some((val) => val._id === item._id) ? (
+          Platform.OS === "android" && !item.purchased ? (
+            !carts.data?.some((val) => val._id === item._id) ? (
               <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={() => dispatch(addToCart(item))}
+                onPress={() => {
+                  if (isLogin) {
+                    setLoading(true);
+                    dispatch(addToCart(item));
+                    dispatch(addCart(item._id));
+                  } else {
+                    Alert.alert(
+                      "Informasi",
+                      "Anda perlu login untuk melanjutkan pembayaran",
+                      [
+                        {
+                          text: "Oke",
+                          onPress: () => {
+                            navigation.navigate("LoginScreen", {
+                              item: item,
+                              section: section,
+                            });
+                          },
+                        },
+                      ]
+                    );
+                  }
+                }}
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
@@ -224,9 +259,11 @@ const ProductDetailScreen = (props) => {
         isImageBlur={true}
         src={{ uri: item.thumbnail }}
       >
+        {Platform.OS === "android" && loading && <LoadingModal />}
         <ProductDetailContent
           item={item}
-          onCart={cart.some((val) => val._id === item._id)}
+          section={section}
+          onCart={carts.data?.some((val) => val._id === item._id)}
         />
         <StatusBar backgroundColor={Colors.blackColor} />
       </SliverAppBar>

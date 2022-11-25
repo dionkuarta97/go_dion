@@ -23,7 +23,9 @@ import Colors from "../../Theme/Colors";
 const LoginScreen = (props) => {
   const navigation = useNavigation();
   const [now, setNow] = useState();
-
+  const item = props.route.params ? props.route.params.item : null;
+  const section = props.route.params ? props.route.params.section : null;
+  console.log(props.route.params);
   useEffect(() => {
     let time = new Date().toLocaleTimeString("id-ID");
     console.log(time);
@@ -64,7 +66,7 @@ const LoginScreen = (props) => {
         toolbarMaxHeight={230}
         src={require("../../../assets/Images/appbar_bg.png")}
       >
-        <LoginContent />
+        <LoginContent item={item} section={section} />
         <StatusBar backgroundColor={Colors.primaryColor} />
       </SliverAppBar>
     </SafeAreaView>

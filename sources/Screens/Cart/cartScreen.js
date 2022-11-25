@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -7,24 +7,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  ScrollView,
   Dimensions,
   BackHandler,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { MaterialIcons } from "@expo/vector-icons";
-import SliverAppBar from "../../Components/sliverAppBar";
-import { getSliderImages } from "../../Redux/Home/homeActions";
-import HomeContent from "../Home/Component/HomeContent";
 
-import Fonts from "../../Theme/Fonts";
-import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
-import ProductCardHorizontal from "../../Components/Card/ProductCardHorizontal";
-import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import { useNavigation } from "@react-navigation/core";
-import { clearCart } from "../../Redux/Cart/cartActions";
+import { clearCart, deleteAllCart } from "../../Redux/Cart/cartActions";
 import CartContent from "./Component/cartContent";
 
 const CartScreen = (props) => {
@@ -33,7 +24,15 @@ const CartScreen = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cartReducer.cart);
-
+  const carts = useSelector((state) => state.cartReducer.carts);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (!carts.loading) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [carts]);
   useEffect(() => {
     const backAction = () => {
       if (route.params?.from) {
@@ -52,7 +51,7 @@ const CartScreen = (props) => {
     return () => backHandler.remove();
   }, []);
 
-  console.log(JSON.stringify(route, null, 2));
+  console.log(JSON.stringify(carts, null, 2));
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -67,13 +66,42 @@ const CartScreen = (props) => {
         title="Keranjang"
         backEnabled={true}
         rightItem={
-          <TouchableOpacity onPress={() => dispatch(clearCart())}>
+          <TouchableOpacity
+            onPress={() => {
+              setLoading(true);
+              dispatch(clearCart());
+              dispatch(deleteAllCart());
+            }}
+          >
             <Text>Kosongkan</Text>
           </TouchableOpacity>
         }
       />
-      {cart.length > 0 ? (
-        <CartContent />
+      {carts.data !== null ? (
+        <>
+          {carts.data.length > 0 ? (
+            <CartContent setLoading={setLoading} loading={loading} />
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "white",
+              }}
+            >
+              <Image
+                style={{
+                  height: Dimensions.get("screen").width / 2,
+                  width: Dimensions.get("screen").width / 2,
+                  borderRadius: 50,
+                }}
+                source={require("../../../assets/Images/helper/empty.png")}
+                resizeMode="contain"
+              />
+            </View>
+          )}
+        </>
       ) : (
         <View
           style={{
