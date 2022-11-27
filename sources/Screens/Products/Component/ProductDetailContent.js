@@ -9,28 +9,27 @@ import {
   Alert,
 } from "react-native";
 
-import {
-  connectAsync,
-  getProductsAsync,
-  IAPResponseCode,
-  disconnectAsync,
-  setPurchaseListener,
-  finishTransactionAsync,
-  purchaseItemAsync,
-} from "expo-in-app-purchases";
+let ExpoIap;
+
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
-import { addToCart } from "../../../Redux/Cart/cartActions";
+import { addCart, addToCart } from "../../../Redux/Cart/cartActions";
 
 import { getPaymentApple } from "../../../Redux/Payment/paymentActions";
 import DefaultModal from "../../../Components/Modal/DefaultModal";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
 import { capitalizeFirstLetter } from "../../../Services/helper";
 import { setTransIos } from "../../../Redux/Init/initActions";
-import { useToast } from "native-base";
+import { Box, HStack, useToast } from "native-base";
+import moment from "moment";
+import "moment/min/locales";
+
+// if (Platform.OS === "ios") {
+//   ExpoIap = require("expo-in-app-purchases");
+// }
 
 const { width } = Dimensions.get("screen");
 
@@ -43,10 +42,16 @@ const ProductDetailContent = (props) => {
   const navigation = useNavigation();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [tanggal_awal, setTanggal_awal] = useState(null);
+  const [tanggal_akhir, setTanggal_akhir] = useState(null);
+  const [givenAwal, setGivenAwal] = useState(null);
+  const [givenAkhir, setGivenAkhir] = useState(null);
+  const [current, setCurrent] = useState(null);
 
   const profile = useSelector((state) => state.profileReducer.profile);
 
   const item = props.item;
+  const section = props.section;
   const onCart = props.onCart;
   const itemSkus = Platform.select({
     ios: ["com.goonline.app." + item.details.apple_id],
@@ -56,12 +61,14 @@ const ProductDetailContent = (props) => {
   console.log(JSON.stringify(item, null, 2));
   const firstProces = async () => {
     if (Platform.OS === "ios") {
-      await connectAsync();
+      await ExpoIap.connectAsync();
       if (!item.purchased) {
         setLoading(true);
 
-        const { responseCode, results } = await getProductsAsync(itemSkus);
-        if (responseCode === IAPResponseCode.OK) {
+        const { responseCode, results } = await ExpoIap.getProductsAsync(
+          itemSkus
+        );
+        if (responseCode === ExpoIap.IAPResponseCode.OK) {
           if (results.length > 0) {
             if (isLogin) {
               console.log(JSON.stringify(results, null, 2));
@@ -109,15 +116,15 @@ const ProductDetailContent = (props) => {
                   })
                   .finally(async () => {
                     setLoading(false);
-                    await disconnectAsync();
+                    await ExpoIap.disconnectAsync();
                   });
               } else {
                 setLoading(false);
-                await disconnectAsync();
+                await ExpoIap.disconnectAsync();
               }
             } else {
               setLoading(false);
-              await disconnectAsync();
+              await ExpoIap.disconnectAsync();
             }
           } else {
             toast.show({
@@ -142,11 +149,11 @@ const ProductDetailContent = (props) => {
             });
             navigation.navigate("MainScreen");
             setLoading(false);
-            await disconnectAsync();
+            await ExpoIap.disconnectAsync();
           }
         }
       } else {
-        await disconnectAsync();
+        await ExpoIap.disconnectAsync();
       }
     }
   };
@@ -155,35 +162,57 @@ const ProductDetailContent = (props) => {
     // connect to store if not done so already
     // purchase listener. Most of this is boilerplate from the official docs, with a
     // couple of additions to process a purchase and stop processing.
-    setPurchaseListener(async ({ responseCode, results, errorCode }) => {
-      // Purchase was successful
-      if (responseCode === IAPResponseCode.OK) {
-        results.forEach(async (purchase) => {
-          if (!purchase.acknowledged) {
-            // process transaction here and unlock content
-            // !! This is your own logic that is not a part of expo-in-app-purchases.
-            // any processing that needs to be done within your app or on your server
-            // can be executed here, just before finishTransactionAsync
+    ExpoIap.setPurchaseListener(
+      async ({ responseCode, results, errorCode }) => {
+        // Purchase was successful
+        if (responseCode === ExpoIap.IAPResponseCode.OK) {
+          results.forEach(async (purchase) => {
+            if (!purchase.acknowledged) {
+              // process transaction here and unlock content
+              // !! This is your own logic that is not a part of expo-in-app-purchases.
+              // any processing that needs to be done within your app or on your server
+              // can be executed here, just before finishTransactionAsync
 
-            // finish the transaction on platform's end
-            if (isLogin) {
-              dispatch(getPaymentApple(item))
-                .then(async (json) => {
-                  console.log(JSON.stringify(json, null, 2), "<<<<<bawah");
-                  if (json.status) {
-                    let newTrans = newTransIos.filter(
-                      (value) => value.user_id !== profile._id
-                    );
-                    dispatch(setTransIos(newTrans));
-                    toast.show({
-                      title: "Berhasil",
-                      status: "success",
-                      description: "Berhasil melakukan pembelian",
-                      placement: "top",
-                      width: Dimensions.get("screen").width / 1.3,
-                    });
-                    navigation.navigate("MainScreen");
-                  } else {
+              // finish the transaction on platform's end
+              if (isLogin) {
+                dispatch(getPaymentApple(item))
+                  .then(async (json) => {
+                    console.log(JSON.stringify(json, null, 2), "<<<<<bawah");
+                    if (json.status) {
+                      let newTrans = newTransIos.filter(
+                        (value) => value.user_id !== profile._id
+                      );
+                      dispatch(setTransIos(newTrans));
+                      toast.show({
+                        title: "Berhasil",
+                        status: "success",
+                        description: "Berhasil melakukan pembelian",
+                        placement: "top",
+                        width: Dimensions.get("screen").width / 1.3,
+                      });
+                      navigation.navigate("MainScreen");
+                    } else {
+                      dispatch(
+                        setTransIos([
+                          ...newTransIos,
+                          { item: item, user_id: profile._id },
+                        ])
+                      );
+                      toast.show({
+                        title: "Kesalahan",
+                        status: "error",
+                        description:
+                          "Pesanan anda sedang dalam antrian, coba beberapa saat lagi",
+                        placement: "top",
+                        width: Dimensions.get("screen").width / 1.3,
+                      });
+                      navigation.navigate("MainScreen");
+                      setError(
+                        "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
+                      );
+                    }
+                  })
+                  .catch(async (err) => {
                     dispatch(
                       setTransIos([
                         ...newTransIos,
@@ -194,82 +223,62 @@ const ProductDetailContent = (props) => {
                       title: "Kesalahan",
                       status: "error",
                       description:
-                        "Pesanan anda sedang dalam antrian, coba beberapa saat lagi",
+                        "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi",
                       placement: "top",
                       width: Dimensions.get("screen").width / 1.3,
                     });
                     navigation.navigate("MainScreen");
                     setError(
-                      "Pesanan anda sedang dalam antrian, coba beberapa saat lagi"
+                      "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
                     );
-                  }
-                })
-                .catch(async (err) => {
-                  dispatch(
-                    setTransIos([
-                      ...newTransIos,
-                      { item: item, user_id: profile._id },
-                    ])
-                  );
-                  toast.show({
-                    title: "Kesalahan",
-                    status: "error",
-                    description:
-                      "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi",
-                    placement: "top",
-                    width: Dimensions.get("screen").width / 1.3,
+                  })
+                  .finally(async () => {
+                    ExpoIap.finishTransactionAsync(purchase, true);
+                    await ExpoIap.disconnectAsync();
+                    navigation.navigate("MainScreen");
+                    setLoading(false);
                   });
-                  navigation.navigate("MainScreen");
-                  setError(
-                    "Mohon maaf telah terjadi kesalahan pada server, coba beberapa saat lagi"
-                  );
-                })
-                .finally(async () => {
-                  finishTransactionAsync(purchase, true);
-                  await disconnectAsync();
-                  navigation.navigate("MainScreen");
-                  setLoading(false);
-                });
+              }
             }
-          }
-        });
+          });
 
-        // handle particular error codes
-      } else if (responseCode === IAPResponseCode.USER_CANCELED) {
-        toast.show({
-          title: "Informasi",
-          status: "warning",
-          description: "Kamu Membatalkan transaksi",
-          placement: "top",
-          width: Dimensions.get("screen").width / 1.3,
-        });
-        await disconnectAsync();
-        navigation.navigate("MainScreen");
-        setLoading(false);
-      } else if (responseCode === IAPResponseCode.DEFERRED) {
-        console.log(
-          "User does not have permissions to buy but requested parental approval (iOS only)"
-        );
-      } else {
-        toast.show({
-          title: "Kesalahan",
-          status: "error",
-          description: "Telah terjadi kesalahan pada server",
-          placement: "top",
-          width: Dimensions.get("screen").width / 1.3,
-        });
+          // handle particular error codes
+        } else if (responseCode === ExpoIap.IAPResponseCode.USER_CANCELED) {
+          toast.show({
+            title: "Informasi",
+            status: "warning",
+            description: "Kamu Membatalkan transaksi",
+            placement: "top",
+            width: Dimensions.get("screen").width / 1.3,
+          });
+          await ExpoIap.disconnectAsync();
+          navigation.navigate("MainScreen");
+          setLoading(false);
+        } else if (responseCode === ExpoIap.IAPResponseCode.DEFERRED) {
+          console.log(
+            "User does not have permissions to buy but requested parental approval (iOS only)"
+          );
+        } else {
+          toast.show({
+            title: "Kesalahan",
+            status: "error",
+            description: "Telah terjadi kesalahan pada server",
+            placement: "top",
+            width: Dimensions.get("screen").width / 1.3,
+          });
 
-        await disconnectAsync();
-        navigation.navigate("MainScreen");
-        setLoading(false);
-        console.warn(
-          `Something went wrong with the purchase. Received errorCode ${errorCode}`
-        );
+          await ExpoIap.disconnectAsync();
+          navigation.navigate("MainScreen");
+          setLoading(false);
+          console.warn(
+            `Something went wrong with the purchase. Received errorCode ${errorCode}`
+          );
+        }
+
+        // stop processing. This state update should be reflected
+        // in your components. E.g. make IAPs accessible again.
       }
-
-      // stop processing. This state update should be reflected
-      // in your components. E.g. make IAPs accessible again.
-    });
+    );
   };
 
   useEffect(async () => {
@@ -277,15 +286,20 @@ const ProductDetailContent = (props) => {
       firstProces();
       initIAPandEventListeners();
     }
+    setTanggal_awal(moment(item.details.tanggal_awal).locale("id"));
+    setTanggal_akhir(moment(item.details.tanggal_akhir).locale("id"));
+    setGivenAwal(moment(item.details.tanggal_awal));
+    setGivenAkhir(moment(item.details.tanggal_akhir));
+    setCurrent(moment().utcOffset(7).startOf("second"));
   }, []);
 
   const requestPurchase = async () => {
     setLoading(true);
-    await connectAsync();
-    const { responseCode, results } = await getProductsAsync(itemSkus);
-    if (responseCode === IAPResponseCode.OK) {
+    await ExpoIap.connectAsync();
+    const { responseCode, results } = await ExpoIap.getProductsAsync(itemSkus);
+    if (responseCode === ExpoIap.IAPResponseCode.OK) {
       if (results.length > 0) {
-        purchaseItemAsync("com.goonline.app." + item.details.apple_id);
+        ExpoIap.purchaseItemAsync("com.goonline.app." + item.details.apple_id);
       }
     }
   };
@@ -298,17 +312,20 @@ const ProductDetailContent = (props) => {
     );
   };
 
+  console.log(current);
+
   const infoTile = (title, text) => {
     return (
       <View
         style={{
-          flexDirection: "row",
           borderBottomWidth: 1,
           borderBottomColor: "lightgrey",
           paddingVertical: Sizes.fixPadding,
         }}
       >
-        <Text style={{ flex: 1, color: "grey" }}>{title}</Text>
+        <Text style={{ flex: 1, color: "grey", marginBottom: 0.5 }}>
+          {title}
+        </Text>
         <Text style={{ flex: 3 }}>{text}</Text>
       </View>
     );
@@ -357,12 +374,92 @@ const ProductDetailContent = (props) => {
           nestedScrollEnabled={true}
           showsVerticalScrollIndicator={false}
         >
+          {givenAkhir !== null && (
+            <>
+              {moment.duration(givenAkhir.diff(current)).asDays() > 0 && (
+                <>
+                  {moment.duration(givenAwal.diff(current)).asDays() > 0 ? (
+                    <>
+                      <HStack mb={5} style={{ alignItems: "center" }} space={3}>
+                        <Text style={{ ...Fonts.black15Bold }}>
+                          Dimulai dalam
+                        </Text>
+                        <Box
+                          bg={"green.500"}
+                          paddingX={2}
+                          paddingY={1}
+                          borderRadius={10}
+                        >
+                          <Text
+                            style={{ ...Fonts.black15Regular, color: "white" }}
+                          >
+                            {moment.duration(givenAwal.diff(current)).asDays() >
+                            1
+                              ? Math.floor(
+                                  moment
+                                    .duration(givenAwal.diff(current))
+                                    .asDays()
+                                ) + " hari lagi"
+                              : Math.floor(
+                                  moment
+                                    .duration(givenAwal.diff(current))
+                                    .asHours()
+                                ) + " jam lagi"}
+                          </Text>
+                        </Box>
+                      </HStack>
+                    </>
+                  ) : (
+                    <>
+                      <HStack mb={5} space={3} style={{ alignItems: "center" }}>
+                        <Text style={{ ...Fonts.black15Bold }}>
+                          Berakhir dalam
+                        </Text>
+                        <Box
+                          bg={"red.500"}
+                          paddingX={2}
+                          paddingY={1}
+                          borderRadius={10}
+                        >
+                          <Text style={{ color: "white" }}>
+                            {moment
+                              .duration(givenAkhir.diff(current))
+                              .asDays() > 1
+                              ? Math.floor(
+                                  moment
+                                    .duration(givenAkhir.diff(current))
+                                    .asDays()
+                                ) + " hari lagi"
+                              : Math.floor(
+                                  moment
+                                    .duration(givenAkhir.diff(current))
+                                    .asHours()
+                                ) + " jam lagi"}
+                          </Text>
+                        </Box>
+                      </HStack>
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
+
           {titleText("Detail Produk")}
           <View style={styles.content}>
             {infoTile("Informasi", item.desc)}
             {infoTile("Kategori", capitalizeFirstLetter(item.details.category))}
             {infoTile("Level", item.details.level)}
             {infoTile("Wilayah", item.details.wilayah)}
+
+            {tanggal_awal &&
+              tanggal_akhir !== null &&
+              infoTile(
+                "Periode Aktif",
+                `${tanggal_awal.format(
+                  "Do MMM YYYY HH:mm:ss"
+                )} WIB - ${tanggal_akhir.format("Do MMM YYYY H:mm:ss")} WIB`
+              )}
 
             {item.purchased && (
               <DefaultPrimaryButton
@@ -425,14 +522,44 @@ const ProductDetailContent = (props) => {
               </>
             ) : (
               <>
-                {!item.purchased && !onCart && (
-                  <DefaultPrimaryButton
-                    text="Beli Sekarang"
-                    onPress={() => {
-                      dispatch(addToCart(item));
-                      navigation.navigate("CartScreen");
-                    }}
-                  />
+                {isLogin ? (
+                  <>
+                    {!item.purchased && !onCart && (
+                      <DefaultPrimaryButton
+                        text="Beli Sekarang"
+                        onPress={() => {
+                          dispatch(addToCart(item));
+                          dispatch(addCart(item._id))
+                            .then((data) => console.log(data, "<<data"))
+                            .catch((err) => console.log(err, "<<err"));
+                          navigation.navigate("CartScreen");
+                        }}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <DefaultPrimaryButton
+                      text="Beli Sekarang"
+                      onPress={() => {
+                        Alert.alert(
+                          "Informasi",
+                          "Anda perlu login untuk melanjutkan pembayaran",
+                          [
+                            {
+                              text: "Oke",
+                              onPress: () => {
+                                navigation.navigate("LoginScreen", {
+                                  item: item,
+                                  section: section,
+                                });
+                              },
+                            },
+                          ]
+                        );
+                      }}
+                    />
+                  </>
                 )}
               </>
             )}

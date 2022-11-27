@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import {
   View,
@@ -30,15 +30,16 @@ const TryoutCard = (props) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const navigation = useNavigation();
-  const { detail, tryoutId } = props;
+  const { detail, tryoutId, status } = props;
   const profile = useSelector((state) => state.profileReducer.profile);
-
+  console.log(status);
   const [idx, setIdx] = useState(null);
 
   return (
     <>
       {detail.quiz ? (
         <TouchableOpacity
+          disabled={status ? false : true}
           onPress={() => {
             checkInternet().then((data) => {
               if (data) {

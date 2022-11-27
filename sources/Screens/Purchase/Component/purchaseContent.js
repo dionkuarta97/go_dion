@@ -37,7 +37,6 @@ const PurchaseContent = (props) => {
       if (connection) {
         if (!refreshing) {
           dispatch(getPaymentList(props.status));
-          console.log("kepanggil");
         }
       }
     });

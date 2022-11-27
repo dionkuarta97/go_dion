@@ -441,7 +441,6 @@ const ProfileEditScreen = (props) => {
               placeholder="City"
               value={city !== null ? city.kabkota : ""}
               onTap={() => {
-                console.log("Tap Kelas");
                 setCityBottomSheetVisible(true);
               }}
             />

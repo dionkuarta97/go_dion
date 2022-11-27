@@ -95,13 +95,12 @@ export default InitialScreen = ({ navigation }) => {
         style={{
           height: 100.0,
           width: 100.0,
-          borderRadius: 40.0,
+          borderRadius: 10.0,
         }}
         source={require("../../../assets/Images/icon.png")}
         resizeMode="contain"
       />
       <View style={{ height: 20 }}></View>
-      <Text>Loading . . .</Text>
     </View>
   );
 };

@@ -6,6 +6,7 @@ import Fonts from "../../../Theme/Fonts";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import { Progress, Box, VStack, HStack } from "native-base";
+import moment from "moment";
 
 const GoTryoutCard = (props) => {
   const navigation = useNavigation();
@@ -14,6 +15,9 @@ const GoTryoutCard = (props) => {
   const [soal, setSoal] = useState(0);
   const [value, setValue] = useState(0);
   const [complete, setComplete] = useState(0);
+  const [givenAwal, setGivenAwal] = useState(null);
+  const [givenAkhir, setGivenAkhir] = useState(null);
+  const [current, setCurrent] = useState(null);
   const waktu = () => {
     let temp = 0;
     let temp2 = 0;
@@ -35,9 +39,10 @@ const GoTryoutCard = (props) => {
   };
   useEffect(() => {
     waktu();
+    setGivenAwal(moment(data.details.tanggal_awal));
+    setGivenAkhir(moment(data.details.tanggal_akhir));
+    setCurrent(moment().utcOffset(7).startOf("second"));
   }, []);
-
-  console.log(JSON.stringify(data, null, 2));
 
   return (
     <TouchableOpacity
@@ -46,6 +51,22 @@ const GoTryoutCard = (props) => {
           data: data.includes,
           tryoutId: tryoutId,
           title: data.title,
+          mulai: moment.duration(givenAwal?.diff(current)).asDays(),
+          akhir: moment.duration(givenAkhir?.diff(current)).asDays(),
+          status:
+            moment.duration(givenAwal?.diff(current)).asDays() > 0
+              ? false
+              : moment.duration(givenAkhir?.diff(current)).asDays() < 0
+              ? false
+              : true,
+          detik:
+            moment.duration(givenAwal?.diff(current)).asDays() < 1 &&
+            moment.duration(givenAwal?.diff(current)).asDays() > 0
+              ? moment.duration(givenAwal?.diff(current)).asSeconds()
+              : moment.duration(givenAkhir?.diff(current)).asDays() < 1 &&
+                moment.duration(givenAkhir?.diff(current)).asDays() > 0
+              ? moment.duration(givenAkhir?.diff(current)).asSeconds()
+              : null,
         });
       }}
     >
@@ -94,12 +115,67 @@ const GoTryoutCard = (props) => {
           </HStack>
         )}
         {complete === 0 && (
-          <HStack space={4} mt={2}>
+          <HStack space={4} mt={2} mb={2}>
             <Text style={{ ...Fonts.black15Bold }}>Total Sub Tryout</Text>
             <Text style={{ ...Fonts.black15Bold }}>
               ( {data.includes.length} )
             </Text>
           </HStack>
+        )}
+        {props.status !== "done" && (
+          <>
+            {moment.duration(givenAkhir?.diff(current)).asDays() > 0 ? (
+              <>
+                {moment.duration(givenAwal?.diff(current)).asDays() > 0 ? (
+                  <View style={{ maxWidth: 500 }}>
+                    <Text style={{ color: Colors.neutralGreenColor }}>
+                      Bisa dikerjakan{" "}
+                      {moment.duration(givenAwal?.diff(current)).asDays() > 1
+                        ? "dalam " +
+                          Math.floor(
+                            moment.duration(givenAwal?.diff(current)).asDays()
+                          ) +
+                          " hari lagi"
+                        : moment.duration(givenAwal?.diff(current)).asHours() >
+                          1
+                        ? "dalam " +
+                          Math.floor(
+                            moment.duration(givenAwal?.diff(current)).asHours()
+                          ) +
+                          " jam lagi"
+                        : "kurang 1 jam lagi"}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={{ maxWidth: 500 }}>
+                    <Text style={{ color: Colors.neutralRedColor }}>
+                      Berakhir{" "}
+                      {moment.duration(givenAkhir?.diff(current)).asDays() > 1
+                        ? "dalam " +
+                          Math.floor(
+                            moment.duration(givenAkhir?.diff(current)).asDays()
+                          ) +
+                          " hari lagi"
+                        : moment.duration(givenAkhir?.diff(current)).asHours() >
+                          1
+                        ? "dalam " +
+                          Math.floor(
+                            moment.duration(givenAkhir?.diff(current)).asHours()
+                          ) +
+                          " jam lagi"
+                        : "kurang 1 jam lagi"}
+                    </Text>
+                  </View>
+                )}
+              </>
+            ) : (
+              <View style={{ maxWidth: 500 }}>
+                <Text style={{ color: "red" }}>
+                  Waktu pengerjaan tryout sudah berakhir
+                </Text>
+              </View>
+            )}
+          </>
         )}
       </View>
     </TouchableOpacity>

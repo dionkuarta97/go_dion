@@ -9,7 +9,8 @@ import Sizes from "../../Theme/Sizes";
 import Fonts from "../../Theme/Fonts";
 import Colors from "../../Theme/Colors";
 import { useDispatch } from "react-redux";
-import { removeFromCart } from "../../Redux/Cart/cartActions";
+import { deleteCart, removeFromCart } from "../../Redux/Cart/cartActions";
+import { singkatNama } from "../../Services/helper";
 
 const propTypes = {
   id: PropTypes.string,
@@ -24,7 +25,9 @@ const ProductCardHorizontal = (props) => {
       <View style={{ flexDirection: "row" }}>
         <Image style={styles.image} source={{ uri: props.thumbnail }} />
         <View style={{ flex: 1, paddingLeft: Sizes.fixPadding }}>
-          <Text style={{ ...Fonts.black17Bold }}>{props.title}</Text>
+          <Text style={{ ...Fonts.black17Bold }}>
+            {singkatNama(props.title, 22)}
+          </Text>
           <Text style={{ ...Fonts.redColor20Bold }}>
             {props.ganda && "produk ini sudah dibeli"}
           </Text>
@@ -43,7 +46,11 @@ const ProductCardHorizontal = (props) => {
 
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => dispatch(removeFromCart(props.id))}
+              onPress={() => {
+                props.setLoading(true);
+                dispatch(removeFromCart(props.id));
+                dispatch(deleteCart(props.id));
+              }}
             >
               <View
                 style={{

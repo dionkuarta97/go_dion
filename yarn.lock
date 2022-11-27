@@ -3859,11 +3859,6 @@ expo-font@~10.0.3:
     expo-modules-core "~0.4.4"
     fontfaceobserver "^2.1.0"
 
-expo-in-app-purchases@^13.1.0:
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/expo-in-app-purchases/-/expo-in-app-purchases-13.1.0.tgz#a42cddc4d2e82a03f5ae73c343c647c3a7b447e0"
-  integrity sha512-buIHdRwpmul6UnC902/MhkVTIVJYuBTIu0byoHOtjHhpNqxpiAxj7yZUUfG+QEljfiW+Q8LusE15sj5oZqHPAQ==
-
 expo-json-utils@~0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/expo-json-utils/-/expo-json-utils-0.2.0.tgz"
@@ -6549,10 +6544,10 @@ react-native-webview@^11.17.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@0.64.3:
-  version "0.64.3"
-  resolved "https://registry.npmjs.org/react-native/-/react-native-0.64.3.tgz"
-  integrity sha512-2OEU74U0Ek1/WeBzPbg6XDsCfjF/9fhrNX/5TFgEiBKd5mNc9LOZ/OlMmkb7iues/ZZ/oc51SbEfLRQdcW0fVw==
+react-native@0.64.4:
+  version "0.64.4"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.64.4.tgz#f9870f6951378421881cc66f6b5a6451bef7254d"
+  integrity sha512-nxYt/NrTmGyW6+tOd+Hqp4O8uJ2LLZkN7ispMPDprAq7bwvLkF/GXmDQCZHAEyqXuhIztTtMX41KqFQ6UMCUJQ==
   dependencies:
     "@jest/create-cache-key-function" "^26.5.0"
     "@react-native-community/cli" "^5.0.1-alpha.1"

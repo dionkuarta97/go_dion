@@ -26,7 +26,7 @@ import { useToast } from "native-base";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 
-const LoginContent = () => {
+const LoginContent = (props) => {
   const toast = useToast();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -41,9 +41,18 @@ const LoginContent = () => {
     dispatch(setLoginData({ error: null, loading: false, data: null }));
   }, []);
 
+  console.log(props.section, "sadknjas");
+
   useEffect(() => {
     if (login.data) {
-      navigation.navigate("MainScreen");
+      if (props.item) {
+        navigation.navigate("ProductDetailScreen", {
+          item: props.item,
+          section: props.section,
+        });
+      } else {
+        navigation.navigate("MainScreen");
+      }
     }
   }, [login.data]);
 

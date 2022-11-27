@@ -9,33 +9,26 @@ import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButto
 import ProductCardHorizontal from "../../../Components/Card/ProductCardHorizontal";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
+import LoadingModal from "../../../Components/Modal/LoadingModal";
 
-const CartContent = () => {
+const CartContent = (props) => {
   const navigation = useNavigation();
   const isLogin = useSelector((state) => state.authReducer.isLogin);
   const cart = useSelector((state) => state.cartReducer.cart);
-
-  const checkAll = (arr1) => {
-    let temp = false;
-    for (const i in arr1) {
-      if (arr1[i].purchased) {
-        temp = true;
-        break;
-      }
-    }
-    return temp;
-  };
+  const carts = useSelector((state) => state.cartReducer.carts);
+  const { loading, setLoading } = props;
 
   return (
     <View style={{ flex: 1 }}>
+      {loading && <LoadingModal />}
       <ScrollView style={{ flex: 1, padding: Sizes.fixPadding * 2 }}>
-        {cart.map((val) => (
+        {carts.data.map((val) => (
           <ProductCardHorizontal
-            ganda={val.purchased}
             key={val._id}
             id={val._id}
             title={val.title}
             thumbnail={val.thumbnail}
+            setLoading={setLoading}
             price={val.price_discount > 0 ? val.price_discount : val.price}
           />
         ))}
@@ -72,7 +65,7 @@ const CartContent = () => {
           <Text style={{ flex: 1, ...Fonts.black19Bold }}>Total</Text>
 
           <NumberFormat
-            value={cart.reduce(
+            value={carts.data.reduce(
               (total, x) =>
                 total + (x.price_discount > 0 ? x.price_discount : x.price),
               0
@@ -97,14 +90,7 @@ const CartContent = () => {
           text="Checkout"
           onPress={() => {
             if (isLogin) {
-              if (checkAll(cart)) {
-                Alert.alert(
-                  "Peringatan",
-                  "Terdapat produk yang sudah kamu beli"
-                );
-              } else {
-                navigation.navigate("CheckoutScreen");
-              }
+              navigation.navigate("CheckoutScreen");
             } else {
               Alert.alert(
                 "Informasi",

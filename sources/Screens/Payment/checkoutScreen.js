@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Dimensions,
@@ -28,7 +28,7 @@ import {
   setSelectedPaymentMethod,
 } from "../../Redux/Payment/paymentActions";
 import LoadingModal from "../../Components/Modal/LoadingModal";
-import { clearCart } from "../../Redux/Cart/cartActions";
+import { clearCart, deleteAllCart } from "../../Redux/Cart/cartActions";
 import DefaultModal from "../../Components/Modal/DefaultModal";
 import {
   HStack,
@@ -52,7 +52,7 @@ const CheckoutScreen = () => {
   const navigation = useNavigation();
 
   const cart = useSelector((state) => state.cartReducer.cart);
-
+  const carts = useSelector((state) => state.cartReducer.carts);
   const paymentProcess = useSelector(
     (state) => state.paymentReducer.paymentProcess
   );
@@ -61,7 +61,8 @@ const CheckoutScreen = () => {
     (state) => state.paymentReducer.selectedPaymentMethod
   );
   const paymentList = useSelector((state) => state.paymentReducer.paymentList);
-
+  const [produkSama, setProdukSama] = useState(null);
+  const [totalListPayment, setTotalListPayment] = useState(null);
   const totalHarga = (arr) => {
     let temp = 0;
     for (const key in arr) {
@@ -73,6 +74,17 @@ const CheckoutScreen = () => {
     }
     return temp;
   };
+  const checkProduk = (listPayment, listCart) => {
+    let temp = [];
+    for (const i in listPayment) {
+      for (const j in listCart) {
+        if (listPayment[i]._id === listCart[j]._id) {
+          temp.push(listPayment[i]);
+        }
+      }
+    }
+    return temp;
+  };
 
   useEffect(() => {
     dispatch(setSelectedPaymentMethod(null));
@@ -80,7 +92,21 @@ const CheckoutScreen = () => {
     dispatch(getPaymentList("pending"));
   }, []);
 
-  console.log(JSON.stringify(cart, null, 2));
+  useEffect(() => {
+    if (paymentList.data) {
+      if (checkProduk(paymentList.data[0].products, carts.data).length > 0) {
+        setProdukSama(checkProduk(paymentList.data[0].products, carts.data));
+      }
+    }
+  }, [paymentList]);
+
+  useEffect(() => {
+    if (produkSama !== null) {
+      setTotalListPayment(totalHarga(produkSama));
+    }
+  }, [produkSama]);
+
+  console.log(paymentProcess);
 
   const renderItem = (item) => {
     return (
@@ -121,7 +147,7 @@ const CheckoutScreen = () => {
           }}
         >
           <ScrollView style={{ flex: 1 }}>
-            {cart.map((val) => renderItem(val))}
+            {carts.data?.map((val) => renderItem(val))}
           </ScrollView>
           {selectedPaymentMethod !== null && (
             <HStack style={{ paddingHorizontal: 10, marginBottom: 10 }}>
@@ -141,7 +167,7 @@ const CheckoutScreen = () => {
                 IDR
               </Text>
               <NumberFormat
-                value={cart.reduce(
+                value={carts.data?.reduce(
                   (total, x) =>
                     selectedPaymentMethod?.service_fee.key === "var"
                       ? total +
@@ -196,12 +222,13 @@ const CheckoutScreen = () => {
             <NumberFormat
               value={
                 selectedPaymentMethod === null
-                  ? totalHarga(cart)
+                  ? totalHarga(carts.data)
                   : selectedPaymentMethod?.service_fee.key === "var"
-                  ? totalHarga(cart) +
-                    totalHarga(cart) *
+                  ? totalHarga(carts.data) +
+                    totalHarga(carts.data) *
                       (selectedPaymentMethod?.service_fee.value / 100)
-                  : totalHarga(cart) + selectedPaymentMethod?.service_fee.value
+                  : totalHarga(carts.data) +
+                    selectedPaymentMethod?.service_fee.value
               }
               displayType={"text"}
               thousandSeparator="."
@@ -271,11 +298,11 @@ const CheckoutScreen = () => {
             <DefaultPrimaryButton
               text="Lihat Status Pembayaran"
               onPress={() => {
-                dispatch(clearCart());
                 navigation.popToTop();
                 navigation.navigate("PaymentScreen", {
                   orderId: paymentProcess.data.order_id,
                 });
+                dispatch(deleteAllCart());
               }}
             />
           </DefaultModal>
@@ -307,27 +334,28 @@ const CheckoutScreen = () => {
           >
             <HStack>
               <Box
-                marginRight={"auto"}
-                maxWidth={Dimensions.get("screen").width / 2.7}
+                marginRight={Dimensions.get("screen").width / 7}
+                width={Dimensions.get("screen").width / 2.5}
               >
                 <Text>Transaksi Saat Ini</Text>
               </Box>
-
+              <Box marginRight={"auto"}>
+                <Text bold>IDR</Text>
+              </Box>
               <NumberFormat
                 value={
                   selectedPaymentMethod === null
-                    ? totalHarga(cart)
+                    ? totalHarga(carts.data)
                     : selectedPaymentMethod?.service_fee.key === "var"
-                    ? totalHarga(cart) +
-                      totalHarga(cart) *
+                    ? totalHarga(carts.data) +
+                      totalHarga(carts.data) *
                         (selectedPaymentMethod?.service_fee.value / 100)
-                    : totalHarga(cart) +
+                    : totalHarga(carts.data) +
                       selectedPaymentMethod?.service_fee.value
                 }
                 displayType={"text"}
                 thousandSeparator="."
                 decimalSeparator=","
-                prefix={"IDR "}
                 renderText={(value, props) => (
                   <>
                     <Text
@@ -341,12 +369,15 @@ const CheckoutScreen = () => {
                 )}
               />
             </HStack>
-            <HStack marginTop={1}>
+            <HStack>
               <Box
-                marginRight={"auto"}
-                maxWidth={Dimensions.get("screen").width / 2.7}
+                marginRight={Dimensions.get("screen").width / 7}
+                width={Dimensions.get("screen").width / 2.5}
               >
                 <Text>Transaksi Sebelumnya</Text>
+              </Box>
+              <Box marginRight={"auto"}>
+                <Text bold>IDR</Text>
               </Box>
               <NumberFormat
                 value={
@@ -359,7 +390,6 @@ const CheckoutScreen = () => {
                 displayType={"text"}
                 thousandSeparator="."
                 decimalSeparator=","
-                prefix={"IDR "}
                 renderText={(value, props) => (
                   <>
                     <Text
@@ -373,45 +403,132 @@ const CheckoutScreen = () => {
                 )}
               />
             </HStack>
-            <HStack marginTop={3}>
+            {totalListPayment !== null && (
+              <HStack>
+                <Box
+                  marginRight={Dimensions.get("screen").width / 7}
+                  width={Dimensions.get("screen").width / 2.5}
+                >
+                  <Text color={"red.600"}>Total Kesamaan Produk</Text>
+                </Box>
+                <Box marginRight={"auto"}>
+                  <Text color={"red.600"} bold>
+                    IDR
+                  </Text>
+                </Box>
+                <NumberFormat
+                  value={totalListPayment}
+                  displayType={"text"}
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  prefix="-"
+                  renderText={(value, props) => (
+                    <>
+                      <Text fontSize={16} bold color={"red.600"}>
+                        {value}
+                      </Text>
+                    </>
+                  )}
+                />
+              </HStack>
+            )}
+            <HStack>
               <Box
-                marginRight={"auto"}
-                maxWidth={Dimensions.get("screen").width / 2}
+                marginRight={Dimensions.get("screen").width / 7}
+                width={Dimensions.get("screen").width / 2.5}
               >
-                <Text bold>Total Gabungan Bayaran</Text>
+                <Text color={"red.600"}>Penyesuaian fee</Text>
+              </Box>
+              <Box marginRight={"auto"}>
+                <Text color={"red.600"} bold>
+                  IDR
+                </Text>
               </Box>
               <NumberFormat
                 value={
                   paymentList.data !== null
-                    ? selectedPaymentMethod === null
-                      ? totalHarga(cart) +
-                        Number(
-                          paymentList.data[0]?.payment_detail.gross_amount.split(
-                            "."
-                          )[0]
-                        )
-                      : selectedPaymentMethod?.service_fee.key === "var"
-                      ? totalHarga(cart) +
-                        totalHarga(cart) *
-                          (selectedPaymentMethod?.service_fee.value / 100) +
-                        Number(
-                          paymentList.data[0]?.payment_detail.gross_amount.split(
-                            "."
-                          )[0]
-                        )
-                      : totalHarga(cart) +
-                        selectedPaymentMethod?.service_fee.value +
-                        Number(
-                          paymentList.data[0]?.payment_detail.gross_amount.split(
-                            "."
-                          )[0]
-                        )
+                    ? Number(
+                        paymentList.data[0]?.payment_detail.gross_amount.split(
+                          "."
+                        )[0]
+                      ) - totalHarga(paymentList.data[0]?.products)
                     : 0
                 }
                 displayType={"text"}
                 thousandSeparator="."
                 decimalSeparator=","
-                prefix={"IDR "}
+                prefix="-"
+                renderText={(value, props) => (
+                  <>
+                    <Text fontSize={16} bold color={"red.600"}>
+                      {value}
+                    </Text>
+                  </>
+                )}
+              />
+            </HStack>
+            <HStack marginTop={3}>
+              <Box
+                marginRight={Dimensions.get("screen").width / 7}
+                width={Dimensions.get("screen").width / 2.5}
+              >
+                <Text bold>Total Gabungan Bayaran</Text>
+              </Box>
+              <Box marginRight={"auto"}>
+                <Text bold>IDR</Text>
+              </Box>
+              <NumberFormat
+                value={
+                  paymentList.data !== null
+                    ? selectedPaymentMethod === null
+                      ? totalHarga(carts.data) +
+                        Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        ) -
+                        totalListPayment -
+                        (Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        ) -
+                          totalHarga(paymentList.data[0]?.products))
+                      : selectedPaymentMethod?.service_fee.key === "var"
+                      ? totalHarga(carts.data) +
+                        totalHarga(carts.data) *
+                          (selectedPaymentMethod?.service_fee.value / 100) +
+                        Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        ) -
+                        totalListPayment -
+                        (Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        ) -
+                          totalHarga(paymentList.data[0]?.products))
+                      : totalHarga(carts.data) +
+                        selectedPaymentMethod?.service_fee.value +
+                        Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        ) -
+                        totalListPayment -
+                        (Number(
+                          paymentList.data[0]?.payment_detail.gross_amount.split(
+                            "."
+                          )[0]
+                        ) -
+                          totalHarga(paymentList.data[0]?.products))
+                    : 0
+                }
+                displayType={"text"}
+                thousandSeparator="."
+                decimalSeparator=","
                 renderText={(value, props) => (
                   <>
                     <Text

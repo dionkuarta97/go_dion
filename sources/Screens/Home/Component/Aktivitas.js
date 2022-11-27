@@ -14,6 +14,7 @@ import { Dimensions } from "react-native";
 import gambar from "../../../../assets/Images/soal/onscoring.png";
 import { useNavigation } from "@react-navigation/native";
 import { singkatNama } from "../../../Services/helper";
+import moment from "moment";
 
 const Aktivitas = (props) => {
   const { tryout } = props;
@@ -40,6 +41,14 @@ const Aktivitas = (props) => {
   };
 
   const tryoutCard = (data, idx) => {
+    const [givenAwal, setGivenAwal] = useState(null);
+    const [givenAkhir, setGivenAkhir] = useState(null);
+    const [current, setCurrent] = useState(null);
+    useEffect(() => {
+      setGivenAwal(moment(data.details.tanggal_awal));
+      setGivenAkhir(moment("2022-11-25 20:59:00"));
+      setCurrent(moment().utcOffset(7).startOf("second"));
+    }, []);
     return (
       <Button
         mt={2}
@@ -58,6 +67,22 @@ const Aktivitas = (props) => {
             data: data.includes,
             tryoutId: data._id,
             title: data.title,
+            mulai: moment.duration(givenAwal?.diff(current)).asDays(),
+            akhir: moment.duration(givenAkhir?.diff(current)).asDays(),
+            status:
+              moment.duration(givenAwal?.diff(current)).asDays() > 0
+                ? false
+                : moment.duration(givenAkhir?.diff(current)).asDays() < 0
+                ? false
+                : true,
+            detik:
+              moment.duration(givenAwal?.diff(current)).asDays() < 1 &&
+              moment.duration(givenAwal?.diff(current)).asDays() > 0
+                ? moment.duration(givenAwal?.diff(current)).asSeconds()
+                : moment.duration(givenAkhir?.diff(current)).asDays() < 1 &&
+                  moment.duration(givenAkhir?.diff(current)).asDays() > 0
+                ? moment.duration(givenAkhir?.diff(current)).asSeconds()
+                : null,
           });
         }}
       >
