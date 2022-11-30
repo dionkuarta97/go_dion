@@ -51,6 +51,7 @@ const GoTryoutCard = (props) => {
           data: data.includes,
           tryoutId: tryoutId,
           title: data.title,
+          tipe: props.status,
           mulai: moment.duration(givenAwal?.diff(current)).asDays(),
           akhir: moment.duration(givenAkhir?.diff(current)).asDays(),
           status:

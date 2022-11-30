@@ -23,7 +23,7 @@ import DefaultModal from "../../../Components/Modal/DefaultModal";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
 import { capitalizeFirstLetter } from "../../../Services/helper";
 import { setTransIos } from "../../../Redux/Init/initActions";
-import { Box, HStack, useToast } from "native-base";
+import { Box, Center, HStack, useToast } from "native-base";
 import moment from "moment";
 import "moment/min/locales";
 
@@ -445,6 +445,20 @@ const ProductDetailContent = (props) => {
             </>
           )}
 
+          {item.expired && (
+            <Box
+              padding={1}
+              width={Dimensions.get("screen").width / 2.4}
+              bg={"red.600"}
+              borderRadius={10}
+              mb={3}
+            >
+              <Center>
+                <Text style={{ color: "white" }}>Produk telah berakhir</Text>
+              </Center>
+            </Box>
+          )}
+
           {titleText("Detail Produk")}
           <View style={styles.content}>
             {infoTile("Informasi", item.desc)}
@@ -491,7 +505,14 @@ const ProductDetailContent = (props) => {
                           <DefaultPrimaryButton
                             text="Beli Sekarang"
                             onPress={() => {
-                              requestPurchase();
+                              if (item.expired) {
+                                Alert.alert(
+                                  "Informasi",
+                                  "Sayang sekali produk telah berakhir"
+                                );
+                              } else {
+                                requestPurchase();
+                              }
                             }}
                           />
                         )}
@@ -528,11 +549,18 @@ const ProductDetailContent = (props) => {
                       <DefaultPrimaryButton
                         text="Beli Sekarang"
                         onPress={() => {
-                          dispatch(addToCart(item));
-                          dispatch(addCart(item._id))
-                            .then((data) => console.log(data, "<<data"))
-                            .catch((err) => console.log(err, "<<err"));
-                          navigation.navigate("CartScreen");
+                          if (item.expired) {
+                            Alert.alert(
+                              "Informasi",
+                              "Sayang sekali produk telah berakhir"
+                            );
+                          } else {
+                            dispatch(addToCart(item));
+                            dispatch(addCart(item._id))
+                              .then((data) => console.log(data, "<<data"))
+                              .catch((err) => console.log(err, "<<err"));
+                            navigation.navigate("CartScreen");
+                          }
                         }}
                       />
                     )}

@@ -49,6 +49,7 @@ const ProductDetailScreen = (props) => {
       setLoading(true);
     }
   }, [carts]);
+  console.log(item.expired, "<<<dasdas");
   const productInfo = () => {
     return (
       <View>
@@ -177,9 +178,16 @@ const ProductDetailScreen = (props) => {
                 activeOpacity={0.9}
                 onPress={() => {
                   if (isLogin) {
-                    setLoading(true);
-                    dispatch(addToCart(item));
-                    dispatch(addCart(item._id));
+                    if (item.expired) {
+                      Alert.alert(
+                        "Informasi",
+                        "Sayang sekali produk ini sudah berakhir"
+                      );
+                    } else {
+                      setLoading(true);
+                      dispatch(addToCart(item));
+                      dispatch(addCart(item._id));
+                    }
                   } else {
                     Alert.alert(
                       "Informasi",

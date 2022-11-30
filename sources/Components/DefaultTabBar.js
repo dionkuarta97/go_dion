@@ -41,7 +41,7 @@ const DefaultTabBar = (props) => {
           renderLabel={({ route, focused, color }) => (
             <Text
               style={{
-                fontSize: Dimensions.get("screen").width / 36,
+                fontSize: Dimensions.get("screen").width / 40,
                 fontWeight: "bold",
                 alignSelf: "center",
               }}
