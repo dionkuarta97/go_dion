@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useToast } from "native-base";
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, Dimensions } from "react-native";
+import { View, Text, SafeAreaView, Dimensions, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
@@ -19,6 +19,7 @@ const GoTryoutScreen = () => {
   const token = useSelector((state) => state.authReducer.token);
   const [tryout, setTryout] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { tryoutData } = useSelector((state) => state.tryoutReducer);
 
   const getTryout = async () => {
     try {
@@ -67,7 +68,7 @@ const GoTryoutScreen = () => {
     });
   }, []);
 
-  console.log(tryout, "<<<<<akweakw");
+  console.log("sekali");
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar title="Tryout" backEnabled={true} />

@@ -46,7 +46,7 @@ const Aktivitas = (props) => {
     const [current, setCurrent] = useState(null);
     useEffect(() => {
       setGivenAwal(moment(data.details.tanggal_awal));
-      setGivenAkhir(moment("2022-11-25 20:59:00"));
+      setGivenAkhir(moment(data.details.tanggal_akhir));
       setCurrent(moment().utcOffset(7).startOf("second"));
     }, []);
     return (
@@ -67,6 +67,7 @@ const Aktivitas = (props) => {
             data: data.includes,
             tryoutId: data._id,
             title: data.title,
+            tipe: "touched",
             mulai: moment.duration(givenAwal?.diff(current)).asDays(),
             akhir: moment.duration(givenAkhir?.diff(current)).asDays(),
             status:

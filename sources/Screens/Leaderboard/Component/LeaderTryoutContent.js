@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGoTryout } from "../../../Redux/Tryout/tryoutActions";
 import { Box, HStack, ScrollView, Text, View } from "native-base";
-import { TouchableHighlight, ActivityIndicator } from "react-native";
+import {
+  TouchableHighlight,
+  ActivityIndicator,
+  Dimensions,
+} from "react-native";
 import NoData from "../../../Components/NoData";
 import Colors from "../../../Theme/Colors";
 import { useNavigation } from "@react-navigation/native";
@@ -59,7 +63,12 @@ const LeaderTryoutContent = () => {
           >
             <Box bg={"white"} padding={5} rounded={10} shadow={1}>
               <HStack>
-                <Text marginRight={"auto"}>{el.title}</Text>
+                <View
+                  width={Dimensions.get("screen").width / 1.8}
+                  marginRight="auto"
+                >
+                  <Text marginRight={"auto"}>{el.title}</Text>
+                </View>
                 <Text>{el.details.tahun_ajaran}</Text>
               </HStack>
             </Box>

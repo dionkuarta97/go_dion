@@ -30,7 +30,7 @@ const TryoutCard = (props) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const navigation = useNavigation();
-  const { detail, tryoutId, status } = props;
+  const { detail, tryoutId, status, tipe } = props;
   const profile = useSelector((state) => state.profileReducer.profile);
   console.log(status);
   const [idx, setIdx] = useState(null);
@@ -39,7 +39,7 @@ const TryoutCard = (props) => {
     <>
       {detail.quiz ? (
         <TouchableOpacity
-          disabled={status ? false : true}
+          disabled={!status && tipe !== "done" ? true : false}
           onPress={() => {
             checkInternet().then((data) => {
               if (data) {
