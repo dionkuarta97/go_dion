@@ -59,27 +59,14 @@ const PilihProdiScreen = (props) => {
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     if (update.data) {
-      if (props.route.params.from !== undefined) {
-        navigation.popToTop();
-        navigation.navigate("GoTryoutScreen");
-        toast.show({
-          title: "Berhasil",
-          status: "success",
-          description: "Berhasil, pilihan prodi telah disimpan",
-          placement: "top",
-          width: Dimensions.get("screen").width / 1.3,
-        });
-      } else {
-        navigation.popToTop();
-        navigation.navigate("ProfileScreen");
-        toast.show({
-          title: "Berhasil",
-          status: "success",
-          description: "Berhasil, pilihan prodi telah disimpan",
-          placement: "top",
-          width: Dimensions.get("screen").width / 1.3,
-        });
-      }
+      navigation.goBack();
+      toast.show({
+        title: "Berhasil",
+        status: "success",
+        description: "Berhasil, pilihan prodi telah disimpan",
+        placement: "top",
+        width: Dimensions.get("screen").width / 1.3,
+      });
 
       dispatch(setUpdateProfile({ data: null, loading: false, error: null }));
     }
@@ -104,7 +91,6 @@ const PilihProdiScreen = (props) => {
       setPilihanDua({ ...pilihanDua, jurusan: null, passing_grade: null });
     }
   }, [pilihanDua.universitas]);
-  console.log(JSON.stringify(profile.kelas.substring(3, 6)));
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>

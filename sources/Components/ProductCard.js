@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { MaterialIcons } from "@expo/vector-icons";
 import {
@@ -18,6 +18,9 @@ import Fonts from "../Theme/Fonts";
 import Sizes from "../Theme/Sizes";
 import Colors from "../Theme/Colors";
 import { useSelector } from "react-redux";
+import { singkatNama } from "../Services/helper";
+import { Box, HStack, VStack } from "native-base";
+import moment from "moment";
 
 const dummyProductData = {
   _id: "6167e3732d4fb95908691d2a",
@@ -48,6 +51,20 @@ const ProductCard = (props) => {
   const item = !props.data ? dummyProductData : props.data;
   const isLogin = useSelector((state) => state.authReducer.isLogin);
   const { newStyle } = props;
+  const [tanggal_awal, setTanggal_awal] = useState(null);
+  const [tanggal_akhir, setTanggal_akhir] = useState(null);
+  const [givenAwal, setGivenAwal] = useState(null);
+  const [givenAkhir, setGivenAkhir] = useState(null);
+  const [current, setCurrent] = useState(null);
+
+  useEffect(() => {
+    setTanggal_awal(moment(item.details.tanggal_awal).locale("id"));
+    setTanggal_akhir(moment(item.details.tanggal_akhir).locale("id"));
+    setGivenAwal(moment(item.details.tanggal_awal));
+    setGivenAkhir(moment(item.details.tanggal_akhir));
+    setCurrent(moment().utcOffset(7).startOf("second"));
+  }, []);
+
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -103,9 +120,189 @@ const ProductCard = (props) => {
             : styles.infoContainer
         }
       >
-        <View style={{ height: Dimensions.get("screen").height / 8 }}>
-          <Text style={{ ...Fonts.gray15Regular }}>{item.title}</Text>
+        <View style={{ height: Dimensions.get("screen").height / 12 }}>
+          <Text style={{ ...Fonts.gray15Regular }}>
+            {singkatNama(item.title, 30)}
+          </Text>
         </View>
+        {tanggal_awal && tanggal_akhir !== null && (
+          <>
+            {moment.duration(givenAkhir.diff(current)).asDays() > 0 ? (
+              <>
+                {moment.duration(givenAwal.diff(current)).asDays() > 0 ? (
+                  <>
+                    {moment.duration(givenAwal.diff(current)).asDays() > 7 ? (
+                      <>
+                        <Text style={{ fontWeight: "bold" }}>
+                          {tanggal_awal.format("Do MMM YYYY")} -{" "}
+                          {tanggal_akhir.format("Do MMM YYYY")}
+                        </Text>
+                      </>
+                    ) : moment.duration(givenAwal.diff(current)).asDays() >=
+                        1 &&
+                      moment.duration(givenAwal.diff(current)).asDays() <= 7 ? (
+                      <>
+                        {newStyle ? (
+                          <VStack space={1}>
+                            <Text
+                              style={{ fontWeight: "bold", marginEnd: "auto" }}
+                            >
+                              Berakhir dalam
+                            </Text>
+                            <Box
+                              bg={"green.600"}
+                              borderRadius={10}
+                              paddingY={0.5}
+                              paddingX={1.5}
+                              width={Dimensions.get("screen").width / 4.5}
+                            >
+                              <Text style={{ color: "white" }}>
+                                {Math.floor(
+                                  moment
+                                    .duration(givenAwal.diff(current))
+                                    .asDays()
+                                )}{" "}
+                                hari lagi
+                              </Text>
+                            </Box>
+                          </VStack>
+                        ) : (
+                          <HStack alignItems={"center"}>
+                            <Text
+                              style={{ fontWeight: "bold", marginEnd: "auto" }}
+                            >
+                              Dimulai dalam
+                            </Text>
+                            <Box
+                              bg={"green.600"}
+                              borderRadius={10}
+                              paddingY={0.5}
+                              paddingX={1.5}
+                            >
+                              <Text style={{ color: "white" }}>
+                                {Math.floor(
+                                  moment
+                                    .duration(givenAwal.diff(current))
+                                    .asDays()
+                                )}{" "}
+                                hari lagi
+                              </Text>
+                            </Box>
+                          </HStack>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <HStack alignItems={"center"}>
+                          <Text
+                            style={{ fontWeight: "bold", marginEnd: "auto" }}
+                          >
+                            Dimulai
+                          </Text>
+                          <Box
+                            bg={"green.600"}
+                            borderRadius={10}
+                            paddingY={0.5}
+                            paddingX={1.5}
+                          >
+                            <Text style={{ color: "white" }}>Hari ini</Text>
+                          </Box>
+                        </HStack>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {moment.duration(givenAkhir.diff(current)).asDays() > 7 ? (
+                      <>
+                        <Text style={{ fontWeight: "bold" }}>
+                          {tanggal_awal.format("Do MMM YYYY")} -{" "}
+                          {tanggal_akhir.format("Do MMM YYYY")}
+                        </Text>
+                      </>
+                    ) : moment.duration(givenAkhir.diff(current)).asDays() >=
+                        1 &&
+                      moment.duration(givenAkhir.diff(current)).asDays() <=
+                        7 ? (
+                      <>
+                        {newStyle ? (
+                          <VStack space={1}>
+                            <Text
+                              style={{ fontWeight: "bold", marginEnd: "auto" }}
+                            >
+                              Berakhir dalam
+                            </Text>
+                            <Box
+                              bg={"red.600"}
+                              borderRadius={10}
+                              paddingY={0.5}
+                              paddingX={1.5}
+                              width={Dimensions.get("screen").width / 4.5}
+                            >
+                              <Text style={{ color: "white" }}>
+                                {Math.floor(
+                                  moment
+                                    .duration(givenAkhir.diff(current))
+                                    .asDays()
+                                )}{" "}
+                                hari lagi
+                              </Text>
+                            </Box>
+                          </VStack>
+                        ) : (
+                          <HStack alignItems={"center"}>
+                            <Text
+                              style={{ fontWeight: "bold", marginEnd: "auto" }}
+                            >
+                              Berakhir dalam
+                            </Text>
+                            <Box
+                              bg={"red.600"}
+                              borderRadius={10}
+                              paddingY={0.5}
+                              paddingX={1.5}
+                            >
+                              <Text style={{ color: "white" }}>
+                                {Math.floor(
+                                  moment
+                                    .duration(givenAkhir.diff(current))
+                                    .asDays()
+                                )}{" "}
+                                hari lagi
+                              </Text>
+                            </Box>
+                          </HStack>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <HStack alignItems={"center"}>
+                          <Text
+                            style={{ fontWeight: "bold", marginEnd: "auto" }}
+                          >
+                            Berakhir
+                          </Text>
+                          <Box
+                            bg={"red.600"}
+                            borderRadius={10}
+                            paddingY={0.5}
+                            paddingX={1.5}
+                          >
+                            <Text style={{ color: "white" }}>Hari ini</Text>
+                          </Box>
+                        </HStack>
+                      </>
+                    )}
+                  </>
+                )}
+              </>
+            ) : (
+              <Text style={{ color: Colors.neutralRedColor }}>
+                Periode Tryout Berakhir
+              </Text>
+            )}
+          </>
+        )}
         {item.price_discount !== 0 && (
           <View
             style={{

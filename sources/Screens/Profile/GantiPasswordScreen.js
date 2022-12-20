@@ -5,12 +5,12 @@ import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import GantiPasswordContent from "./Component/GantiPasswordContent";
 const GantiPasswordScreen = (props) => {
   const { route } = props;
-  const { email } = route.params;
+  const { email, profile } = route.params;
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
         <DefaultAppBar title="Ganti Password" backEnabled={true} />
-        <GantiPasswordContent email={email} />
+        <GantiPasswordContent email={email} profile={profile} />
       </SafeAreaView>
     </>
   );

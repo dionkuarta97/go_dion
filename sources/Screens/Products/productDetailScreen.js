@@ -24,8 +24,11 @@ import Colors from "../../Theme/Colors";
 import { useNavigation } from "@react-navigation/core";
 import ProductDetailContent from "./Component/ProductDetailContent";
 import { addCart, addToCart } from "../../Redux/Cart/cartActions";
-import { Box } from "native-base";
+import { Box, Button, Center, HStack } from "native-base";
 import LoadingModal from "../../Components/Modal/LoadingModal";
+import moment from "moment";
+import DefaultModal from "../../Components/Modal/DefaultModal";
+import CountDown from "react-native-countdown-component";
 
 const { width } = Dimensions.get("screen");
 
@@ -41,8 +44,12 @@ const ProductDetailScreen = (props) => {
 
   const carts = useSelector((state) => state.cartReducer.carts);
   const isLogin = useSelector((state) => state.authReducer.isLogin);
-
+  const [givenAkhir, setGivenAkhir] = useState(null);
+  const [current, setCurrent] = useState(null);
+  const [infoWaktu, setInfoWaktu] = useState(false);
   useEffect(() => {
+    setGivenAkhir(moment(item.details.tanggal_akhir));
+    setCurrent(moment().utcOffset(7).startOf("second"));
     if (!carts.loading) {
       setLoading(false);
     } else {
@@ -184,9 +191,15 @@ const ProductDetailScreen = (props) => {
                         "Sayang sekali produk ini sudah berakhir"
                       );
                     } else {
-                      setLoading(true);
-                      dispatch(addToCart(item));
-                      dispatch(addCart(item._id));
+                      if (
+                        moment.duration(givenAkhir.diff(current)).asDays() < 1
+                      ) {
+                        setInfoWaktu(true);
+                      } else {
+                        setLoading(true);
+                        dispatch(addToCart(item));
+                        dispatch(addCart(item._id));
+                      }
                     }
                   } else {
                     Alert.alert(
@@ -274,6 +287,58 @@ const ProductDetailScreen = (props) => {
           onCart={carts.data?.some((val) => val._id === item._id)}
         />
         <StatusBar backgroundColor={Colors.blackColor} />
+        {infoWaktu && (
+          <DefaultModal>
+            <Center>
+              <Text style={{ textAlign: "center" }}>
+                Produk ini akan berakhir dalam
+              </Text>
+              <CountDown
+                key={"Count 1"}
+                until={moment.duration(givenAkhir?.diff(current)).asSeconds()}
+                digitStyle={{
+                  backgroundColor: "transparent",
+                }}
+                separatorStyle={{
+                  color: "black",
+                }}
+                showSeparator={true}
+                digitTxtStyle={{
+                  color: "black",
+                }}
+                size={13}
+                timeToShow={["H", "M", "S"]}
+                timeLabels={{ h: null, m: null, s: null }}
+              />
+              <Text style={{ textAlign: "center" }}>
+                Setelah melewati waktu tersebut, produk ini akan dianggap
+                hangus. Yakin mau beli ?
+              </Text>
+              <HStack space={4} marginTop={5}>
+                <Button
+                  onPress={() => {
+                    setInfoWaktu(false);
+                    setLoading(true);
+                    dispatch(addToCart(item));
+                    dispatch(addCart(item._id));
+                  }}
+                  width={100}
+                  colorScheme="amber"
+                >
+                  Yakin
+                </Button>
+                <Button
+                  onPress={() => setInfoWaktu(false)}
+                  width={100}
+                  variant="outline"
+                  colorScheme="dark"
+                >
+                  Batal
+                </Button>
+              </HStack>
+            </Center>
+          </DefaultModal>
+        )}
       </SliverAppBar>
     </SafeAreaView>
   );

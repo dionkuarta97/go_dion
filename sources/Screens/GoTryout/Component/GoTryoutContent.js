@@ -38,7 +38,7 @@ const GoTryoutContent = (props) => {
 
   useEffect(() => {
     if (tryoutData.expired) {
-      if (props.status === "untouched" && tryoutData.expired.expired) {
+      if (props.status !== "done" && tryoutData.expired.expired) {
         setModal(true);
       }
     }
@@ -59,7 +59,7 @@ const GoTryoutContent = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-      {modal && props.status === "untouched" && (
+      {modal && props.status !== "done" && (
         <View style={{ paddingHorizontal: 10, paddingVertical: 5 }}>
           <Center
             paddingX={"5"}

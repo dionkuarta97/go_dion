@@ -14,9 +14,15 @@ const OnTapTextInput = (props) => {
       <View
         style={{
           flexDirection: "row",
+          alignItems: "center",
           marginVertical: 15,
-          borderBottomColor: "#898989",
-          borderBottomWidth: 1,
+          borderWidth: 0.5,
+          borderRadius: 5,
+          paddingHorizontal: 5,
+          borderColor:
+            props.value === "" || !props.value
+              ? Colors.neutralRedColor
+              : Colors.neutralGreenColor,
         }}
       >
         <View pointerEvents="none" style={{ flex: 1 }}>
