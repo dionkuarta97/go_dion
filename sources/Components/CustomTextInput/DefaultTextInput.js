@@ -14,8 +14,16 @@ const DefaultTextInput = (props) => {
       style={{
         flexDirection: "row",
         marginVertical: 15,
-        borderBottomColor: focused ? Colors.primaryColor : "#898989",
-        borderBottomWidth: 1,
+        borderWidth: 0.5,
+        borderRadius: 5,
+        paddingHorizontal: 5,
+        borderColor: !props.nomor
+          ? props.value === "" || !props.value
+            ? Colors.neutralRedColor
+            : Colors.neutralGreenColor
+          : !props.valid
+          ? Colors.neutralRedColor
+          : Colors.neutralGreenColor,
       }}
     >
       <TextInput

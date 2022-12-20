@@ -17,6 +17,7 @@ import DefaultModal from "../../Components/Modal/DefaultModal";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import LoadingIndicator from "../../Components/Indicator/LoadingIndicator";
+import Colors from "../../Theme/Colors";
 
 const TryoutDetailScreen = (props) => {
   const { route } = props;
@@ -34,7 +35,7 @@ const TryoutDetailScreen = (props) => {
   const forceScoring = async () => {
     try {
       const response = await fetch(
-        urlBase + "/scoring/v1/scoring/createscore/" + tryoutId,
+        urlBase + "/masterdata/v1/scoring/createscore/" + tryoutId,
         {
           method: "POST",
           headers: {
@@ -46,17 +47,22 @@ const TryoutDetailScreen = (props) => {
       const result = await response.json();
       console.log(result);
       if (result.status) setSukses(true);
-      else setError(true);
+      else setError(result.message);
       setLoading(false);
     } catch (err) {
-      setError(true);
+      setError(
+        "Terjadi kesalahan pada server, silakan coba dalam beberapa saat lagi"
+      );
       setLoading(false);
       console.log(err);
     }
   };
   useEffect(() => {
-    if (!realStatus && tipe !== "done") {
-      setModal(true);
+    console.log(realStatus, "<<<<");
+    if (mulai < 0 || akhir < 0) {
+      if (!realStatus && tipe !== "done") {
+        setModal(true);
+      }
     }
   }, [realStatus]);
 
@@ -98,8 +104,7 @@ const TryoutDetailScreen = (props) => {
                       fontSize={19}
                       fontWeight={"bold"}
                     >
-                      Terjadi kesalahan pada server, silahkan coba dalam
-                      beberapa saat lagi
+                      {error}
                     </Text>
                     <Button
                       bg={"amber.400"}
@@ -120,7 +125,7 @@ const TryoutDetailScreen = (props) => {
                       Informasi
                     </Text>
                     <Text mb={5} textAlign={"center"}>
-                      Sayang sekali tryout kamu sudah berakhir, silahkan akhiri
+                      Sayang sekali tryout kamu sudah berakhir. Silakan akhiri
                       tryout ini untuk melanjutkan ke proses laporan
                     </Text>
                     <Button
@@ -164,53 +169,69 @@ const TryoutDetailScreen = (props) => {
                 : "Tryout sudah berakhir"}
             </Text>
 
-            {realStatus && (
-              <Box
-                padding={2}
-                bg={akhir > 0 && mulai < 0 ? "red.600" : "green.600"}
-                rounded={15}
-              >
-                {detik !== null ? (
-                  <CountDown
-                    key={"Count 1"}
-                    until={detik}
-                    digitStyle={{
-                      backgroundColor: "transparent",
-                    }}
-                    separatorStyle={{ color: "#FFFFFF" }}
-                    showSeparator={true}
-                    digitTxtStyle={{ color: "#FFFFFF" }}
-                    onFinish={() => {
-                      if (status) {
-                        setRealstatus(false);
-                        Alert.alert("Informasi", "Tryout sudah berakhir");
-                      } else {
-                        setRealstatus(true);
-                        Alert.alert("Informasi", "Tryout dapat dikerjakan");
-                      }
-                    }}
-                    size={20}
-                    timeToShow={["H", "M", "S"]}
-                    timeLabels={{ h: null, m: null, s: null }}
-                  />
-                ) : (
-                  <>
-                    {mulai > 0 && (
-                      <Text>
-                        <Text color={"white"} fontWeight={"bold"} fontSize={17}>
-                          {Math.floor(mulai)} hari
-                        </Text>
-                      </Text>
-                    )}
-                    {akhir > 0 && mulai < 0 && (
-                      <Text color={"white"} fontWeight={"bold"} fontSize={17}>
-                        {Math.floor(akhir)} hari
-                      </Text>
-                    )}
-                  </>
-                )}
-              </Box>
-            )}
+            <Box
+              padding={0.1}
+              borderColor={
+                akhir > 0 && mulai < 0
+                  ? "red.600"
+                  : mulai > 0
+                  ? "green.600"
+                  : "gray.100"
+              }
+              borderWidth={1.5}
+              rounded={20}
+            >
+              {detik ? (
+                <CountDown
+                  key={"Count 1"}
+                  until={detik}
+                  digitStyle={{
+                    backgroundColor: "transparent",
+                  }}
+                  separatorStyle={{
+                    color:
+                      akhir > 0 && mulai < 0
+                        ? Colors.neutralRedColor
+                        : Colors.neutralGreenColor,
+                  }}
+                  showSeparator={true}
+                  digitTxtStyle={{
+                    color:
+                      akhir > 0 && mulai < 0
+                        ? Colors.neutralRedColor
+                        : Colors.neutralGreenColor,
+                  }}
+                  onFinish={() => {
+                    if (status) {
+                      setRealstatus(false);
+                      Alert.alert("Informasi", "Tryout sudah berakhir");
+                    } else {
+                      setRealstatus(true);
+                      Alert.alert(
+                        "Informasi",
+                        "Kamu sudah dapat mengerjakan tryout"
+                      );
+                    }
+                  }}
+                  size={15}
+                  timeToShow={["H", "M", "S"]}
+                  timeLabels={{ h: null, m: null, s: null }}
+                />
+              ) : (
+                <>
+                  {mulai > 0 && (
+                    <Text marginX={5} color={"green.600"} fontWeight={"bold"}>
+                      {Math.floor(mulai)} hari
+                    </Text>
+                  )}
+                  {akhir > 0 && mulai < 0 && (
+                    <Text marginX={5} color={"red.600"} fontWeight={"bold"}>
+                      {Math.floor(akhir)} hari
+                    </Text>
+                  )}
+                </>
+              )}
+            </Box>
           </Center>
         </View>
       )}

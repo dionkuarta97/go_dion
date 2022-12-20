@@ -23,13 +23,15 @@ import DefaultModal from "../../../Components/Modal/DefaultModal";
 import LoadingModal from "../../../Components/Modal/LoadingModal";
 import { capitalizeFirstLetter } from "../../../Services/helper";
 import { setTransIos } from "../../../Redux/Init/initActions";
-import { Box, Center, HStack, useToast } from "native-base";
+import { Box, Button, Center, HStack, useToast } from "native-base";
 import moment from "moment";
 import "moment/min/locales";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import CountDown from "react-native-countdown-component";
 
-// if (Platform.OS === "ios") {
-//   ExpoIap = require("expo-in-app-purchases");
-// }
+if (Platform.OS === "ios") {
+  ExpoIap = require("expo-in-app-purchases");
+}
 
 const { width } = Dimensions.get("screen");
 
@@ -57,7 +59,7 @@ const ProductDetailContent = (props) => {
     ios: ["com.goonline.app." + item.details.apple_id],
     android: ["com.example.coins100"],
   });
-
+  const [kadaluwarsa, setKadaluwarsa] = useState(item.expired);
   console.log(JSON.stringify(item, null, 2));
   const firstProces = async () => {
     if (Platform.OS === "ios") {
@@ -281,6 +283,8 @@ const ProductDetailContent = (props) => {
     );
   };
 
+  const [infoWaktu, setInfoWaktu] = useState(false);
+
   useEffect(async () => {
     if (Platform.OS === "ios") {
       firstProces();
@@ -304,6 +308,7 @@ const ProductDetailContent = (props) => {
     }
   };
 
+  console.log(Math.floor(moment.duration(givenAkhir?.diff(current)).asDays()));
   const titleText = (title) => {
     return (
       <Text style={{ ...Fonts.black17Bold, marginBottom: Sizes.fixPadding }}>
@@ -390,22 +395,47 @@ const ProductDetailContent = (props) => {
                           paddingY={1}
                           borderRadius={10}
                         >
-                          <Text
-                            style={{ ...Fonts.black15Regular, color: "white" }}
-                          >
-                            {moment.duration(givenAwal.diff(current)).asDays() >
-                            1
-                              ? Math.floor(
-                                  moment
-                                    .duration(givenAwal.diff(current))
-                                    .asDays()
-                                ) + " hari lagi"
-                              : Math.floor(
-                                  moment
-                                    .duration(givenAwal.diff(current))
-                                    .asHours()
-                                ) + " jam lagi"}
-                          </Text>
+                          {moment.duration(givenAwal.diff(current)).asDays() >=
+                          1 ? (
+                            <Text
+                              style={{
+                                ...Fonts.black15Regular,
+                                color: "white",
+                              }}
+                            >
+                              {Math.floor(
+                                moment
+                                  .duration(givenAwal.diff(current))
+                                  .asDays()
+                              ) + " hari lagi"}
+                            </Text>
+                          ) : (
+                            <CountDown
+                              key={"Count 1"}
+                              until={moment
+                                .duration(givenAwal?.diff(current))
+                                .asSeconds()}
+                              digitStyle={{
+                                backgroundColor: "transparent",
+                              }}
+                              separatorStyle={{
+                                color: "white",
+                              }}
+                              showSeparator={true}
+                              digitTxtStyle={{
+                                color: "white",
+                              }}
+                              onFinish={() => {
+                                Alert.alert(
+                                  "Informasi",
+                                  "Tryout sudah dimulai"
+                                );
+                              }}
+                              size={13}
+                              timeToShow={["H", "M", "S"]}
+                              timeLabels={{ h: null, m: null, s: null }}
+                            />
+                          )}
                         </Box>
                       </HStack>
                     </>
@@ -421,21 +451,43 @@ const ProductDetailContent = (props) => {
                           paddingY={1}
                           borderRadius={10}
                         >
-                          <Text style={{ color: "white" }}>
-                            {moment
-                              .duration(givenAkhir.diff(current))
-                              .asDays() > 1
-                              ? Math.floor(
-                                  moment
-                                    .duration(givenAkhir.diff(current))
-                                    .asDays()
-                                ) + " hari lagi"
-                              : Math.floor(
-                                  moment
-                                    .duration(givenAkhir.diff(current))
-                                    .asHours()
-                                ) + " jam lagi"}
-                          </Text>
+                          {moment.duration(givenAkhir.diff(current)).asDays() >=
+                          1 ? (
+                            <Text style={{ color: "white" }}>
+                              {Math.floor(
+                                moment
+                                  .duration(givenAkhir.diff(current))
+                                  .asDays()
+                              ) + " hari lagi"}
+                            </Text>
+                          ) : (
+                            <CountDown
+                              key={"Count 1"}
+                              until={moment
+                                .duration(givenAkhir?.diff(current))
+                                .asSeconds()}
+                              digitStyle={{
+                                backgroundColor: "transparent",
+                              }}
+                              separatorStyle={{
+                                color: "white",
+                              }}
+                              showSeparator={true}
+                              digitTxtStyle={{
+                                color: "white",
+                              }}
+                              onFinish={() => {
+                                setKadaluwarsa(true);
+                                Alert.alert(
+                                  "Informasi",
+                                  "Tryout sudah berakhir"
+                                );
+                              }}
+                              size={13}
+                              timeToShow={["H", "M", "S"]}
+                              timeLabels={{ h: null, m: null, s: null }}
+                            />
+                          )}
                         </Box>
                       </HStack>
                     </>
@@ -445,7 +497,7 @@ const ProductDetailContent = (props) => {
             </>
           )}
 
-          {item.expired && (
+          {kadaluwarsa && (
             <Box
               padding={1}
               width={Dimensions.get("screen").width / 2.4}
@@ -505,13 +557,21 @@ const ProductDetailContent = (props) => {
                           <DefaultPrimaryButton
                             text="Beli Sekarang"
                             onPress={() => {
-                              if (item.expired) {
+                              if (kadaluwarsa) {
                                 Alert.alert(
                                   "Informasi",
                                   "Sayang sekali produk telah berakhir"
                                 );
                               } else {
-                                requestPurchase();
+                                if (
+                                  moment
+                                    .duration(givenAkhir.diff(current))
+                                    .asDays() < 1
+                                ) {
+                                  setInfoWaktu(true);
+                                } else {
+                                  requestPurchase();
+                                }
                               }
                             }}
                           />
@@ -549,17 +609,25 @@ const ProductDetailContent = (props) => {
                       <DefaultPrimaryButton
                         text="Beli Sekarang"
                         onPress={() => {
-                          if (item.expired) {
+                          if (kadaluwarsa) {
                             Alert.alert(
                               "Informasi",
                               "Sayang sekali produk telah berakhir"
                             );
                           } else {
-                            dispatch(addToCart(item));
-                            dispatch(addCart(item._id))
-                              .then((data) => console.log(data, "<<data"))
-                              .catch((err) => console.log(err, "<<err"));
-                            navigation.navigate("CartScreen");
+                            if (
+                              moment
+                                .duration(givenAkhir.diff(current))
+                                .asDays() < 1
+                            ) {
+                              setInfoWaktu(true);
+                            } else {
+                              dispatch(addToCart(item));
+                              dispatch(addCart(item._id))
+                                .then((data) => console.log(data, "<<data"))
+                                .catch((err) => console.log(err, "<<err"));
+                              navigation.navigate("CartScreen");
+                            }
                           }
                         }}
                       />
@@ -605,6 +673,64 @@ const ProductDetailContent = (props) => {
               </>
             )}
           </View>
+          {infoWaktu && (
+            <DefaultModal>
+              <Center>
+                <Text style={{ textAlign: "center" }}>
+                  Produk ini akan berakhir dalam
+                </Text>
+                <CountDown
+                  key={"Count 1"}
+                  until={moment.duration(givenAkhir?.diff(current)).asSeconds()}
+                  digitStyle={{
+                    backgroundColor: "transparent",
+                  }}
+                  separatorStyle={{
+                    color: "black",
+                  }}
+                  showSeparator={true}
+                  digitTxtStyle={{
+                    color: "black",
+                  }}
+                  size={13}
+                  timeToShow={["H", "M", "S"]}
+                  timeLabels={{ h: null, m: null, s: null }}
+                />
+                <Text style={{ textAlign: "center" }}>
+                  Setelah melewati waktu tersebut, produk ini akan dianggap
+                  hangus. Yakin mau beli ?
+                </Text>
+                <HStack space={4} marginTop={5}>
+                  <Button
+                    onPress={() => {
+                      setInfoWaktu(false);
+                      if (Platform.OS === "android") {
+                        dispatch(addToCart(item));
+                        dispatch(addCart(item._id))
+                          .then((data) => console.log(data, "<<data"))
+                          .catch((err) => console.log(err, "<<err"))
+                          .finally(() => navigation.navigate("CartScreen"));
+                      } else {
+                        requestPurchase();
+                      }
+                    }}
+                    width={100}
+                    colorScheme="amber"
+                  >
+                    Yakin
+                  </Button>
+                  <Button
+                    onPress={() => setInfoWaktu(false)}
+                    width={100}
+                    variant="outline"
+                    colorScheme="dark"
+                  >
+                    Batal
+                  </Button>
+                </HStack>
+              </Center>
+            </DefaultModal>
+          )}
         </ScrollView>
       )}
     </View>

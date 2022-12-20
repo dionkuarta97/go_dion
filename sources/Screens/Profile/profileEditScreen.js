@@ -47,6 +47,7 @@ import { useToast } from "native-base";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { checkNomor, formatEmail } from "../../Services/helper";
 
 const ProfileEditScreen = (props) => {
   const navigation = useNavigation();
@@ -239,81 +240,55 @@ const ProfileEditScreen = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <DefaultAppBar
-        title="Edit Profile"
+        title="Ubah Profil"
         backEnabled={true}
         rightItem={
           <TouchableOpacity
             onPress={() => {
               checkInternet().then((data) => {
                 if (data) {
-                  let data = {
-                    email: email,
-                    full_name: name,
-                    kelas: kelas,
-                    role: role,
-                    phone: phone,
-                    provinsi: province !== null ? province.provinsi : "",
-                    kota: city !== null ? city.kabkota : "",
-                    alamat: address,
-                    provinsi_sekolah:
-                      schoolProvince !== null ? schoolProvince.provinsi : "",
-                    kota_sekolah: schoolCity !== null ? schoolCity.kabkota : "",
-                    sekolah: schoolName,
-                    nama_wali: waliName,
-                    email_wali: waliEmail,
-                    phone_wali: waliPhone,
-                    program_studi: profile.program_studi,
-                  };
-                  if (newPassword !== "") {
-                    data["password"] = newPassword;
-                    data["password_comparison"] = reNewPassword;
-                  }
-                  const bodyParams = JSON.stringify(data);
-                  console.log(bodyParams);
-                  if (waliEmail) {
-                    if (emailValidate(waliEmail) !== null) {
-                      Alert.alert(emailValidate());
-                    }
-                  }
-                  if (newPassword) {
-                    if (passwordValidation(newPassword) !== null) {
-                      Alert.alert("Peringatan", "Format password kamu salah");
-                    }
-                    if (newPassword !== reNewPassword) {
-                      Alert.alert("Peringatan", "Password tidak sama");
-                    }
-                  }
+                  if (
+                    email !== "" &&
+                    name !== "" &&
+                    checkNomor(phone) &&
+                    address !== "" &&
+                    waliName !== "" &&
+                    kelas !== null &&
+                    province !== null &&
+                    city !== null &&
+                    schoolProvince !== null &&
+                    schoolCity !== null &&
+                    schoolName !== null &&
+                    formatEmail(waliEmail) &&
+                    checkNomor(waliPhone)
+                  ) {
+                    let data = {
+                      email: email,
+                      full_name: name,
+                      kelas: kelas,
+                      role: role,
+                      phone: phone,
+                      provinsi: province !== null ? province.provinsi : "",
+                      kota: city !== null ? city.kabkota : "",
+                      alamat: address,
+                      provinsi_sekolah:
+                        schoolProvince !== null ? schoolProvince.provinsi : "",
+                      kota_sekolah:
+                        schoolCity !== null ? schoolCity.kabkota : "",
+                      sekolah: schoolName,
+                      nama_wali: waliName,
+                      email_wali: waliEmail,
+                      phone_wali: waliPhone,
+                      program_studi: profile.program_studi,
+                    };
 
-                  if (city.idkabkota === null) {
-                    Alert.alert(
-                      "Peringatan",
-                      "Alamat kabupaten/kota tidak boleh kosong"
-                    );
-                  } else if (schoolCity.idkabkota === null) {
-                    Alert.alert(
-                      "Peringatan",
-                      "Alamat sekolah tidak boleh kosong"
-                    );
-                  } else if (schoolName === "--PILIH SEKOLAH--") {
-                    Alert.alert(
-                      "Peringatan",
-                      "Nama sekolah tidak boleh kosong"
-                    );
-                  } else if (phoneNumberValidation(phone) !== null) {
-                    Alert.alert("Peringatan", phoneNumberValidation(phone));
-                  } else if (emailValidate(email) !== null) {
-                    Alert.alert("Peringatan", emailValidate(email));
-                  } else if (waliPhone) {
-                    if (phoneNumberValidation(waliPhone) !== null) {
-                      Alert.alert(
-                        "Peringatan",
-                        phoneNumberValidation(waliPhone)
-                      );
-                    } else {
-                      dispatch(getUpdateProfile(bodyParams));
-                    }
-                  } else {
+                    const bodyParams = JSON.stringify(data);
                     dispatch(getUpdateProfile(bodyParams));
+                  } else {
+                    Alert.alert(
+                      "Peringatan",
+                      "Masih ada informasi salah format/atau kosong. Silakan periksa kembali informasi anda"
+                    );
                   }
                 } else {
                   toast.show({
@@ -382,6 +357,8 @@ const ProfileEditScreen = (props) => {
               placeholder="Phone Number"
               keyboardType="numeric"
               value={phone}
+              nomor={true}
+              valid={checkNomor(phone)}
               onChangeText={setPhone}
             />
 
@@ -401,7 +378,7 @@ const ProfileEditScreen = (props) => {
                 onSelect={(val) => {
                   setKelas(val);
                   console.log(val);
-                  setSchoolName("--PILIH SEKOLAH--");
+                  setSchoolName(null);
                   setClassBottomSheetVisible(false);
                 }}
               />
@@ -429,10 +406,7 @@ const ProfileEditScreen = (props) => {
                 onSelect={(value) => {
                   setProvinceBottomSheetVisible(false);
                   setProvince(value);
-                  setCity({
-                    idkabkota: null,
-                    kabkota: "--PILIH KAB/KOTA--",
-                  });
+                  setCity(null);
                 }}
               />
             )}
@@ -485,11 +459,8 @@ const ProfileEditScreen = (props) => {
                 onSelect={(value) => {
                   setSchoolProvinceBottomSheetVisible(false);
                   setSchoolProvince(value);
-                  setSchoolCity({
-                    idkabkota: null,
-                    kabkota: "--PILIH KAB/KOTA--",
-                  });
-                  setSchoolName("--PILIH SEKOLAH--");
+                  setSchoolCity(null);
+                  setSchoolName(null);
                 }}
               />
             )}
@@ -512,7 +483,7 @@ const ProfileEditScreen = (props) => {
                 onSelect={(value) => {
                   setSchoolCityBottomSheetVisible(false);
                   setSchoolCity(value);
-                  setSchoolName("--PILIH SEKOLAH--");
+                  setSchoolName(null);
                 }}
               />
             )}
@@ -556,6 +527,7 @@ const ProfileEditScreen = (props) => {
             </Text>
             <DefaultTextInput
               placeholder="Wali Name"
+              autoCapitalize="words"
               value={waliName}
               onChangeText={setWaliName}
             />
@@ -569,99 +541,11 @@ const ProfileEditScreen = (props) => {
 
             <DefaultTextInput
               placeholder="Wali Email"
+              nomor={true}
+              valid={formatEmail(waliEmail)}
               value={waliEmail}
               onChangeText={setWaliEmail}
             />
-
-            <View
-              style={{
-                borderRadius: 15,
-                borderWidth: 0.5,
-                marginTop: 10,
-                backgroundColor: "white",
-                marginBottom: 70,
-                paddingEnd: 10,
-                paddingStart: 10,
-                paddingBottom: 20,
-                paddingTop: 10,
-                marginTop: 50,
-                elevation: 3,
-              }}
-            >
-              <Text
-                style={{
-                  ...Fonts.black17Bold,
-                  marginTop: Sizes.fixPadding,
-                }}
-              >
-                Ganti Password
-              </Text>
-              <PasswordTextInput
-                placeholder="Masukkan Password Lama"
-                onChangeText={(val) => setOldpassword(val)}
-              />
-              {checkPassword.valid !== true && (
-                <TouchableOpacity
-                  activeOpacity={0.9}
-                  style={styles.button}
-                  onPress={handlePress}
-                >
-                  <Text style={{ ...Fonts.black19Bold }}>Periksa</Text>
-                </TouchableOpacity>
-              )}
-
-              {checkPassword.error === 401 && (
-                <Text style={{ color: "red", marginTop: 20 }}>
-                  Password kamu salah !
-                </Text>
-              )}
-              {checkPassword.error === 500 && (
-                <Text style={{ color: "red", marginTop: 20 }}>
-                  Terjadi kesalahan saat memproses data, Coba Lagi Nanti
-                </Text>
-              )}
-
-              {checkPassword.valid === true && (
-                <>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      width: "100%",
-                      alignItems: "center",
-                    }}
-                  >
-                    <PasswordTextInput
-                      onChangeText={(val) => setNewPassword(val)}
-                      placeholder="Masukkan Password Baru"
-                    />
-                  </View>
-                  {passwordValidation(newPassword) != null && (
-                    <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
-                      {passwordValidation(newPassword)}
-                    </Text>
-                  )}
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      width: "100%",
-                      alignItems: "center",
-                    }}
-                  >
-                    <PasswordTextInput
-                      onChangeText={(val) => setReNewPassword(val)}
-                      placeholder="Ketik Ulang Password baru"
-                    />
-                  </View>
-                  {newPassword !== reNewPassword && (
-                    <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
-                      Password tidak sama
-                    </Text>
-                  )}
-                </>
-              )}
-            </View>
           </View>
         </ScrollView>
       </KeyboardAwareScrollView>

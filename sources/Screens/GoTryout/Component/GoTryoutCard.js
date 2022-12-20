@@ -39,8 +39,8 @@ const GoTryoutCard = (props) => {
   };
   useEffect(() => {
     waktu();
-    setGivenAwal(moment(data.details.tanggal_awal));
-    setGivenAkhir(moment(data.details.tanggal_akhir));
+    setGivenAwal(moment(data.details?.tanggal_awal));
+    setGivenAkhir(moment(data.details?.tanggal_akhir));
     setCurrent(moment().utcOffset(7).startOf("second"));
   }, []);
 
@@ -130,7 +130,7 @@ const GoTryoutCard = (props) => {
                 {moment.duration(givenAwal?.diff(current)).asDays() > 0 ? (
                   <View style={{ maxWidth: 500 }}>
                     <Text style={{ color: Colors.neutralGreenColor }}>
-                      Bisa dikerjakan{" "}
+                      Dimulai{" "}
                       {moment.duration(givenAwal?.diff(current)).asDays() > 1
                         ? "dalam " +
                           Math.floor(

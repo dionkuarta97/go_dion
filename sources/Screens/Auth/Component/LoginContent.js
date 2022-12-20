@@ -25,6 +25,7 @@ import LoadingModal from "../../../Components/Modal/LoadingModal";
 import { useToast } from "native-base";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
+import { formatEmail, passwordValidations } from "../../../Services/helper";
 
 const LoginContent = (props) => {
   const toast = useToast();
@@ -122,10 +123,12 @@ const LoginContent = (props) => {
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
+          value={formatEmail(usernameText)}
           onChangeText={(value) => setUsernameText(value)}
         />
         <PasswordTextInput
           placeholder="Password"
+          value={passwordValidations(passwordText).valid}
           onChangeText={(value) => setPasswordText(value)}
         />
 

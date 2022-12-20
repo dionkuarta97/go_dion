@@ -106,8 +106,6 @@ const CheckoutScreen = () => {
     }
   }, [produkSama]);
 
-  console.log(paymentProcess);
-
   const renderItem = (item) => {
     return (
       <View style={styles.item} key={item._id}>
@@ -343,16 +341,7 @@ const CheckoutScreen = () => {
                 <Text bold>IDR</Text>
               </Box>
               <NumberFormat
-                value={
-                  selectedPaymentMethod === null
-                    ? totalHarga(carts.data)
-                    : selectedPaymentMethod?.service_fee.key === "var"
-                    ? totalHarga(carts.data) +
-                      totalHarga(carts.data) *
-                        (selectedPaymentMethod?.service_fee.value / 100)
-                    : totalHarga(carts.data) +
-                      selectedPaymentMethod?.service_fee.value
-                }
+                value={totalHarga(carts.data)}
                 displayType={"text"}
                 thousandSeparator="."
                 decimalSeparator=","
@@ -382,10 +371,44 @@ const CheckoutScreen = () => {
               <NumberFormat
                 value={
                   paymentList.data
-                    ? paymentList.data[0].payment_detail.gross_amount.split(
-                        "."
-                      )[0]
+                    ? totalHarga(paymentList.data[0]?.products)
                     : 0
+                }
+                displayType={"text"}
+                thousandSeparator="."
+                decimalSeparator=","
+                renderText={(value, props) => (
+                  <>
+                    <Text
+                      style={{
+                        ...Fonts.black17Regular,
+                      }}
+                    >
+                      {value}
+                    </Text>
+                  </>
+                )}
+              />
+            </HStack>
+            <HStack>
+              <Box
+                marginRight={Dimensions.get("screen").width / 7}
+                width={Dimensions.get("screen").width / 2.5}
+              >
+                <Text>Biaya Layanan</Text>
+              </Box>
+              <Box marginRight={"auto"}>
+                <Text bold>IDR</Text>
+              </Box>
+              <NumberFormat
+                value={
+                  selectedPaymentMethod === null
+                    ? 0
+                    : selectedPaymentMethod?.service_fee.key === "var"
+                    ? (totalHarga(carts.data) +
+                        totalHarga(paymentList.data[0]?.products)) *
+                      (selectedPaymentMethod?.service_fee.value / 100)
+                    : selectedPaymentMethod?.service_fee.value
                 }
                 displayType={"text"}
                 thousandSeparator="."
@@ -432,41 +455,7 @@ const CheckoutScreen = () => {
                 />
               </HStack>
             )}
-            <HStack>
-              <Box
-                marginRight={Dimensions.get("screen").width / 7}
-                width={Dimensions.get("screen").width / 2.5}
-              >
-                <Text color={"red.600"}>Penyesuaian fee</Text>
-              </Box>
-              <Box marginRight={"auto"}>
-                <Text color={"red.600"} bold>
-                  IDR
-                </Text>
-              </Box>
-              <NumberFormat
-                value={
-                  paymentList.data !== null
-                    ? Number(
-                        paymentList.data[0]?.payment_detail.gross_amount.split(
-                          "."
-                        )[0]
-                      ) - totalHarga(paymentList.data[0]?.products)
-                    : 0
-                }
-                displayType={"text"}
-                thousandSeparator="."
-                decimalSeparator=","
-                prefix="-"
-                renderText={(value, props) => (
-                  <>
-                    <Text fontSize={16} bold color={"red.600"}>
-                      {value}
-                    </Text>
-                  </>
-                )}
-              />
-            </HStack>
+
             <HStack marginTop={3}>
               <Box
                 marginRight={Dimensions.get("screen").width / 7}
@@ -496,7 +485,8 @@ const CheckoutScreen = () => {
                           totalHarga(paymentList.data[0]?.products))
                       : selectedPaymentMethod?.service_fee.key === "var"
                       ? totalHarga(carts.data) +
-                        totalHarga(carts.data) *
+                        (totalHarga(carts.data) +
+                          totalHarga(paymentList.data[0]?.products)) *
                           (selectedPaymentMethod?.service_fee.value / 100) +
                         Number(
                           paymentList.data[0]?.payment_detail.gross_amount.split(

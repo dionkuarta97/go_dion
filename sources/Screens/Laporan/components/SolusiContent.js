@@ -14,6 +14,7 @@ import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import LihatSoal from "./LihatSoal";
+import moment from "moment";
 
 const options = ["A", "B", "C", "D", "E", "F"];
 
@@ -24,6 +25,8 @@ const SolusiContent = (props) => {
   const navigation = useNavigation();
 
   const scrollRef = useRef();
+  const [givenAkhir, setGivenAkhir] = useState(null);
+  const [current, setCurrent] = useState(null);
 
   console.log(JSON.stringify(solution, null, 2));
 
@@ -32,7 +35,11 @@ const SolusiContent = (props) => {
       y: 0,
       animated: false,
     });
+    setGivenAkhir(moment(solution[index].tanggal_rilis_solusi));
+    setCurrent(moment().utcOffset(7).startOf("second"));
   }, [index]);
+
+  console.log(moment.duration(givenAkhir?.diff(current)).asDays());
 
   const renderOption = (el, idx) => {
     return (
@@ -123,39 +130,93 @@ const SolusiContent = (props) => {
         Solusi
       </Text>
 
-      {solution[index]["type"] === "VIDEO" ? (
-        <Center marginTop={10} marginBottom={100}>
-          <Button
-            shadow={2}
-            bg={"amber.400"}
-            width={Dimensions.get("screen").width / 1.8}
-            onPress={() => {
-              navigation.navigate("TestVideo", {
-                video: solution[index]["video"],
-                from: "Video Solusi",
-              });
-            }}
-          >
-            <Text bold>Lihat Video</Text>
-          </Button>
-        </Center>
-      ) : (
-        <Box
-          bg={"white"}
-          paddingX={5}
-          paddingY={3}
-          borderRadius={10}
-          marginTop={5}
-          shadow={2}
-          marginBottom={50}
-        >
-          <RenderHtml
-            source={{
-              html: `${solution[index]["text"]}`,
-            }}
-            contentWidth={Dimensions.get("screen").width / 1.2}
-          />
-        </Box>
+      {givenAkhir !== null && (
+        <>
+          {moment.duration(givenAkhir?.diff(current)).asDays() < 0 ? (
+            <>
+              {solution[index]["type"] === "VIDEO" ? (
+                <Center marginTop={10} marginBottom={100}>
+                  <Button
+                    shadow={2}
+                    bg={"amber.400"}
+                    width={Dimensions.get("screen").width / 1.8}
+                    onPress={() => {
+                      navigation.navigate("TestVideo", {
+                        video: solution[index]["video"],
+                        from: "Video Solusi",
+                      });
+                    }}
+                  >
+                    <Text bold>Lihat Video</Text>
+                  </Button>
+                </Center>
+              ) : solution[index]["type"] === "TEXT" ? (
+                <Box
+                  bg={"white"}
+                  paddingX={5}
+                  paddingY={3}
+                  borderRadius={10}
+                  marginTop={5}
+                  shadow={2}
+                  marginBottom={50}
+                >
+                  <RenderHtml
+                    source={{
+                      html: `${solution[index]["text"]}`,
+                    }}
+                    contentWidth={Dimensions.get("screen").width / 1.2}
+                  />
+                </Box>
+              ) : (
+                <>
+                  <Center marginTop={10}>
+                    <Button
+                      shadow={2}
+                      bg={"amber.400"}
+                      width={Dimensions.get("screen").width / 1.8}
+                      onPress={() => {
+                        navigation.navigate("TestVideo", {
+                          video: solution[index]["video"],
+                          from: "Video Solusi",
+                        });
+                      }}
+                    >
+                      <Text bold>Lihat Video</Text>
+                    </Button>
+                  </Center>
+                  <Box
+                    bg={"white"}
+                    paddingX={5}
+                    paddingY={3}
+                    borderRadius={10}
+                    marginTop={5}
+                    shadow={2}
+                    marginBottom={50}
+                  >
+                    <RenderHtml
+                      source={{
+                        html: `${solution[index]["text"]}`,
+                      }}
+                      contentWidth={Dimensions.get("screen").width / 1.2}
+                    />
+                  </Box>
+                </>
+              )}
+            </>
+          ) : (
+            <Box
+              bg={"white"}
+              paddingX={5}
+              paddingY={3}
+              borderRadius={10}
+              marginTop={5}
+              shadow={2}
+              marginBottom={50}
+            >
+              <Text>Solusi Belum Tersedia</Text>
+            </Box>
+          )}
+        </>
       )}
     </ScrollView>
   );

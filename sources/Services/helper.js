@@ -20,3 +20,51 @@ export const singkatNama = (str, length) => {
 
   return str;
 };
+
+export const formatEmail = (email) => {
+  const emailReg = new RegExp(
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.){1,2}[a-zA-Z]{2,}))$/
+  );
+  if (emailReg.test(email)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export function passwordValidations(text) {
+  let validasi = {
+    valid: true,
+    error: [],
+  };
+  if (text.length < 8) {
+    validasi.valid = false;
+    validasi.error.push("Password minimal 8 karakter");
+  }
+  if (!text.match(new RegExp("[A-Z]"))) {
+    validasi.valid = false;
+    validasi.error.push("Password harus mengandung huruf besar");
+  }
+  if (!text.match(new RegExp("[a-z]"))) {
+    validasi.valid = false;
+    validasi.error.push("Password harus mengandung huruf kecil");
+  }
+  if (text.search(/[0-9]/) < 0) {
+    validasi.valid = false;
+    validasi.error.push("Password harus mengandung angka");
+  }
+  return validasi;
+}
+
+export function checkNomor(str) {
+  let temp = true;
+  var pattern = /^\d+\.?\d*$/;
+  if (!pattern.test(str)) temp = false;
+  for (const key in str) {
+    if (str[key] === " ") {
+      temp = false;
+      break;
+    }
+  }
+  return temp;
+}

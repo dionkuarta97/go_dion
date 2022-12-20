@@ -32,9 +32,11 @@ import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import CompStyles from "../../Theme/styles/globalStyles";
 import NumberFormat from "react-number-format";
 import EmptyIndicator from "../../Components/Indicator/EmptyIndicator";
-import { useToast } from "native-base";
+import { Box, HStack, useToast } from "native-base";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
+import { singkatNama } from "../../Services/helper";
+import moment from "moment";
 
 const products = [
   { id: 1, title: "a" },
@@ -49,6 +51,7 @@ const ProductCategoryScreen = (props) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
+  const [current, setCurrent] = useState(null);
   const navigation = useNavigation();
   const { allProduk, loading, loadingDua, totalData } = useSelector(
     (state) => state.produkReducer
@@ -61,6 +64,7 @@ const ProductCategoryScreen = (props) => {
   const title = props.route.params.title;
 
   useEffect(() => {
+    setCurrent(moment().utcOffset(7).startOf("second"));
     checkInternet().then((connection) => {
       if (connection) {
         dispatch(getAllProduk(section_id, page));
@@ -84,6 +88,13 @@ const ProductCategoryScreen = (props) => {
       }
     });
   }, []);
+
+  const awal = (tgl) => {
+    return moment.duration(moment(tgl).diff(current)).asDays();
+  };
+  const akhir = (tgl) => {
+    return moment.duration(moment(tgl).diff(current)).asDays();
+  };
   function handleInfinityScroll(e) {
     let mHeight = e.nativeEvent.layoutMeasurement.height;
     let cSize = e.nativeEvent.contentSize.height;
@@ -93,8 +104,6 @@ const ProductCategoryScreen = (props) => {
     }
     return false;
   }
-
-  console.log(JSON.stringify(allProduk, null, 2));
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -181,7 +190,7 @@ const ProductCategoryScreen = (props) => {
                         <View
                           style={{
                             width: Dimensions.get("window").width / 3.5,
-                            height: Dimensions.get("window").height / 7.8,
+                            height: Dimensions.get("window").height / 7,
                             borderRadius: Sizes.fixPadding,
                             marginRight: Sizes.fixPadding,
                             overflow: "hidden",
@@ -222,7 +231,7 @@ const ProductCategoryScreen = (props) => {
                           </Text>
                           <View
                             style={{
-                              height: Dimensions.get("screen").height / 13.5,
+                              height: Dimensions.get("screen").height / 20,
                             }}
                           >
                             <Text
@@ -230,9 +239,145 @@ const ProductCategoryScreen = (props) => {
                                 ...Fonts.black17Regular,
                               }}
                             >
-                              {item.title}
+                              {singkatNama(item.title, 20)}
                             </Text>
                           </View>
+                          {akhir(item.details.tanggal_akhir) > 0 ? (
+                            <>
+                              {awal(item.details.tanggal_awal) > 0 ? (
+                                <>
+                                  {awal(item.details.tanggal_awal) > 7 ? (
+                                    <Text style={{ fontWeight: "bold" }}>
+                                      {moment(item.details.tanggal_awal)
+                                        .locale("id")
+                                        .format("Do MMM YYYY")}{" "}
+                                      -{" "}
+                                      {moment(item.details.tanggal_akhir)
+                                        .locale("id")
+                                        .format("Do MMM YYYY")}
+                                    </Text>
+                                  ) : awal(item.details.tanggal_awal) >= 1 &&
+                                    awal(item.details.tanggal_awal) <= 7 ? (
+                                    <>
+                                      <HStack alignItems={"center"}>
+                                        <Text
+                                          style={{
+                                            fontWeight: "bold",
+                                            marginEnd: "auto",
+                                          }}
+                                        >
+                                          Dimulai dalam
+                                        </Text>
+                                        <Box
+                                          bg={"green.600"}
+                                          borderRadius={10}
+                                          paddingY={0.5}
+                                          paddingX={1.5}
+                                        >
+                                          <Text style={{ color: "white" }}>
+                                            {awal(item.details.tanggal_awal)}{" "}
+                                            hari lagi
+                                          </Text>
+                                        </Box>
+                                      </HStack>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <HStack alignItems={"center"}>
+                                        <Text
+                                          style={{
+                                            fontWeight: "bold",
+                                            marginEnd: "auto",
+                                          }}
+                                        >
+                                          Dimulai
+                                        </Text>
+                                        <Box
+                                          bg={"green.600"}
+                                          borderRadius={10}
+                                          paddingY={0.5}
+                                          paddingX={1.5}
+                                        >
+                                          <Text style={{ color: "white" }}>
+                                            Hari ini
+                                          </Text>
+                                        </Box>
+                                      </HStack>
+                                    </>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  {akhir(item.details.tanggal_akhir) > 7 ? (
+                                    <Text style={{ fontWeight: "bold" }}>
+                                      {moment(item.details.tanggal_akhir)
+                                        .locale("id")
+                                        .format("Do MMM YYYY")}{" "}
+                                      -{" "}
+                                      {moment(item.details.tanggal_akhir)
+                                        .locale("id")
+                                        .format("Do MMM YYYY")}
+                                    </Text>
+                                  ) : akhir(item.details.tanggal_akhir) >= 1 &&
+                                    akhir(item.details.tanggal_akhir) <= 7 ? (
+                                    <>
+                                      <HStack alignItems={"center"}>
+                                        <Text
+                                          style={{
+                                            fontWeight: "bold",
+                                            marginEnd: "auto",
+                                          }}
+                                        >
+                                          Berakhir dalam
+                                        </Text>
+                                        <Box
+                                          bg={"red.600"}
+                                          borderRadius={10}
+                                          paddingY={0.5}
+                                          paddingX={1.5}
+                                        >
+                                          <Text style={{ color: "white" }}>
+                                            {akhir(item.details.tanggal_akhir)}{" "}
+                                            hari lagi
+                                          </Text>
+                                        </Box>
+                                      </HStack>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <HStack alignItems={"center"}>
+                                        <Text
+                                          style={{
+                                            fontWeight: "bold",
+                                            marginEnd: "auto",
+                                          }}
+                                        >
+                                          Berakhir
+                                        </Text>
+                                        <Box
+                                          bg={"red.600"}
+                                          borderRadius={10}
+                                          paddingY={0.5}
+                                          paddingX={1.5}
+                                        >
+                                          <Text style={{ color: "white" }}>
+                                            Hari ini
+                                          </Text>
+                                        </Box>
+                                      </HStack>
+                                    </>
+                                  )}
+                                </>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              <Text style={{ color: Colors.neutralRedColor }}>
+                                Periode Tryout Berakhir
+                              </Text>
+                            </>
+                          )}
+
                           <View
                             style={{
                               flexDirection: "row",

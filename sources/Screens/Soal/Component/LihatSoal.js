@@ -3,7 +3,7 @@ import { Button, Modal, Center, Text, Box, VStack, HStack } from "native-base";
 import { useState } from "react";
 import { Dimensions } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
-
+const options = ["A", "B", "C", "D", "E", "F"];
 const LihatSoal = (props) => {
   const { quiz, idx, setIndex, allJawab, loadingBawah, loading } = props;
   const [showModal, setShowModal] = useState(false);
@@ -94,7 +94,10 @@ const LihatSoal = (props) => {
                         : "success.800"
                     }
                   >
-                    {index + 1}
+                    {index + 1}.{" "}
+                    {allJawab[index].user_answer[0] !== -1
+                      ? options[allJawab[index].user_answer[0]]
+                      : "-"}
                   </Text>
                 </Button>
               )}

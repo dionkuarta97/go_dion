@@ -20,6 +20,7 @@ import { Platform } from "expo-modules-core";
 const LainnyaContent = () => {
   const isLogin = useSelector((state) => state.authReducer.isLogin);
   const navigation = useNavigation();
+  const profile = useSelector((state) => state.profileReducer.profile);
   const OpenWEB = (url) => {
     Linking.openURL(url);
   };
@@ -74,24 +75,28 @@ const LainnyaContent = () => {
             );
           }
         })}
-      {/* {isLogin && renderTile("Score History", "history", () => {
-                if (isLogin) {
-                    navigation.navigate("ScoreListScreen");
-                } else {
-                    Alert.alert(
-                        "Tidak Bisa Masuk",
-                        "Anda belum punya akun untuk mengakses menu ini"
-                    );
-                }
-            })} */}
+      {isLogin &&
+        renderTile("Ganti Password", "vpn-key", () => {
+          if (isLogin) {
+            navigation.navigate("GantiPasswordScreen", {
+              email: profile.email,
+              profile: profile,
+            });
+          } else {
+            Alert.alert(
+              "Tidak Bisa Masuk",
+              "Anda belum punya akun untuk mengakses menu ini"
+            );
+          }
+        })}
       {/* {renderTile("Base Url", "link", () => {
                 navigation.navigate("BaseurlScreen");
             })} */}
 
       {isLogin &&
         renderTile("Keluar", "logout", () => {
-          dispatch(setLoginStatus(false));
           dispatch(setToken(null));
+          dispatch(setLoginStatus(false));
           dispatch(setProfile(null));
           dispatch(
             setLoginData({

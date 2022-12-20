@@ -8,7 +8,7 @@ import {
   Image,
   Center,
 } from "native-base";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyPosition } from "../../../Redux/Leaderboard/leaderboardAction";
 import LeaderboardCard from "./LeaderboardCard";
@@ -17,6 +17,7 @@ import Colors from "../../../Theme/Colors";
 import { useNavigation } from "@react-navigation/native";
 import NoData from "../../../Components/NoData";
 const MyPositionContent = (props) => {
+  const scrollRef = useRef();
   const temp = props.select;
   const { tahun } = props;
   const dispatch = useDispatch();
@@ -26,8 +27,19 @@ const MyPositionContent = (props) => {
   const navigation = useNavigation();
   const [select, setSelect] = useState(temp);
   const [page, setPage] = useState(1);
+  const [ranking, setRanking] = useState(0);
+
+  const cekRank = (myPoisisi, arr) => {
+    for (const key in arr) {
+      if (myPoisisi === arr[key].position) {
+        setRanking(key);
+        break;
+      }
+    }
+  };
   useEffect(() => {
     setPage(1);
+
     dispatch(
       getMyPosition(
         select === "Nasional"
@@ -40,7 +52,20 @@ const MyPositionContent = (props) => {
     );
   }, [select]);
 
-  console.log(JSON.stringify(tahun, null, 2));
+  useEffect(() => {
+    if (myPosition.data !== null) {
+      cekRank(myPosition.data.my_position, myPosition.data.rankings);
+    }
+  }, [myPosition]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      y: ranking === 0 ? 0 : (Dimensions.get("screen").height / 9) * ranking,
+      animated: true,
+    });
+  }, [ranking]);
+
+  console.log(JSON.stringify(myPosition, null, 2));
 
   return (
     <>
@@ -101,7 +126,10 @@ const MyPositionContent = (props) => {
             </View>
           </Center>
         )}
-        <ScrollView marginBottom={Dimensions.get("screen").height / 30}>
+        <ScrollView
+          ref={scrollRef}
+          marginBottom={Dimensions.get("screen").height / 30}
+        >
           {myPosition.data?.rankings.map((el) => (
             <LeaderboardCard
               from={true}

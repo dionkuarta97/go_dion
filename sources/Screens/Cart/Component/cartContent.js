@@ -51,7 +51,7 @@ const CartContent = (props) => {
           }}
         >
           <Text style={{ flex: 1, ...Fonts.black17Regular }}>Jumlah Item</Text>
-          <Text style={{ ...Fonts.black17Regular }}>{cart.length}</Text>
+          <Text style={{ ...Fonts.black17Regular }}>{carts.data?.length}</Text>
         </View>
 
         <View

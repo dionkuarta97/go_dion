@@ -192,7 +192,10 @@ const SoalScreen = ({ route }) => {
                 }
               }
             })
-            .catch(() => navigation.goBack());
+            .catch((err) => {
+              console.log(err);
+              navigation.goBack();
+            });
         }
       }
     }

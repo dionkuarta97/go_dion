@@ -82,9 +82,8 @@ export default App = () => {
     OneSignal.setLogLevel(6, 0);
     OneSignal.setAppId("419576d0-3ce4-47c8-9538-452216cfb157");
     OneSignal.setNotificationOpenedHandler((notification) => {});
-    if (Platform.OS === "ios") {
-      OneSignal.promptForPushNotificationsWithUserResponse((response) => {});
-    }
+
+    OneSignal.promptForPushNotificationsWithUserResponse((response) => {});
   }, []);
 
   return (

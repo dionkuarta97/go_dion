@@ -1,28 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  Alert,
-  Dimensions,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Text, View, Alert, Dimensions } from "react-native";
 import DefaultPrimaryButton from "../../../Components/Button/DefaultPrimaryButton";
 import DefaultTextInput from "../../../Components/CustomTextInput/DefaultTextInput";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
-import Colors from "../../../Theme/Colors";
 import OnTapTextInput from "../../../Components/CustomTextInput/OnTapTextInput";
-import DefaultBottomSheet from "../../../Components/BottomSheet/DefaultBottomSheet";
-import { TextInput } from "react-native-gesture-handler";
-import { FlatGrid } from "react-native-super-grid";
+
 import ProvinceBottomSheet from "../../../Components/BottomSheet/ProvinceBottomSheet";
 import CityBottomSheet from "../../../Components/BottomSheet/CityBottomSheet";
-import RoleBottomSheet from "../../../Components/BottomSheet/RoleBottomSheet";
 import KelasBottomSheet from "../../../Components/BottomSheet/KelasBottomSheet";
 import SchoolBottomSheet from "../../../Components/BottomSheet/SchoolBottomSheet";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,13 +17,13 @@ import LoadingModal from "../../../Components/Modal/LoadingModal";
 import DefaultModal from "../../../Components/Modal/DefaultModal";
 import { getRegister, setRegister } from "../../../Redux/Auth/authActions";
 import { useNavigation } from "@react-navigation/core";
-import { useToast } from "native-base";
+import { Button, useToast } from "native-base";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 import checkInternet from "../../../Services/CheckInternet";
+import { checkNomor, passwordValidations } from "../../../Services/helper";
 
 const RegisterContent = ({ sendedEmail }) => {
   const [classBottomSheetVisible, setClassBottomSheetVisible] = useState(false);
-  const [roleBottomeSheetVisible, setRoleBottomeSheetVisible] = useState(false);
   const [provinceBottomSheetVisible, setProvinceBottomSheetVisible] =
     useState(false);
   const [cityBottomSheetVisible, setCityBottomSheetVisible] = useState(false);
@@ -55,7 +42,7 @@ const RegisterContent = ({ sendedEmail }) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("Siswa");
-  const [kelas, setKelas] = useState("");
+  const [kelas, setKelas] = useState(null);
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
@@ -65,7 +52,7 @@ const RegisterContent = ({ sendedEmail }) => {
 
   const [schoolProvince, setSchoolProvince] = useState(null);
   const [schoolCity, setSchoolCity] = useState(null);
-  const [schoolName, setSchoolName] = useState("");
+  const [schoolName, setSchoolName] = useState(null);
 
   const [waliName, setWaliName] = useState("");
   const [waliPhone, setWaliPhone] = useState("");
@@ -80,13 +67,14 @@ const RegisterContent = ({ sendedEmail }) => {
     dispatch(setRegister({ loading: false, data: null, error: null }));
   }, []);
 
-  console.log(JSON.stringify(register, null, 2));
-  const emailValidate = (text) => {
-    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-    if (reg.test(text) === false) {
-      return "Format Email Anda Salah";
+  const formatEmail = (email) => {
+    const emailReg = new RegExp(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.){1,2}[a-zA-Z]{2,}))$/
+    );
+    if (emailReg.test(email)) {
+      return true;
     } else {
-      return null;
+      return false;
     }
   };
 
@@ -103,25 +91,7 @@ const RegisterContent = ({ sendedEmail }) => {
     }
   }, [register]);
 
-  function passwordValidation(text) {
-    if (text.length < 8)
-      return "Password minimal 8 karakter, mengandung huruf besar, huruf kecil, dan angka";
-    if (!text.match(new RegExp("[A-Z]")))
-      return "Password harus mengandung huruf besar, huruf kecil, dan angka";
-    if (!text.match(new RegExp("[a-z]")))
-      return "Password harus mengandung huruf kecil dan angka";
-    if (text.search(/[0-9]/) < 0) {
-      return "Password harus mengandung angka";
-    }
-    return null;
-  }
-
-  function phoneNumberValidation(int) {
-    if (isNaN(int)) {
-      return "Phone Number Must Numeric";
-    }
-    return null;
-  }
+  console.log(checkNomor(phone));
 
   return (
     <KeyboardAwareScrollView>
@@ -141,11 +111,18 @@ const RegisterContent = ({ sendedEmail }) => {
             onChangeText={setEmail}
           />
 
-          <DefaultTextInput placeholder="Nama Lengkap" onChangeText={setName} />
+          <DefaultTextInput
+            placeholder="Nama Lengkap"
+            value={name}
+            onChangeText={setName}
+          />
 
           <DefaultTextInput
             keyboardType="numeric"
             placeholder="Nomor Telepon/HP"
+            value={phone}
+            nomor={true}
+            valid={checkNomor(phone)}
             onChangeText={setPhone}
           />
 
@@ -164,7 +141,7 @@ const RegisterContent = ({ sendedEmail }) => {
               value={kelas}
               onSelect={(val) => {
                 setKelas(val);
-                setSchoolName("--PILIH SEKOLAH--");
+                setSchoolName(null);
                 setClassBottomSheetVisible(false);
               }}
             />
@@ -173,19 +150,29 @@ const RegisterContent = ({ sendedEmail }) => {
           <PasswordTextInput
             placeholder="Password"
             onChangeText={setPassword}
+            value={passwordValidations(password).valid}
           />
-          {passwordValidation(password) != null && (
-            <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
-              {passwordValidation(password)}
-            </Text>
-          )}
+          {passwordValidations(password).valid === false &&
+            passwordValidations(password).error.map((val, idx) => (
+              <Text
+                key={idx}
+                style={{ fontSize: 12, color: "red", opacity: 0.5 }}
+              >
+                - {val}
+              </Text>
+            ))}
           <PasswordTextInput
             placeholder="Password (Ulangi)"
             onChangeText={setRepeatPassword}
+            value={
+              password !== repeatPassword || repeatPassword === ""
+                ? false
+                : true
+            }
           />
           {password !== repeatPassword && (
             <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
-              Password tidak sama
+              - Password tidak sama
             </Text>
           )}
         </View>
@@ -207,6 +194,7 @@ const RegisterContent = ({ sendedEmail }) => {
               onSelect={(value) => {
                 setProvinceBottomSheetVisible(false);
                 setProvince(value);
+                setCity(null);
               }}
             />
           )}
@@ -239,7 +227,11 @@ const RegisterContent = ({ sendedEmail }) => {
             />
           )}
 
-          <DefaultTextInput placeholder="Alamat" onChangeText={setAddress} />
+          <DefaultTextInput
+            value={address}
+            placeholder="Alamat"
+            onChangeText={setAddress}
+          />
         </View>
 
         <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
@@ -258,6 +250,8 @@ const RegisterContent = ({ sendedEmail }) => {
               onSelect={(value) => {
                 setSchoolProvinceBottomSheetVisible(false);
                 setSchoolProvince(value);
+                setSchoolCity(null);
+                setSchoolName(null);
               }}
             />
           )}
@@ -273,6 +267,7 @@ const RegisterContent = ({ sendedEmail }) => {
                 );
               } else {
                 setSchoolCityBottomSheetVisible(true);
+                setSchoolName(null);
               }
             }}
           />
@@ -342,25 +337,70 @@ const RegisterContent = ({ sendedEmail }) => {
           <DefaultTextInput
             placeholder="Nama Wali"
             autoCapitalize="words"
+            value={waliName}
             onChangeText={setWaliName}
           />
 
           <DefaultTextInput
             placeholder="Nomor Telepon/HP Wali"
             keyboardType="numeric"
+            value={waliPhone}
+            nomor={true}
+            valid={checkNomor(waliPhone)}
             onChangeText={setWaliPhone}
           />
 
           <DefaultTextInput
             placeholder="Email Wali"
+            nomor={true}
+            valid={formatEmail(waliEmail)}
+            value={waliEmail}
             onChangeText={setWaliEmail}
           />
         </View>
 
         <View style={{ flexDirection: "row" }}>
-          <View style={{ flex: 1 }}>
-            <DefaultPrimaryButton
-              text="Daftar"
+          <View style={{ flex: 1, marginTop: 20 }}>
+            <Button
+              bg={
+                email !== "" &&
+                name !== "" &&
+                checkNomor(phone) &&
+                address !== "" &&
+                waliName !== "" &&
+                kelas !== null &&
+                province !== null &&
+                city !== null &&
+                schoolProvince !== null &&
+                schoolCity !== null &&
+                schoolName !== null &&
+                passwordValidations(password).valid &&
+                password === repeatPassword &&
+                formatEmail(waliEmail) &&
+                checkNomor(waliPhone)
+                  ? "amber.400"
+                  : "amber.200"
+              }
+              _pressed={{ bg: "amber.300" }}
+              disabled={
+                email !== "" &&
+                name !== "" &&
+                checkNomor(phone) &&
+                address !== "" &&
+                waliName !== "" &&
+                kelas !== null &&
+                province !== null &&
+                city !== null &&
+                schoolProvince !== null &&
+                schoolCity !== null &&
+                schoolName !== null &&
+                passwordValidations(password).valid &&
+                password === repeatPassword &&
+                formatEmail(waliEmail) &&
+                checkNomor(waliPhone)
+                  ? false
+                  : true
+              }
               onPress={() => {
                 checkInternet().then((connection) => {
                   if (connection) {
@@ -406,7 +446,17 @@ const RegisterContent = ({ sendedEmail }) => {
                   }
                 });
               }}
-            />
+            >
+              <Text
+                style={{
+                  fontSize: 20,
+                  marginVertical: 8,
+                  fontWeight: "bold",
+                }}
+              >
+                Daftar
+              </Text>
+            </Button>
           </View>
         </View>
 
