@@ -29,6 +29,8 @@ import "moment/min/locales";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import CountDown from "react-native-countdown-component";
 
+//di gunakan untuk ios
+
 if (Platform.OS === "ios") {
   ExpoIap = require("expo-in-app-purchases");
 }
@@ -60,7 +62,7 @@ const ProductDetailContent = (props) => {
     android: ["com.example.coins100"],
   });
   const [kadaluwarsa, setKadaluwarsa] = useState(item.expired);
-  console.log(JSON.stringify(item, null, 2));
+
   const firstProces = async () => {
     if (Platform.OS === "ios") {
       await ExpoIap.connectAsync();
@@ -73,12 +75,10 @@ const ProductDetailContent = (props) => {
         if (responseCode === ExpoIap.IAPResponseCode.OK) {
           if (results.length > 0) {
             if (isLogin) {
-              console.log(JSON.stringify(results, null, 2));
-
               let trans = newTransIos.filter((value) =>
                 value.user_id.includes(profile._id)
               );
-              console.log(JSON.stringify(trans, null, 2), "<<<trans");
+
               if (trans.length > 0) {
                 dispatch(getPaymentApple(item))
                   .then(async (json) => {

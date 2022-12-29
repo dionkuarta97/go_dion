@@ -44,6 +44,8 @@ const GoTryoutCard = (props) => {
     setCurrent(moment().utcOffset(7).startOf("second"));
   }, []);
 
+  console.log(JSON.stringify(data, null, 2));
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -99,7 +101,7 @@ const GoTryoutCard = (props) => {
           </View>
         </HStack>
 
-        {complete > 0 && (
+        {complete > 0 && props.status !== "done" && (
           <HStack mt={2} justifyContent={"center"} alignItems={"center"}>
             <Box w="80%" marginRight={"auto"}>
               <Progress
@@ -122,6 +124,11 @@ const GoTryoutCard = (props) => {
               ( {data.includes.length} )
             </Text>
           </HStack>
+        )}
+        {props.status === "done" && (
+          <Text style={{ fontSize: 17, color: "red", fontWeight: "bold" }}>
+            {data.reason ? data.reason : "kosong"}
+          </Text>
         )}
         {props.status !== "done" && (
           <>
