@@ -275,7 +275,9 @@ const ProductCategoryScreen = (props) => {
                                           paddingX={1.5}
                                         >
                                           <Text style={{ color: "white" }}>
-                                            {awal(item.details.tanggal_awal)}{" "}
+                                            {Math.floor(
+                                              awal(item.details.tanggal_awal)
+                                            )}{" "}
                                             hari lagi
                                           </Text>
                                         </Box>
@@ -310,7 +312,7 @@ const ProductCategoryScreen = (props) => {
                                 <>
                                   {akhir(item.details.tanggal_akhir) > 7 ? (
                                     <Text style={{ fontWeight: "bold" }}>
-                                      {moment(item.details.tanggal_akhir)
+                                      {moment(item.details.tanggal_awal)
                                         .locale("id")
                                         .format("Do MMM YYYY")}{" "}
                                       -{" "}
@@ -337,7 +339,9 @@ const ProductCategoryScreen = (props) => {
                                           paddingX={1.5}
                                         >
                                           <Text style={{ color: "white" }}>
-                                            {akhir(item.details.tanggal_akhir)}{" "}
+                                            {Math.floor(
+                                              akhir(item.details.tanggal_akhir)
+                                            )}{" "}
                                             hari lagi
                                           </Text>
                                         </Box>

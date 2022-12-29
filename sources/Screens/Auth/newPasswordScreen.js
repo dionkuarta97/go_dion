@@ -21,6 +21,8 @@ import {
   updatePassword,
 } from "../../Redux/Profile/profileActions";
 import LoadingModal from "../../Components/Modal/LoadingModal";
+import { passwordValidations } from "../../Services/helper";
+import { Center } from "native-base";
 
 const NewPasswordScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -84,17 +86,23 @@ const NewPasswordScreen = ({ route }) => {
           Masukkan password baru kamu
         </Text>
         <PasswordTextInput
-          placeholder="Password Baru"
+          placeholder="Password"
           onChangeText={setPassword}
+          value={passwordValidations(password).valid}
         />
-        {passwordValidation(password) != null && (
-          <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
-            {passwordValidation(password)}
-          </Text>
-        )}
+        {passwordValidations(password).valid === false &&
+          passwordValidations(password).error.map((val, idx) => (
+            <Text
+              key={idx}
+              style={{ fontSize: 12, color: "red", opacity: 0.5 }}
+            >
+              - {val}
+            </Text>
+          ))}
         <PasswordTextInput
           placeholder="Ulang Password Baru"
           onChangeText={setRepeatPassword}
+          value={passwordValidations(repeatPassword).valid}
         />
         {password !== repeatPassword && (
           <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
@@ -105,7 +113,7 @@ const NewPasswordScreen = ({ route }) => {
 
         {password !== "" &&
           password === repeatPassword &&
-          !passwordValidation(password) && (
+          passwordValidations(password).valid && (
             <DefaultPrimaryButton
               text="Kirim"
               onPress={() => {
@@ -153,16 +161,18 @@ const NewPasswordScreen = ({ route }) => {
 
         {error && (
           <DefaultModal>
-            <Text style={{ textAlign: "center" }}>
-              Password gagal diperbarui
-            </Text>
-            <Text>{error}</Text>
+            <Center>
+              <Text style={{ textAlign: "center" }}>
+                Password gagal diperbarui
+              </Text>
+              <Text>{error}</Text>
+            </Center>
             <DefaultPrimaryButton
-              text="Ke Halaman Login"
+              text="Kembali ke Beranda"
               onPress={() => {
                 // todo : replace route
                 // _updatePassword.data = 0
-                navigation.goBack();
+                navigation.navigate("MainScreen");
               }}
             />
           </DefaultModal>

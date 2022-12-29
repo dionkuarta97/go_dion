@@ -406,7 +406,11 @@ const CheckoutScreen = () => {
                     ? 0
                     : selectedPaymentMethod?.service_fee.key === "var"
                     ? (totalHarga(carts.data) +
-                        totalHarga(paymentList.data[0]?.products)) *
+                        totalHarga(
+                          paymentList.data === null
+                            ? []
+                            : paymentList.data[0]?.products
+                        )) *
                       (selectedPaymentMethod?.service_fee.value / 100)
                     : selectedPaymentMethod?.service_fee.value
                 }
