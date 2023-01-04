@@ -290,7 +290,7 @@ const RegisterContent = ({ sendedEmail }) => {
             placeholder="Nama Sekolah"
             value={schoolName}
             onTap={() => {
-              if (kelas === "") {
+              if (kelas === null) {
                 toast.show({
                   title: "Peringatan",
                   status: "danger",
