@@ -81,7 +81,7 @@ const GoTryoutScreen = () => {
               title: `Diikuti Sebagian`,
               tryout: tryout.length,
             },
-            { key: "item3", title: "Sudah Diikuti" },
+            { key: "item3", title: "Selesai" },
           ]}
           screen={[
             <GoTryoutContent status="untouched" />,
