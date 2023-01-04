@@ -155,7 +155,7 @@ const ProductContent = () => {
                 </>
               ) : (
                 <>
-                  {index === 2 && (
+                  {index === 1 && (
                     <>
                       {val.data.length !== 0 ? (
                         <FlatList
