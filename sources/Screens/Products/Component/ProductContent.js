@@ -146,7 +146,7 @@ const ProductContent = () => {
                           contentContainerStyle={styles.contentContainer}
                         />
                       ) : (
-                        <NoData msg="Produk Kosong" />
+                        <NoData msg="Produk Belum Tersedia" />
                       )}
                     </>
                   ) : (
@@ -155,25 +155,24 @@ const ProductContent = () => {
                 </>
               ) : (
                 <>
-                  {val.data[0]?.category !== "busak" &&
-                    val.data.length !== 0 && (
-                      <>
-                        {val.data.length !== 0 ? (
-                          <FlatList
-                            keyExtractor={(item, index) => `${item._id}`}
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            renderItem={({ item }) => (
-                              <ProductCard data={item} section={val.section} />
-                            )}
-                            data={val.data}
-                            contentContainerStyle={styles.contentContainer}
-                          />
-                        ) : (
-                          <NoData msg="Produk Kosong" />
-                        )}
-                      </>
-                    )}
+                  {index === 2 && (
+                    <>
+                      {val.data.length !== 0 ? (
+                        <FlatList
+                          keyExtractor={(item, index) => `${item._id}`}
+                          horizontal={true}
+                          showsHorizontalScrollIndicator={false}
+                          renderItem={({ item }) => (
+                            <ProductCard data={item} section={val.section} />
+                          )}
+                          data={val.data}
+                          contentContainerStyle={styles.contentContainer}
+                        />
+                      ) : (
+                        <NoData msg="Produk Belum Tersedia" />
+                      )}
+                    </>
+                  )}
                 </>
               )}
             </View>
