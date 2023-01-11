@@ -25,6 +25,7 @@ import {
   VictoryLabel,
 } from "victory-native";
 import {
+  generateToken,
   getDetailTryout,
   setDetailTryout,
 } from "../../../Redux/Laporan/LaporanAction";
@@ -54,6 +55,7 @@ export default function ProgressTryoutContent(props) {
   const [data, setData] = useState();
   const [maxima, setMaxima] = useState();
   const token = useSelector((state) => state.authReducer.token);
+  const [tokenOneTime, setTokenOneTime] = useState(null);
   useEffect(() => {
     checkInternet().then((data) => {
       if (data) {
@@ -80,6 +82,7 @@ export default function ProgressTryoutContent(props) {
 
     return () => {
       dispatch(setDetailTryout({ data: null, loading: false, error: null }));
+      setTokenOneTime(null);
     };
   }, []);
 
@@ -118,21 +121,12 @@ export default function ProgressTryoutContent(props) {
   console.log(profile);
 
   useEffect(() => {
-    fetch(
-      `https://apionline.gobimbelonline.net/report/v1/tryouts/${_id}/download`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        if (json.status) {
-          setLink(json.data);
-        }
+    dispatch(generateToken())
+      .then((val) => {
+        setTokenOneTime(val);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
 
@@ -317,7 +311,7 @@ export default function ProgressTryoutContent(props) {
           </>
         )}
         <Center marginBottom={50}>
-          {type !== "uas" && (
+          {type !== "uas" && tokenOneTime !== null && (
             <Button
               bg={"red.500"}
               _pressed={{
@@ -331,7 +325,8 @@ export default function ProgressTryoutContent(props) {
                     _id +
                     "?uid=" +
                     profile._id +
-                    "&mode=html"
+                    "&mode=html&token=" +
+                    tokenOneTime
                 );
               }}
             >

@@ -159,3 +159,27 @@ export function getDetailTryout(payload) {
     }
   };
 }
+
+export const generateToken = () => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      const urlBase = getState().initReducer.baseUrl;
+      fetch(urlBase + "/report/v1/generate/token", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getState().authReducer.token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(JSON.stringify(json, null, 2));
+          if (json.status) {
+            resolve(json.data.token);
+          } else reject(json.message);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  };
+};
