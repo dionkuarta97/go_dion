@@ -222,8 +222,8 @@ const ProfileEditScreen = (props) => {
       });
       navigation.goBack();
     }
-    if (update.error === "Terjadi kesalahan saat memproses data") {
-      Alert.alert("Error", "Terjadi kesalahan saat memproses data", [
+    if (update.error) {
+      Alert.alert("error", update.error, [
         {
           text: "OKE",
           onPress: () => {
