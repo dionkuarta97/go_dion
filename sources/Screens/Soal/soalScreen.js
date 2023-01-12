@@ -26,6 +26,7 @@ import Finish from "./Component/Finish";
 import ErrorScreen from "./Component/ErrorScreen";
 import OneSignal from "react-native-onesignal";
 import ModalValid from "../Home/Component/ModalValid";
+import { getUniqueId } from "react-native-device-info";
 
 const SoalScreen = ({ route }) => {
   const toast = useToast();
@@ -55,15 +56,13 @@ const SoalScreen = ({ route }) => {
   const [loadingBawah, setLoadingBawah] = useState(false);
   const [loadingSoal, setLoadingSoal] = useState(false);
   const [timeOpen, setTimeOpen] = useState(null);
-  const getPlayerId = async () => {
-    const deviceState = await OneSignal.getDeviceState();
-    setPlayerId(deviceState.userId);
-    console.log(JSON.stringify(deviceState.userId, null, 2), "dsadas");
-  };
 
   useEffect(() => {
+    getUniqueId().then((uniqueId) => {
+      setPlayerId(uniqueId);
+    });
     dispatch(getSoal());
-    getPlayerId();
+
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => true
@@ -171,7 +170,6 @@ const SoalScreen = ({ route }) => {
                 } else {
                   let ar = [];
                   for (const key in jwb.jawaban) {
-                    console.log(key);
                     ar.push(jwb.jawaban[key]);
                   }
 
@@ -237,8 +235,6 @@ const SoalScreen = ({ route }) => {
       }
     }
   }, [sesi]);
-
-  console.log(sesi);
 
   useEffect(() => {
     if (finish) {

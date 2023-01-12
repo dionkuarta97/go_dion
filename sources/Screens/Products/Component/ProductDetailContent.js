@@ -29,11 +29,13 @@ import "moment/min/locales";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import CountDown from "react-native-countdown-component";
 
-//di gunakan untuk ios
+/** di gunakan untuk ios */
 
 // if (Platform.OS === "ios") {
 //   ExpoIap = require("expo-in-app-purchases");
 // }
+
+/** sampai sini */
 
 const { width } = Dimensions.get("screen");
 

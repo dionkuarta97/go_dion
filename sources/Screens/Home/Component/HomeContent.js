@@ -30,6 +30,8 @@ import VideoTest from "./VideoTest";
 import OneSignal from "react-native-onesignal";
 import ModalValid from "./ModalValid";
 
+import { getUniqueId } from "react-native-device-info";
+
 const products = [
   { id: 1, title: "a" },
   { id: 2, title: "a" },
@@ -82,45 +84,45 @@ const HomeContent = (props) => {
       }
       if (isLogin && profile) {
         setLoading(true);
-        console.log("masuk sini");
-        const deviceState = await OneSignal.getDeviceState();
-        console.log(JSON.stringify(deviceState.userId, null, 2), "dsadas");
-        firestore()
-          .collection("Jawaban")
-          .where("user_id", "==", profile._id)
-          .get()
-          .then((querySnapshot) => {
-            if (querySnapshot.docs.length > 0) {
-              let temp = querySnapshot.docs[0].data();
-              if (temp.playerId === deviceState.userId) {
-                setValid(true);
-                setFirestoreTime(temp.time);
-                setTimeOpen(temp.firstOpen);
-                setSoal({
-                  title: temp.title,
-                  soalUrl: temp.soalUrl,
-                  blockTime: temp.blockTime,
-                });
-                let now = new Date();
-                let int = (now.getTime() - temp.firstOpen[temp.sesi]) / 1000;
-                if (int < temp.time[temp.sesi]) {
-                  setSesi(temp.sesi);
-                  setWaktu(temp.time[temp.sesi] - int);
+        getUniqueId().then((uniqueId) => {
+          console.log(uniqueId, "<<<<unique id");
+          firestore()
+            .collection("Jawaban")
+            .where("user_id", "==", profile._id)
+            .get()
+            .then((querySnapshot) => {
+              if (querySnapshot.docs.length > 0) {
+                let temp = querySnapshot.docs[0].data();
+                if (temp.playerId === uniqueId) {
+                  setValid(true);
+                  setFirestoreTime(temp.time);
+                  setTimeOpen(temp.firstOpen);
+                  setSoal({
+                    title: temp.title,
+                    soalUrl: temp.soalUrl,
+                    blockTime: temp.blockTime,
+                  });
+                  let now = new Date();
+                  let int = (now.getTime() - temp.firstOpen[temp.sesi]) / 1000;
+                  if (int < temp.time[temp.sesi]) {
+                    setSesi(temp.sesi);
+                    setWaktu(temp.time[temp.sesi] - int);
+                  } else {
+                    setSesi(temp.sesi + 1);
+                  }
+                  setPending(true);
                 } else {
-                  setSesi(temp.sesi + 1);
+                  setValid(false);
                 }
-                setPending(true);
               } else {
-                setValid(false);
+                setFinish(false);
+                setPending(false);
               }
-            } else {
-              setFinish(false);
-              setPending(false);
-            }
-          })
-          .finally(() => {
-            setLoading(false);
-          });
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        });
       }
     }
 
