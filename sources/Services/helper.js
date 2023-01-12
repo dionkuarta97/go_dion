@@ -66,5 +66,7 @@ export function checkNomor(str) {
       break;
     }
   }
+
+  if (str.length < 10) temp = false;
   return temp;
 }

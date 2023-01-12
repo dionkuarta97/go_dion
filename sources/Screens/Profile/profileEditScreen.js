@@ -355,7 +355,7 @@ const ProfileEditScreen = (props) => {
 
             <DefaultTextInput
               placeholder="Phone Number"
-              keyboardType="numeric"
+              keyboardType="phone-pad"
               value={phone}
               nomor={true}
               valid={checkNomor(phone)}
@@ -534,8 +534,10 @@ const ProfileEditScreen = (props) => {
 
             <DefaultTextInput
               placeholder="Wali Phone Number"
-              keyboardType="numeric"
+              keyboardType="phone-pad"
               value={waliPhone}
+              nomor={true}
+              valid={checkNomor(waliPhone)}
               onChangeText={setWaliPhone}
             />
 

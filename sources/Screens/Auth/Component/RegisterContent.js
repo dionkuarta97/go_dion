@@ -92,7 +92,6 @@ const RegisterContent = ({ sendedEmail }) => {
   }, [register]);
 
   console.log(checkNomor(phone));
-
   return (
     <KeyboardAwareScrollView>
       <View
@@ -118,7 +117,7 @@ const RegisterContent = ({ sendedEmail }) => {
           />
 
           <DefaultTextInput
-            keyboardType="numeric"
+            keyboardType="phone-pad"
             placeholder="Nomor Telepon/HP"
             value={phone}
             nomor={true}
@@ -343,7 +342,7 @@ const RegisterContent = ({ sendedEmail }) => {
 
           <DefaultTextInput
             placeholder="Nomor Telepon/HP Wali"
-            keyboardType="numeric"
+            keyboardType="phone-pad"
             value={waliPhone}
             nomor={true}
             valid={checkNomor(waliPhone)}
