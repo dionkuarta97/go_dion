@@ -14,6 +14,7 @@ import {
   Dimensions,
   ScrollView,
   TouchableHighlight,
+  AppState,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -128,6 +129,26 @@ export default function ProgressTryoutContent(props) {
       .catch((err) => {
         console.log(err);
       });
+    const appStateListener = AppState.addEventListener(
+      "change",
+      (nextAppState) => {
+        console.log("Next AppState is: ", nextAppState);
+        if (nextAppState === "active") {
+          dispatch(generateToken())
+            .then((val) => {
+              setTokenOneTime(val);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          setTokenOneTime(null);
+        }
+      }
+    );
+    return () => {
+      appStateListener?.remove();
+    };
   }, []);
 
   return (
