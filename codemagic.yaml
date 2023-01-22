@@ -79,9 +79,9 @@ workflows:
             - name: Build Android Bundle
               working_directory: android
               script: |
-                export NEW_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks=alpha) + 1))
+                NEW_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME") + 1))
                 
-                ./gradlew bundleRelease
+                ./gradlew bundleRelease -PversionCode=$NEW_BUILD_NUMBER -PversionName=0.1.$($NEW_BUILD_NUMBER + 42).1
         artifacts:
             - android/app/build/**/outputs/bundle/**/*.aab
         publishing:
