@@ -73,6 +73,13 @@ workflows:
         cache:
             cache_paths:
                 - $CM_BUILD_DIR/node_modules
+        triggering:
+            events:
+                - push
+            branch_patterns:
+                - pattern: dev-build-android
+                  include: true
+                  source: true
         scripts:
             - name: Install npm dependencies
               script: yarn install
@@ -81,6 +88,8 @@ workflows:
               script: |
                 NEW_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME") + 1))
                 
+                # 42 is required to make build number match current incremented value
+
                 ./gradlew bundleRelease -PversionCode=$NEW_BUILD_NUMBER -PversionName=0.1.$($NEW_BUILD_NUMBER + 42).1
         artifacts:
             - android/app/build/**/outputs/bundle/**/*.aab
@@ -90,4 +99,4 @@ workflows:
                     - leopapilaya@gmail.com
             google_play:
                 credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-                track: alpha
+                track: internal
