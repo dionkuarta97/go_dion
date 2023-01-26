@@ -25,7 +25,7 @@ export const setRedeemCode = (payload) => {
   };
 };
 
-export const getRedeemCode = (payload) => {
+export const RedeemCode = (payload) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       dispatch(setRedeemCode(defaultInitState));
@@ -42,7 +42,35 @@ export const getRedeemCode = (payload) => {
         .then((response) => response.json())
         .then((json) => {
           if (json.status) {
-            dispatch(setRedeemCode(defaultDoneState(json.message)));
+            resolve(json.message);
+          } else {
+            reject(json.message);
+          }
+        })
+        .catch((err) => {
+          reject("Terjadi Kesalahan Pada Server");
+        });
+    });
+  };
+};
+
+export const getRedeemCode = (payload) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      dispatch(setRedeemCode(defaultInitState));
+      const urlBase = getState().initReducer.baseUrl;
+      console.log(urlBase + `/redeems/${payload}/list`);
+      fetch(urlBase + `/masterdata/v1/redeems/${payload}/list`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().authReducer.token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.status) {
+            dispatch(setRedeemCode(defaultDoneState(json.data)));
           } else {
             dispatch(setRedeemCode(defaultFailedState(json.message)));
           }

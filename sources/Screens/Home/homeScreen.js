@@ -113,6 +113,15 @@ const HomeScreen = (props) => {
     };
   }, [show]);
 
+  useEffect(() => {
+    if (redeemCode.data) {
+      navigation.navigate("ProdukRedeem", {
+        data: redeemCode.data,
+        code: code,
+      });
+    }
+  }, [redeemCode]);
+
   const capitalWord = (str) => {
     return str[0].toUpperCase() + str.substring(1);
   };
@@ -238,33 +247,6 @@ const HomeScreen = (props) => {
                             Coba Lagi
                           </Button>
                         </>
-                      ) : redeemCode.data ? (
-                        <>
-                          <Image
-                            style={{
-                              width: Dimensions.get("screen").width / 1.4,
-                              height: Dimensions.get("screen").height / 3.8,
-                            }}
-                            source={success}
-                            resizeMode="contain"
-                          />
-
-                          <Box
-                            style={{
-                              marginTop: 20,
-                              marginBottom: 100,
-                              padding: 20,
-                            }}
-                          >
-                            <Text
-                              style={{
-                                textAlign: "center",
-                              }}
-                            >
-                              {capitalizeFirstLetter(redeemCode.data)}
-                            </Text>
-                          </Box>
-                        </>
                       ) : (
                         <>
                           <Image
@@ -315,13 +297,7 @@ const HomeScreen = (props) => {
                                 if (code === "") {
                                   setErrorCode(true);
                                 } else {
-                                  dispatch(
-                                    getRedeemCode(
-                                      JSON.stringify({
-                                        code: code,
-                                      })
-                                    )
-                                  );
+                                  dispatch(getRedeemCode(code));
                                 }
                                 setBottom(0);
                               }}
