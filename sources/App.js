@@ -58,6 +58,7 @@ import TryoutLeaderScreen from "./Screens/Leaderboard/TryoutLeaderScreen";
 import PositionTryoutScreen from "./Screens/Leaderboard/PositionTryoutScreen";
 import SolusiScreen from "./Screens/Laporan/SolusiScreen";
 import ProductTerbeliScreen from "./Screens/Products/ProductTerbeliScreen";
+import ProdukRedeem from "./Screens/Home/ProdukRedeem";
 
 const Stack = createStackNavigator();
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 20 : StatusBar.currentHeight;
@@ -258,6 +259,7 @@ export default App = () => {
                 component={PositionTryoutScreen}
               />
               <Stack.Screen name="SolusiScreen" component={SolusiScreen} />
+              <Stack.Screen name="ProdukRedeem" component={ProdukRedeem} />
               <Stack.Screen
                 name="ProductTerbeliScreen"
                 component={ProductTerbeliScreen}
