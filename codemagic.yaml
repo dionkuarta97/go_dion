@@ -43,7 +43,7 @@ workflows:
             - android/app/build/**/outputs/bundle/**/*.aab
     rn-android-apk:
         name: RN Android APK
-        instance_type: mac_mini_m1
+        instance_type: mac_pro
         environment:
             android_signing:
                 - go_release_keystore
