@@ -90,7 +90,7 @@ workflows:
                 
                 # 42 is required to make build number match current incremented value
 
-                ./gradlew bundleRelease -PversionCode=$NEW_BUILD_NUMBER -PversionName=0.1.$($NEW_BUILD_NUMBER + 42).1
+                ./gradlew bundleRelease -PversionCode=$NEW_BUILD_NUMBER -PversionName=0.1.$($NEW_BUILD_NUMBER + 42)
         artifacts:
             - android/app/build/**/outputs/bundle/**/*.aab
         publishing:
