@@ -1,5 +1,12 @@
 import React from "react";
-import { Alert, Text, TouchableOpacity, View, Linking } from "react-native";
+import {
+  Alert,
+  Text,
+  TouchableOpacity,
+  View,
+  Linking,
+  Platform,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Sizes from "../../../Theme/Sizes";
 import Colors from "../../../Theme/Colors";
@@ -15,7 +22,6 @@ import { defaultInitState } from "../../../Redux/helper";
 import { setMe, setProfile } from "../../../Redux/Profile/profileActions";
 import VersionText from "../../../Components/VersionText";
 import { Box } from "native-base";
-import { Platform } from "expo-modules-core";
 
 const LainnyaContent = () => {
   const isLogin = useSelector((state) => state.authReducer.isLogin);
