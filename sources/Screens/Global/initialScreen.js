@@ -62,6 +62,7 @@ export default InitialScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
+    console.log("===>>> initial...");
     _loadFontsAsync();
 
     if (login.data !== null) {
