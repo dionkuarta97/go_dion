@@ -31,9 +31,9 @@ import CountDown from "react-native-countdown-component";
 
 /** di gunakan untuk ios */
 
-if (Platform.OS === "ios") {
-  ExpoIap = require("expo-in-app-purchases");
-}
+// if (Platform.OS === "ios") {
+//   ExpoIap = require("expo-in-app-purchases");
+// }
 
 /** sampai sini */
 

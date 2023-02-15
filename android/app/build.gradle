@@ -147,8 +147,8 @@ android {
         applicationId 'com.goonline.app'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 56
-        versionName "0.1.98"
+        versionCode 63
+        versionName "0.1.101"
          missingDimensionStrategy 'store', 'play'
     }
     splits {

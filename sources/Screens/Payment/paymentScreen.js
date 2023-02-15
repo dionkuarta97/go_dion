@@ -168,11 +168,14 @@ const PaymentScreen = (props) => {
                           {getVaNumber(paymentDetail.data.payment_detail)}
                         </Text>
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
+                            toast.show({
+                              description: "Berhasil di Copy",
+                            });
                             Clipboard.setString(
                               getVaNumber(paymentDetail.data.payment_detail)
-                            )
-                          }
+                            );
+                          }}
                         >
                           <View
                             style={{
