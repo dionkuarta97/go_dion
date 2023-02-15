@@ -79,7 +79,6 @@ export function getPaymentProcess(merge) {
           products: getState().cartReducer.carts.data,
         });
 
-        console.log(JSON.stringify(JSON.parse(bodyParams), null, 2));
         const urlBase = getState().initReducer.baseUrl;
         fetch(urlBase + urlPaymentProcess, {
           method: "POST",
@@ -91,6 +90,7 @@ export function getPaymentProcess(merge) {
         })
           .then((response) => response.json())
           .then((json) => {
+            console.log(json);
             if (json.status) {
               dispatch(setPaymentProcess(defaultDoneState(json.data)));
             } else

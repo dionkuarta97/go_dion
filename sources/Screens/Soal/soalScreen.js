@@ -86,12 +86,41 @@ const SoalScreen = ({ route }) => {
           for (let i = 0; i < soal.data.sessions.length; i++) {
             arry.push([]);
             for (let j = 0; j < soal.data.sessions[i].total; j++) {
-              arry[i].push({
-                duration: -1,
-                user_answer: [-1],
-              });
+              if (soal.data.sessions[i].questions[j].tipe === "PBS") {
+                arry[i].push({
+                  duration: -1,
+                  user_answer: [-1],
+                });
+              } else if (soal.data.sessions[i].questions[j].tipe === "PBK") {
+                let tempJawab = [];
+                for (
+                  let k = 0;
+                  k < soal.data.sessions[i].questions[j].jawaban.length;
+                  k++
+                ) {
+                  tempJawab.push(-1);
+                }
+                arry[i].push({
+                  duration: -1,
+                  user_answer: tempJawab,
+                });
+              } else if (soal.data.sessions[i].questions[j].tipe === "PBT") {
+                let tempJawab = [];
+                for (
+                  let k = 0;
+                  k < soal.data.sessions[i].questions[j].table.length;
+                  k++
+                ) {
+                  tempJawab.push(-1);
+                }
+                arry[i].push({
+                  duration: -1,
+                  user_answer: tempJawab,
+                });
+              }
             }
           }
+          console.log(JSON.stringify(arry, null, 2));
           dispatch(setJawabanNon(arry));
           setWaktuUjian(temp);
           setLoading(false);
@@ -108,14 +137,54 @@ const SoalScreen = ({ route }) => {
                 arry[`${i}`] = [];
                 temp.push([]);
                 for (let j = 0; j < soal.data.sessions[i].total; j++) {
-                  arry[`${i}`].push({
-                    duration: -1,
-                    user_answer: [-1],
-                  });
-                  temp[i].push({
-                    duration: -1,
-                    user_answer: [-1],
-                  });
+                  if (soal.data.sessions[i].questions[j].tipe === "PBS") {
+                    arry[`${i}`].push({
+                      duration: -1,
+                      user_answer: [-1],
+                    });
+                    temp[i].push({
+                      duration: -1,
+                      user_answer: [-1],
+                    });
+                  } else if (
+                    soal.data.sessions[i].questions[j].tipe === "PBK"
+                  ) {
+                    let tempJawab = [];
+                    for (
+                      let k = 0;
+                      k < soal.data.sessions[i].questions[j].jawaban.length;
+                      k++
+                    ) {
+                      tempJawab.push(-1);
+                    }
+                    arry[`${i}`].push({
+                      duration: -1,
+                      user_answer: tempJawab,
+                    });
+                    temp[i].push({
+                      duration: -1,
+                      user_answer: tempJawab,
+                    });
+                  } else if (
+                    soal.data.sessions[i].questions[j].tipe === "PBT"
+                  ) {
+                    let tempJawab = [];
+                    for (
+                      let k = 0;
+                      k < soal.data.sessions[i].questions[j].table.length;
+                      k++
+                    ) {
+                      tempJawab.push(-1);
+                    }
+                    arry[`${i}`].push({
+                      duration: -1,
+                      user_answer: tempJawab,
+                    });
+                    temp[i].push({
+                      duration: -1,
+                      user_answer: tempJawab,
+                    });
+                  }
                 }
               }
               let time = [];
