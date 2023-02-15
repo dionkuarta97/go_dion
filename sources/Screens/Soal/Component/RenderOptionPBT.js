@@ -48,14 +48,25 @@ const RenderOptionPBT = (props) => {
           }}
         >
           {el.jawaban.map((el, index) => (
-            <Button
-              key={index + "soal" + idx}
-              bg={
-                jawab.user_answer[idx] === index + 1 ? "amber.400" : "gray.400"
+            <TouchableOpacity
+              disabled={
+                loading || loadingBawah
+                  ? true
+                  : jawab.user_answer[idx] === index + 1
+                  ? true
+                  : false
               }
-              _pressed={{ bg: "amber.300" }}
-              mt={2}
-              mb={2}
+              style={{
+                borderWidth: 0.5,
+                borderRadius: 8,
+                paddingVertical: 2,
+                marginTop: 10,
+                borderColor:
+                  jawab.user_answer[idx] === index + 1 ? "#d97706" : "#57534e",
+                backgroundColor:
+                  jawab.user_answer[idx] === index + 1 ? "#f59e0b" : "#78716c",
+              }}
+              key={index + "soal" + idx}
               onPress={() => {
                 let temp = jawab.user_answer;
                 temp[idx] = index + 1;
@@ -71,16 +82,11 @@ const RenderOptionPBT = (props) => {
                   user_answer: temp,
                 });
               }}
-              disabled={
-                loading || loadingBawah
-                  ? true
-                  : jawab.user_answer[idx] === index + 1
-                  ? true
-                  : false
-              }
             >
-              {el.pilihan}
-            </Button>
+              <Text marginX={2} color={"white"}>
+                {el.pilihan}
+              </Text>
+            </TouchableOpacity>
           ))}
         </Stack>
       </Box>
