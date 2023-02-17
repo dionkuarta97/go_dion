@@ -306,7 +306,7 @@ export default function ProgressTryoutContent(props) {
                           borderRadius={5}
                         >
                           <Text bold color={"light.50"}>
-                            {el.score === null ? 0 : el.score}
+                            {el.score === null ? 0 : el.score.toFixed(1)}
                           </Text>
                         </Box>
                       </HStack>

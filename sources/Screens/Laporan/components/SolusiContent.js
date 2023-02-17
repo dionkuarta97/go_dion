@@ -28,8 +28,6 @@ const SolusiContent = (props) => {
   const [givenAkhir, setGivenAkhir] = useState(null);
   const [current, setCurrent] = useState(null);
 
-  console.log(JSON.stringify(solution, null, 2));
-
   useEffect(() => {
     scrollRef.current?.scrollTo({
       y: 0,
@@ -38,8 +36,6 @@ const SolusiContent = (props) => {
     setGivenAkhir(moment(solution[index].tanggal_rilis_solusi));
     setCurrent(moment().utcOffset(7).startOf("second"));
   }, [index]);
-
-  console.log(moment.duration(givenAkhir?.diff(current)).asDays());
 
   const renderOption = (el, idx) => {
     return (

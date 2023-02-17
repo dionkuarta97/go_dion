@@ -48,6 +48,7 @@ const RenderSoal = (props) => {
                 {pertanyaan.jawaban.map((el, idx) => (
                   <RenderOptionPBS
                     nomor={nomor}
+                    cek={allJawab[nomor].user_answer[idx] === -1 ? false : true}
                     key={idx}
                     loading={loading}
                     el={el}
@@ -65,10 +66,11 @@ const RenderSoal = (props) => {
                 {pertanyaan.jawaban.map((el, idx) => (
                   <RenderOptionPBK
                     nomor={nomor}
-                    key={idx}
+                    key={idx + "dasd" + nomor}
                     loading={loading}
                     el={el}
                     idx={idx}
+                    cek={allJawab[nomor].user_answer[idx] === 1 ? true : false}
                     jawab={jawab}
                     allJawab={allJawab}
                     pilihan={pilihan ? pilihan : null}
