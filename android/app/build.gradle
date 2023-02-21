@@ -144,7 +144,6 @@ def getMyVersionName = { ->
     return project.hasProperty('versionName') ? versionName : "0.1.0"
 }
 
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
