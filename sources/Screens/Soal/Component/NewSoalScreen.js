@@ -91,6 +91,7 @@ const NewSoalScreen = (props) => {
               blockTime={blockTime}
               loading={loading}
               loadingBawah={loadingBawah}
+              tipe={soal.data.sessions[sesi].questions[nomor].tipe}
             />
           </View>
           <ScrollView ref={scrollRef} paddingX={3} flex={1} mt={5}>

@@ -57,6 +57,7 @@ export default function ProgressTryoutContent(props) {
   const [maxima, setMaxima] = useState();
   const token = useSelector((state) => state.authReducer.token);
   const [tokenOneTime, setTokenOneTime] = useState(null);
+  console.log(_id);
   useEffect(() => {
     checkInternet().then((data) => {
       if (data) {
