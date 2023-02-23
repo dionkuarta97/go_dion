@@ -15,6 +15,9 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import LihatSoal from "./LihatSoal";
 import moment from "moment";
+import SolusiPBS from "./SolusiPBS";
+import SolusiPBK from "./SolusiPBK";
+import SolusiPBT from "./SolusiPBT";
 
 const options = ["A", "B", "C", "D", "E", "F"];
 
@@ -28,8 +31,6 @@ const SolusiContent = (props) => {
   const [givenAkhir, setGivenAkhir] = useState(null);
   const [current, setCurrent] = useState(null);
 
-  console.log(JSON.stringify(solution, null, 2));
-
   useEffect(() => {
     scrollRef.current?.scrollTo({
       y: 0,
@@ -38,50 +39,6 @@ const SolusiContent = (props) => {
     setGivenAkhir(moment(solution[index].tanggal_rilis_solusi));
     setCurrent(moment().utcOffset(7).startOf("second"));
   }, [index]);
-
-  console.log(moment.duration(givenAkhir?.diff(current)).asDays());
-
-  const renderOption = (el, idx) => {
-    return (
-      <View key={idx}>
-        <HStack space={4} alignItems="center">
-          <Text>{options[idx]}</Text>
-          <Box
-            borderWidth={2}
-            width={Dimensions.get("screen").width / 1.5}
-            borderColor={
-              answer[index]["userAnswer"][0] === options[idx]
-                ? "#7DC579"
-                : answer[index]["keyAnswer"][0] === options[idx]
-                ? "#7DC579"
-                : "gray.300"
-            }
-            borderRadius={10}
-            backgroundColor={
-              answer[index]["userAnswer"][0] === options[idx] ? "#E1FFDF" : null
-            }
-            padding={2}
-            marginBottom={2}
-          >
-            <RenderHtml
-              source={{
-                html: `${el.pilihan}`,
-              }}
-              contentWidth={Dimensions.get("screen").width / 1.8}
-            />
-          </Box>
-          {answer[index]["keyAnswer"][0] === options[idx] && (
-            <AntDesign name="checkcircleo" size={24} color="green" />
-          )}
-          {answer[index]["userAnswer"][0] === options[idx] &&
-            answer[index]["userAnswer"][0] !==
-              answer[index]["keyAnswer"][0] && (
-              <AntDesign name="closecircleo" size={24} color="red" />
-            )}
-        </HStack>
-      </View>
-    );
-  };
 
   return (
     <ScrollView ref={scrollRef} padding={15}>
@@ -123,7 +80,38 @@ const SolusiContent = (props) => {
         marginTop={5}
         shadow={2}
       >
-        {quiz_options[index].map((el, idx) => renderOption(el, idx))}
+        {quiz_options[index].map((el, idx) => (
+          <>
+            {answer[index].type === "PBS" ? (
+              <SolusiPBS
+                answer={answer}
+                index={index}
+                el={el}
+                options={options}
+                key={idx}
+                idx={idx}
+              />
+            ) : answer[index].type === "PBK" ? (
+              <SolusiPBK
+                answer={answer}
+                index={index}
+                el={el}
+                options={options}
+                key={idx}
+                idx={idx}
+              />
+            ) : (
+              <SolusiPBT
+                answer={answer}
+                index={index}
+                el={el}
+                options={options}
+                key={idx}
+                idx={idx}
+              />
+            )}
+          </>
+        ))}
       </Box>
 
       <Text bold fontSize={18} marginTop={5}>

@@ -57,6 +57,7 @@ export default function ProgressTryoutContent(props) {
   const [maxima, setMaxima] = useState();
   const token = useSelector((state) => state.authReducer.token);
   const [tokenOneTime, setTokenOneTime] = useState(null);
+  console.log(_id);
   useEffect(() => {
     checkInternet().then((data) => {
       if (data) {
@@ -306,7 +307,7 @@ export default function ProgressTryoutContent(props) {
                           borderRadius={5}
                         >
                           <Text bold color={"light.50"}>
-                            {el.score === null ? 0 : el.score}
+                            {el.score === null ? 0 : el.score.toFixed(1)}
                           </Text>
                         </Box>
                       </HStack>

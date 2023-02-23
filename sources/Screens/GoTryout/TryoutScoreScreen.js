@@ -139,7 +139,7 @@ const TryoutScoreScreen = (props) => {
                   ...Fonts.black19Regular,
                 }}
               >
-                {scores.total_session_final_score}
+                {scores.total_session_final_score.toFixed(2)}
               </Text>
             </View>
 
@@ -212,7 +212,7 @@ const TryoutScoreScreen = (props) => {
                             fontSize: 28,
                           }}
                         >
-                          {el.final_score}
+                          {el.final_score.toFixed(2)}
                         </Text>
                       </View>
                     </>
@@ -323,7 +323,9 @@ const TryoutScoreScreen = (props) => {
                           ...Fonts.black19Regular,
                         }}
                       >
-                        {score.data?.sessions.total_session_final_score}
+                        {score.data?.sessions.total_session_final_score.toFixed(
+                          2
+                        )}
                       </Text>
                     </View>
 
@@ -406,7 +408,7 @@ const TryoutScoreScreen = (props) => {
                                     fontSize: 28,
                                   }}
                                 >
-                                  {el.final_score}
+                                  {el.final_score.toFixed(2)}
                                 </Text>
                               </View>
                             </>

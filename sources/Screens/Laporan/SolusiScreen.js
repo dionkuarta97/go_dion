@@ -10,7 +10,7 @@ const SolusiScreen = (props) => {
   const { solution, quiz, answer, quiz_options, title } = route.params;
   const [index, setIndex] = useState(0);
   const navigation = useNavigation();
-  console.log(solution.length);
+  console.log(JSON.stringify(answer, null, 2));
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
