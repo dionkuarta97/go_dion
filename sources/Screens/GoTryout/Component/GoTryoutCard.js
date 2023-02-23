@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../../../Theme/Colors";
 import Fonts from "../../../Theme/Fonts";
@@ -89,7 +89,14 @@ const GoTryoutCard = (props) => {
         <HStack>
           <VStack marginRight={"auto"}>
             <Text style={{ ...Fonts.black17Bold }}>{data.title}</Text>
-            <Text style={{ ...Fonts.black15Regular }}>{data.desc}</Text>
+            <Text
+              style={{
+                ...Fonts.black15Regular,
+                maxWidth: Dimensions.get("screen").width / 1.3,
+              }}
+            >
+              {data.desc}
+            </Text>
             <Text style={{ ...Fonts.black15Regular }}>{data.level}</Text>
             <Text style={{ ...Fonts.black17Bold }}>
               TPS ( {soal} Soal -{" "}

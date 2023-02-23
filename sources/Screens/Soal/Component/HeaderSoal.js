@@ -15,6 +15,7 @@ const HeaderSoal = (props) => {
   const [temp, setTemp] = useState(false);
   const {
     config,
+    tipe,
     title,
     mapel,
     sesi,
@@ -90,6 +91,7 @@ const HeaderSoal = (props) => {
         </Text>
         <LihatSoal
           quiz={pertanyaan}
+          tipe={tipe}
           allJawab={allJawab[sesi]}
           idx={nomor}
           setIndex={setNomor}
