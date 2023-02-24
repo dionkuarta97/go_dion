@@ -77,7 +77,7 @@ workflows:
             events:
                 - push
             branch_patterns:
-                - pattern: dev-build-android
+                - pattern: dev-build-android-x
                   include: true
                   source: true
         scripts:
@@ -102,4 +102,4 @@ workflows:
                     - leopapilaya@gmail.com
             google_play:
                 credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-                track: internal
+                track: alpha
