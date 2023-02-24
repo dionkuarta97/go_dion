@@ -2,6 +2,7 @@ import "react-native-gesture-handler";
 import { registerRootComponent } from "expo";
 
 import App from "./sources/App";
+import * as Sentry from "@sentry/react-native";
 Sentry.init({
   dsn: "https://fb1b8d1e838048b9bcccc6a8c533ea51@o4504623697100800.ingest.sentry.io/4504623702540288",
   // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
