@@ -92,7 +92,7 @@ workflows:
 
                 #./gradlew bundleRelease -PversionCode=$NEW_BUILD_NUMBER -PversionName=0.1.$($NEW_BUILD_NUMBER + 42)
 
-                ./gradlew bundleRelease -PversionCode=$NEW_BUILD_NUMBER -PversionName=0.1.103.y
+                ./gradlew bundleRelease -PversionCode=$NEW_BUILD_NUMBER -PversionName=0.1.103.z
                 
         artifacts:
             - android/app/build/**/outputs/bundle/**/*.aab
