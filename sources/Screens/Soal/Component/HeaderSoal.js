@@ -9,6 +9,7 @@ import {
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import LihatSoal from "./LihatSoal";
+import { Dimensions } from "react-native";
 import WaktuSoal from "./WaktuSoal";
 
 const HeaderSoal = (props) => {
@@ -57,7 +58,12 @@ const HeaderSoal = (props) => {
         borderRadius={5}
       >
         <VStack marginRight={"auto"}>
-          <Heading>{mapel}</Heading>
+          <Text
+            fontWeight={"semibold"}
+            fontSize={Dimensions.get("screen").width / 18}
+          >
+            {mapel}
+          </Text>
           <Text color={"gray.500"} fontSize={16}>
             Sesi {sesi + 1} / {totalSesi}
           </Text>

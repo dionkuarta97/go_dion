@@ -428,6 +428,11 @@ const SoalScreen = ({ route }) => {
                     sesi={sesi}
                     setIndex={setNomor}
                     total={soal.data.sessions[sesi].total}
+                    ttl={
+                      sesi > 0
+                        ? soal.data.sessions[sesi - 1].total
+                        : soal.data.sessions[sesi].total
+                    }
                     delay={delay}
                     setDelay={setDelay}
                     sisaTime={sisaTime}

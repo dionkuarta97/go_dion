@@ -11,6 +11,7 @@ const TombolBawah = (props) => {
     index,
     setIndex,
     total,
+    ttl,
     blockTime,
     setSesi,
     sesi,
@@ -90,10 +91,11 @@ const TombolBawah = (props) => {
               opacity={loadingSoal ? 0.3 : 1}
               width={Dimensions.get("screen").width / 3}
               onPress={() => {
+                console.log(total);
                 setSesi(sesi - 1);
                 setWaktuUjian(sisaTime);
                 setDelay(true);
-                setIndex(total - 1);
+                setIndex(ttl - 1);
               }}
             >
               <Text bold>Sebelumnya</Text>

@@ -18,12 +18,21 @@ import moment from "moment";
 import SolusiPBS from "./SolusiPBS";
 import SolusiPBK from "./SolusiPBK";
 import SolusiPBT from "./SolusiPBT";
+import LoadingIndicator from "../../../Components/Indicator/LoadingIndicator";
 
 const options = ["A", "B", "C", "D", "E", "F"];
 
 const SolusiContent = (props) => {
-  const { solution, quiz, answer, index, quiz_options, title, setIndex } =
-    props;
+  const {
+    solution,
+    quiz,
+    answer,
+    index,
+    quiz_options,
+    title,
+    setIndex,
+    loading,
+  } = props;
 
   const navigation = useNavigation();
 
@@ -39,6 +48,8 @@ const SolusiContent = (props) => {
     setGivenAkhir(moment(solution[index].tanggal_rilis_solusi));
     setCurrent(moment().utcOffset(7).startOf("second"));
   }, [index]);
+
+  console.log(index);
 
   return (
     <ScrollView ref={scrollRef} padding={15}>
@@ -80,38 +91,44 @@ const SolusiContent = (props) => {
         marginTop={5}
         shadow={2}
       >
-        {quiz_options[index].map((el, idx) => (
+        {!loading ? (
           <>
-            {answer[index].type === "PBS" ? (
-              <SolusiPBS
-                answer={answer}
-                index={index}
-                el={el}
-                options={options}
-                key={idx}
-                idx={idx}
-              />
-            ) : answer[index].type === "PBK" ? (
-              <SolusiPBK
-                answer={answer}
-                index={index}
-                el={el}
-                options={options}
-                key={idx}
-                idx={idx}
-              />
-            ) : (
-              <SolusiPBT
-                answer={answer}
-                index={index}
-                el={el}
-                options={options}
-                key={idx}
-                idx={idx}
-              />
-            )}
+            {quiz_options[index].map((el, idx) => (
+              <>
+                {answer[index].type === "PBS" ? (
+                  <SolusiPBS
+                    answer={answer}
+                    index={index}
+                    el={el}
+                    options={options}
+                    key={idx}
+                    idx={idx}
+                  />
+                ) : answer[index].type === "PBK" ? (
+                  <SolusiPBK
+                    answer={answer}
+                    index={index}
+                    el={el}
+                    options={options}
+                    key={idx}
+                    idx={idx}
+                  />
+                ) : (
+                  <SolusiPBT
+                    answer={answer}
+                    index={index}
+                    el={el}
+                    options={options}
+                    key={idx}
+                    idx={idx}
+                  />
+                )}
+              </>
+            ))}
           </>
-        ))}
+        ) : (
+          <LoadingIndicator />
+        )}
       </Box>
 
       <Text bold fontSize={18} marginTop={5}>
@@ -163,6 +180,7 @@ const SolusiContent = (props) => {
                       bg={"amber.400"}
                       width={Dimensions.get("screen").width / 1.8}
                       onPress={() => {
+                        console.log(solution[index]["video"]);
                         navigation.navigate("TestVideo", {
                           video: solution[index]["video"],
                           from: "Video Solusi",
