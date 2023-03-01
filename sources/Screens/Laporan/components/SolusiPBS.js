@@ -14,7 +14,7 @@ const SolusiPBS = ({ el, idx, answer, index, options }) => {
           borderColor={
             options[answer[index]["userAnswer"][0]] === options[idx]
               ? "#7DC579"
-              : answer[index]["keyAnswer"][0] === options[idx]
+              : options[answer[index]["keyAnswer"][0]] === options[idx]
               ? "#7DC579"
               : "gray.300"
           }
@@ -34,12 +34,12 @@ const SolusiPBS = ({ el, idx, answer, index, options }) => {
             contentWidth={Dimensions.get("screen").width / 1.8}
           />
         </Box>
-        {answer[index]["keyAnswer"][0] === options[idx] && (
+        {options[answer[index]["keyAnswer"][0]] === options[idx] && (
           <AntDesign name="checkcircleo" size={24} color="green" />
         )}
         {options[answer[index]["userAnswer"][0]] === options[idx] &&
           options[answer[index]["userAnswer"][0]] !==
-            answer[index]["keyAnswer"][0] && (
+            options[answer[index]["keyAnswer"][0]] && (
             <AntDesign name="closecircleo" size={24} color="red" />
           )}
       </HStack>
