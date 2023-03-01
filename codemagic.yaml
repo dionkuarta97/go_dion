@@ -92,7 +92,7 @@ workflows:
 
                 #./gradlew bundleRelease -PversionCode=$NEW_BUILD_NUMBER -PversionName=0.1.$($NEW_BUILD_NUMBER + 42)
 
-                ./gradlew bundleRelease -PversionCode=$NEW_BUILD_NUMBER -PversionName=0.1.103.z
+                ./gradlew bundleRelease -PversionCode=$NEW_BUILD_NUMBER -PversionName=0.1.104
                 
         artifacts:
             - android/app/build/**/outputs/bundle/**/*.aab
@@ -102,4 +102,4 @@ workflows:
                     - leopapilaya@gmail.com
             google_play:
                 credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-                track: alpha
+                track: internal
