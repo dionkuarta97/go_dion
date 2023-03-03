@@ -62,9 +62,9 @@ const RenderOptionPBT = (props) => {
                 paddingVertical: 2,
                 marginTop: 10,
                 borderColor:
-                  jawab.user_answer[idx] === index + 1 ? "#d97706" : "#57534e",
+                  jawab.user_answer[idx] === index + 1 ? "#90b98d" : "#e5e5e6",
                 backgroundColor:
-                  jawab.user_answer[idx] === index + 1 ? "#f59e0b" : "#78716c",
+                  jawab.user_answer[idx] === index + 1 ? "#E1FEDF" : "white",
               }}
               key={index + "soal" + idx}
               onPress={() => {
@@ -83,7 +83,7 @@ const RenderOptionPBT = (props) => {
                 });
               }}
             >
-              <Text marginX={2} color={"white"}>
+              <Text marginX={2} color={"black"}>
                 {el.pilihan}
               </Text>
             </TouchableOpacity>

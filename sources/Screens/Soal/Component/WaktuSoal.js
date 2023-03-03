@@ -13,6 +13,8 @@ const WaktuSoal = (props) => {
     sesi,
     setNomor,
   } = props;
+
+  console.log(waktu);
   return (
     <>
       <CountDown

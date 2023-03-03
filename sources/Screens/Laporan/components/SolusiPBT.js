@@ -1,8 +1,8 @@
-import { Box, HStack, Stack, Text } from "native-base";
+import { Box, HStack, Stack, Text, View } from "native-base";
 import React from "react";
 import { Dimensions } from "react-native";
 import RenderHTML from "react-native-render-html";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 const SolusiPBT = (props) => {
   const { el, idx, answer, index, options } = props;
 
@@ -37,25 +37,79 @@ const SolusiPBT = (props) => {
               paddingY={0.5}
               paddingX={1}
               borderRadius={8}
+              borderWidth={2}
+              style={{
+                borderColor:
+                  answer[index].userAnswer[idx] === inx + 1
+                    ? "#90b98d"
+                    : "#e5e5e6",
+              }}
               bg={
-                answer[index].userAnswer[idx] === inx + 1
-                  ? "amber.600"
-                  : answer[index].keyAnswer[idx] === inx + 1 &&
-                    answer[index].userAnswer[idx] !== inx + 1
-                  ? "green.600"
-                  : "#78716c"
+                answer[index].userAnswer[idx] === inx + 1 ? "#E1FEDF" : "white"
               }
             >
-              <Text color={"white"}>{ele.pilihan}</Text>
+              {/* {answer[index].userAnswer[idx] ===
+                answer[index].keyAnswer[idx]  && (
+                <View
+                  style={{
+                    position: "absolute",
+                    width: 18,
+                    height: 18,
+                    backgroundColor: "green",
+                    top: -10,
+                    zIndex: 100,
+                    right: -9,
+                    borderRadius: 13,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <MaterialIcons name="check" size={13} color="white" />
+                </View>
+              )} */}
+              {answer[index].userAnswer[idx] !== answer[index].keyAnswer[idx] &&
+                answer[index].userAnswer[idx] === inx + 1 && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      width: 18,
+                      height: 18,
+                      backgroundColor: "#e11d48",
+                      top: -10,
+                      zIndex: 100,
+                      right: -9,
+                      borderRadius: 13,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <MaterialIcons name="close" size={13} color="white" />
+                  </View>
+                )}
+              {answer[index].keyAnswer[idx] === inx + 1 && (
+                <View
+                  style={{
+                    position: "absolute",
+                    width: 18,
+                    height: 18,
+                    backgroundColor: "green",
+                    top: -10,
+                    zIndex: 100,
+                    right: -9,
+                    borderRadius: 13,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <MaterialIcons name="check" size={13} color="white" />
+                </View>
+              )}
+
+              <Text color={"black"}>{ele.pilihan}</Text>
             </Box>
           ))}
         </Stack>
       </Box>
-      {answer[index].userAnswer[idx] === answer[index].keyAnswer[idx] ? (
-        <AntDesign name="checkcircleo" size={24} color="green" />
-      ) : (
-        <AntDesign name="closecircleo" size={24} color="red" />
-      )}
     </HStack>
   );
 };

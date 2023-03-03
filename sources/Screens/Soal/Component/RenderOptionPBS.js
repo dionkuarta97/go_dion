@@ -42,7 +42,7 @@ const RenderOptionPBS = ({
         paddingHorizontal: 15,
         marginBottom: 20,
         borderRadius: 10,
-        backgroundColor: pilihan.user_answer[0] === idx ? "#E1FFDF" : "white",
+        backgroundColor: pilihan.user_answer[0] === idx ? "#E1FEDF" : "white",
       }}
       onPress={() => {
         pilihJawaban({
