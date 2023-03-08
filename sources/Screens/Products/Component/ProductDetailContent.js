@@ -26,14 +26,13 @@ import { setTransIos } from "../../../Redux/Init/initActions";
 import { Box, Button, Center, HStack, useToast } from "native-base";
 import moment from "moment";
 import "moment/min/locales";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import CountDown from "react-native-countdown-component";
 
 /** di gunakan untuk ios */
 
-if (Platform.OS === "ios") {
-  ExpoIap = require("expo-in-app-purchases");
-}
+// if (Platform.OS === "ios") {
+//   ExpoIap = require("expo-in-app-purchases");
+// }
 
 /** sampai sini */
 

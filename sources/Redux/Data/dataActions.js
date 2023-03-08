@@ -1,4 +1,5 @@
 import {
+  urlBaseMasterdata,
   urlCommon,
   urlKelas,
   urlProvinsi,
@@ -13,6 +14,7 @@ import {
 } from "../helper";
 import {
   SET_JURUSAN,
+  SET_LIST_BANNER,
   SET_LIST_CITY,
   SET_LIST_GRADES,
   SET_LIST_PROVINCE,
@@ -20,6 +22,34 @@ import {
   SET_TAHUN_AJARAN,
   SET_UNIVERSITAS,
 } from "./dataTypes";
+
+export const setListBanner = (payload) => {
+  return {
+    type: SET_LIST_BANNER,
+    payload: payload,
+  };
+};
+
+export const getBanner = () => {
+  return async (dispatch, getState) => {
+    dispatch(setListBanner(defaultInitState));
+    try {
+      const urlBase = getState().initReducer.baseUrl;
+      const response = await fetch(
+        urlBase + urlBaseMasterdata + "/banner/home"
+      );
+      const json = await response.json();
+
+      if (json.status) {
+        dispatch(setListBanner(defaultDoneState(json.data)));
+      } else {
+        dispatch(setListBanner(defaultFailedState(json.message)));
+      }
+    } catch (err) {
+      dispatch(setListBanner(defaultErrorState));
+    }
+  };
+};
 
 export function setListProvince(state) {
   return {
