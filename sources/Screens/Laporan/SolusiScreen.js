@@ -43,7 +43,10 @@ const SolusiScreen = (props) => {
         <HStack space={5} justifyContent={"center"}>
           {index > 0 ? (
             <Button
-              bg={"light.300"}
+              bg={"amber.400"}
+              _pressed={{
+                bg: "amber.300",
+              }}
               disabled={loading}
               width={Dimensions.get("screen").width / 3}
               onPress={() => {
@@ -55,8 +58,11 @@ const SolusiScreen = (props) => {
             </Button>
           ) : (
             <Button
-              bg={"light.300"}
+              bg={"amber.400"}
               disabled={loading}
+              _pressed={{
+                bg: "amber.300",
+              }}
               width={Dimensions.get("screen").width / 3}
               onPress={() => {
                 navigation.goBack();
@@ -68,6 +74,9 @@ const SolusiScreen = (props) => {
           {index !== solution.length - 1 && (
             <Button
               bg={"amber.400"}
+              _pressed={{
+                bg: "amber.300",
+              }}
               disabled={loading}
               width={Dimensions.get("screen").width / 3}
               onPress={() => {

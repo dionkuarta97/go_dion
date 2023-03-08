@@ -4,6 +4,7 @@ import Sizes from "../../../Theme/Sizes";
 
 const TryoutScoreContent = (props) => {
   const detail = props.detail;
+  console.log(JSON.stringify(detail, null, 2));
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <View

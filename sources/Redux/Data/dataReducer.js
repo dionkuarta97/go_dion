@@ -1,5 +1,6 @@
 import {
   SET_JURUSAN,
+  SET_LIST_BANNER,
   SET_LIST_CITY,
   SET_LIST_GRADES,
   SET_LIST_PROVINCE,
@@ -44,6 +45,11 @@ const initialState = {
     error: null,
     data: null,
   },
+  listBanner: {
+    loading: false,
+    error: null,
+    data: null,
+  },
 };
 
 export function dataReducer(state = initialState, action) {
@@ -84,6 +90,12 @@ export function dataReducer(state = initialState, action) {
       return {
         ...state,
         listTahunAjaran: action.payload,
+      };
+    }
+    case SET_LIST_BANNER: {
+      return {
+        ...state,
+        listBanner: action.payload,
       };
     }
     default:

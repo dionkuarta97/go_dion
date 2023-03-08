@@ -172,7 +172,7 @@ const SolusiContent = (props) => {
                     contentWidth={Dimensions.get("screen").width / 1.2}
                   />
                 </Box>
-              ) : (
+              ) : solution[index]["type"] === "VIDEO DAN TEXT" ? (
                 <>
                   <Center marginTop={10}>
                     <Button
@@ -207,6 +207,18 @@ const SolusiContent = (props) => {
                     />
                   </Box>
                 </>
+              ) : (
+                <Box
+                  bg={"white"}
+                  paddingX={5}
+                  paddingY={3}
+                  borderRadius={10}
+                  marginTop={5}
+                  shadow={2}
+                  marginBottom={50}
+                >
+                  <Text>Solusi Belum Tersedia</Text>
+                </Box>
               )}
             </>
           ) : (
