@@ -3,7 +3,6 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { persistStore, persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
-
 import { authReducer } from "./Auth/authReducer";
 import { cartReducer } from "./Cart/cartReducer";
 import { dataReducer } from "./Data/dataReducer";
@@ -19,7 +18,6 @@ import { initReducer } from "./Init/initReducer";
 import tryoutReducer from "./Tryout/tryoutReducer";
 import { laporanReducer } from "./Laporan/laporanReducer";
 import leaderboardReducer from "./Leaderboard/leaderboardReducer";
-
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
@@ -34,7 +32,6 @@ const persistConfig = {
     "saveScore",
   ],
 };
-
 const rootReducer = combineReducers({
   initReducer: persistReducer(persistConfig, initReducer),
   authReducer: persistReducer(persistConfig, authReducer),
@@ -52,10 +49,8 @@ const rootReducer = combineReducers({
   laporanReducer: laporanReducer,
   leaderboardReducer: leaderboardReducer,
 });
-
 export const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
-
 export const persistor = persistStore(store);

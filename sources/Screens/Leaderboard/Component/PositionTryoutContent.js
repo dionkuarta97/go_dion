@@ -8,7 +8,7 @@ import {
   Image,
   Center,
 } from "native-base";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPositionTryout } from "../../../Redux/Leaderboard/leaderboardAction";
 import LeaderboardCard from "./LeaderboardCard";
@@ -19,13 +19,29 @@ import NoData from "../../../Components/NoData";
 const PositionTryoutContent = (props) => {
   const temp = props.select;
   const { id, tahun } = props;
+  const scrollRef = useRef();
   const dispatch = useDispatch();
   const { leaderboard, positionTryout } = useSelector(
     (state) => state.leaderboardReducer
   );
   const navigation = useNavigation();
   const [select, setSelect] = useState(temp);
+  const [ranking, setRanking] = useState(0);
+
+  const cekRank = (myPoisisi, arr) => {
+    for (const key in arr) {
+      if (myPoisisi === arr[key].position) {
+        setRanking(key);
+        break;
+      }
+    }
+  };
   const [page, setPage] = useState(1);
+  useEffect(() => {
+    if (positionTryout.data !== null) {
+      cekRank(positionTryout.data.my_position, positionTryout.data.rankings);
+    }
+  }, [positionTryout]);
   useEffect(() => {
     setPage(1);
     dispatch(
@@ -39,6 +55,12 @@ const PositionTryoutContent = (props) => {
       )
     );
   }, [select]);
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      y: ranking === 0 ? 0 : (Dimensions.get("screen").height / 12) * ranking,
+      animated: true,
+    });
+  }, [ranking]);
 
   return (
     <>
@@ -99,7 +121,10 @@ const PositionTryoutContent = (props) => {
             </View>
           </Center>
         )}
-        <ScrollView marginBottom={Dimensions.get("screen").height / 30}>
+        <ScrollView
+          ref={scrollRef}
+          marginBottom={Dimensions.get("screen").height / 30}
+        >
           {positionTryout.data?.rankings.map((el) => (
             <LeaderboardCard
               from={true}

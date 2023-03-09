@@ -60,7 +60,7 @@ const MyPositionContent = (props) => {
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
-      y: ranking === 0 ? 0 : (Dimensions.get("screen").height / 9) * ranking,
+      y: ranking === 0 ? 0 : (Dimensions.get("screen").height / 12) * ranking,
       animated: true,
     });
   }, [ranking]);
