@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   SafeAreaView,
@@ -41,6 +41,7 @@ const PaymentScreen = (props) => {
   const OpenWEB = (url) => {
     Linking.openURL(url);
   };
+  const [timeOut, SetTimeOut] = useState(false);
   const totalHarga = (arr) => {
     let temp = 0;
     for (const i in arr) {
@@ -112,12 +113,11 @@ const PaymentScreen = (props) => {
                       backgroundColor: "transparent",
                     }}
                     showSeparator={true}
-                    onFinish={() => console.log("finish")}
+                    onFinish={() => SetTimeOut(true)}
                     size={14}
                     timeToShow={["H", "M", "S"]}
                     timeLabels={{ m: null, s: null }}
                     style={{ ...Fonts.blackRegular }}
-                    onChange={(t) => {}}
                     running={true}
                   />
                 </View>
@@ -323,6 +323,7 @@ const PaymentScreen = (props) => {
                       >
                         <Button
                           colorScheme="green"
+                          disabled={timeOut}
                           onPress={() => {
                             OpenWEB(
                               paymentDetail.data.payment_type === "gopay"
