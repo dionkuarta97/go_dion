@@ -193,6 +193,9 @@ const ProductPurchasedScreen = (props) => {
                           />
                         )}
                       </View>
+                      {item.type_label !== "" && (
+                        <Text style={{ color: "green" }}>Produk Event</Text>
+                      )}
                     </View>
                   </View>
                 </TouchableOpacity>

@@ -137,6 +137,14 @@ const GoTryoutCard = (props) => {
             {data.reason ? data.reason : "kosong"}
           </Text>
         )}
+        {data.type_label && (
+          <>
+            {data.type_label !== "" && (
+              <Text style={{ color: "green" }}>Produk Event</Text>
+            )}
+          </>
+        )}
+
         {props.status !== "done" && (
           <>
             {moment.duration(givenAkhir?.diff(current)).asDays() > 0 ? (

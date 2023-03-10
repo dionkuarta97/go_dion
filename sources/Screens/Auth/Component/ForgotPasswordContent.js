@@ -79,8 +79,8 @@ const ForgotPasswordContent = () => {
                 padding: 10,
                 backgroundColor: "white",
                 borderRadius: 5,
-                borderWidth: email ? 1 : 0,
-                borderColor: email && !isEmail ? "red" : "green",
+                borderWidth: email ? 1 : 1,
+                borderColor: !isEmail ? "red" : "green",
               }}
               keyboardType="email-address"
               onChangeText={setEmail}

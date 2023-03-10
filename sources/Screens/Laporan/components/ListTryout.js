@@ -40,6 +40,7 @@ const ListTryout = (props) => {
                       navigation.navigate("ProgressTryout", {
                         type: type,
                         _id: el._id,
+                        title: el.title,
                       });
                     } else {
                       Alert.alert("Informasi", "Laporan kamu sedang diproses");
@@ -48,6 +49,7 @@ const ListTryout = (props) => {
                     navigation.navigate("ProgressTryout", {
                       type: type,
                       _id: el._id,
+                      title: el.title,
                     });
                   }
                 }}
