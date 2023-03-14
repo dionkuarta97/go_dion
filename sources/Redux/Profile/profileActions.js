@@ -123,9 +123,10 @@ export function updatePassword(bodyParams) {
   return async (dispatch, getState) => {
     // bodyParams['token'] = `Bearer ${getState().authReducer.token}`
     console.log("params : ", bodyParams);
+    const urlBase = getState().initReducer.baseUrl;
     dispatch(setNewPassword(defaultInitState));
     try {
-      fetch("https://apionline.gobimbelonline.net/masterdata/v1/fp/reset", {
+      fetch(urlBase + "/masterdata/v1/fp/reset", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bodyParams),
@@ -153,7 +154,8 @@ export function updatePassword(bodyParams) {
 export const newChangePassword = (payload) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      fetch("https://apionline.gobimbelonline.net/masterdata/v1/fp/reset", {
+      const urlBase = getState().initReducer.baseUrl;
+      fetch(urlBase + "/masterdata/v1/fp/reset", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

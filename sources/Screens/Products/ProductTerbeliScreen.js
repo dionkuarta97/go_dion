@@ -11,19 +11,16 @@ import LoadingIndicator from "../../Components/Indicator/LoadingIndicator";
 
 const TotalProduk = ({ _id }) => {
   const [total, setTotal] = useState(0);
-
+  const baseUrl = useSelector((state) => state.initReducer.baseUrl);
   const token = useSelector((state) => state.authReducer.token);
 
   useEffect(() => {
-    fetch(
-      `https://apionline.gobimbelonline.net/masterdata/v1/products/${_id}/purchased/count`,
-      {
-        method: "get",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    fetch(baseUrl + `/masterdata/v1/products/${_id}/purchased/count`, {
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => response.json())
       .then((json) => {
         if (json.status) {
