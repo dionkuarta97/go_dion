@@ -10,7 +10,10 @@ import {
 } from "native-base";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPositionTryout } from "../../../Redux/Leaderboard/leaderboardAction";
+import {
+  getPositionTryout,
+  setPositionLeader,
+} from "../../../Redux/Leaderboard/leaderboardAction";
 import LeaderboardCard from "./LeaderboardCard";
 import { Dimensions, ActivityIndicator } from "react-native";
 import Colors from "../../../Theme/Colors";
@@ -27,6 +30,7 @@ const PositionTryoutContent = (props) => {
   const navigation = useNavigation();
   const [select, setSelect] = useState(temp);
   const [ranking, setRanking] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const cekRank = (myPoisisi, arr) => {
     for (const key in arr) {
@@ -37,11 +41,7 @@ const PositionTryoutContent = (props) => {
     }
   };
   const [page, setPage] = useState(1);
-  useEffect(() => {
-    if (positionTryout.data !== null) {
-      cekRank(positionTryout.data.my_position, positionTryout.data.rankings);
-    }
-  }, [positionTryout]);
+
   useEffect(() => {
     setPage(1);
     dispatch(
@@ -54,13 +54,23 @@ const PositionTryoutContent = (props) => {
         { id, tahun }
       )
     );
+    return () => {
+      dispatch(setPositionLeader({ data: null, error: null, loading: false }));
+    };
   }, [select]);
+
+  useEffect(() => {
+    if (positionTryout.data !== null) {
+      setLoading(false);
+      cekRank(positionTryout.data.my_position, positionTryout.data.rankings);
+    }
+  }, [positionTryout]);
   useEffect(() => {
     scrollRef.current?.scrollTo({
-      y: ranking === 0 ? 0 : (Dimensions.get("screen").height / 12) * ranking,
+      y: (Dimensions.get("screen").height / 12) * ranking,
       animated: true,
     });
-  }, [ranking]);
+  }, [loading]);
 
   return (
     <>
@@ -78,6 +88,10 @@ const PositionTryoutContent = (props) => {
             variant={"solid"}
             disabled={select === "Nasional" ? true : false}
             onPress={() => {
+              setLoading(true);
+              dispatch(
+                setPositionLeader({ data: null, error: null, loading: false })
+              );
               setSelect("Nasional");
             }}
           >
@@ -88,6 +102,10 @@ const PositionTryoutContent = (props) => {
             colorScheme={select === "Kota" ? "amber" : "coolGray"}
             disabled={select === "Kota" ? true : false}
             onPress={() => {
+              setLoading(true);
+              dispatch(
+                setPositionLeader({ data: null, error: null, loading: false })
+              );
               setSelect("Kota");
             }}
           >
@@ -98,6 +116,10 @@ const PositionTryoutContent = (props) => {
             colorScheme={select === "Sekolah" ? "amber" : "coolGray"}
             disabled={select === "Sekolah" ? true : false}
             onPress={() => {
+              setLoading(true);
+              dispatch(
+                setPositionLeader({ data: null, error: null, loading: false })
+              );
               setSelect("Sekolah");
             }}
           >
