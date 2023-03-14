@@ -31,9 +31,10 @@ import { getPurchasedproduk } from "../../Redux/Produk/produkActions";
 import CompStyles from "../../Theme/styles/globalStyles";
 import NumberFormat from "react-number-format";
 import NoData from "../../Components/NoData";
-import { useToast } from "native-base";
+import { Box, VStack, useToast, HStack } from "native-base";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
+import { singkatNama } from "../../Services/helper";
 
 const ProductPurchasedScreen = (props) => {
   const toast = useToast();
@@ -100,7 +101,11 @@ const ProductPurchasedScreen = (props) => {
                 >
                   <View
                     style={{
-                      ...CompStyles.defaultCard,
+                      marginVertical: Sizes.fixPadding,
+                      backgroundColor: Colors.whiteColor,
+                      borderRadius: Sizes.fixPadding,
+                      padding: Sizes.fixPadding,
+                      elevation: 2,
                       marginHorizontal: Sizes.fixPadding * 1,
                       flexDirection: "row",
                     }}
@@ -124,12 +129,7 @@ const ProductPurchasedScreen = (props) => {
                         resizeMode="cover"
                       />
                     </View>
-                    <View
-                      style={{
-                        flex: 1,
-                        paddingVertical: Sizes.fixPadding / 2,
-                      }}
-                    >
+                    <VStack>
                       <Text
                         style={{
                           ...Fonts.orangeColor14Bold,
@@ -142,7 +142,7 @@ const ProductPurchasedScreen = (props) => {
                           ...Fonts.black17Regular,
                         }}
                       >
-                        {item.title}
+                        {singkatNama(item.title, 20)}
                       </Text>
                       <View
                         style={{
@@ -194,9 +194,26 @@ const ProductPurchasedScreen = (props) => {
                         )}
                       </View>
                       {item.type_label !== "" && (
-                        <Text style={{ color: "green" }}>Produk Event</Text>
+                        <HStack>
+                          <Box
+                            paddingX={2}
+                            borderRadius={5}
+                            paddingY={0.5}
+                            bg={"#0D9CC9"}
+                          >
+                            <Text
+                              style={{
+                                fontSize: 15,
+                                fontWeight: "bold",
+                                color: "white",
+                              }}
+                            >
+                              {item.type_label.toUpperCase()}
+                            </Text>
+                          </Box>
+                        </HStack>
                       )}
-                    </View>
+                    </VStack>
                   </View>
                 </TouchableOpacity>
               )}

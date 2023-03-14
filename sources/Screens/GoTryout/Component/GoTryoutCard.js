@@ -140,7 +140,25 @@ const GoTryoutCard = (props) => {
         {data.type_label && (
           <>
             {data.type_label !== "" && (
-              <Text style={{ color: "green" }}>Produk Event</Text>
+              <HStack>
+                <Box
+                  paddingX={2}
+                  borderRadius={5}
+                  paddingY={0.5}
+                  bg={"#0D9CC9"}
+                  marginBottom={2}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                  >
+                    {data.type_label.toUpperCase()}
+                  </Text>
+                </Box>
+              </HStack>
             )}
           </>
         )}
