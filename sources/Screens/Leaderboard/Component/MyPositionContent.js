@@ -10,7 +10,10 @@ import {
 } from "native-base";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMyPosition } from "../../../Redux/Leaderboard/leaderboardAction";
+import {
+  getMyPosition,
+  setMyPosition,
+} from "../../../Redux/Leaderboard/leaderboardAction";
 import LeaderboardCard from "./LeaderboardCard";
 import { Dimensions, ActivityIndicator, TouchableOpacity } from "react-native";
 import Colors from "../../../Theme/Colors";
@@ -50,6 +53,9 @@ const MyPositionContent = (props) => {
         tahun
       )
     );
+    return () => {
+      dispatch(setMyPosition({ data: null, loading: false, error: null }));
+    };
   }, [select]);
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import { SET_CHECK_VERSION } from "./versionTypes";
 
 const initialState = {
-  androidVersion: "0.1.107",
-  iosVersion: "0.1.107",
+  androidVersion: "0.1.108",
+  iosVersion: "0.1.108",
   nowVersion: 47,
   androidCode: 48,
   iosCode: 47,

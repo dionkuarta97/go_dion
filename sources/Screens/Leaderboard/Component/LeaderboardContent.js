@@ -31,7 +31,7 @@ const LeaderboardContent = () => {
     outputRange: [0, -500],
     extrapolate: "clamp",
   });
-  const { leaderboard, loading } = useSelector(
+  const { leaderboard, loading, myPosition } = useSelector(
     (state) => state.leaderboardReducer
   );
   const navigation = useNavigation();
@@ -59,7 +59,7 @@ const LeaderboardContent = () => {
     );
   }, [select]);
 
-  console.log(JSON.stringify(leaderboard, null, 2));
+  console.log(JSON.stringify(myPosition, null, 2));
 
   const onChange = (val) => {
     setTahunAjaran(val);
