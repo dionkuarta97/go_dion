@@ -322,7 +322,7 @@ const PaymentScreen = (props) => {
                         }}
                       >
                         <Button
-                          colorScheme="green"
+                          colorScheme={timeOut ? "trueGray" : "green"}
                           disabled={timeOut}
                           onPress={() => {
                             OpenWEB(
