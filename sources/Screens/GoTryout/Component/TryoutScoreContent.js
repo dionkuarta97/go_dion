@@ -18,6 +18,17 @@ const TryoutScoreContent = (props) => {
         <Text style={{ color: "grey", flex: 1 }}>Jawaban Benar</Text>
         <Text style={{ fontWeight: "bold" }}>{detail.true_answer}</Text>
       </View>
+      <View
+        style={{
+          flexDirection: "row",
+          borderBottomWidth: 1,
+          borderBottomColor: "lightgrey",
+          paddingVertical: Sizes.fixPadding,
+        }}
+      >
+        <Text style={{ color: "grey", flex: 1 }}>Benar Sebagian</Text>
+        <Text style={{ fontWeight: "bold" }}>{detail.true_half_answer}</Text>
+      </View>
 
       <View
         style={{

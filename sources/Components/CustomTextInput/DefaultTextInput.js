@@ -27,7 +27,9 @@ const DefaultTextInput = (props) => {
       }}
     >
       <TextInput
+        ref={props.ref}
         editable={props.disable === false ? props.disable : true}
+        autoFocus={props.autoFocus}
         keyboardType={keyboardType ? keyboardType : "default"}
         autoCapitalize={autoCapitalize ? autoCapitalize : "none"}
         value={props.value}
@@ -38,7 +40,12 @@ const DefaultTextInput = (props) => {
           paddingVertical: Sizes.fixPadding / 2,
           color: props.disable === false ? "grey" : "black",
         }}
-        onFocus={() => setFocused(true)}
+        onFocus={() => {
+          setFocused(true);
+          if (props.onFocus) {
+            props.onFocus(true);
+          }
+        }}
         onBlur={() => setFocused(false)}
         onChangeText={props.onChangeText}
       />

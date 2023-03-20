@@ -22,6 +22,7 @@ const persistConfig = {
   key: "root",
   storage: AsyncStorage,
   blacklist: [
+    "baseUrl",
     "updatePassword",
     "url",
     "soal",

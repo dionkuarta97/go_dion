@@ -40,6 +40,7 @@ export function getHomeMenu() {
   return async (dispatch, getState) => {
     const urlBase = getState().initReducer.baseUrl;
     dispatch(setHomeMenu(defaultInitState));
+    console.log(urlBase);
     try {
       fetch(urlBase + urlHomeMenu)
         .then((response) => response.json())

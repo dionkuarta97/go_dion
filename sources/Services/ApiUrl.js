@@ -1,7 +1,7 @@
 /**
  * base url dengan Kong
  */
-export const urlBase = "https://apionline.gobimbelonline.net";
+export const urlBase = "https://apim.gobimbelonline.net";
 
 export const urlBaseMock = "/moc";
 export const urlBaseMasterdata = "/masterdata/v1";

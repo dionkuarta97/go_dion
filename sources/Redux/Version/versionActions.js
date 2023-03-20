@@ -19,6 +19,7 @@ export function getVersion(os) {
             : getState().versionReducer.iosVersion,
       });
       const urlBase = getState().initReducer.baseUrl;
+      console.log(urlBase);
       const response = await fetch(urlBase + "/masterdata/v1/version/check", {
         method: "POST",
         headers: {
