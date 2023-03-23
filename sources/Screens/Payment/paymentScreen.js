@@ -325,6 +325,7 @@ const PaymentScreen = (props) => {
                           colorScheme={timeOut ? "trueGray" : "green"}
                           disabled={timeOut}
                           onPress={() => {
+                            navigation.navigate("MainScreen");
                             OpenWEB(
                               paymentDetail.data.payment_type === "gopay"
                                 ? paymentDetail.data.payment_detail.actions[1]
