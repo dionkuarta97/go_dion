@@ -22,7 +22,7 @@ import ToastErrorContent from "../../../Components/ToastErrorContent";
 import checkInternet from "../../../Services/CheckInternet";
 import { checkNomor, passwordValidations } from "../../../Services/helper";
 
-const RegisterContent = ({ sendedEmail }) => {
+const RegisterContent = ({ sendedEmail, scrollRef }) => {
   const [classBottomSheetVisible, setClassBottomSheetVisible] = useState(false);
   const [provinceBottomSheetVisible, setProvinceBottomSheetVisible] =
     useState(false);
@@ -59,6 +59,60 @@ const RegisterContent = ({ sendedEmail }) => {
   const [waliEmail, setWaliEmail] = useState("");
   //End: State for Form
 
+  const [show, setShow] = useState({
+    nama: false,
+    phone: false,
+    kelas: false,
+    password: false,
+    repeatPassword: false,
+    province: false,
+    city: false,
+    address: false,
+    schoolProvince: false,
+    schoolCity: false,
+    schoolName: false,
+    waliName: false,
+    waliPhone: false,
+    waliEmail: false,
+  });
+
+  const [msg, setMsg] = useState({
+    nama: "Nama tidak boleh kosong",
+    phone: [
+      "Nomor telepon tidak boleh kosong",
+      "Nomor telepon minimal 8 karakter",
+    ],
+    kelas: "Tingkatan kelas tidak boleh kosong",
+
+    province: "Propinsi tidak boleh kosong",
+    city: "Kab/kota tidak boleh kosong",
+    address: "Alamat tidak boleh kosong",
+    schoolProvince: "Propinsi tidak boleh kosong",
+    schoolCity: "Kab/kota tidak boleh kosong",
+    schoolName: "Nama sekolah tidak boleh kosong",
+    waliName: "Nama wali tidak boleh kosong",
+    waliPhone: "Nomor wali tidak boleh kosong",
+    waliEmail: ["Wali email tidak boleh kosong", "Harus berbentuk email"],
+  });
+
+  const [layout, setLayout] = useState({
+    nama: null,
+    phone: null,
+    kelas: null,
+    password: null,
+    repeatPassword: null,
+    province: null,
+    city: null,
+    address: null,
+    schoolProvince: null,
+    schoolCity: null,
+    schoolName: null,
+    waliName: null,
+    waliPhone: null,
+    waliEmail: null,
+  });
+
+  console.log(JSON.stringify(show, null, 2));
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const register = useSelector((state) => state.authReducer.register);
@@ -83,7 +137,7 @@ const RegisterContent = ({ sendedEmail }) => {
       toast.show({
         placement: "top",
         duration: 3000,
-        width: Dimensions.get("screen").width / 1.2,
+        width: Dimensions.get("screen").width / 1.4,
         render: () => {
           return <ToastErrorContent content={register.error} />;
         },
@@ -91,9 +145,12 @@ const RegisterContent = ({ sendedEmail }) => {
     }
   }, [register]);
 
-  console.log(checkNomor(phone));
+  useEffect(() => {
+    console.log(layout);
+  }, [layout]);
+
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView ref={scrollRef}>
       <View
         style={{
           paddingVertical: Sizes.fixPadding * 7.0,
@@ -102,38 +159,87 @@ const RegisterContent = ({ sendedEmail }) => {
       >
         <View>
           <Text style={{ ...Fonts.black20Bold }}>Informasi Pendaftar</Text>
-
-          <DefaultTextInput
-            placeholder="Email"
-            disable={false}
-            value={email}
-            onChangeText={setEmail}
-          />
-
-          <DefaultTextInput
-            placeholder="Nama Lengkap"
-            value={name}
-            onChangeText={setName}
-          />
-
-          <DefaultTextInput
-            keyboardType="phone-pad"
-            placeholder="Nomor Telepon/HP"
-            value={phone}
-            nomor={true}
-            valid={checkNomor(phone)}
-            onChangeText={setPhone}
-          />
-
-          <OnTapTextInput
-            placeholder="Tingkatan Kelas"
-            value={kelas}
-            onTap={() => {
-              console.log("Tap Kelas");
-              setClassBottomSheetVisible(true);
-            }}
-          />
-
+          <View>
+            <DefaultTextInput
+              placeholder="Email"
+              disable={false}
+              value={email}
+              onChangeText={setEmail}
+            />
+          </View>
+          <View
+            onLayout={(e) =>
+              setLayout({ ...layout, nama: e.nativeEvent.layout })
+            }
+          >
+            <DefaultTextInput
+              onFocus={(val) => setShow({ ...show, nama: val })}
+              placeholder="Nama Lengkap"
+              value={name}
+              onChangeText={setName}
+            />
+          </View>
+          {show.nama && (
+            <>
+              {name === "" && (
+                <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                  - {msg.nama}
+                </Text>
+              )}
+            </>
+          )}
+          <View
+            onLayout={(e) =>
+              setLayout({ ...layout, phone: e.nativeEvent.layout })
+            }
+          >
+            <DefaultTextInput
+              onFocus={(val) => setShow({ ...show, phone: val })}
+              keyboardType="phone-pad"
+              placeholder="Nomor Telepon/HP"
+              value={phone}
+              nomor={true}
+              valid={checkNomor(phone)}
+              onChangeText={setPhone}
+            />
+          </View>
+          {show.phone && (
+            <>
+              {!checkNomor(phone) &&
+                msg.phone.map((el, idx) => (
+                  <Text
+                    key={idx + "aaa"}
+                    style={{ fontSize: 12, color: "red", opacity: 0.5 }}
+                  >
+                    - {el}
+                  </Text>
+                ))}
+            </>
+          )}
+          <View
+            onLayout={(e) =>
+              setLayout({ ...layout, kelas: e.nativeEvent.layout })
+            }
+          >
+            <OnTapTextInput
+              placeholder="Tingkatan Kelas"
+              value={kelas}
+              onTap={() => {
+                setShow({ ...show, kelas: true });
+                console.log("Tap Kelas");
+                setClassBottomSheetVisible(true);
+              }}
+            />
+          </View>
+          {show.kelas && (
+            <>
+              {kelas === null && (
+                <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                  - {msg.kelas}
+                </Text>
+              )}
+            </>
+          )}
           {classBottomSheetVisible && (
             <KelasBottomSheet
               onClose={() => setClassBottomSheetVisible(false)}
@@ -145,59 +251,99 @@ const RegisterContent = ({ sendedEmail }) => {
               }}
             />
           )}
-
-          <PasswordTextInput
-            placeholder="Password"
-            onChangeText={setPassword}
-            value={passwordValidations(password).valid}
-          />
-          {passwordValidations(password).valid === false &&
-            passwordValidations(password).error.map((val, idx) => (
-              <Text
-                key={idx}
-                style={{ fontSize: 12, color: "red", opacity: 0.5 }}
-              >
-                - {val}
-              </Text>
-            ))}
-          <PasswordTextInput
-            placeholder="Password (Ulangi)"
-            onChangeText={setRepeatPassword}
-            value={
-              password !== repeatPassword || repeatPassword === ""
-                ? false
-                : true
+          <View
+            onLayout={(e) =>
+              setLayout({ ...layout, password: e.nativeEvent.layout })
             }
-          />
-          {password !== repeatPassword && (
-            <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
-              - Password tidak sama
-            </Text>
+          >
+            <PasswordTextInput
+              placeholder="Password"
+              onChangeText={setPassword}
+              onFocus={(val) => setShow({ ...show, password: val })}
+              value={passwordValidations(password).valid}
+            />
+          </View>
+          {show.password && (
+            <>
+              {passwordValidations(password).valid === false &&
+                passwordValidations(password).error.map((val, idx) => (
+                  <Text
+                    key={idx}
+                    style={{ fontSize: 12, color: "red", opacity: 0.5 }}
+                  >
+                    - {val}
+                  </Text>
+                ))}
+            </>
+          )}
+
+          <View
+            onLayout={(e) =>
+              setLayout({ ...layout, repeatPassword: e.nativeEvent.layout })
+            }
+          >
+            <PasswordTextInput
+              placeholder="Password (Ulangi)"
+              onChangeText={setRepeatPassword}
+              onFocus={(val) => setShow({ ...show, rePass: val })}
+              value={
+                password !== repeatPassword || repeatPassword === ""
+                  ? false
+                  : true
+              }
+            />
+          </View>
+          {show.rePass && (
+            <>
+              {password !== repeatPassword && (
+                <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                  - Password tidak sama
+                </Text>
+              )}
+            </>
           )}
         </View>
 
-        <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
-          <Text style={{ ...Fonts.black20Bold }}>Informasi Alamat</Text>
-
+        <Text style={{ ...Fonts.black20Bold, marginTop: 50 }}>
+          Informasi Alamat
+        </Text>
+        <View
+          onLayout={(e) =>
+            setLayout({ ...layout, province: e.nativeEvent.layout })
+          }
+        >
           <OnTapTextInput
             placeholder="Propinsi"
             value={province !== null ? province.provinsi : ""}
             onTap={() => {
               console.log("Tap Kelas");
+              setShow({ ...show, province: true });
               setProvinceBottomSheetVisible(true);
             }}
           />
-          {provinceBottomSheetVisible && (
-            <ProvinceBottomSheet
-              onClose={() => setProvinceBottomSheetVisible(false)}
-              onSelect={(value) => {
-                setProvinceBottomSheetVisible(false);
-                setProvince(value);
-                setCity(null);
-              }}
-            />
-          )}
-
+        </View>
+        {show.province && (
+          <>
+            {province === null && (
+              <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                - {msg.province}
+              </Text>
+            )}
+          </>
+        )}
+        {provinceBottomSheetVisible && (
+          <ProvinceBottomSheet
+            onClose={() => setProvinceBottomSheetVisible(false)}
+            onSelect={(value) => {
+              setProvinceBottomSheetVisible(false);
+              setProvince(value);
+              setCity(null);
+            }}
+          />
+        )}
+        <View
+          onLayout={(e) => setLayout({ ...layout, city: e.nativeEvent.layout })}
+        >
           <OnTapTextInput
             placeholder="Kab/Kota"
             value={city !== null ? city.kabkota : ""}
@@ -209,10 +355,21 @@ const RegisterContent = ({ sendedEmail }) => {
                   "Silakan memlih Propinsi terlebih dahulu"
                 );
               } else {
+                setShow({ ...show, province: true });
                 setCityBottomSheetVisible(true);
               }
             }}
           />
+
+          {show.city && (
+            <>
+              {city === null && (
+                <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                  - {msg.city}
+                </Text>
+              )}
+            </>
+          )}
           {cityBottomSheetVisible && (
             <CityBottomSheet
               idProvinsi={
@@ -225,36 +382,72 @@ const RegisterContent = ({ sendedEmail }) => {
               }}
             />
           )}
-
-          <DefaultTextInput
-            value={address}
-            placeholder="Alamat"
-            onChangeText={setAddress}
-          />
+          <View
+            onLayout={(e) =>
+              setLayout({ ...layout, address: e.nativeEvent.layout })
+            }
+          >
+            <DefaultTextInput
+              value={address}
+              onFocus={(val) => setShow({ ...show, address: true })}
+              placeholder="Alamat"
+              onChangeText={setAddress}
+            />
+          </View>
+          {show.address && (
+            <>
+              {address === "" && (
+                <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                  - {msg.address}
+                </Text>
+              )}
+            </>
+          )}
         </View>
 
-        <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
-          <Text style={{ ...Fonts.black20Bold }}>Alamat Sekolah</Text>
+        <Text style={{ ...Fonts.black20Bold, marginTop: 50 }}>
+          Alamat Sekolah
+        </Text>
 
+        <View
+          onLayout={(e) =>
+            setLayout({ ...layout, schoolProvince: e.nativeEvent.layout })
+          }
+        >
           <OnTapTextInput
             placeholder="Propinsi"
             value={schoolProvince !== null ? schoolProvince.provinsi : ""}
             onTap={() => {
+              setShow({ ...show, schoolProvince: true });
               setSchoolProvinceBottomSheetVisible(true);
             }}
           />
-          {schoolProvinceBottomSheetVisible && (
-            <ProvinceBottomSheet
-              onClose={() => setSchoolProvinceBottomSheetVisible(false)}
-              onSelect={(value) => {
-                setSchoolProvinceBottomSheetVisible(false);
-                setSchoolProvince(value);
-                setSchoolCity(null);
-                setSchoolName(null);
-              }}
-            />
+          {show.schoolProvince && (
+            <>
+              {schoolProvince === null && (
+                <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                  - {msg.schoolProvince}
+                </Text>
+              )}
+            </>
           )}
-
+        </View>
+        {schoolProvinceBottomSheetVisible && (
+          <ProvinceBottomSheet
+            onClose={() => setSchoolProvinceBottomSheetVisible(false)}
+            onSelect={(value) => {
+              setSchoolProvinceBottomSheetVisible(false);
+              setSchoolProvince(value);
+              setSchoolCity(null);
+              setSchoolName(null);
+            }}
+          />
+        )}
+        <View
+          onLayout={(e) =>
+            setLayout({ ...layout, schoolCity: e.nativeEvent.layout })
+          }
+        >
           <OnTapTextInput
             placeholder="Kab/Kota"
             value={schoolCity !== null ? schoolCity.kabkota : ""}
@@ -265,26 +458,41 @@ const RegisterContent = ({ sendedEmail }) => {
                   "Silakan memilih Propinsi terlebih dahulu"
                 );
               } else {
+                setShow({ ...show, schoolCity: true });
                 setSchoolCityBottomSheetVisible(true);
                 setSchoolName(null);
               }
             }}
           />
-          {schoolCityBottomSheetVisible && (
-            <CityBottomSheet
-              idProvinsi={
-                schoolProvince !== null
-                  ? schoolProvince.idprovinsi.toString()
-                  : null
-              }
-              onClose={() => setSchoolCityBottomSheetVisible(false)}
-              onSelect={(value) => {
-                setSchoolCityBottomSheetVisible(false);
-                setSchoolCity(value);
-              }}
-            />
+          {show.schoolCity && (
+            <>
+              {schoolCity === null && (
+                <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                  - {msg.schoolCity}
+                </Text>
+              )}
+            </>
           )}
-
+        </View>
+        {schoolCityBottomSheetVisible && (
+          <CityBottomSheet
+            idProvinsi={
+              schoolProvince !== null
+                ? schoolProvince.idprovinsi.toString()
+                : null
+            }
+            onClose={() => setSchoolCityBottomSheetVisible(false)}
+            onSelect={(value) => {
+              setSchoolCityBottomSheetVisible(false);
+              setSchoolCity(value);
+            }}
+          />
+        )}
+        <View
+          onLayout={(e) =>
+            setLayout({ ...layout, schoolName: e.nativeEvent.layout })
+          }
+        >
           <OnTapTextInput
             placeholder="Nama Sekolah"
             value={schoolName}
@@ -304,11 +512,22 @@ const RegisterContent = ({ sendedEmail }) => {
                     "Silakan memilih Kab/Kota terlebih dahulu"
                   );
                 } else {
+                  setShow({ ...show, schoolName: true });
                   setSchoolNameBottomSheetVisible(true);
                 }
               }
             }}
           />
+
+          {show.schoolName && (
+            <>
+              {schoolName === null && (
+                <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                  - {msg.schoolName}
+                </Text>
+              )}
+            </>
+          )}
           {schoolNameBottomSheetVisible && (
             <SchoolBottomSheet
               kelas={
@@ -330,101 +549,244 @@ const RegisterContent = ({ sendedEmail }) => {
           )}
         </View>
 
-        <View style={{ marginTop: Sizes.fixPadding * 3.0 }}>
-          <Text style={{ ...Fonts.black20Bold }}>Informasi Wali </Text>
-
+        <Text style={{ ...Fonts.black20Bold, marginTop: 50 }}>
+          Informasi Wali
+        </Text>
+        <View
+          onLayout={(e) =>
+            setLayout({ ...layout, waliName: e.nativeEvent.layout })
+          }
+        >
           <DefaultTextInput
             placeholder="Nama Wali"
             autoCapitalize="words"
             value={waliName}
+            onFocus={(val) => setShow({ ...show, waliName: true })}
             onChangeText={setWaliName}
           />
-
+        </View>
+        {show.waliName && (
+          <>
+            {waliName === "" && (
+              <Text style={{ fontSize: 12, color: "red", opacity: 0.5 }}>
+                - {msg.waliName}
+              </Text>
+            )}
+          </>
+        )}
+        <View
+          onLayout={(e) =>
+            setLayout({ ...layout, waliPhone: e.nativeEvent.layout })
+          }
+        >
           <DefaultTextInput
             placeholder="Nomor Telepon/HP Wali"
             keyboardType="phone-pad"
             value={waliPhone}
             nomor={true}
             valid={checkNomor(waliPhone)}
+            onFocus={(val) => setShow({ ...show, waliPhone: true })}
             onChangeText={setWaliPhone}
           />
+        </View>
 
+        {show.waliPhone && (
+          <>
+            {!checkNomor(waliPhone) &&
+              msg.phone.map((el, idx) => (
+                <Text
+                  key={idx + "adaa"}
+                  style={{ fontSize: 12, color: "red", opacity: 0.5 }}
+                >
+                  - {el}
+                </Text>
+              ))}
+          </>
+        )}
+        <View
+          onLayout={(e) =>
+            setLayout({ ...layout, waliEmail: e.nativeEvent.layout })
+          }
+        >
           <DefaultTextInput
             placeholder="Email Wali"
             nomor={true}
             valid={formatEmail(waliEmail)}
             value={waliEmail}
+            onFocus={(val) => setShow({ ...show, waliEmail: true })}
             onChangeText={setWaliEmail}
           />
         </View>
+        {show.waliEmail && (
+          <>
+            {!formatEmail(waliEmail) &&
+              msg.waliEmail.map((el, idx) => (
+                <Text
+                  key={idx + "adaa"}
+                  style={{ fontSize: 12, color: "red", opacity: 0.5 }}
+                >
+                  - {el}
+                </Text>
+              ))}
+          </>
+        )}
 
         <View style={{ flexDirection: "row" }}>
           <View style={{ flex: 1, marginTop: 20 }}>
             <Button
               bg={
-                email !== "" &&
-                name !== "" &&
-                checkNomor(phone) &&
-                address !== "" &&
-                waliName !== "" &&
-                kelas !== null &&
-                province !== null &&
-                city !== null &&
-                schoolProvince !== null &&
-                schoolCity !== null &&
-                schoolName !== null &&
-                passwordValidations(password).valid &&
-                password === repeatPassword &&
-                formatEmail(waliEmail) &&
-                checkNomor(waliPhone)
-                  ? "amber.400"
-                  : "amber.200"
+                // email !== "" &&
+                // name !== "" &&
+                // checkNomor(phone) &&
+                // address !== "" &&
+                // waliName !== "" &&
+                // kelas !== null &&
+                // province !== null &&
+                // city !== null &&
+                // schoolProvince !== null &&
+                // schoolCity !== null &&
+                // schoolName !== null &&
+                // passwordValidations(password).valid &&
+                // password === repeatPassword &&
+                // formatEmail(waliEmail) &&
+                // checkNomor(waliPhone)
+                //   ? "amber.400"
+                //   : "amber.200"
+                "amber.400"
               }
               _pressed={{ bg: "amber.300" }}
-              disabled={
-                email !== "" &&
-                name !== "" &&
-                checkNomor(phone) &&
-                address !== "" &&
-                waliName !== "" &&
-                kelas !== null &&
-                province !== null &&
-                city !== null &&
-                schoolProvince !== null &&
-                schoolCity !== null &&
-                schoolName !== null &&
-                passwordValidations(password).valid &&
-                password === repeatPassword &&
-                formatEmail(waliEmail) &&
-                checkNomor(waliPhone)
-                  ? false
-                  : true
-              }
+              // disabled={
+              //   email !== "" &&
+              //   name !== "" &&
+              //   checkNomor(phone) &&
+              //   address !== "" &&
+              //   waliName !== "" &&
+              //   kelas !== null &&
+              //   province !== null &&
+              //   city !== null &&
+              //   schoolProvince !== null &&
+              //   schoolCity !== null &&
+              //   schoolName !== null &&
+              //   passwordValidations(password).valid &&
+              //   password === repeatPassword &&
+              //   formatEmail(waliEmail) &&
+              //   checkNomor(waliPhone)
+              //     ? false
+              //     : true
+              // }
               onPress={() => {
                 checkInternet().then((connection) => {
                   if (connection) {
-                    const bodyParams = JSON.stringify({
-                      email: email,
-                      full_name: name,
-                      kelas: kelas,
-                      role: role,
-                      phone: phone,
-                      provinsi: province !== null ? province.provinsi : "",
-                      kota: city !== null ? city.kabkota : "",
-                      alamat: address,
-                      provinsi_sekolah:
-                        schoolProvince !== null ? schoolProvince.provinsi : "",
-                      kota_sekolah:
-                        schoolCity !== null ? schoolCity.kabkota : "",
-                      sekolah: schoolName,
-                      password: password,
-                      password_comparison: repeatPassword,
-                      nama_wali: waliName,
-                      email_wali: waliEmail,
-                      phone_wali: waliPhone,
-                    });
+                    if (name === "") {
+                      console.log("1");
+                      scrollRef.current?.scrollTo({
+                        y: layout.nama?.y,
+                        animated: true,
+                      });
+                    } else if (!checkNomor(phone)) {
+                      console.log("2");
+                      scrollRef.current?.scrollTo({
+                        y: layout.phone?.y,
+                        animated: true,
+                      });
+                    } else if (kelas === null) {
+                      console.log("3");
+                      scrollRef.current?.scrollTo({
+                        y: layout.kelas?.y,
+                        animated: true,
+                      });
+                    } else if (!passwordValidations(password).valid) {
+                      console.log("4");
+                      scrollRef.current?.scrollTo({
+                        y: layout.password?.y,
+                        animated: true,
+                      });
+                    } else if (
+                      password !== repeatPassword ||
+                      repeatPassword === ""
+                    ) {
+                      console.log("5");
+                      scrollRef.current?.scrollTo({
+                        y: layout.repeatPassword?.y,
+                        animated: true,
+                      });
+                    } else if (province === null) {
+                      console.log("6");
+                      scrollRef.current?.scrollTo({
+                        y: layout.province?.y,
+                        animated: true,
+                      });
+                    } else if (city === null) {
+                      console.log("7");
+                      scrollRef.current?.scrollTo({
+                        y: layout.city?.y,
+                        animated: true,
+                      });
+                    } else if (address === "") {
+                      console.log("8");
+                      scrollRef.current?.scrollTo({
+                        y: layout.address?.y,
+                        animated: true,
+                      });
+                    } else if (schoolProvince === null) {
+                      console.log("9");
+                      scrollRef.current?.scrollTo({
+                        y: layout.schoolProvince?.y,
+                        animated: true,
+                      });
+                    } else if (schoolCity === null) {
+                      console.log("10");
+                      scrollRef.current?.scrollTo({
+                        y: layout.schoolCity?.y,
+                        animated: true,
+                      });
+                    } else if (schoolName === null) {
+                      console.log("11");
+                      scrollRef.current?.scrollTo({
+                        y: layout.schoolName?.y,
+                        animated: true,
+                      });
+                    } else if (waliName === "") {
+                      scrollRef.current?.scrollTo({
+                        y: layout.waliName?.y,
+                        animated: true,
+                      });
+                    } else if (!checkNomor(waliPhone)) {
+                      scrollRef.current?.scrollTo({
+                        y: layout.waliPhone?.y,
+                        animated: true,
+                      });
+                    } else if (!formatEmail(waliEmail)) {
+                      scrollRef.current?.scrollTo({
+                        y: layout.waliEmail?.y,
+                        animated: true,
+                      });
+                    } else {
+                      const bodyParams = JSON.stringify({
+                        email: email,
+                        full_name: name,
+                        kelas: kelas,
+                        role: role,
+                        phone: phone,
+                        provinsi: province !== null ? province.provinsi : "",
+                        kota: city !== null ? city.kabkota : "",
+                        alamat: address,
+                        provinsi_sekolah:
+                          schoolProvince !== null
+                            ? schoolProvince.provinsi
+                            : "",
+                        kota_sekolah:
+                          schoolCity !== null ? schoolCity.kabkota : "",
+                        sekolah: schoolName,
+                        password: password,
+                        password_comparison: repeatPassword,
+                        nama_wali: waliName,
+                        email_wali: waliEmail,
+                        phone_wali: waliPhone,
+                      });
 
-                    dispatch(getRegister(bodyParams));
+                      dispatch(getRegister(bodyParams));
+                    }
                   } else {
                     toast.show({
                       placement: "top",

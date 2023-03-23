@@ -618,7 +618,7 @@ PODS:
     - ExpoModulesCore
   - EXFont (10.0.3):
     - ExpoModulesCore
-  - EXInAppPurchases (14.0.0):
+  - EXInAppPurchases (14.1.1):
     - ExpoModulesCore
   - EXJSONUtils (0.2.0)
   - EXKeepAwake (10.0.0):
@@ -1404,7 +1404,7 @@ SPEC CHECKSUMS:
   EXConstants: 6d585d93723b18d7a8c283591a335609e3bc153e
   EXFileSystem: 99aac7962c11c680681819dd9cbca24e20e5b1e7
   EXFont: 2e1c6fe726d008a039db80df95f48b4921b7fe59
-  EXInAppPurchases: b88582167dde6a7da6253c5f2b7a56edf24d76e1
+  EXInAppPurchases: 1782de3b0a28737d713d032696486973e69f00e1
   EXJSONUtils: f515cf71710855d7ba5bfc6752af3b9a6f6aad01
   EXKeepAwake: 8aa32396a5972d26e75e538603aad0f032396503
   EXManifests: 50e42e01335df4e54109dee7be5a91bfd37347db
@@ -1488,4 +1488,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3116ebea445facb4b16147f2bcaa23f8c2f1018c
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.12.0

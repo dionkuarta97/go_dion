@@ -34,7 +34,12 @@ const PasswordTextInput = (props) => {
           paddingVertical: Sizes.fixPadding / 2,
           flex: 1,
         }}
-        onFocus={() => setFocused(true)}
+        onFocus={() => {
+          setFocused(true);
+          if (props.onFocus) {
+            props.onFocus(true);
+          }
+        }}
         onBlur={() => setFocused(false)}
         onChangeText={props.onChangeText}
       />

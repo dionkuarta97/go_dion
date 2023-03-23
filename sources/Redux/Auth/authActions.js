@@ -52,6 +52,7 @@ export function getLogin({ username, password, playerId }) {
     dispatch(setLoginData(defaultInitState));
     dispatch(setProfile(null));
     dispatch(setToken(null));
+
     try {
       fetch(urlBase + urlLogin, {
         method: "POST",

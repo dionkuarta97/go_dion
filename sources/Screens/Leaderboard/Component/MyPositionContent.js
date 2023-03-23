@@ -10,7 +10,10 @@ import {
 } from "native-base";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMyPosition } from "../../../Redux/Leaderboard/leaderboardAction";
+import {
+  getMyPosition,
+  setMyPosition,
+} from "../../../Redux/Leaderboard/leaderboardAction";
 import LeaderboardCard from "./LeaderboardCard";
 import { Dimensions, ActivityIndicator, TouchableOpacity } from "react-native";
 import Colors from "../../../Theme/Colors";
@@ -28,6 +31,7 @@ const MyPositionContent = (props) => {
   const [select, setSelect] = useState(temp);
   const [page, setPage] = useState(1);
   const [ranking, setRanking] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const cekRank = (myPoisisi, arr) => {
     for (const key in arr) {
@@ -39,7 +43,6 @@ const MyPositionContent = (props) => {
   };
   useEffect(() => {
     setPage(1);
-
     dispatch(
       getMyPosition(
         select === "Nasional"
@@ -50,20 +53,25 @@ const MyPositionContent = (props) => {
         tahun
       )
     );
+
+    return () => {
+      dispatch(setMyPosition({ data: null, loading: false, error: null }));
+    };
   }, [select]);
 
   useEffect(() => {
     if (myPosition.data !== null) {
+      setLoading(false);
       cekRank(myPosition.data.my_position, myPosition.data.rankings);
     }
   }, [myPosition]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
-      y: ranking === 0 ? 0 : (Dimensions.get("screen").height / 9) * ranking,
+      y: (Dimensions.get("screen").height / 12) * ranking,
       animated: true,
     });
-  }, [ranking]);
+  }, [loading]);
 
   console.log(JSON.stringify(myPosition, null, 2));
 
@@ -83,6 +91,10 @@ const MyPositionContent = (props) => {
             variant={"solid"}
             disabled={select === "Nasional" ? true : false}
             onPress={() => {
+              setLoading(true);
+              dispatch(
+                setMyPosition({ data: null, loading: false, error: null })
+              );
               setSelect("Nasional");
             }}
           >
@@ -93,6 +105,10 @@ const MyPositionContent = (props) => {
             colorScheme={select === "Kota" ? "amber" : "coolGray"}
             disabled={select === "Kota" ? true : false}
             onPress={() => {
+              setLoading(true);
+              dispatch(
+                setMyPosition({ data: null, loading: false, error: null })
+              );
               setSelect("Kota");
             }}
           >
@@ -103,6 +119,10 @@ const MyPositionContent = (props) => {
             colorScheme={select === "Sekolah" ? "amber" : "coolGray"}
             disabled={select === "Sekolah" ? true : false}
             onPress={() => {
+              setLoading(true);
+              dispatch(
+                setMyPosition({ data: null, loading: false, error: null })
+              );
               setSelect("Sekolah");
             }}
           >
@@ -119,6 +139,7 @@ const MyPositionContent = (props) => {
             <ActivityIndicator color={Colors.orangeColor} size={30} />
           </View>
         )}
+
         {myPosition.data?.rankings.length === 0 && (
           <Center>
             <View>
@@ -126,6 +147,7 @@ const MyPositionContent = (props) => {
             </View>
           </Center>
         )}
+
         <ScrollView
           ref={scrollRef}
           marginBottom={Dimensions.get("screen").height / 30}

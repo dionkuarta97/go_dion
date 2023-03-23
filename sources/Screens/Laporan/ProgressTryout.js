@@ -5,11 +5,11 @@ import { ScrollView } from "react-native-gesture-handler";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import ProgressTryoutContent from "./components/ProgressScreenContent";
 const ProgressTryout = (props) => {
-  const { type, _id } = props.route.params;
+  const { type, _id, title } = props.route.params;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <DefaultAppBar backEnabled={true} title="Laporan Tryout" />
+      <DefaultAppBar backEnabled={true} title={title} />
 
       <ProgressTryoutContent type={type} _id={_id} />
     </SafeAreaView>

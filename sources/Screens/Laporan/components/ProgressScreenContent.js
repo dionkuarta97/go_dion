@@ -47,6 +47,7 @@ export default function ProgressTryoutContent(props) {
     Linking.openURL(url);
   };
   const profile = useSelector((state) => state.profileReducer.profile);
+  const baseUrl = useSelector((state) => state.initReducer.baseUrl);
   const toast = useToast();
   const navigation = useNavigation();
   const { detailTryout } = useSelector((state) => state.laporanReducer);
@@ -341,7 +342,8 @@ export default function ProgressTryoutContent(props) {
               }}
               onPress={() => {
                 OpenWEB(
-                  "https://apionline.gobimbelonline.net/report/v1/pdf/" +
+                  baseUrl +
+                    "/report/v1/pdf/" +
                     type +
                     "/" +
                     _id +

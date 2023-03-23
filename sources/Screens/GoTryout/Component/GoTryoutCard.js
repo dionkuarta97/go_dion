@@ -132,6 +132,33 @@ const GoTryoutCard = (props) => {
             </Text>
           </HStack>
         )}
+
+        {data.type_label && (
+          <>
+            {data.type_label !== "" && (
+              <HStack>
+                <Box
+                  paddingX={2}
+                  borderRadius={5}
+                  paddingY={0.5}
+                  bg={"#0D9CC9"}
+                  marginBottom={2}
+                  marginTop={complete === 0 ? 0 : 2}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                  >
+                    {data.type_label}
+                  </Text>
+                </Box>
+              </HStack>
+            )}
+          </>
+        )}
         {props.status === "done" && (
           <Text style={{ fontSize: 17, color: "red", fontWeight: "bold" }}>
             {data.reason ? data.reason : "kosong"}

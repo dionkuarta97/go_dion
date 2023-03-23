@@ -18,16 +18,15 @@ export function getVersion(os) {
             ? getState().versionReducer.androidVersion
             : getState().versionReducer.iosVersion,
       });
-      const response = await fetch(
-        "https://apionline.gobimbelonline.net" + "/masterdata/v1/version/check",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: body,
-        }
-      );
+      const urlBase = getState().initReducer.baseUrl;
+      console.log(urlBase);
+      const response = await fetch(urlBase + "/masterdata/v1/version/check", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body,
+      });
       const result = await response.json();
       console.log(result, "dada");
 

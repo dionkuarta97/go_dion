@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef, useRef } from "react";
 import {
   Text,
   View,
@@ -21,6 +21,7 @@ import Colors from "../../Theme/Colors";
 
 const RegisterScreen = (props) => {
   const navigation = useNavigation();
+  const scrollRef = createRef();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FAFAFA" }}>
@@ -33,13 +34,17 @@ const RegisterScreen = (props) => {
             onPress={() => navigation.goBack()}
           />
         }
+        scrollRef={scrollRef}
         element={<Text style={{ ...Fonts.black25Bold }}>Buat Akun Baru</Text>}
         toolbarColor={Colors.primaryColor}
         toolBarMinHeight={40}
         toolbarMaxHeight={230}
         src={require("../../../assets/Images/appbar_bg.png")}
       >
-        <RegisterContent sendedEmail={props.route.params.email} />
+        <RegisterContent
+          scrollRef={scrollRef}
+          sendedEmail={props.route.params.email}
+        />
         <StatusBar backgroundColor={Colors.primaryColor} />
       </SliverAppBar>
     </SafeAreaView>

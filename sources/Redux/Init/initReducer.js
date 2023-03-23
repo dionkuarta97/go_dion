@@ -1,7 +1,8 @@
+import { urlBase } from "../../Services/ApiUrl";
 import { SET_BASEURL, SET_TRANS_IOS } from "./initTypes";
 
 const initialState = {
-  baseUrl: "https://apionline.gobimbelonline.net",
+  baseUrl: urlBase,
   newTransIos: [
     {
       item: {

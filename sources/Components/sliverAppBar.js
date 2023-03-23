@@ -101,6 +101,7 @@ const SliverAppBar = (props) => {
     <View style={styles.fill}>
       <StatusBar translucent={false} backgroundColor="transparent" />
       <Animated.ScrollView
+        ref={props.scrollRef}
         style={styles.fill}
         scrollEventThrottle={1}
         showsVerticalScrollIndicator={false}
