@@ -30,7 +30,7 @@ const carouselItems = [
 const HomeCarousel = () => {
   const dispatch = useDispatch();
   const { listBanner } = useSelector((state) => state.dataReducer);
-  const itemWidth = Math.round(width * 0.8);
+  const itemWidth = Math.round(width * 0.94);
   const [activeSlide, setActiveSlide] = useState(0);
   const OpenWEB = (url) => {
     Linking.openURL(url);
@@ -38,6 +38,7 @@ const HomeCarousel = () => {
 
   useFocusEffect(
     useCallback(() => {
+      setActiveSlide(0);
       dispatch(getBanner());
     }, [])
   );
@@ -55,18 +56,18 @@ const HomeCarousel = () => {
       <ImageBackground
         source={{ uri: item.image_url }}
         style={{
-          width: itemWidth - 10,
-          height: 150,
+          width: itemWidth,
+          height: itemWidth / 2,
           alignItems: "center",
           justifyContent: "center",
         }}
         borderRadius={Sizes.fixPadding - 5.0}
-      ></ImageBackground>
+      />
     </TouchableOpacity>
   );
 
   return (
-    <View style={{ paddingVertical: Sizes.fixPadding * 3 }}>
+    <View style={{ paddingVertical: Sizes.fixPadding * 1 }}>
       {!listBanner.loading && listBanner.data !== null && (
         <>
           <Carousel
@@ -77,9 +78,10 @@ const HomeCarousel = () => {
             renderItem={renderItem}
             onSnapToItem={(index) => setActiveSlide(index)}
             autoplay={true}
-            loop={true}
+            enableMomentum={true}
             lockScrollWhileSnapping={true}
             autoplayInterval={4000}
+            decelerationRate={"fast"}
           />
           <Pagination
             dotsLength={listBanner.data?.length} // also based on number of sildes you want
