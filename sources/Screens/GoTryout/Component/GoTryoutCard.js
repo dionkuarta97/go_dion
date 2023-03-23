@@ -132,11 +132,7 @@ const GoTryoutCard = (props) => {
             </Text>
           </HStack>
         )}
-        {props.status === "done" && (
-          <Text style={{ fontSize: 17, color: "red", fontWeight: "bold" }}>
-            {data.reason ? data.reason : "kosong"}
-          </Text>
-        )}
+
         {data.type_label && (
           <>
             {data.type_label !== "" && (
@@ -147,6 +143,7 @@ const GoTryoutCard = (props) => {
                   paddingY={0.5}
                   bg={"#0D9CC9"}
                   marginBottom={2}
+                  marginTop={complete === 0 ? 0 : 2}
                 >
                   <Text
                     style={{
@@ -155,14 +152,18 @@ const GoTryoutCard = (props) => {
                       color: "white",
                     }}
                   >
-                    {data.type_label.toUpperCase()}
+                    {data.type_label}
                   </Text>
                 </Box>
               </HStack>
             )}
           </>
         )}
-
+        {props.status === "done" && (
+          <Text style={{ fontSize: 17, color: "red", fontWeight: "bold" }}>
+            {data.reason ? data.reason : "kosong"}
+          </Text>
+        )}
         {props.status !== "done" && (
           <>
             {moment.duration(givenAkhir?.diff(current)).asDays() > 0 ? (
