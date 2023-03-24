@@ -1,64 +1,4 @@
 workflows:
-    rn-android-bundle:
-        name: RN Android Bundle
-        max_build_duration: 120
-        instance_type: mac_mini_m1
-        environment:
-            android_signing:
-                - go_release_keystore
-            vars:
-                PACKAGE_NAME: "com.goonline.app"
-            node: 16.13.0
-        triggering:
-            events:
-                - push
-            branch_patterns:
-                - pattern: testing
-                  include: true
-                  source: true
-        scripts:
-            - name: Install npm dependencies
-              script: |
-                  yarn install
-            - name: Set Android SDK location
-              script: |
-                  echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/android/local.properties"
-            - name: Build Android Debug
-              script: |
-                  # Set environment variable so it can be used to increment build number in android/app/build.gradle
-                  # Note that tracks can be specified when retrieving latest build number from Google Play, for example:
-                  # export NEW_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks=alpha) + 1))
-                  # export NEW_BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME") + 1))
-                  # cd android && ./gradlew clean assembleDebug
-            - name: Build Android APK
-              working_directory: android
-              script: |
-                  #./gradlew assembleRelease
-            - name: Build Android Bundle
-              working_directory: android
-              script: |
-                  ./gradlew clean bundleRelease
-        artifacts:
-            #- android/app/build/outputs/**/**/*.aab
-            - android/app/build/**/outputs/bundle/**/*.aab
-    rn-android-apk:
-        name: RN Android APK
-        instance_type: mac_pro
-        environment:
-            android_signing:
-                - go_release_keystore
-            node: 16.13.0
-        # cache:
-        #     cache_paths:
-        #         - $CM_BUILD_DIR/node_modules
-        scripts:
-            - name: Install npm dependencies
-              script: yarn install
-            - name: Build Android Debug
-              working_directory: android
-              script: ./gradlew assembleDebug
-        artifacts:
-            - android/app/build/outputs/**/*.apk
     rn-android-playstore:
         name: RN Android Playstore
         instance_type: mac_pro
@@ -102,4 +42,4 @@ workflows:
                     - leopapilaya@gmail.com
             google_play:
                 credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-                track: internal
+                track: alpha
