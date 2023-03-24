@@ -22,6 +22,7 @@ import Colors from "../../../Theme/Colors";
 import { HStack, useToast, VStack } from "native-base";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
+import analytics from '@react-native-firebase/analytics';
 
 const HomeMenu = (props) => {
   const toast = useToast();
@@ -73,7 +74,15 @@ const HomeMenu = (props) => {
     }
   }, [homeMenuState]);
 
-  const onPressItem = (idx) => {
+  const onPressItem = async (idx) => {
+    /**
+     * Kirim data analytic
+     */
+      await analytics().logSelectContent({
+        content_type: 'clothing',
+        item_id: 'abcd',
+      })
+
     switch (idx) {
       case 0:
         navigation.navigate("ProductScreen");
