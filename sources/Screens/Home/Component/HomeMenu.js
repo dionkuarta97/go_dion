@@ -83,6 +83,9 @@ const HomeMenu = (props) => {
         item_id: 'abcd',
       })
 
+      /** analytics custom event */
+      await analytics().logEvent('test_event', { 'id': 123});
+
     switch (idx) {
       case 0:
         navigation.navigate("ProductScreen");
