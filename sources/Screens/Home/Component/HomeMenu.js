@@ -87,7 +87,7 @@ const HomeMenu = (props) => {
      * Kirim data analytic
      */
       await analytics().logSelectContent({
-        content_type: 'blue jean',
+        content_type: 'sempak',
         item_id: 'Levis',
       })
 
