@@ -75,12 +75,16 @@ const HomeMenu = (props) => {
   }, [homeMenuState]);
 
   const onPressItem = async (idx) => {
+    if(__DEV__){
+      console.log('---> onPressItem');
+    }
+    
     /**
      * Kirim data analytic
      */
       await analytics().logSelectContent({
-        content_type: 'clothing',
-        item_id: 'abcd',
+        content_type: 'blue jean',
+        item_id: 'Levis',
       })
 
       /** analytics custom event */
