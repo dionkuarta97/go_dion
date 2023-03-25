@@ -26,6 +26,7 @@ import { useToast } from "native-base";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 import { formatEmail, passwordValidations } from "../../../Services/helper";
+import analytics from '@react-native-firebase/analytics';
 
 const LoginContent = (props) => {
   const toast = useToast();
@@ -138,7 +139,13 @@ const LoginContent = (props) => {
 
         <DefaultPrimaryButton
           text="Masuk"
-          onPress={() => {
+          onPress={async () => {
+            /** send analytic */
+            await analytics().logSelectContent({
+              content_type: 't-shirt',
+              item_id: 'Levis',
+            })
+            
             checkInternet().then((connection) => {
               if (connection) {
                 dispatch(

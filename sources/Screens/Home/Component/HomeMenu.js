@@ -77,6 +77,10 @@ const HomeMenu = (props) => {
   const onPressItem = async (idx) => {
     if(__DEV__){
       console.log('---> onPressItem');
+      await analytics().logSelectContent({
+        content_type: 'rombengan',
+        item_id: 'gk jelas',
+      })
     }
     
     /**
