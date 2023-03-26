@@ -27,6 +27,8 @@ import { Box, Button, Center, HStack, useToast } from "native-base";
 import moment from "moment";
 import "moment/min/locales";
 import CountDown from "react-native-countdown-component";
+import Analytics from "../../../Services/analytics";
+import { EventAnalytic } from "../../../Utils/event_analytic";
 
 /** di gunakan untuk ios */
 
@@ -296,6 +298,11 @@ const ProductDetailContent = (props) => {
     setGivenAwal(moment(item.details.tanggal_awal));
     setGivenAkhir(moment(item.details.tanggal_akhir));
     setCurrent(moment().utcOffset(7).startOf("second"));
+
+    /** send analytic */
+    Analytics.logEvent('go_event', {
+      event_id: EventAnalytic.ProductDetail
+    })
   }, []);
 
   const requestPurchase = async () => {

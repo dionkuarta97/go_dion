@@ -83,16 +83,16 @@ const HomeMenu = (props) => {
       })
     }
     
-    /**
-     * Kirim data analytic
-     */
-      await analytics().logSelectContent({
-        content_type: 'sempak',
-        item_id: 'Levis',
-      })
+    // /**
+    //  * Kirim data analytic
+    //  */
+    //   await analytics().logSelectContent({
+    //     content_type: 'sempak',
+    //     item_id: 'Levis',
+    //   })
 
-      /** analytics custom event */
-      await analytics().logEvent('test_event', { 'id': 123});
+    //   /** analytics custom event */
+    //   await analytics().logEvent('test_event', { 'id': 123});
 
     switch (idx) {
       case 0:
