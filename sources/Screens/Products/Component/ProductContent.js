@@ -21,8 +21,9 @@ import NoData from "../../../Components/NoData";
 import checkInternet from "../../../Services/CheckInternet";
 import {Center, useToast} from "native-base";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
-import Analytics from "../../../Services/analytics";
+// import Analytics from "../../../Services/analytics";
 import {EventAnalytic} from "../../../Utils/event_analytic";
+import analytics from '@react-native-firebase/analytics';
 
 const products = [
     {id: 1, title: "a"},
@@ -73,10 +74,15 @@ const ProductContent = () => {
                 <Text style={{...Fonts.black20Bold, flex: 1}}>{title}</Text>
                 <TouchableOpacity
                     activeOpacity={0.8}
-                    onPress={() => {
+                    onPress={async () => {
                         /** send analytic */
 
-                        Analytics.logEvent("go_event", {
+                        // Analytics.logEvent("go_event", {
+                        //     event_id: EventAnalytic.PaketTryoutAll,
+                        // });
+
+                        /** analytics custom event */
+                        await analytics().logEvent("go_events", {
                             event_id: EventAnalytic.PaketTryoutAll,
                         });
 

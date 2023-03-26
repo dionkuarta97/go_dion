@@ -140,11 +140,6 @@ const LoginContent = (props) => {
         <DefaultPrimaryButton
           text="Masuk"
           onPress={async () => {
-            /** send analytic */
-            await analytics().logSelectContent({
-              content_type: 't-shirt',
-              item_id: 'Levis',
-            })
             
             checkInternet().then((connection) => {
               if (connection) {

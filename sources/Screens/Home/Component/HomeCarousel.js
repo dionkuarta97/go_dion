@@ -47,12 +47,6 @@ const HomeCarousel = () => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={async () => {
-        /** send analytics */
-        await analytics().logSelectContent({
-          content_type: 'dress',
-          item_id: 'Nurlela',
-        })
-        
         console.log(item.target.replace("external:", ""));
         if (item.target[0] === "e") {
           OpenWEB(item.target.replace("external:", ""));
