@@ -1,5 +1,7 @@
 import analytics, { firebase } from "@react-native-firebase/analytics";
 
+
+
 class Analytics {
   static init() {
     if (firebase.app().utils().isRunningInTestLab) {
