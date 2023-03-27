@@ -21,7 +21,7 @@ import NoData from "../../../Components/NoData";
 import checkInternet from "../../../Services/CheckInternet";
 import {Center, useToast} from "native-base";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
-// import Analytics from "../../../Services/analytics";
+import Analytics from "../../../Services/analytics";
 import {EventAnalytic} from "../../../Utils/event_analytic";
 import analytics from '@react-native-firebase/analytics';
 
@@ -77,14 +77,14 @@ const ProductContent = () => {
                     onPress={async () => {
                         /** send analytic */
 
-                        // Analytics.logEvent("go_event", {
-                        //     event_id: EventAnalytic.PaketTryoutAll,
-                        // });
-
-                        /** analytics custom event */
-                        await analytics().logEvent("go_events", {
+                        Analytics.logEvent("go_event", {
                             event_id: EventAnalytic.PaketTryoutAll,
                         });
+
+                        /** analytics custom event */
+                        // await analytics().logEvent("go_events", {
+                        //     event_id: EventAnalytic.PaketTryoutAll,
+                        // });
 
                         navigation.navigate("ProductCategoryScreen", {
                             id: id,

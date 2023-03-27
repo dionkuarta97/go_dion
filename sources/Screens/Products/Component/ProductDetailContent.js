@@ -27,7 +27,7 @@ import { Box, Button, Center, HStack, useToast } from "native-base";
 import moment from "moment";
 import "moment/min/locales";
 import CountDown from "react-native-countdown-component";
-// import Analytics from "../../../Services/analytics";
+import Analytics from "../../../Services/analytics";
 import { EventAnalytic } from "../../../Utils/event_analytic";
 import analytics from '@react-native-firebase/analytics';
 
@@ -301,14 +301,8 @@ const ProductDetailContent = (props) => {
     setCurrent(moment().utcOffset(7).startOf("second"));
 
     /** send analytic */
-    // Analytics.logEvent('go_event', {
-    //   event_id: EventAnalytic.ProductDetail
-    // })
+    Analytics.logCustomEvent(EventAnalytic.ProductDetail)
 
-    /** analytics custom event */
-    await analytics().logEvent("go_events", {
-      event_id: EventAnalytic.ProductDetail,
-  });
   }, []);
 
   const requestPurchase = async () => {

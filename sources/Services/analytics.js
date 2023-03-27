@@ -18,6 +18,14 @@ class Analytics {
   static logEvent = async (eventName, propertyObject = {}) => {
     await analytics().logEvent(eventName, propertyObject);
   };
+
+  static logCustomEvent = async (keyValue) => {
+    await analytics().logEvent('go_event', {
+      event_key: keyValue,
+    });
+  };
+
+
 }
 
 export default Analytics;
