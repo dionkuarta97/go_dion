@@ -104,6 +104,7 @@ const PilihLeaderboardScreen = () => {
                   style={{ borderRadius: 15 }}
                   onPress={() => {
                     if (listTahunAjaran.data) {
+                      
                       navigation.navigate("LeaderTryoutScreen");
                     } else {
                       Alert.alert("Error", "Terjadi kesalahan pada server");

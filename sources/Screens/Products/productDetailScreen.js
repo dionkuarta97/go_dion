@@ -29,6 +29,8 @@ import LoadingModal from "../../Components/Modal/LoadingModal";
 import moment from "moment";
 import DefaultModal from "../../Components/Modal/DefaultModal";
 import CountDown from "react-native-countdown-component";
+import Analytics from "../../Services/analytics";
+import { EventAnalytic } from "../../Utils/event_analytic";
 
 const { width } = Dimensions.get("screen");
 
@@ -184,6 +186,11 @@ const ProductDetailScreen = (props) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 onPress={() => {
+
+                  /** send analytic */
+                  Analytics.logCustomEvent(
+                    EventAnalytic.GoBuyNow
+                );
                   if (isLogin) {
                     if (item.expired) {
                       Alert.alert(

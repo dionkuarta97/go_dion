@@ -7,7 +7,8 @@ export enum EventAnalytic {
     GoAddToCart = 'add_to_cart',
     GoProfileProdi = 'profile_prodi',
     GoProfileEdit = 'profile_edit',
-    GoLeaderboard = 'leaderboard',
+    GoLeaderboardTryout = 'lb_tryout',
+    GoLeaderboardSoal = 'lb_pengerjaan_soal',
     GoReportTryout = 'report_tryout',
     GoReportMateri = 'report_materi',
 }
