@@ -21,9 +21,9 @@ import NoData from "../../../Components/NoData";
 import checkInternet from "../../../Services/CheckInternet";
 import {Center, useToast} from "native-base";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
-import Analytics from "../../../Services/analytics";
+import Analytics from "../../../Services/goAnalytics";
 import {EventAnalytic} from "../../../Utils/event_analytic";
-import analytics from '@react-native-firebase/analytics';
+import analytics from "@react-native-firebase/analytics";
 
 const products = [
     {id: 1, title: "a"},
