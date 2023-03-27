@@ -11,4 +11,7 @@ export enum EventAnalytic {
     GoLeaderboardSoal = 'lb_pengerjaan_soal',
     GoReportTryout = 'report_tryout',
     GoReportMateri = 'report_materi',
+    GoTryoutPending = 'tryout_pending',
+    GoTryoutProgress = 'tryout_progress',
+    GoTryoutDone = 'tryout_done',
 }
