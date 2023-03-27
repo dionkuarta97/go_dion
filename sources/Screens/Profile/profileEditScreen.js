@@ -48,6 +48,8 @@ import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { checkNomor, formatEmail } from "../../Services/helper";
+import Analytics from "../../Services/goAnalytics";
+import { EventAnalytic } from "../../Utils/event_analytic";
 
 const ProfileEditScreen = (props) => {
   const navigation = useNavigation();
@@ -212,6 +214,10 @@ const ProfileEditScreen = (props) => {
 
   useEffect(() => {
     if (update.data) {
+
+      /** send analytic: update profile */
+      Analytics.logCustomEvent(EventAnalytic.GoProfileEdit)
+      
       dispatch(setUpdateProfile({ data: null, loading: false, error: null }));
       toast.show({
         title: "Berhasil",

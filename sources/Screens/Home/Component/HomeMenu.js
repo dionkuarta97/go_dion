@@ -75,25 +75,7 @@ const HomeMenu = (props) => {
   }, [homeMenuState]);
 
   const onPressItem = async (idx) => {
-    if(__DEV__){
-      console.log('---> onPressItem');
-      await analytics().logSelectContent({
-        content_type: 'rombengan',
-        item_id: 'gk jelas',
-      })
-    }
     
-    // /**
-    //  * Kirim data analytic
-    //  */
-    //   await analytics().logSelectContent({
-    //     content_type: 'sempak',
-    //     item_id: 'Levis',
-    //   })
-
-    //   /** analytics custom event */
-    //   await analytics().logEvent('test_event', { 'id': 123});
-
     switch (idx) {
       case 0:
         navigation.navigate("ProductScreen");

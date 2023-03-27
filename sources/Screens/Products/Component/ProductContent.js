@@ -77,9 +77,7 @@ const ProductContent = () => {
                     onPress={async () => {
                         /** send analytic */
 
-                        Analytics.logEvent("go_event", {
-                            event_id: EventAnalytic.PaketTryoutAll,
-                        });
+                        Analytics.logCustomEvent(EventAnalytic.GoPaketTryoutAll);
 
                         /** analytics custom event */
                         // await analytics().logEvent("go_events", {

@@ -19,6 +19,9 @@ import { getListCity, getListProvince } from "../../Redux/Data/dataActions";
 import { Box, useToast } from "native-base";
 import checkInternet from "../../Services/CheckInternet";
 import ToastErrorContent from "../../Components/ToastErrorContent";
+import Analytics from "../../Services/goAnalytics";
+import { EventAnalytic } from "../../Utils/event_analytic";
+
 const ProfileScreen = (props) => {
   const navigation = useNavigation();
   const toast = useToast();
@@ -94,6 +97,10 @@ const ProfileScreen = (props) => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() => {
+
+                  /** send analytic : Profile */
+                  Analytics.logCustomEvent(EventAnalytic.GoProfileEdit)
+                  
                   navigation.navigate("ProfileEditScreen", {
                     profile: profile,
                   });

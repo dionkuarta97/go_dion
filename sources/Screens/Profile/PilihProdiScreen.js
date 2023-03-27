@@ -27,6 +27,8 @@ import SelectJurusan from "./Component/SelectJurusan";
 import SelectJurusanDua from "./Component/SelectJurusanDua";
 import SelectUniversitas from "./Component/SelectUniversitas";
 import SelectUniversitasDua from "./Component/SelectUniversitasDua";
+import Analytics from "../../Services/goAnalytics";
+import { EventAnalytic } from "../../Utils/event_analytic";
 
 const PilihProdiScreen = (props) => {
   const navigation = useNavigation();
@@ -59,6 +61,10 @@ const PilihProdiScreen = (props) => {
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     if (update.data) {
+      
+      /** send analytic: pilih prodi */
+      Analytics.logCustomEvent(EventAnalytic.GoProfileProdi)
+      
       navigation.goBack();
       toast.show({
         title: "Berhasil",

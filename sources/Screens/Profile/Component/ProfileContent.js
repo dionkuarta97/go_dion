@@ -14,6 +14,9 @@ import ImageView from "react-native-image-viewing";
 import defaultImage from "../../../../assets/Images/user_profile/no-user.jpg";
 import { capitalizeFirstLetter } from "../../../Services/helper";
 
+import Analytics from "../../../Services/goAnalytics";
+import { EventAnalytic } from "../../../Utils/event_analytic";
+
 const DEFAULT_IMAGE = Image.resolveAssetSource(defaultImage).uri;
 
 const ProfileContent = (props) => {
@@ -145,6 +148,10 @@ const ProfileContent = (props) => {
                   prodi: profile.program_studi,
                 });
               } else {
+
+                /** send analytic : Pilih Prodi */
+                Analytics.logCustomEvent(EventAnalytic.GoProfileProdi)
+                
                 navigation.navigate("PilihProdiScreen", {
                   profile,
                   from: props.from,

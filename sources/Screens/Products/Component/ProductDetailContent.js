@@ -331,7 +331,7 @@ const ProductDetailContent = (props) => {
 
         /** send analytic */
         
-        Analytics.logCustomEvent(EventAnalytic.ProductDetail);
+        Analytics.logCustomEvent(EventAnalytic.GoProductDetail);
     }, []);
 
     const requestPurchase = async () => {
