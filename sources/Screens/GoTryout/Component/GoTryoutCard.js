@@ -7,6 +7,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import { Progress, Box, VStack, HStack } from "native-base";
 import moment from "moment";
+import Analytics from "../../../Services/goAnalytics";
+import { EventAnalytic } from "../../../Utils/event_analytic";
 
 const GoTryoutCard = (props) => {
   const navigation = useNavigation();
@@ -48,7 +50,25 @@ const GoTryoutCard = (props) => {
 
   return (
     <TouchableOpacity
+
+    
+    
+
       onPress={() => {
+
+        if(__DEV__){
+          console.log('---> status:', props.status);
+        }
+
+        /** send analytic */
+        if (props.status == 'untouched') {
+          Analytics.logCustomEvent(EventAnalytic.GoTryoutPending)
+        } else if (props.status == 'touched') {
+          Analytics.logCustomEvent(EventAnalytic.GoTryoutProgress)
+        } else {
+          Analytics.logCustomEvent(EventAnalytic.GoTryoutDone)
+        }
+
         navigation.navigate("TryoutDetailScreen", {
           data: data.includes,
           tryoutId: tryoutId,

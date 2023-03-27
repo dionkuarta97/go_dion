@@ -23,7 +23,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setChartTryout, setListTryout} from "../../Redux/Laporan/LaporanAction";
 import NoData from "../../Components/NoData";
 import {EventAnalytic} from "../../Utils/event_analytic";
-import Analytics from "../../../Services/goAnalytics";
+import Analytics from "../../Services/goAnalytics";
 
 const LaporanScreen = () => {
     const dispatch = useDispatch();
@@ -149,7 +149,6 @@ const LaporanScreen = () => {
                             style={{borderRadius: 15, marginTop: 15}}
                             onPress={() => {
                                 /** send analytic */
-
                                 Analytics.logCustomEvent(
                                     EventAnalytic.GoReportTryout
                                 );
