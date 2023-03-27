@@ -14,4 +14,7 @@ export enum EventAnalytic {
     GoTryoutPending = 'tryout_pending',
     GoTryoutProgress = 'tryout_progress',
     GoTryoutDone = 'tryout_done',
+    GoPurchasePending = 'purchase_pending',
+    GoPurchaseSuccess = 'purchase_success',
+    GoPurchaseExpired = 'purchase_expired',
 }

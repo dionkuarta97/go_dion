@@ -60,7 +60,7 @@ const GoTryoutCard = (props) => {
           console.log('---> status:', props.status);
         }
 
-        /** send analytic */
+        /** send analytic : Tryout */
         if (props.status == 'untouched') {
           Analytics.logCustomEvent(EventAnalytic.GoTryoutPending)
         } else if (props.status == 'touched') {

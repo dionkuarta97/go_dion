@@ -25,8 +25,10 @@ import CompStyles from "../../../Theme/styles/globalStyles";
 import EmptyIndicator from "../../../Components/Indicator/EmptyIndicator";
 import checkInternet from "../../../Services/CheckInternet";
 import { useToast } from "native-base";
+import Analytics from "../../../Services/goAnalytics";
+import { EventAnalytic } from "../../../Utils/event_analytic";
 
-const PurchaseContent = (props) => {
+const   PurchaseContent = (props) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -59,6 +61,18 @@ const PurchaseContent = (props) => {
     return (
       <TouchableOpacity
         onPress={() => {
+
+           
+
+          /** send analytic : Pembelian */
+        if (props.status == 'pending') {
+          Analytics.logCustomEvent(EventAnalytic.GoPurchasePending)
+        } else if (props.status == 'done') {
+          Analytics.logCustomEvent(EventAnalytic.GoPurchaseSuccess)
+        } else {
+          Analytics.logCustomEvent(EventAnalytic.GoPurchaseExpired)
+        }
+
           if (item.status === "pending")
             navigation.navigate("PaymentScreen", {
               orderId: item.order_id,
