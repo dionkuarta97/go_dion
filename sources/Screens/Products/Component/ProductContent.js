@@ -23,7 +23,7 @@ import {Center, useToast} from "native-base";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 import Analytics from "../../../Services/goAnalytics";
 import {EventAnalytic} from "../../../Utils/event_analytic";
-import analytics from "@react-native-firebase/analytics";
+// import analytics from "@react-native-firebase/analytics";
 
 const products = [
     {id: 1, title: "a"},
@@ -77,11 +77,19 @@ const ProductContent = () => {
                     onPress={async () => {
                         /** send analytic */
 
-                        Analytics.logCustomEvent(EventAnalytic.GoPaketTryoutAll);
+                        Analytics.logCustomEvent(
+                            EventAnalytic.GoPaketTryoutAll
+                        );
+
+                        // await analytics().logSelectContent({
+                        //     content_type: EventAnalytic.GoPaketTryoutAll,
+                        //     item_id:''
+                        // });
+                        
 
                         /** analytics custom event */
-                        // await analytics().logEvent("go_events", {
-                        //     event_id: EventAnalytic.PaketTryoutAll,
+                        // await analytics().logEvent("screen_view", {
+                        //     screen_name : EventAnalytic.GoPaketTryoutAll,
                         // });
 
                         navigation.navigate("ProductCategoryScreen", {

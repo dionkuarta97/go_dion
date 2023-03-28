@@ -19,7 +19,7 @@ class Analytics {
 
     static logCustomEvent = async (keyValue) => {
         await analytics().logEvent("go_event", {
-            event_key: keyValue,
+            content_type: keyValue,
         });
     };
 }
