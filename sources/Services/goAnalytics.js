@@ -17,8 +17,9 @@ class Analytics {
         await analytics().logEvent(eventName, propertyObject);
     };
 
+    /** ini yang dipake */
     static logCustomEvent = async (keyValue) => {
-        await analytics().logEvent("go_event", {
+        await analytics().logEvent("select_content", {
             content_type: keyValue,
         });
     };
