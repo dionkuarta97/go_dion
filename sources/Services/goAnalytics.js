@@ -21,6 +21,7 @@ class Analytics {
     static logCustomEvent = async (keyValue) => {
         await analytics().logSelectContent({
             content_type: keyValue,
+            item_id: "",
         });
     };
 
