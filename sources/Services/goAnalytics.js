@@ -19,10 +19,16 @@ class Analytics {
 
     /** ini yang dipake */
     static logCustomEvent = async (keyValue) => {
-        await analytics().logEvent("select_content", {
+        await analytics().logSelectContent({
             content_type: keyValue,
         });
     };
+
+    // static logCustomEvent = async (keyValue) => {
+    //     await analytics().logEvent("select_content", {
+    //         content_type: keyValue,
+    //     });
+    // };
 }
 
 export default Analytics;
