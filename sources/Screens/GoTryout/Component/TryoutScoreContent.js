@@ -3,57 +3,59 @@ import { Text, View } from "react-native";
 import Sizes from "../../../Theme/Sizes";
 
 const TryoutScoreContent = (props) => {
-  const detail = props.detail;
-  console.log(JSON.stringify(detail, null, 2));
-  return (
-    <View style={{ flex: 1, alignItems: "center" }}>
-      <View
-        style={{
-          flexDirection: "row",
-          borderBottomWidth: 1,
-          borderBottomColor: "lightgrey",
-          paddingVertical: Sizes.fixPadding,
-        }}
-      >
-        <Text style={{ color: "grey", flex: 1 }}>Jawaban Benar</Text>
-        <Text style={{ fontWeight: "bold" }}>{detail.true_answer}</Text>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          borderBottomWidth: 1,
-          borderBottomColor: "lightgrey",
-          paddingVertical: Sizes.fixPadding,
-        }}
-      >
-        <Text style={{ color: "grey", flex: 1 }}>Benar Sebagian</Text>
-        <Text style={{ fontWeight: "bold" }}>{detail.true_half_answer}</Text>
-      </View>
+   const detail = props.detail;
 
-      <View
-        style={{
-          flexDirection: "row",
-          borderBottomWidth: 1,
-          borderBottomColor: "lightgrey",
-          paddingVertical: Sizes.fixPadding,
-        }}
-      >
-        <Text style={{ color: "grey", flex: 1 }}>Jawaban Salah</Text>
-        <Text style={{ fontWeight: "bold" }}>{detail.false_answer}</Text>
+   return (
+      <View style={{ flex: 1, alignItems: "center" }}>
+         <View
+            style={{
+               flexDirection: "row",
+               borderBottomWidth: 1,
+               borderBottomColor: "lightgrey",
+               paddingVertical: Sizes.fixPadding,
+            }}
+         >
+            <Text style={{ color: "grey", flex: 1 }}>Jawaban Benar</Text>
+            <Text style={{ fontWeight: "bold" }}>{detail.true_answer}</Text>
+         </View>
+         <View
+            style={{
+               flexDirection: "row",
+               borderBottomWidth: 1,
+               borderBottomColor: "lightgrey",
+               paddingVertical: Sizes.fixPadding,
+            }}
+         >
+            <Text style={{ color: "grey", flex: 1 }}>Benar Sebagian</Text>
+            <Text style={{ fontWeight: "bold" }}>
+               {detail.true_half_answer}
+            </Text>
+         </View>
+
+         <View
+            style={{
+               flexDirection: "row",
+               borderBottomWidth: 1,
+               borderBottomColor: "lightgrey",
+               paddingVertical: Sizes.fixPadding,
+            }}
+         >
+            <Text style={{ color: "grey", flex: 1 }}>Jawaban Salah</Text>
+            <Text style={{ fontWeight: "bold" }}>{detail.false_answer}</Text>
+         </View>
+         <View
+            style={{
+               flexDirection: "row",
+               borderBottomWidth: 1,
+               borderBottomColor: "lightgrey",
+               paddingVertical: Sizes.fixPadding,
+            }}
+         >
+            <Text style={{ color: "grey", flex: 1 }}>Tidak Dijawab</Text>
+            <Text style={{ fontWeight: "bold" }}>{detail.no_answer}</Text>
+         </View>
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          borderBottomWidth: 1,
-          borderBottomColor: "lightgrey",
-          paddingVertical: Sizes.fixPadding,
-        }}
-      >
-        <Text style={{ color: "grey", flex: 1 }}>Tidak Dijawab</Text>
-        <Text style={{ fontWeight: "bold" }}>{detail.no_answer}</Text>
-      </View>
-    </View>
-  );
+   );
 };
 
 export default TryoutScoreContent;
