@@ -5,19 +5,14 @@ import {
    SafeAreaView,
    StatusBar,
    StyleSheet,
-   TouchableOpacity,
-   Image,
-   TextInput,
    Platform,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
 import SliverAppBar from "../../Components/sliverAppBar";
 import { useNavigation } from "@react-navigation/core";
 import LoginContent from "./Component/LoginContent";
 
 import Fonts from "../../Theme/Fonts";
-import Sizes from "../../Theme/Sizes";
 import Colors from "../../Theme/Colors";
 
 const LoginScreen = (props) => {
@@ -27,6 +22,7 @@ const LoginScreen = (props) => {
    const section = props.route.params ? props.route.params.section : null;
 
    useEffect(() => {
+      //** untuk cek apakah pagi, siang, sore, atau malam */
       let time = new Date().toLocaleTimeString("id-ID");
 
       if (Platform.OS === "android") {

@@ -66,25 +66,32 @@ const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 20 : StatusBar.currentHeight;
 const HEADER_HEIGHT = Platform.OS === "ios" ? 44 : 56;
 
 export default App = () => {
+   //** deep link config */
    const config = {
       screens: {
          NewPasswordScreen: "newpassword/:email/:token/:date/:expdate",
       },
    };
+
+   //** deep link for android */
    const linkingAndroid = {
       prefixes: ["https://goapp/"],
       config,
    };
+
+   //** deep link for ios */
    const linkingIos = {
       prefixes: ["https://student.gobimbelonline.net", "goonline://"],
       config,
    };
 
    useEffect(() => {
+      //** setup One Signal */
       OneSignal.setLogLevel(6, 0);
       OneSignal.setAppId("419576d0-3ce4-47c8-9538-452216cfb157");
       OneSignal.setNotificationOpenedHandler((notification) => {});
 
+      //** permission notification only work for ios */
       OneSignal.promptForPushNotificationsWithUserResponse((response) => {});
    }, []);
 

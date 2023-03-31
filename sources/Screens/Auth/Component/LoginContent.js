@@ -26,7 +26,6 @@ import { useToast } from "native-base";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 import { formatEmail, passwordValidations } from "../../../Services/helper";
-import analytics from "@react-native-firebase/analytics";
 
 const LoginContent = (props) => {
    const toast = useToast();
@@ -40,10 +39,12 @@ const LoginContent = (props) => {
    const login = useSelector((state) => state.authReducer.login);
 
    useEffect(() => {
+      //** clean redux */
       dispatch(setLoginData({ error: null, loading: false, data: null }));
    }, []);
 
    useEffect(() => {
+      //** pengecekan asal screen ketika login, setiap kodisi punya tujuan masing2 */
       if (login.data) {
          if (props.item) {
             navigation.navigate("ProductDetailScreen", {
@@ -56,6 +57,7 @@ const LoginContent = (props) => {
       }
    }, [login.data]);
 
+   //** function untuk mendapat kan unique id dari device */
    const getPlayerId = async () => {
       const deviceState = await OneSignal.getDeviceState();
       setPlayerId(deviceState.userId);
@@ -63,6 +65,7 @@ const LoginContent = (props) => {
    useEffect(() => {
       getPlayerId();
    }, []);
+
    const registerText = () => {
       return (
          <TouchableOpacity

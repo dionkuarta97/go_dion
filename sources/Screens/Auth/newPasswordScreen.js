@@ -1,25 +1,15 @@
 import { useNavigation, useFocusEffect } from "@react-navigation/core";
 import React, { useState, useEffect, useCallback } from "react";
-import {
-   SafeAreaView,
-   StatusBar,
-   Text,
-   TouchableOpacity,
-   View,
-   Platform,
-} from "react-native";
+import { SafeAreaView, StatusBar, Text, View, Platform } from "react-native";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
 import DefaultPrimaryButton from "../../Components/Button/DefaultPrimaryButton";
 import PasswordTextInput from "../../Components/CustomTextInput/PasswordTextInput";
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import Sizes from "../../Theme/Sizes";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import DefaultModal from "../../Components/Modal/DefaultModal";
-import {
-   newChangePassword,
-   updatePassword,
-} from "../../Redux/Profile/profileActions";
+import { newChangePassword } from "../../Redux/Profile/profileActions";
 import LoadingModal from "../../Components/Modal/LoadingModal";
 import { passwordValidations } from "../../Services/helper";
 import { Center } from "native-base";
@@ -36,14 +26,11 @@ const NewPasswordScreen = ({ route }) => {
 
    const dispatch = useDispatch();
 
-   const _updatePassword = useSelector(
-      (state) => state.profileReducer.updatePassword
-   );
-
    useEffect(() => {}, []);
 
    useFocusEffect(
       useCallback(() => {
+         //** reset semua state */
          setError(null);
          setSuccess(false);
          setPassword("");
@@ -51,29 +38,6 @@ const NewPasswordScreen = ({ route }) => {
          setLoading(false);
       }, [])
    );
-
-   function updateParams() {
-      var par = {
-         email: params.email,
-         token: params.token,
-         password: password,
-      };
-
-      dispatch(updatePassword(par));
-   }
-
-   function passwordValidation(text) {
-      if (text.length < 8)
-         return "Password minimal 8 karakter, mengandung huruf besar, huruf kecil, dan angka";
-      if (!text.match(new RegExp("[A-Z]")))
-         return "Password harus mengandung huruf besar, huruf kecil, dan angka";
-      if (!text.match(new RegExp("[a-z]")))
-         return "Password harus mengandung huruf kecil dan angka";
-      if (text.search(/[0-9]/) < 0) {
-         return "Password harus mengandung angka";
-      }
-      return null;
-   }
 
    return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -115,6 +79,7 @@ const NewPasswordScreen = ({ route }) => {
                      text="Kirim"
                      onPress={() => {
                         setLoading(true);
+                        //** mengirim data ke server */
                         dispatch(
                            newChangePassword({
                               email: params.email,
@@ -166,17 +131,11 @@ const NewPasswordScreen = ({ route }) => {
                   <DefaultPrimaryButton
                      text="Kembali ke Beranda"
                      onPress={() => {
-                        // todo : replace route
-                        // _updatePassword.data = 0
                         navigation.navigate("MainScreen");
                      }}
                   />
                </DefaultModal>
             )}
-
-            {/* {_updatePassword.error !== null && (
-          <Text style={{ color: "red" }}>{login.error}</Text>
-        )} */}
          </View>
          <StatusBar
             translucent={false}
