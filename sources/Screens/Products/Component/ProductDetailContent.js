@@ -276,9 +276,6 @@ const ProductDetailContent = (props) => {
                await ExpoIap.disconnectAsync();
                navigation.navigate("MainScreen");
                setLoading(false);
-               console.warn(
-                  `Something went wrong with the purchase. Received errorCode ${errorCode}`
-               );
             }
 
             // stop processing. This state update should be reflected
@@ -588,11 +585,15 @@ const ProductDetailContent = (props) => {
                         text={
                            item.category === "tryout"
                               ? "Lihat Tryout mu"
+                              : item.category === "busak"
+                              ? "Lihat Buku Sakti"
                               : "Lanjutkan Belajar mu"
                         }
                         onPress={() => {
                            if (item.category === "tryout") {
                               navigation.navigate("GoTryoutScreen");
+                           } else if (item.category === "busak") {
+                              navigation.navigate("BukuSaktiScreen");
                            } else {
                               navigation.navigate("ProductIncludeScreen", {
                                  produkId: item._id,

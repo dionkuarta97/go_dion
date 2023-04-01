@@ -5,18 +5,15 @@ import {
    ActivityIndicator,
    ScrollView,
    RefreshControl,
-   Alert,
    Dimensions,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import NoData from "../../../Components/NoData";
 import { getGoTryout } from "../../../Redux/Tryout/tryoutActions";
 import checkInternet from "../../../Services/CheckInternet";
 import Colors from "../../../Theme/Colors";
 import GoTryoutCard from "./GoTryoutCard";
 import NoMateri from "../../GoBelajar/Component/noMateri";
 import { useFocusEffect } from "@react-navigation/native";
-import DefaultModal from "../../../Components/Modal/DefaultModal";
 import { Button, Center } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 

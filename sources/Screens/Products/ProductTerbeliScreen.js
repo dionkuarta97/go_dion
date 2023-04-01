@@ -94,46 +94,40 @@ const ProductTerbeliScreen = () => {
             >
                {groupedProduk.data && (
                   <>
-                     {groupedProduk.data.map(
-                        (el, idx) =>
-                           idx !== 2 && (
-                              <Button
-                                 marginBottom={2}
-                                 key={idx}
-                                 shadow={2}
-                                 bg={"white"}
-                                 _pressed={{ bg: "gray.100" }}
-                                 justifyContent={"flex-start"}
-                                 onPress={() =>
-                                    navigation.navigate(
-                                       "ProductPurchasedScreen",
-                                       {
-                                          id: el._id,
-                                       }
-                                    )
-                                 }
+                     {groupedProduk.data.map((el, idx) => (
+                        <Button
+                           marginBottom={2}
+                           key={idx}
+                           shadow={2}
+                           bg={"white"}
+                           _pressed={{ bg: "gray.100" }}
+                           justifyContent={"flex-start"}
+                           onPress={() =>
+                              navigation.navigate("ProductPurchasedScreen", {
+                                 id: el._id,
+                              })
+                           }
+                        >
+                           <HStack>
+                              <View
+                                 style={{
+                                    marginEnd:
+                                       Dimensions.get("screen").width / 2.1,
+                                    width: Dimensions.get("screen").width / 3,
+                                 }}
                               >
-                                 <HStack>
-                                    <View
-                                       style={{
-                                          marginEnd:
-                                             Dimensions.get("screen").width /
-                                             2.1,
-                                          width:
-                                             Dimensions.get("screen").width / 3,
-                                       }}
-                                    >
-                                       <Text fontSize={17}>
-                                          {idx === 0
-                                             ? "Materi Belajar"
-                                             : "Produk Tryout"}
-                                       </Text>
-                                    </View>
-                                    <TotalProduk _id={el._id} />
-                                 </HStack>
-                              </Button>
-                           )
-                     )}
+                                 <Text fontSize={17}>
+                                    {idx === 0
+                                       ? "Materi Belajar"
+                                       : idx === 1
+                                       ? "Produk Tryout"
+                                       : "Buku Sakti"}
+                                 </Text>
+                              </View>
+                              <TotalProduk _id={el._id} />
+                           </HStack>
+                        </Button>
+                     ))}
                   </>
                )}
             </View>

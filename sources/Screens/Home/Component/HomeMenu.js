@@ -74,12 +74,22 @@ const HomeMenu = (props) => {
       }
    }, [homeMenuState]);
 
-   const onPressItem = async (idx) => {
-      switch (idx) {
-         case 0:
+   const onPressItem = async (key) => {
+      switch (key) {
+         case "produk_kami":
             navigation.navigate("ProductScreen");
             break;
-         case 1:
+         case "busak":
+            if (isLogin) {
+               navigation.navigate("BukuSaktiScreen");
+            } else {
+               Alert.alert(
+                  "Tidak Bisa Masuk",
+                  "Kamu harus login terlebih dahulu untuk mengakses menu ini"
+               );
+            }
+            break;
+         case "materi_belajar":
             if (isLogin) {
                navigation.navigate("GoBelajarScreen");
             } else {
@@ -89,7 +99,7 @@ const HomeMenu = (props) => {
                );
             }
             break;
-         case 2:
+         case "tryout":
             if (isLogin) {
                navigation.navigate("GoTryoutScreen");
             } else {
@@ -99,16 +109,7 @@ const HomeMenu = (props) => {
                );
             }
             break;
-         case 3:
-            if (isLogin) {
-               navigation.navigate("ProductTerbeliScreen");
-            } else {
-               Alert.alert(
-                  "Tidak Bisa Masuk",
-                  "Kamu harus login terlebih dahulu untuk mengakses menu ini"
-               );
-            }
-            break;
+
          default:
             break;
       }
@@ -119,7 +120,7 @@ const HomeMenu = (props) => {
          <VStack alignItems={"center"}>
             <TouchableHighlight
                style={{ marginHorizontal: 10, borderRadius: 180 }}
-               onPress={() => onPressItem(item.idx)}
+               onPress={() => onPressItem(item.key)}
             >
                <View
                   style={{

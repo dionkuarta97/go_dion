@@ -18,40 +18,42 @@ import { initReducer } from "./Init/initReducer";
 import tryoutReducer from "./Tryout/tryoutReducer";
 import { laporanReducer } from "./Laporan/laporanReducer";
 import leaderboardReducer from "./Leaderboard/leaderboardReducer";
+import { bukuSaktiReducer } from "./BukuSakti/bukuSaktiReducer";
 const persistConfig = {
-  key: "root",
-  storage: AsyncStorage,
-  blacklist: [
-    "baseUrl",
-    "updatePassword",
-    "url",
-    "soal",
-    "currentNumber",
-    "answers",
-    "saveAnswer",
-    "jawabanNon",
-    "saveScore",
-  ],
+   key: "root",
+   storage: AsyncStorage,
+   blacklist: [
+      "baseUrl",
+      "updatePassword",
+      "url",
+      "soal",
+      "currentNumber",
+      "answers",
+      "saveAnswer",
+      "jawabanNon",
+      "saveScore",
+   ],
 };
 const rootReducer = combineReducers({
-  initReducer: persistReducer(persistConfig, initReducer),
-  authReducer: persistReducer(persistConfig, authReducer),
-  soalReducer: persistReducer(persistConfig, soalReducer),
-  dataReducer: dataReducer,
-  homeReducer: homeReducer,
-  profileReducer: profileReducer,
-  produkReducer: produkReducer,
-  cartReducer: cartReducer,
-  paymentReducer: paymentReducer,
-  materiReducer: materiReducer,
-  scoreReducer: scoreReducer,
-  versionReducer: versionReducer,
-  tryoutReducer: tryoutReducer,
-  laporanReducer: laporanReducer,
-  leaderboardReducer: leaderboardReducer,
+   initReducer: persistReducer(persistConfig, initReducer),
+   authReducer: persistReducer(persistConfig, authReducer),
+   soalReducer: persistReducer(persistConfig, soalReducer),
+   dataReducer: dataReducer,
+   homeReducer: homeReducer,
+   profileReducer: profileReducer,
+   produkReducer: produkReducer,
+   cartReducer: cartReducer,
+   paymentReducer: paymentReducer,
+   materiReducer: materiReducer,
+   scoreReducer: scoreReducer,
+   versionReducer: versionReducer,
+   tryoutReducer: tryoutReducer,
+   laporanReducer: laporanReducer,
+   leaderboardReducer: leaderboardReducer,
+   bukuSaktiReducer: bukuSaktiReducer,
 });
 export const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
+   rootReducer,
+   composeWithDevTools(applyMiddleware(thunk))
 );
 export const persistor = persistStore(store);

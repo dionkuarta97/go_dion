@@ -1,5 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+   createStackNavigator,
+   TransitionPresets,
+} from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -60,6 +63,9 @@ import SolusiScreen from "./Screens/Laporan/SolusiScreen";
 import ProductTerbeliScreen from "./Screens/Products/ProductTerbeliScreen";
 import ProdukRedeem from "./Screens/Home/ProdukRedeem";
 import BukuSaktiScreen from "./Screens/BukuSakti/BukuSaktiScreen";
+import MataPelajaranScreen from "./Screens/BukuSakti/MataPelajaranScreen";
+import BabPelajaranScreen from "./Screens/BukuSakti/BabPelajaranScreen";
+import SubBabScreen from "./Screens/BukuSakti/SubBabScreen";
 
 const Stack = createStackNavigator();
 const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 20 : StatusBar.currentHeight;
@@ -126,6 +132,7 @@ export default App = () => {
                      initialRouteName="InitialScreen"
                      screenOptions={{
                         headerShown: false,
+                        ...TransitionPresets.SlideFromRightIOS,
                      }}
                   >
                      <Stack.Screen
@@ -344,6 +351,18 @@ export default App = () => {
                      <Stack.Screen
                         name="BukuSaktiScreen"
                         component={BukuSaktiScreen}
+                     />
+                     <Stack.Screen
+                        name="MataPelajaranScreen"
+                        component={MataPelajaranScreen}
+                     />
+                     <Stack.Screen
+                        name="BabPelajaranScreen"
+                        component={BabPelajaranScreen}
+                     />
+                     <Stack.Screen
+                        name="SubBabScreen"
+                        component={SubBabScreen}
                      />
                   </Stack.Navigator>
                </NavigationContainer>
