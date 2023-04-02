@@ -91,6 +91,9 @@ const GantiPasswordContent = (props) => {
          navigation.goBack();
       }
       if (update.error) {
+         dispatch(
+            setUpdateProfile({ data: null, loading: false, error: null })
+         );
          toast.show({
             title: "error",
             status: "error",

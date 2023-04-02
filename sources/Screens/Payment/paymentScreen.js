@@ -9,6 +9,7 @@ import {
    Alert,
    Dimensions,
    Platform,
+   AppState,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import NumberFormat from "react-number-format";
@@ -28,6 +29,7 @@ import {
 } from "../../Redux/Payment/paymentActions";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button, HStack, ScrollView, useToast, VStack } from "native-base";
+import { getMe } from "../../Redux/Profile/profileActions";
 
 const PaymentScreen = (props) => {
    const toast = useToast();
@@ -361,9 +363,8 @@ const PaymentScreen = (props) => {
                                     }}
                                  >
                                     <Button
-                                       colorScheme={
-                                          timeOut ? "trueGray" : "green"
-                                       }
+                                       bg={timeOut ? "#e5e5e5" : "green.600"}
+                                       _pressed={{ bg: "green.500" }}
                                        disabled={timeOut}
                                        onPress={() => {
                                           navigation.navigate("MainScreen");
@@ -611,7 +612,9 @@ const PaymentScreen = (props) => {
                         {paymentDetail.data.status === "pending" && (
                            <Button
                               marginTop={10}
-                              colorScheme={"danger"}
+                              disabled={timeOut}
+                              bg={timeOut ? "#e5e5e5" : "red.600"}
+                              _pressed={{ bg: "red.500" }}
                               onPress={() => {
                                  Alert.alert(
                                     "Peringatan",

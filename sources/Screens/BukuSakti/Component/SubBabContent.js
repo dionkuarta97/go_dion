@@ -13,6 +13,7 @@ import LoadingIndicator from "../../../Components/Indicator/LoadingIndicator";
 import { Dimensions, ScrollView, TouchableOpacity } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
+import ErrorIndicator from "../../../Components/Indicator/ErrorIndicator";
 
 const SubBabContent = () => {
    const { listSubBab } = useSelector((state) => state.bukuSaktiReducer);
@@ -25,6 +26,7 @@ const SubBabContent = () => {
          padding={4}
       >
          {listSubBab.loading && <LoadingIndicator />}
+         {listSubBab.error && <ErrorIndicator msg={listSubBab.error} />}
          <ScrollView>
             {listSubBab.data?.map((el) => (
                <TouchableOpacity

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { HStack, Text, VStack, View } from "native-base";
+import { Button, HStack, Text, VStack, View } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 import { getBusak, setBusak } from "../../../Redux/BukuSakti/bukuSaktiAction";
 import LoadingIndicator from "../../../Components/Indicator/LoadingIndicator";
@@ -7,6 +7,8 @@ import { ScrollView, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { defaultInitState } from "../../../Redux/helper";
+import EmptyIndicator from "../../../Components/Indicator/EmptyIndicator";
+import ErrorIndicator from "../../../Components/Indicator/ErrorIndicator";
 
 const BukuSaktiContent = (props) => {
    const { status } = props;
@@ -28,6 +30,22 @@ const BukuSaktiContent = (props) => {
          flex={1}
          padding={4}
       >
+         {listBusak.data?.length === 0 && !listBusak.loading && (
+            <>
+               <EmptyIndicator msg={"Data tidak ditemukan"} />
+               {status === "untouched" && (
+                  <Button
+                     bg={"amber.400"}
+                     _pressed={{ bg: "amber.300" }}
+                     onPress={() => navigation.navigate("ProductScreen")}
+                     size={"lg"}
+                  >
+                     Beli Sekarang
+                  </Button>
+               )}
+            </>
+         )}
+         {listBusak.error && <ErrorIndicator msg={listBusak.error} />}
          {listBusak.loading && <LoadingIndicator />}
          <ScrollView>
             {listBusak.data?.map((el) => (
@@ -55,7 +73,7 @@ const BukuSaktiContent = (props) => {
                         >
                            {el.title}
                         </Text>
-                        <Text>{el.includes.length} Mata Pelajaran</Text>
+                        <Text>{el.total_pelajaran} Mata Pelajaran</Text>
                         <Text>Progress: {el.total_progress} %</Text>
                         {el.remainin_time_label !== "" && (
                            <Text

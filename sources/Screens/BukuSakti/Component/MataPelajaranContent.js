@@ -5,6 +5,7 @@ import LoadingIndicator from "../../../Components/Indicator/LoadingIndicator";
 import { useSelector } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import ErrorIndicator from "../../../Components/Indicator/ErrorIndicator";
 
 const MataPelajaranContent = (props) => {
    const { busakId } = props;
@@ -17,6 +18,7 @@ const MataPelajaranContent = (props) => {
          padding={4}
       >
          {listMapel.loading && <LoadingIndicator />}
+         {listMapel.error && <ErrorIndicator msg={listMapel.error} />}
          <ScrollView>
             {listMapel.data?.map((el) => (
                <TouchableOpacity

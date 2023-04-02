@@ -6,6 +6,7 @@ import { ScrollView, TouchableOpacity } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import ErrorIndicator from "../../../Components/Indicator/ErrorIndicator";
 
 const BabPelajaranContent = (props) => {
    const { busakId, matpelId } = props;
@@ -18,6 +19,7 @@ const BabPelajaranContent = (props) => {
          padding={4}
       >
          {listBab.loading && <LoadingIndicator />}
+         {listBab.error && <ErrorIndicator msg={listBab.error} />}
          <ScrollView>
             {listBab.data?.map((el) => (
                <TouchableOpacity
