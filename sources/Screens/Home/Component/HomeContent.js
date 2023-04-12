@@ -6,7 +6,17 @@ import React, {
    useLayoutEffect,
 } from "react";
 
-import { LogBox, Platform, Text, TouchableOpacity, View } from "react-native";
+import ImageView from "react-native-image-viewing";
+
+import {
+   Alert,
+   Dimensions,
+   LogBox,
+   Platform,
+   Text,
+   TouchableOpacity,
+   View,
+} from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Carousel from "react-native-snap-carousel";
 import ProductCard from "../../../Components/ProductCard";
@@ -29,8 +39,10 @@ import LoadingIndicator from "../../../Components/Indicator/LoadingIndicator";
 import VideoTest from "./VideoTest";
 import OneSignal from "react-native-onesignal";
 import ModalValid from "./ModalValid";
+import { WebView } from "react-native-webview";
 
 import { getUniqueId } from "react-native-device-info";
+import RenderHTML from "react-native-render-html";
 
 const products = [
    { id: 1, title: "a" },
@@ -57,6 +69,8 @@ const HomeContent = (props) => {
    const [firestoreTime, setFirestoreTime] = useState(null);
    const [timeOpen, setTimeOpen] = useState(null);
    const [valid, setValid] = useState(true);
+   const [visible, setIsVisible] = useState(false);
+   const [link, setLink] = useState("");
 
    useEffect(async () => {
       setLoading(true);
@@ -181,6 +195,17 @@ const HomeContent = (props) => {
       );
    };
 
+   function onPress(event, href) {
+      setLink(href);
+      setIsVisible(true);
+   }
+
+   const renderersProps = {
+      a: {
+         onPress: onPress,
+      },
+   };
+
    return (
       <>
          {loading ? (
@@ -229,6 +254,33 @@ const HomeContent = (props) => {
                      soal={soal}
                   />
                )}
+
+               <View
+                  style={{
+                     marginBottom: 100,
+                  }}
+               >
+                  <RenderHTML
+                     renderersProps={renderersProps}
+                     source={{
+                        html: `<a href="https://javalaku.com/wp-content/uploads/2022/04/Sketsa-Gambar-Kartun.jpg"><img src="https://javalaku.com/wp-content/uploads/2022/04/Sketsa-Gambar-Kartun.jpg" alt="Girl in a jacket" width="50%" height="50%">
+                      </a>`,
+                     }}
+                     contentWidth={Dimensions.get("screen").width / 1.2}
+                  />
+               </View>
+
+               <ImageView
+                  images={[
+                     {
+                        uri: link,
+                     },
+                  ]}
+                  imageIndex={0}
+                  visible={visible}
+                  onRequestClose={() => setIsVisible(false)}
+               />
+
                {/* <View>
          {sectionHeader("Materi Baru")}
 

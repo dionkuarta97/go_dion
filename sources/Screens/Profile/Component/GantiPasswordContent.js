@@ -1,20 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-   View,
-   Text,
-   ScrollView,
-   StyleSheet,
-   TouchableOpacity,
-   Modal,
-   Pressable,
-   ActivityIndicator,
-   Alert,
-   Dimensions,
-} from "react-native";
+import { View, Text, ScrollView, Dimensions } from "react-native";
 import PasswordTextInput from "../../../Components/CustomTextInput/PasswordTextInput";
-import Fonts from "../../../Theme/Fonts";
 import Sizes from "../../../Theme/Sizes";
-import Colors from "../../../Theme/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import {
    getCheckPassword,
@@ -101,7 +88,6 @@ const GantiPasswordContent = (props) => {
             placement: "top",
             width: Dimensions.get("screen").width / 1.3,
          });
-         navigation.goBack();
       }
    }, [update]);
 
@@ -194,7 +180,12 @@ const GantiPasswordContent = (props) => {
                   >
                      <PasswordTextInput
                         onChangeText={(val) => setReNewPassword(val)}
-                        value={passwordValidations(reNewPassword).valid}
+                        v
+                        value={
+                           newPassword !== reNewPassword || reNewPassword === ""
+                              ? false
+                              : true
+                        }
                         placeholder="Masukan Password Baru Sekali Lagi"
                      />
                   </View>

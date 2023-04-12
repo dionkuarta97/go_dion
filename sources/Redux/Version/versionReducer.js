@@ -3,8 +3,8 @@ import { SET_CHECK_VERSION } from "./versionTypes";
 //** yang harus di ubah androidVersion dan iosVersion, harus sama dengan yang aktif */
 
 const initialState = {
-   androidVersion: "0.1.115",
-   iosVersion: "0.1.115",
+   androidVersion: "0.1.117",
+   iosVersion: "0.1.117",
    nowVersion: 47,
    androidCode: 48,
    iosCode: 47,

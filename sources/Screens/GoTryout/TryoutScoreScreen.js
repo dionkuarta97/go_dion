@@ -208,6 +208,7 @@ const TryoutScoreScreen = (props) => {
                                        style={{
                                           ...Fonts.black19Regular,
                                           marginBottom: 5,
+                                          textAlign: "center",
                                        }}
                                     >
                                        {el.title}
@@ -415,6 +416,7 @@ const TryoutScoreScreen = (props) => {
                                                    style={{
                                                       ...Fonts.black19Regular,
                                                       marginBottom: 5,
+                                                      textAlign: "center",
                                                    }}
                                                 >
                                                    {el.title}

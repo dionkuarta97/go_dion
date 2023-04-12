@@ -3,12 +3,15 @@ import { Button, HStack, Text, VStack, View } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 import { getBusak, setBusak } from "../../../Redux/BukuSakti/bukuSaktiAction";
 import LoadingIndicator from "../../../Components/Indicator/LoadingIndicator";
-import { ScrollView, TouchableOpacity } from "react-native";
+
+import { Dimensions, ScrollView, TouchableOpacity } from "react-native";
+
 import { MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { defaultInitState } from "../../../Redux/helper";
 import EmptyIndicator from "../../../Components/Indicator/EmptyIndicator";
-import ErrorIndicator from "../../../Components/Indicator/ErrorIndicator";
+
+import NoMateri from "../../GoBelajar/Component/noMateri";
 
 const BukuSaktiContent = (props) => {
    const { status } = props;
@@ -30,8 +33,8 @@ const BukuSaktiContent = (props) => {
          flex={1}
          padding={4}
       >
-         {listBusak.data?.length === 0 && !listBusak.loading && (
-            <>
+         {listBusak.error && !listBusak.loading && (
+            <View flex={1}>
                <EmptyIndicator msg={"Data tidak ditemukan"} />
                {status === "untouched" && (
                   <Button
@@ -43,9 +46,9 @@ const BukuSaktiContent = (props) => {
                      Beli Sekarang
                   </Button>
                )}
-            </>
+            </View>
          )}
-         {listBusak.error && <ErrorIndicator msg={listBusak.error} />}
+
          {listBusak.loading && <LoadingIndicator />}
          <ScrollView>
             {listBusak.data?.map((el) => (

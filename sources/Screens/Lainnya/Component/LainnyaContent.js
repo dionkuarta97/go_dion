@@ -132,7 +132,6 @@ const LainnyaContent = () => {
                navigation.replace("MainScreen");
             })}
          {isLogin &&
-            Platform.OS === "ios" &&
             renderTile("Hapus Akun", "delete", () => {
                Alert.alert(
                   "Peringatan",
