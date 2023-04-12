@@ -255,32 +255,6 @@ const HomeContent = (props) => {
                   />
                )}
 
-               <View
-                  style={{
-                     marginBottom: 100,
-                  }}
-               >
-                  <RenderHTML
-                     renderersProps={renderersProps}
-                     source={{
-                        html: `<a href="https://javalaku.com/wp-content/uploads/2022/04/Sketsa-Gambar-Kartun.jpg"><img src="https://javalaku.com/wp-content/uploads/2022/04/Sketsa-Gambar-Kartun.jpg" alt="Girl in a jacket" width="50%" height="50%">
-                      </a>`,
-                     }}
-                     contentWidth={Dimensions.get("screen").width / 1.2}
-                  />
-               </View>
-
-               <ImageView
-                  images={[
-                     {
-                        uri: link,
-                     },
-                  ]}
-                  imageIndex={0}
-                  visible={visible}
-                  onRequestClose={() => setIsVisible(false)}
-               />
-
                {/* <View>
          {sectionHeader("Materi Baru")}
 
