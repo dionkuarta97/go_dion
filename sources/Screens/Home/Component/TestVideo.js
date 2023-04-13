@@ -10,100 +10,96 @@ import { WebView } from "react-native-webview";
 import { Video } from "expo-av";
 import DefaultAppBar from "../../../Components/AppBar/DefaultAppBar";
 const TestVideo = ({ route }) => {
-  const [tes, setTes] = useState(0);
-  const params = route.params;
-  const [tesDua, setTesDua] = useState(0);
-  console.log(params);
-  async function getHLSStream(reso) {
-    const url = `https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401`;
-    const res = await fetch(`${url}/manifest/video.m3u8`);
+   const [tes, setTes] = useState(0);
+   const params = route.params;
+   const [tesDua, setTesDua] = useState(0);
 
-    const streamText = await res.text();
+   async function getHLSStream(reso) {
+      const url = `https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401`;
+      const res = await fetch(`${url}/manifest/video.m3u8`);
 
-    const playList = streamText.split("\n");
-    if (reso === 1080) {
-      setResolution(1080);
-      setAuto(
-        "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
-          playList[5]
-      );
-    } else if (reso === 720) {
-      setResolution(720);
-      setAuto(
-        "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
-          playList[7]
-      );
-    } else if (reso === 540) {
-      setResolution(540);
-      setAuto(
-        "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
-          playList[9]
-      );
-    } else if (reso === 360) {
-      setResolution(360);
-      setAuto(
-        "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
-          playList[11]
-      );
-    }
-  }
+      const streamText = await res.text();
 
-  useEffect(() => {
-    setTes(0);
-    setTesDua(0);
-  }, []);
+      const playList = streamText.split("\n");
+      if (reso === 1080) {
+         setResolution(1080);
+         setAuto(
+            "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
+               playList[5]
+         );
+      } else if (reso === 720) {
+         setResolution(720);
+         setAuto(
+            "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
+               playList[7]
+         );
+      } else if (reso === 540) {
+         setResolution(540);
+         setAuto(
+            "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
+               playList[9]
+         );
+      } else if (reso === 360) {
+         setResolution(360);
+         setAuto(
+            "https://videodelivery.net/5c3256d61d556ef03a08f3a73f51d401/manifest/" +
+               playList[11]
+         );
+      }
+   }
 
-  useEffect(async () => {
-    if (tesDua > 0) {
-      await ScreenOrientation.lockAsync(
-        ScreenOrientation.OrientationLock.LANDSCAPE
-      );
-    } else {
-      await ScreenOrientation.lockAsync(
-        ScreenOrientation.OrientationLock.PORTRAIT
-      );
-    }
-  }, [tesDua]);
+   useEffect(() => {
+      setTes(0);
+      setTesDua(0);
+   }, []);
 
-  console.log(tes, "tes");
-  console.log(tesDua, "tesDua");
+   useEffect(async () => {
+      if (tesDua > 0) {
+         await ScreenOrientation.lockAsync(
+            ScreenOrientation.OrientationLock.LANDSCAPE
+         );
+      } else {
+         await ScreenOrientation.lockAsync(
+            ScreenOrientation.OrientationLock.PORTRAIT
+         );
+      }
+   }, [tesDua]);
 
-  return (
-    <>
-      <SafeAreaView style={{ flex: 1 }}>
-        <DefaultAppBar
-          title={params.from ? params.from : "Video Materi"}
-          backEnabled={true}
-        />
-        <WebView
-          source={{
-            uri: params.video,
-          }}
-          androidLayerType={"hardware"}
-          allowsFullscreenVideo={true}
-          mediaPlaybackRequiresUserAction
-          useNativeResumeAndPauseLifecycleEvents
-          javaScriptEnabled
-          allowsInlineMediaPlayback
-          useWebKit={true}
-          originWhitelist={["*"]}
-          automaticallyAdjustContentInsets
-          onLayout={async (e) => {
-            console.log(e.nativeEvent.layout);
-            if (tes === 0) {
-              setTes(e.nativeEvent.layout.height);
-            }
+   return (
+      <>
+         <SafeAreaView style={{ flex: 1 }}>
+            <DefaultAppBar
+               title={params.from ? params.from : "Video Materi"}
+               backEnabled={true}
+            />
+            <WebView
+               source={{
+                  uri: params.video,
+               }}
+               androidLayerType={"hardware"}
+               allowsFullscreenVideo={true}
+               mediaPlaybackRequiresUserAction
+               useNativeResumeAndPauseLifecycleEvents
+               javaScriptEnabled
+               allowsInlineMediaPlayback
+               useWebKit={true}
+               originWhitelist={["*"]}
+               automaticallyAdjustContentInsets
+               onLayout={async (e) => {
+                  if (tes === 0) {
+                     setTes(e.nativeEvent.layout.height);
+                  }
 
-            if (tes < e.nativeEvent.layout.height && tes !== 0) {
-              setTesDua(e.nativeEvent.layout.height);
-            }
+                  if (tes < e.nativeEvent.layout.height && tes !== 0) {
+                     setTesDua(e.nativeEvent.layout.height);
+                  }
 
-            if (tes === e.nativeEvent.layout.height) {
-              setTesDua(0);
-            }
-          }}
-        />
-        {/* <View>
+                  if (tes === e.nativeEvent.layout.height) {
+                     setTesDua(0);
+                  }
+               }}
+            />
+            {/* <View>
         <Video
           style={styles.videoFrame}
           useNativeControls
@@ -168,16 +164,16 @@ const TestVideo = ({ route }) => {
           </Button>
         </VStack>
       </Center> */}
-      </SafeAreaView>
-    </>
-  );
+         </SafeAreaView>
+      </>
+   );
 };
 
 const styles = StyleSheet.create({
-  videoFrame: {
-    aspectRatio: 16 / 9,
-    backgroundColor: "black",
-  },
+   videoFrame: {
+      aspectRatio: 16 / 9,
+      backgroundColor: "black",
+   },
 });
 
 export default TestVideo;
