@@ -12,13 +12,13 @@ import React, { useEffect, useRef, useState } from "react";
 import RenderHtml from "react-native-render-html";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { AntDesign } from "@expo/vector-icons";
 import LihatSoal from "./LihatSoal";
 import moment from "moment";
 import SolusiPBS from "./SolusiPBS";
 import SolusiPBK from "./SolusiPBK";
 import SolusiPBT from "./SolusiPBT";
 import LoadingIndicator from "../../../Components/Indicator/LoadingIndicator";
+import ImageView from "react-native-image-viewing";
 
 const options = ["A", "B", "C", "D", "E", "F"];
 
@@ -39,6 +39,23 @@ const SolusiContent = (props) => {
    const scrollRef = useRef();
    const [givenAkhir, setGivenAkhir] = useState(null);
    const [current, setCurrent] = useState(null);
+
+   const [visible, setIsVisible] = useState(false);
+   const [link, setLink] = useState("");
+
+   function onPress(event, href) {
+      setLink(href);
+      setIsVisible(true);
+   }
+
+   const renderersProps = useMemo(
+      () => ({
+         a: {
+            onPress: onPress,
+         },
+      }),
+      []
+   );
 
    useEffect(() => {
       scrollRef.current?.scrollTo({
@@ -79,6 +96,7 @@ const SolusiContent = (props) => {
             shadow={2}
          >
             <RenderHtml
+               renderersProps={renderersProps}
                source={{
                   html: `${
                      quiz[index] !== undefined
@@ -89,6 +107,16 @@ const SolusiContent = (props) => {
                contentWidth={Dimensions.get("screen").width / 1.2}
             />
          </Box>
+         <ImageView
+            images={[
+               {
+                  uri: link,
+               },
+            ]}
+            imageIndex={0}
+            visible={visible}
+            onRequestClose={() => setIsVisible(false)}
+         />
          <Text
             bold
             fontSize={18}

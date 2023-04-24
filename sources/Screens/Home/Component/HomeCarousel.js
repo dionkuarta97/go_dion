@@ -30,7 +30,7 @@ const carouselItems = [
 const HomeCarousel = () => {
    const dispatch = useDispatch();
    const { listBanner } = useSelector((state) => state.dataReducer);
-   const itemWidth = Math.round(width * 0.8);
+   const itemWidth = Math.round(width * 0.95);
    const [activeSlide, setActiveSlide] = useState(0);
    const OpenWEB = (url) => {
       Linking.openURL(url);
@@ -79,7 +79,6 @@ const HomeCarousel = () => {
                   lockScrollWhileSnapping={true}
                   autoplayInterval={4000}
                   decelerationRate={0.25}
-                  loop={true}
                />
                <Pagination
                   dotsLength={listBanner.data?.length} // also based on number of sildes you want

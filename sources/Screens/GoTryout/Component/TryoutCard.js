@@ -30,16 +30,22 @@ const TryoutCard = (props) => {
    const dispatch = useDispatch();
    const toast = useToast();
    const navigation = useNavigation();
-   const { detail, tryoutId, status, tipe } = props;
+   const { detail, tryoutId, status, tipe, idx, data } = props;
    const profile = useSelector((state) => state.profileReducer.profile);
-
-   const [idx, setIdx] = useState(null);
 
    return (
       <>
          {detail.quiz ? (
             <TouchableOpacity
-               disabled={!status && tipe !== "done" ? true : false}
+               disabled={
+                  !status && tipe !== "done"
+                     ? true
+                     : idx === 0
+                     ? false
+                     : data[idx - 1].touched === true
+                     ? false
+                     : true
+               }
                onPress={() => {
                   checkInternet().then((data) => {
                      if (data) {
@@ -202,8 +208,16 @@ const TryoutCard = (props) => {
                      borderRadius: 8,
                      marginTop: Sizes.fixPadding,
                      padding: Sizes.fixPadding,
-                     backgroundColor: "white",
-                     elevation: 2,
+                     borderColor: "black",
+                     borderWidth: 0.5,
+                     backgroundColor:
+                        !status && tipe !== "done"
+                           ? "e5e5e6"
+                           : idx === 0
+                           ? "white"
+                           : data[idx - 1].touched === true
+                           ? "white"
+                           : "e5e5e6",
                   }}
                >
                   <Text style={{ ...Fonts.orangeColor20Bold }}>

@@ -2,7 +2,6 @@ import { Box, Text } from "native-base";
 import React, { useEffect, useState, useMemo } from "react";
 import { Dimensions } from "react-native";
 import RenderHTML from "react-native-render-html";
-import LoadingIndicator from "../../../Components/Indicator/LoadingIndicator";
 import RenderOptionPBK from "./RenderOptionPBK";
 import RenderOptionPBS from "./RenderOptionPBS";
 import RenderOptionPBT from "./RenderOptionPBT";

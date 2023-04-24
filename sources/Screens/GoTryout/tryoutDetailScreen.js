@@ -269,8 +269,10 @@ const TryoutDetailScreen = (props) => {
          )}
 
          <ScrollView>
-            {data.map((el) => (
+            {data.map((el, idx) => (
                <TryoutCard
+                  idx={idx}
+                  data={data}
                   detail={el}
                   tryoutId={tryoutId}
                   key={el._id}

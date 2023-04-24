@@ -81,6 +81,21 @@ export function getPaymentProcess(merge) {
                products: getState().cartReducer.carts.data,
             });
 
+            console.log(
+               JSON.stringify(
+                  {
+                     merge: merge,
+                     provider:
+                        getState().paymentReducer.selectedPaymentMethod.name,
+                     payment_type:
+                        getState().paymentReducer.selectedPaymentMethod.method,
+                     products: getState().cartReducer.carts.data,
+                  },
+                  null,
+                  2
+               )
+            );
+
             const urlBase = getState().initReducer.baseUrl;
             fetch(urlBase + urlPaymentProcess, {
                method: "POST",
@@ -92,6 +107,7 @@ export function getPaymentProcess(merge) {
             })
                .then((response) => response.json())
                .then((json) => {
+                  console.log(json);
                   if (json.status) {
                      dispatch(setPaymentProcess(defaultDoneState(json.data)));
                   } else

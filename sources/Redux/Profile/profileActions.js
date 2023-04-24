@@ -44,6 +44,16 @@ export function getMe() {
                   dispatch(setProfile(json.data.profile));
                   dispatch(setStatistic(json.data.statistics));
                } else {
+                  dispatch(setLoginStatus(false));
+                  dispatch(setToken(null));
+                  dispatch(setProfile(null));
+                  dispatch(
+                     setLoginData({
+                        data: null,
+                        loading: false,
+                        error: null,
+                     })
+                  );
                   dispatch(setMe(defaultFailedState(json.message)));
                }
             })
