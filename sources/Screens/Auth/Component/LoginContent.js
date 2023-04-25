@@ -128,6 +128,7 @@ const LoginContent = (props) => {
                style={{
                   justifyContent: "center",
                   alignItems: "center",
+                  paddingHorizontal: 20,
                }}
             >
                <AntDesign
@@ -144,8 +145,8 @@ const LoginContent = (props) => {
                      fontWeight: "800",
                   }}
                >
-                  Aplikasi ini masih dalam tahap testing. Pendaftaran sementara
-                  ditutup
+                  Aplikasi ini sementara hanya tersedia untuk siswa yang
+                  terdaftar secara luring di Ganesha Operation.
                </Text>
             </View>
 
