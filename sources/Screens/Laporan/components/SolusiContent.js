@@ -8,7 +8,7 @@ import {
    Button,
    Heading,
 } from "native-base";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import RenderHtml from "react-native-render-html";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
