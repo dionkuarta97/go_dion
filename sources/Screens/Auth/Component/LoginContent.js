@@ -26,6 +26,8 @@ import { useToast } from "native-base";
 import checkInternet from "../../../Services/CheckInternet";
 import ToastErrorContent from "../../../Components/ToastErrorContent";
 import { formatEmail, passwordValidations } from "../../../Services/helper";
+import { AntDesign } from "@expo/vector-icons";
+import Colors from "../../../Theme/Colors";
 
 const LoginContent = (props) => {
    const toast = useToast();
@@ -122,6 +124,31 @@ const LoginContent = (props) => {
          >
             {login.loading && <LoadingModal />}
 
+            <View
+               style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+               }}
+            >
+               <AntDesign
+                  color={Colors.neutralRedColor}
+                  size={Dimensions.get("screen").width / 8}
+                  name="exclamationcircleo"
+               />
+               <Text
+                  style={{
+                     marginTop: 10,
+                     marginBottom: 10,
+                     textAlign: "center",
+                     fontSize: 15,
+                     fontWeight: "800",
+                  }}
+               >
+                  Aplikasi ini masih dalam tahap testing. Pendaftaran sementara
+                  ditutup
+               </Text>
+            </View>
+
             <DefaultTextInput
                placeholder="Email"
                keyboardType="email-address"
@@ -172,8 +199,8 @@ const LoginContent = (props) => {
                   });
                }}
             />
-            {registerText()}
-            {forgetPasswordText()}
+            {/* {registerText()} */}
+            {/* {forgetPasswordText()} */}
          </View>
       </KeyboardAwareScrollView>
    );
