@@ -55,7 +55,6 @@ const HomeContent = (props) => {
    const isFocused = useIsFocused();
    const navigation = useNavigation();
    const isLogin = useSelector((state) => state.authReducer.isLogin);
-   const { newTransIos } = useSelector((state) => state.initReducer);
    const token = useSelector((state) => state.authReducer.token);
    const urlBase = useSelector((state) => state.initReducer.baseUrl);
    const [tryout, setTryout] = useState([]);
@@ -112,6 +111,7 @@ const HomeContent = (props) => {
                               title: temp.title,
                               soalUrl: temp.soalUrl,
                               blockTime: temp.blockTime,
+                              id: temp.id,
                            });
                            let now = new Date();
                            let int =
@@ -138,7 +138,6 @@ const HomeContent = (props) => {
             });
          }
       }
-
       return () => {
          setTryout([]);
          setLoading(true);

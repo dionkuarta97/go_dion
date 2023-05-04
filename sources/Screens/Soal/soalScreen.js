@@ -1,11 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import {
-   Alert,
-   SafeAreaView,
-   StyleSheet,
-   BackHandler,
-   AppState,
-} from "react-native";
+import { Alert, SafeAreaView, StyleSheet, BackHandler } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 import DefaultAppBar from "../../Components/AppBar/DefaultAppBar";
@@ -24,8 +18,6 @@ import DelaySoal from "./Component/DelaySoal";
 import DelayFinish from "./Component/DelayFinish";
 import Finish from "./Component/Finish";
 import ErrorScreen from "./Component/ErrorScreen";
-import OneSignal from "react-native-onesignal";
-import ModalValid from "../Home/Component/ModalValid";
 import { getUniqueId } from "react-native-device-info";
 
 const SoalScreen = ({ route }) => {
@@ -40,16 +32,15 @@ const SoalScreen = ({ route }) => {
    const [delay, setDelay] = useState(true);
    const [waktuUjian, setWaktuUjian] = useState(0);
    const [sisaTime, setSisaTime] = useState(0);
-   const [playerId, setPlayerId] = useState("");
    const [finish, setFinish] = useState(false);
-   const [valid, setValid] = useState(true);
+
    const { jawabanNon, saveAnswer: save } = useSelector(
       (state) => state.soalReducer
    );
 
    const scrollRef = useRef();
 
-   const [firestoreId, setFirestoreId] = useState(null);
+   const [firestoreId, setFirestoreId] = useState(params.id ? params.id : null);
    const [firestoreTime, setFirestoreTime] = useState(null);
 
    const [loading, setLoading] = useState(true);
@@ -58,11 +49,7 @@ const SoalScreen = ({ route }) => {
    const [timeOpen, setTimeOpen] = useState(null);
 
    useEffect(() => {
-      getUniqueId().then((uniqueId) => {
-         setPlayerId(uniqueId);
-      });
       dispatch(getSoal());
-
       const backHandler = BackHandler.addEventListener(
          "hardwareBackPress",
          () => true
@@ -74,6 +61,7 @@ const SoalScreen = ({ route }) => {
    }, []);
 
    useEffect(() => {
+      console.log(params);
       if (soal.data) {
          if (waktuUjian === 0) {
             if (!params.blockTime) {
@@ -131,147 +119,153 @@ const SoalScreen = ({ route }) => {
                setWaktuUjian(temp);
                setLoading(false);
             } else {
-               firestore()
-                  .collection("Jawaban")
-                  .where("user_id", "==", profile._id)
-                  .where("soal_id", "==", soal.data._id)
-                  .get()
-                  .then((querySnapshot) => {
-                     let arry = {};
-                     let temp = [];
-                     for (let i = 0; i < soal.data.sessions.length; i++) {
-                        arry[`${i}`] = [];
-                        temp.push([]);
-                        for (let j = 0; j < soal.data.sessions[i].total; j++) {
-                           if (
-                              soal.data.sessions[i].questions[j].tipe === "PBS"
-                           ) {
-                              arry[`${i}`].push({
-                                 duration: -1,
-                                 user_answer: [-1],
-                              });
-                              temp[i].push({
-                                 duration: -1,
-                                 user_answer: [-1],
-                              });
-                           } else if (
-                              soal.data.sessions[i].questions[j].tipe === "PBK"
-                           ) {
-                              let tempJawab = [];
+               getUniqueId()
+                  .then((uniqueId) => {
+                     firestore()
+                        .collection("Jawaban")
+                        .where("user_id", "==", profile._id)
+                        .where("soal_id", "==", soal.data._id)
+                        .get()
+                        .then((querySnapshot) => {
+                           let arry = {};
+                           let temp = [];
+                           for (let i = 0; i < soal.data.sessions.length; i++) {
+                              arry[`${i}`] = [];
+                              temp.push([]);
                               for (
-                                 let k = 0;
-                                 k <
-                                 soal.data.sessions[i].questions[j].jawaban
-                                    .length;
-                                 k++
+                                 let j = 0;
+                                 j < soal.data.sessions[i].total;
+                                 j++
                               ) {
-                                 tempJawab.push(-1);
+                                 if (
+                                    soal.data.sessions[i].questions[j].tipe ===
+                                    "PBS"
+                                 ) {
+                                    arry[`${i}`].push({
+                                       duration: -1,
+                                       user_answer: [-1],
+                                    });
+                                    temp[i].push({
+                                       duration: -1,
+                                       user_answer: [-1],
+                                    });
+                                 } else if (
+                                    soal.data.sessions[i].questions[j].tipe ===
+                                    "PBK"
+                                 ) {
+                                    let tempJawab = [];
+                                    for (
+                                       let k = 0;
+                                       k <
+                                       soal.data.sessions[i].questions[j]
+                                          .jawaban.length;
+                                       k++
+                                    ) {
+                                       tempJawab.push(-1);
+                                    }
+                                    arry[`${i}`].push({
+                                       duration: -1,
+                                       user_answer: tempJawab,
+                                    });
+                                    temp[i].push({
+                                       duration: -1,
+                                       user_answer: tempJawab,
+                                    });
+                                 } else if (
+                                    soal.data.sessions[i].questions[j].tipe ===
+                                    "PBT"
+                                 ) {
+                                    let tempJawab = [];
+                                    for (
+                                       let k = 0;
+                                       k <
+                                       soal.data.sessions[i].questions[j].table
+                                          .length;
+                                       k++
+                                    ) {
+                                       tempJawab.push(-1);
+                                    }
+                                    arry[`${i}`].push({
+                                       duration: -1,
+                                       user_answer: tempJawab,
+                                    });
+                                    temp[i].push({
+                                       duration: -1,
+                                       user_answer: tempJawab,
+                                    });
+                                 }
                               }
-                              arry[`${i}`].push({
-                                 duration: -1,
-                                 user_answer: tempJawab,
-                              });
-                              temp[i].push({
-                                 duration: -1,
-                                 user_answer: tempJawab,
-                              });
-                           } else if (
-                              soal.data.sessions[i].questions[j].tipe === "PBT"
-                           ) {
-                              let tempJawab = [];
-                              for (
-                                 let k = 0;
-                                 k <
-                                 soal.data.sessions[i].questions[j].table
-                                    .length;
-                                 k++
-                              ) {
-                                 tempJawab.push(-1);
-                              }
-                              arry[`${i}`].push({
-                                 duration: -1,
-                                 user_answer: tempJawab,
-                              });
-                              temp[i].push({
-                                 duration: -1,
-                                 user_answer: tempJawab,
-                              });
                            }
-                        }
-                     }
-                     let time = [];
-                     for (const key in soal.data.sessions) {
-                        time.push(
-                           soal.data.sessions[key].session_configs
-                              .session_duration
-                        );
-                     }
-                     let firstOpen = [];
-                     let now = new Date();
-                     let jml = 0;
-                     for (let i = 0; i < time.length; i++) {
-                        if (i === 0) {
-                           firstOpen.push(now.getTime());
-                        } else {
-                           jml += time[i];
-                           let int = (jml + 10) * 1000;
-                           firstOpen.push(now.getTime() + int);
-                        }
-                     }
-                     let data = {
-                        user_id: profile._id,
-                        soal_id: soal.data._id,
-                        jawaban: arry,
-                        sesi: sesi,
-                        time: time,
-                        firstOpen: firstOpen,
-                        title: params.title,
-                        blockTime: params.blockTime,
-                        soalUrl: params.soalUrl,
-                        playerId: playerId,
-                     };
-
-                     if (querySnapshot.docs.length === 0) {
-                        firestore()
-                           .collection("Jawaban")
-                           .add(data)
-                           .then((snapshot) => {
-                              data.id = snapshot.id;
-                              snapshot.set(data);
-                              setFirestoreId(snapshot.id);
-                              dispatch(setJawabanNon(temp));
-                              setWaktuUjian(time[sesi]);
-                              setLoading(false);
-                           })
-                           .catch(() => navigation.goBack());
-                     } else {
-                        let jwb = querySnapshot.docs[0].data();
-                        if (jwb.playerId !== playerId) {
-                           setValid(false);
-                           setLoading(false);
-                        } else {
-                           let ar = [];
-                           for (const key in jwb.jawaban) {
-                              ar.push(jwb.jawaban[key]);
+                           let time = [];
+                           for (const key in soal.data.sessions) {
+                              time.push(
+                                 soal.data.sessions[key].session_configs
+                                    .session_duration
+                              );
                            }
-
-                           setFirestoreTime(jwb.time);
-                           setTimeOpen(jwb.firstOpen);
-                           setFirestoreId(jwb.id);
-                           dispatch(setJawabanNon(ar));
+                           let firstOpen = [];
                            let now = new Date();
-                           let temp =
-                              (now.getTime() - jwb.firstOpen[jwb.sesi]) / 1000;
-                           if (temp < jwb.time[jwb.sesi]) {
-                              setSesi(jwb.sesi);
-                              setWaktuUjian(jwb.time[jwb.sesi] - temp);
-                           } else {
-                              setSesi(jwb.sesi + 1);
+                           let jml = 0;
+                           for (let i = 0; i < time.length; i++) {
+                              if (i === 0) {
+                                 firstOpen.push(now.getTime());
+                              } else {
+                                 jml += time[i];
+                                 let int = (jml + 10) * 1000;
+                                 firstOpen.push(now.getTime() + int);
+                              }
                            }
-                           setValid(true);
-                           setLoading(false);
-                        }
-                     }
+                           let data = {
+                              user_id: profile._id,
+                              soal_id: soal.data._id,
+                              jawaban: arry,
+                              sesi: sesi,
+                              time: time,
+                              firstOpen: firstOpen,
+                              title: params.title,
+                              blockTime: params.blockTime,
+                              soalUrl: params.soalUrl,
+                              playerId: uniqueId,
+                           };
+                           if (querySnapshot.docs.length === 0) {
+                              firestore()
+                                 .collection("Jawaban")
+                                 .add(data)
+                                 .then((snapshot) => {
+                                    data.id = snapshot.id;
+                                    snapshot.set(data);
+                                    setFirestoreId(snapshot.id);
+                                    dispatch(setJawabanNon(temp));
+                                    setWaktuUjian(time[sesi]);
+                                    setLoading(false);
+                                 })
+                                 .catch(() => navigation.goBack());
+                           } else {
+                              let jwb = querySnapshot.docs[0].data();
+                              let ar = [];
+                              for (const key in jwb.jawaban) {
+                                 ar.push(jwb.jawaban[key]);
+                              }
+                              setFirestoreTime(jwb.time);
+                              setTimeOpen(jwb.firstOpen);
+                              setFirestoreId(jwb.id);
+                              dispatch(setJawabanNon(ar));
+                              let now = new Date();
+                              let temp =
+                                 (now.getTime() - jwb.firstOpen[jwb.sesi]) /
+                                 1000;
+                              if (temp < jwb.time[jwb.sesi]) {
+                                 setSesi(jwb.sesi);
+                                 setWaktuUjian(jwb.time[jwb.sesi] - temp);
+                              } else {
+                                 setSesi(jwb.sesi + 1);
+                              }
+                              setLoading(false);
+                           }
+                        })
+                        .catch((err) => {
+                           navigation.goBack();
+                        });
                   })
                   .catch((err) => {
                      navigation.goBack();
@@ -295,20 +289,27 @@ const SoalScreen = ({ route }) => {
                }
                firestore()
                   .collection("Jawaban")
-                  .doc(firestoreId)
-                  .update({
-                     sesi: sesi,
+                  .where("user_id", "==", profile._id)
+                  .where("soal_id", "==", soal.data._id)
+                  .get()
+                  .then((querySnapshot) => {
+                     querySnapshot.forEach((doc) => {
+                        doc.ref
+                           .update({ sesi: sesi })
+                           .then(() => {
+                              let now = new Date();
+                              let temp =
+                                 (now.getTime() - timeOpen[sesi]) / 1000;
+                              if (temp < firestoreTime[sesi]) {
+                                 setWaktuUjian(firestoreTime[sesi] - temp);
+                              } else {
+                                 setSesi(sesi + 1);
+                              }
+                           })
+                           .then(() => setLoading(false))
+                           .catch(() => navigation.goBack());
+                     });
                   })
-                  .then(() => {
-                     let now = new Date();
-                     let temp = (now.getTime() - timeOpen[sesi]) / 1000;
-                     if (temp < firestoreTime[sesi]) {
-                        setWaktuUjian(firestoreTime[sesi] - temp);
-                     } else {
-                        setSesi(sesi + 1);
-                     }
-                  })
-                  .then(() => setLoading(false))
                   .catch(() => navigation.goBack());
             } else if (sesi === firestoreTime.length) {
                setDelay(true);
@@ -346,9 +347,21 @@ const SoalScreen = ({ route }) => {
          if (params.blockTime) {
             firestore()
                .collection("Jawaban")
-               .doc(firestoreId)
-               .delete()
-               .then(() => {});
+               .where("user_id", "==", profile._id)
+               .where("soal_id", "==", soal.data._id)
+               .get()
+               .then((querySnapshot) => {
+                  querySnapshot.forEach((doc) => {
+                     doc.ref
+                        .delete()
+                        .then(() => {
+                           console.log("Document successfully deleted!");
+                        })
+                        .catch(function (error) {
+                           console.error("Error removing document: ", error);
+                        });
+                  });
+               });
          }
       }
    }, [save]);
@@ -387,7 +400,7 @@ const SoalScreen = ({ route }) => {
                ]);
             }}
          />
-         {!valid && <ModalValid setValid={setValid} />}
+
          {soal.loading && <LoadingIndicator />}
          {soal.error || save.error ? (
             <ErrorScreen />
@@ -419,6 +432,8 @@ const SoalScreen = ({ route }) => {
                            blockTime={params.blockTime}
                            totalSesi={soal.data.sessions.length}
                            nomor={nomor}
+                           profileId={profile._id}
+                           soalId={soal.data._id}
                            sisaTime={sisaTime}
                            waktuUjian={waktuUjian}
                            delay={delay}
